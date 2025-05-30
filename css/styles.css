@@ -50,7 +50,7 @@ nav {
 #hero {
   background-color: #181818;
   text-align: center;
-  padding-top: 1rem;
+  padding: 1rem 0rem 2rem;
 }
 
 .hero-content {
