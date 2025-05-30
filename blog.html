@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Event Loop in JavaScript</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; background: #fff; color: #333; }
+        h1, h2 { color: #222; }
+        pre { background: #f4f4f4; padding: 10px; border-left: 4px solid #ccc; overflow-x: auto; }
+        code { font-family: monospace; }
+        ul, ol { margin-left: 20px; }
+    </style>
+</head>
+<body>
+    <h1>The Event Loop in JavaScript: Explained Like You're Not an Idiot</h1>
+
+    <p>If you’re trying to understand async JavaScript and things like Promises or async/await feel like magic—stop. None of it will make sense until you truly get what the event loop does under the hood.</p>
+
+    <p>This post cuts straight through the noise and shows you how JavaScript actually handles asynchronous behavior.</p>
+
+    <h2>JavaScript Is Single-Threaded — So How Is It Async?</h2>
+
+    <p>JavaScript runs one task at a time. It has a call stack, and that's it.</p>
+
+    <p>So how does it handle things like:</p>
+
+    <pre><code>setTimeout(() => console.log("Later"), 0);</code></pre>
+
+    <p>Or:</p>
+
+    <pre><code>fetch(url).then(handleData);</code></pre>
+
+    <p>Answer: the event loop + browser APIs + queues.</p>
+
+    <h2>Core Pieces of the Event Loop</h2>
+
+    <h3>1. Call Stack</h3>
+    <p>The stack of functions being executed.</p>
+
+    <pre><code>function greet() {
+  console.log("Hello");
+}
+greet();</code></pre>
+
+    <h3>2. Web APIs</h3>
+    <p>These aren't part of JS. They're part of the runtime (like the browser). They handle async stuff like setTimeout, DOM events, fetch, etc.</p>
+
+    <h3>3. Callback Queue (Task Queue)</h3>
+    <p>Once something like setTimeout finishes, its callback is pushed here.</p>
+
+    <h3>4. Microtask Queue</h3>
+    <p>Where Promise callbacks (then, catch) go. This queue runs before the callback queue.</p>
+
+    <h3>5. The Event Loop</h3>
+    <p>The process that:</p>
+    <ul>
+        <li>Checks if the call stack is empty</li>
+        <li>If so, runs all microtasks</li>
+        <li>Then runs one task from the callback queue</li>
+    </ul>
+
+    <h2>Code Example: Callback vs Promise</h2>
+
+    <pre><code>console.log("Start");
+
+setTimeout(() => {
+  console.log("Timeout");
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log("Promise");
+});
+
+console.log("End");</code></pre>
+
+    <p>Expected output:</p>
+    <pre><code>Start
+End
+Promise
+Timeout</code></pre>
+
+    <p>Explanation:</p>
+    <ul>
+        <li>Start and End are synchronous → executed immediately.</li>
+        <li>Promise.then is a microtask → queued, but runs before timeouts.</li>
+        <li>setTimeout is a task → it waits in the callback queue.</li>
+    </ul>
+
+    <h2>Beginner Mistake: "setTimeout(..., 0) runs instantly"</h2>
+
+    <p>Nope. Even with a 0ms delay, it waits for:</p>
+    <ol>
+        <li>The current stack to clear</li>
+        <li>Microtasks to run</li>
+        <li>Then it gets to the task</li>
+    </ol>
+
+    <h2>Pop Quiz: What’s the Output?</h2>
+
+    <pre><code>console.log("One");
+
+setTimeout(() => {
+  console.log("Two");
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log("Three");
+});
+
+console.log("Four");</code></pre>
+
+    <p>Expected:</p>
+    <pre><code>One
+Four
+Three
+Two</code></pre>
+
+    <h2>Build Your Own Mini Event Loop (for fun)</h2>
+
+    <pre><code>const taskQueue = [];
+
+function runLoop() {
+  while (taskQueue.length > 0) {
+    const task = taskQueue.shift();
+    task();
+  }
+}
+
+taskQueue.push(() => console.log("Task 1"));
+taskQueue.push(() => console.log("Task 2"));
+
+console.log("Before loop");
+runLoop();
+console.log("After loop");</code></pre>
+
+    <p>Try adding a separate microtaskQueue and prioritize it to simulate JS behavior more closely.</p>
+
+    <h2>TL;DR</h2>
+
+    <ul>
+        <li>JS is single-threaded. The event loop is how it fakes multitasking.</li>
+        <li>Microtasks (Promises) run before regular callbacks (setTimeout).</li>
+        <li>Understanding the event loop clears up 80% of async confusion.</li>
+    </ul>
+
+    <p>If this helped, share it with a dev who’s still thinking setTimeout(..., 0) is instant.</p>
+</body>
+</html>
