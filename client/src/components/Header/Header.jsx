@@ -13,7 +13,7 @@ const Header = () => {
       <div className="container">
         <h1 className="logo">
           <Link to="/" onClick={closeMenu}>
-            FT
+            DevKofi
           </Link>
         </h1>
 
