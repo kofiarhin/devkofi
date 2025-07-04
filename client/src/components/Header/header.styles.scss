@@ -1,0 +1,22 @@
+.header {
+  padding: 0rem 2rem;
+  .container {
+    display: flex;
+    color: white;
+    justify-content: space-between;
+    padding: 2rem 0rem;
+    align-items: center;
+    a {
+      color: white;
+    }
+    .menu-toggle {
+      display: none;
+    }
+
+    nav a {
+      display: inline-block;
+      text-decoration: none;
+      margin-left: 1rem;
+    }
+  }
+}

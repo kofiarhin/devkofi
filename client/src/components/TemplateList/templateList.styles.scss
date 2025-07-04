@@ -1,0 +1,14 @@
+.template-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  h2 {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 800px) {
+  .template-wrapper {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
