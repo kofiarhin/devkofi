@@ -1,15 +1,27 @@
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { FaBars } from "react-icons/fa";
+import { toggleNav } from "../../redux/navigation/navigationSlice";
 import "./header.styles.scss";
+import SideNav from "../SideNav/SideNav";
+
+// header
 const Header = () => {
+  const dispatch = useDispatch();
+  const { isOpen } = useSelector((state) => state.navigation);
+  console.log(isOpen);
+  const handleToggleNav = () => {
+    dispatch(toggleNav());
+  };
   return (
     <header className="header">
+      {isOpen ? <SideNav /> : ""}
       <div className="container">
         <Link to="/" className="logo">
           <h2>DevKofi</h2>
         </Link>
         <div className="menu">
-          <FaBars />
+          <FaBars onClick={handleToggleNav} />
         </div>
 
         <nav>

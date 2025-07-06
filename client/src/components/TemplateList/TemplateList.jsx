@@ -1,6 +1,5 @@
 import "./templateList.styles.scss";
 const TemplateList = ({ data }) => {
-  console.log(data[0]);
   return (
     <div className="template-wrapper">
       {data.map((item) => (
