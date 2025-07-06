@@ -1,21 +1,27 @@
-.landing {
-  color: white;
+#landing {
   min-height: 60vh;
-  display: grid;
-  place-content: center;
+  max-width: 600px;
   h1 {
-    font-size: 1.5rem;
-    margin-bottom: 0.8rem;
-  }
-  p {
     margin-bottom: 1rem;
   }
+
+  p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
   a {
-    color: white;
-    display: inline-block;
-    padding: 1rem 2rem;
+    padding: 0.8rem 1rem;
     cursor: pointer;
+    color: white;
+    padding: 0.8rem 2rem;
     background-color: var(--light-green);
-    text-decoration: none;
+  }
+}
+
+@media (min-width: 800px) {
+  #landing {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 4rem;
   }
 }

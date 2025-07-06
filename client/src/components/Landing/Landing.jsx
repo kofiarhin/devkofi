@@ -1,26 +1,18 @@
-import { Link } from "react-router-dom";
 import "./landing.styles.scss";
 
+import { Link } from "react-router-dom";
+//landing
 const Landing = () => {
   return (
-    <section className="landing">
-      <div className="overlay">
-        <div className="text">
-          <h1>Hi, I’m Kofi 👋</h1>
-          <p>
-            A full-stack developer blending code, design, and storytelling to
-            build web experiences that are fast, precise, and impactful. I
-            specialize in the MERN stack and create apps, tools, and content
-            that merge creativity with clean execution.
-          </p>
-          <div className="actions">
-            <Link to="/contact" className="secondary-btn">
-              Get in Touch
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div id="landing">
+      <h1 className="heading">Hi There</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
+        corporis non ipsa molestiae facilis consequuntur voluptas fugiat ut ex
+        unde.
+      </p>
+      <Link to="/contact">Get in touch</Link>
+    </div>
   );
 };
 
