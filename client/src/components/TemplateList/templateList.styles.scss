@@ -1,14 +1,42 @@
 .template-wrapper {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  .template-unit {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all ease-in-out 300ms;
+  }
   h2 {
-    font-size: 1rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  p {
+    margin-bottom: 1rem;
+  }
+  button {
+    background-color: var(--light-green);
+    padding: 1rem 2rem;
+    color: white;
+    font-weight: 800;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all ease-in-out 300ms;
+    &:hover {
+      background-color: white;
+      color: var(--light-green);
+    }
   }
 }
 
 @media (min-width: 800px) {
   .template-wrapper {
-    grid-template-columns: repeat(5, 1fr);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    .template-unit {
+      margin-bottom: 0rem;
+      padding: 1rem;
+    }
   }
 }

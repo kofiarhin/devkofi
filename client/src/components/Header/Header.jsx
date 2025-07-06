@@ -1,43 +1,21 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FaBars } from "react-icons/fa";
 import "./header.styles.scss";
-
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-  const closeMenu = () => setMenuOpen(false);
-
   return (
     <header className="header">
       <div className="container">
-        <h1 className="logo">
-          <Link to="/" onClick={closeMenu}>
-            DevKofi
-          </Link>
-        </h1>
+        <Link to="/" className="logo">
+          <h2>DevKofi</h2>
+        </Link>
+        <div className="menu">
+          <FaBars />
+        </div>
 
-        <button
-          className="menu-toggle"
-          onClick={toggleMenu}
-          aria-label="Toggle navigation menu"
-        >
-          ☰
-        </button>
-
-        <nav className={`nav ${menuOpen ? "open" : ""}`}>
-          <Link to="/" className="nav-link" onClick={closeMenu}>
-            Home
-          </Link>
-          <Link to="/templates" className="nav-link" onClick={closeMenu}>
-            Templates
-          </Link>
-          <Link to="/about" className="nav-link" onClick={closeMenu}>
-            About
-          </Link>
-          <Link to="/contact" className="nav-link" onClick={closeMenu}>
-            Contact
-          </Link>
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/templates">Templates</Link>
+          <Link to="/contact">Contact</Link>
         </nav>
       </div>
     </header>

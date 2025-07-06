@@ -6,11 +6,16 @@ const Landing = () => {
     <section className="landing">
       <div className="overlay">
         <div className="text">
-          <h1>Welcome to Fullstack Template Projects</h1>
-          <p>Kickstart your MERN projects with ready-to-use templates.</p>
+          <h1>Hi, I’m Kofi 👋</h1>
+          <p>
+            A full-stack developer blending code, design, and storytelling to
+            build web experiences that are fast, precise, and impactful. I
+            specialize in the MERN stack and create apps, tools, and content
+            that merge creativity with clean execution.
+          </p>
           <div className="actions">
-            <Link to="/templates" className="primary-btn">
-              View Templates
+            <Link to="/contact" className="secondary-btn">
+              Get in Touch
             </Link>
           </div>
         </div>
