@@ -1,3 +1,5 @@
+import { baseUrl } from "../constants/constants";
+
 const test = async () => {
   return { message: "get users" };
 };
@@ -33,7 +35,9 @@ const getTemplates = async () => {
 
 // send message
 const sendMessage = async (messageData) => {
-  const url = "http://localhost:5000/api/contact";
+  const url = import.meta.env.DEV
+    ? "http://localhost:5000/api/contact"
+    : `${baseUrl}/api/contact`;
   const res = await fetch(url, {
     method: "POST",
     headers: {
