@@ -5,6 +5,7 @@ import Header from "./components/Header/Header";
 import Contact from "./Pages/contact/contact";
 import Footer from "./components/Footer/Footer";
 import Success from "./Pages/Success/Success";
+import Error from "./Pages/Error/Error";
 const App = () => {
   return (
     <div>
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/templates" element={<Templates />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/success" element={<Success />} />
+          <Route path="/error" element={<Error />} />
         </Routes>
         <Footer />
       </Router>

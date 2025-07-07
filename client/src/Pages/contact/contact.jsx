@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import "./contact.styles.scss";
 import usecontactMutation from "../../hooks/useContactMutation";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../components/Spinner/Spinner";
 
 const Contact = () => {
   const navigate = useNavigate();
-  const { mutate, isSuccess } = usecontactMutation();
+  const { mutate, isPending, error, isSuccess } = usecontactMutation();
   const [formData, setFormData] = useState({
-    name: "david kraku frontend",
-    email: "davidkraku69@gmail.com",
-    message: "some message",
+    name: "",
+    email: "",
+    message: "",
   });
 
   const handleChange = (e) => {
@@ -32,6 +33,14 @@ const Contact = () => {
       message: "",
     });
   };
+
+  if (error) {
+    navigate("/error");
+  }
+
+  if (isPending) {
+    return <Spinner />;
+  }
 
   if (isSuccess) {
     navigate("/success");

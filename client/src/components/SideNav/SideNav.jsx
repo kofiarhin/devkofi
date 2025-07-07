@@ -20,7 +20,7 @@ const SideNav = () => {
       <Link to="/templates" onClick={nandleToggleNav}>
         Templates
       </Link>
-      <Link to="/contact" onclick={nandleToggleNav}>
+      <Link to="/contact" onClick={nandleToggleNav}>
         Contact
       </Link>
     </div>
