@@ -1,7 +1,42 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./contact.styles.scss";
+import usecontactMutation from "../../hooks/useContactMutation";
+import { useNavigate } from "react-router-dom";
 
 const Contact = () => {
+  const navigate = useNavigate();
+  const { mutate, isSuccess } = usecontactMutation();
+  const [formData, setFormData] = useState({
+    name: "david kraku frontend",
+    email: "davidkraku69@gmail.com",
+    message: "some message",
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    mutate(formData);
+
+    // Clear form after submit (optional)
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+    });
+  };
+
+  if (isSuccess) {
+    navigate("/success");
+  }
+
   return (
     <section className="contact">
       <div className="overlay">
@@ -11,10 +46,17 @@ const Contact = () => {
             Got a project, an idea, or just want to say hello? Fill out the form
             below and I’ll get back to you as soon as possible.
           </p>
-          <form className="form">
+          <form className="form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="name">Name</label>
-              <input type="text" id="name" placeholder="Your Name" required />
+              <input
+                type="text"
+                id="name"
+                placeholder="Your Name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
@@ -22,6 +64,8 @@ const Contact = () => {
                 type="email"
                 id="email"
                 placeholder="you@example.com"
+                value={formData.email}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -30,6 +74,8 @@ const Contact = () => {
               <textarea
                 id="message"
                 placeholder="Your message"
+                value={formData.message}
+                onChange={handleChange}
                 required
               ></textarea>
             </div>

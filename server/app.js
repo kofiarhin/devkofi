@@ -1,6 +1,8 @@
 const express = require("express");
 const projectProfile = require("./config/project-profile.json");
 const cors = require("cors");
+const messagesRoute = require("./routes/messagesRoute");
+const contactRoute = require("./routes/contactRoutes");
 
 const app = express();
 
@@ -14,5 +16,8 @@ app.get("/", (Req, res) => {
 app.get("/api/templates", (req, res) => {
   return res.json(projectProfile);
 });
+
+app.use("/api/messages", messagesRoute);
+app.use("/api/contact", contactRoute);
 
 module.exports = app;
