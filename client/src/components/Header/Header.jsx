@@ -17,9 +17,12 @@ const Header = () => {
     <header className="header">
       {isOpen ? <SideNav /> : ""}
       <div className="container">
-        <Link to="/" className="logo">
-          <h2>DevKofi</h2>
-        </Link>
+        <div className="logo-wrapper">
+          <img src="/img/profile.jpg" alt="" />
+          <Link to="/" className="logo">
+            <h2>DevKofi</h2>
+          </Link>
+        </div>
         <div className="menu">
           <FaBars onClick={handleToggleNav} />
         </div>
