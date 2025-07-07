@@ -1,6 +1,7 @@
 #landing {
   margin-bottom: 3rem;
   max-width: 800px;
+
   .hero {
     height: 300px;
     max-width: 600px;
@@ -10,12 +11,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     h1 {
       margin-bottom: 1rem;
     }
+
     p {
       margin-bottom: 1rem;
     }
+
     a {
       display: inline-block;
       color: white;
@@ -24,22 +28,20 @@
       cursor: pointer;
     }
   }
+}
 
-  .services {
-    h1 {
-      font-size: 2rem;
+.services {
+  .services-wrapper {
+    .service-unit {
       margin-bottom: 1rem;
-    }
-    .services-wrapper {
-      .service-unit {
+
+      h2 {
+        font-size: 1.2rem;
         margin-bottom: 1rem;
-        h2 {
-          font-size: 1.2rem;
-          margin-bottom: 1rem;
-        }
-        p {
-          font-size: 1rem;
-        }
+      }
+
+      p {
+        font-size: 1rem;
       }
     }
   }
@@ -49,10 +51,11 @@
 @media (min-width: 800px) {
   #landing {
     margin: 0 auto;
-    .services-wrapper {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
+  }
+
+  .services-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
 }
