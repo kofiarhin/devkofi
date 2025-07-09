@@ -3,8 +3,8 @@ import "./audience.styles.scss";
 
 const Audience = () => {
   return (
-    <section id="audience" className="audience">
-      <h2 className="title">Who this is for</h2>
+    <section id="audience">
+      <h2 className="heading">Who this is for</h2>
       <div className="cards">
         <div className="card">
           <h3 className="card-title">
