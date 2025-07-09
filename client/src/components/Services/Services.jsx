@@ -14,7 +14,7 @@ const serviceList = [
 ];
 
 const Services = () => (
-  <div className="services">
+  <div id="services">
     <h1 className="heading">What you’ll get</h1>
     <div className="services-wrapper">
       {serviceList.map(({ title, description }) => (

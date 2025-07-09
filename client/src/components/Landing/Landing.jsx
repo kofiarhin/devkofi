@@ -13,8 +13,6 @@ const Landing = () => (
         Get started
       </Link>
     </div>
-
-    <Services />
   </div>
 );
 
