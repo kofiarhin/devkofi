@@ -14,9 +14,6 @@ const Audience = () => {
             Doesn't matter if you don't know how to code at all or are a
             seasoned developer, I will help you learn how to build an app.
           </p>
-          <a href="#get-started" className="cta">
-            Get started
-          </a>
         </div>
         <div className="card">
           <h3 className="card-title">
@@ -26,9 +23,6 @@ const Audience = () => {
             I'll help you make social media content to grow your app on social
             media. I'll be your social media marketing assistant.
           </p>
-          <a href="#get-started" className="cta">
-            Get started
-          </a>
         </div>
       </div>
     </section>
