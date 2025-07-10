@@ -1,12 +1,16 @@
 const { Router } = require("express");
 const { createNewsletterUser } = require("../utility/helper");
+const Newsletter = require("../Model/newsletterModel");
 
 const router = Router();
 
+// get list of users in newsletter
 router.get("/", async (req, res) => {
-  return res.json({ message: "hello world" });
+  const users = await Newsletter.find();
+  return res.json(users);
 });
 
+// join news letter
 router.post("/", async (req, res) => {
   try {
     const { email } = req.body;
