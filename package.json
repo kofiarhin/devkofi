@@ -7,7 +7,12 @@
     "server": "nodemon --env-file=.env server/server.js",
     "client": "npm run dev --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "jest server --watchAll"
+    "test": "jest --watchAll server"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/server/__test__/setup.js"
+    ]
   },
   "keywords": [],
   "author": "",

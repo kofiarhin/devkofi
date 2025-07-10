@@ -3,6 +3,7 @@ const projectProfile = require("./config/project-profile.json");
 const cors = require("cors");
 const messagesRoute = require("./routes/messagesRoute");
 const contactRoute = require("./routes/contactRoutes");
+const newsletterRoutes = require("./routes/newsletterRoutes");
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.get("/api/templates", (req, res) => {
 
 app.use("/api/messages", messagesRoute);
 app.use("/api/contact", contactRoute);
+app.use("/api/newsletter", newsletterRoutes);
 
 module.exports = app;
