@@ -9,7 +9,6 @@ import SideNav from "../SideNav/SideNav";
 const Header = () => {
   const dispatch = useDispatch();
   const { isOpen } = useSelector((state) => state.navigation);
-  console.log(isOpen);
   const handleToggleNav = () => {
     dispatch(toggleNav());
   };
