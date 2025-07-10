@@ -4,6 +4,7 @@ import Audience from "../../components/Audience/Audience";
 import Services from "../../components/Services/Services";
 import Pricing from "../../components/Pricing/Pricing";
 import Newsletter from "../../components/Newsletter/Newsletter";
+import Faq from "../../components/Faq/Faq";
 const Home = () => {
   return (
     <div className="container">
@@ -13,6 +14,7 @@ const Home = () => {
       <Audience />
       <Pricing />
       <Newsletter />
+      <Faq />
     </div>
   );
 };
