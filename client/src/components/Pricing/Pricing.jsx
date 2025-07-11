@@ -1,5 +1,6 @@
 // src/components/Pricing.jsx
 import "./pricing.styles.scss";
+import { Link } from "react-router-dom";
 
 const Pricing = () => {
   return (
@@ -14,7 +15,13 @@ const Pricing = () => {
           <li>✓ No commitment</li>
           <li>✓ 100% refund guarantee</li>
         </ul>
-        <button className="pricing-button">Book a Call</button>
+        <a
+          href="https://calendly.com/kofiarhin/coaching?back=1&month=2025-07"
+          target="_blank"
+          classNam="pricing-button"
+        >
+          Book a Call
+        </a>
       </div>
 
       <div className="pricing-card">
@@ -28,7 +35,7 @@ const Pricing = () => {
           <li>✓ 24/7 messaging access</li>
           <li>✓ 100% refund guarantee</li>
         </ul>
-        <button className="pricing-button">Join Today</button>
+        <Link to="/contact">Join Today</Link>
       </div>
     </section>
   );
