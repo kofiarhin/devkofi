@@ -1,7 +1,9 @@
 const sendEmail = require("../utility/sendEmail");
 const request = require("supertest");
 const app = require("../app");
-const { createNewsletterUser } = require("../utility/helper");
+const { createNewsletterUser, uploadImage } = require("../utility/helper");
+const path = require("path");
+const fs = require("fs");
 
 describe("app", () => {
   it("just a passing test", () => {

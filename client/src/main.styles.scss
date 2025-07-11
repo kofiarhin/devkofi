@@ -44,4 +44,23 @@ img {
 .heading {
   font-size: 1.6rem;
   margin-bottom: 1rem;
+  &.center {
+    text-align: center;
+  }
+}
+
+.heading-medium {
+  font-size: 1.4rem;
+}
+
+.heading-small {
+  font-size: 1.2rem;
+}
+
+.heading,
+.heading-medium,
+.heading-small {
+  &.center {
+    text-align: center;
+  }
 }

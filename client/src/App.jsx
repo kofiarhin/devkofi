@@ -6,6 +6,8 @@ import Contact from "./Pages/contact/contact";
 import Footer from "./components/Footer/Footer";
 import Success from "./Pages/Success/Success";
 import Error from "./Pages/Error/Error";
+import Playground from "./Pages/Playground/Playground";
+// app component
 const App = () => {
   return (
     <div>
@@ -17,6 +19,7 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/success" element={<Success />} />
           <Route path="/error" element={<Error />} />
+          <Route path="/playground" element={<Playground />} />
         </Routes>
         <Footer />
       </Router>

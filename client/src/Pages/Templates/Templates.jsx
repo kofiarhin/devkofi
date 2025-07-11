@@ -4,7 +4,6 @@ import Spinner from "../../components/Spinner/Spinner";
 import TemplateList from "../../components/TemplateList/TemplateList";
 const Templates = () => {
   const { data, isPending } = useTemplateQuery();
-  console.log({ data });
   if (isPending) {
     return <Spinner />;
   }

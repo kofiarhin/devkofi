@@ -1,42 +1,120 @@
-.template-wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  .template-unit {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    cursor: pointer;
-    transition: all ease-in-out 300ms;
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+  padding: 1rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
   }
-  h2 {
-    font-size: 1.2rem;
+}
+
+.image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.content {
+  padding: 0.8rem;
+
+  .title {
+    font-size: 1.1rem;
+    color: #222;
     margin-bottom: 0.5rem;
   }
-  p {
-    margin-bottom: 1rem;
+
+  .desc {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 0.8rem;
   }
-  button {
-    background-color: var(--light-green);
-    padding: 1rem 2rem;
-    color: white;
-    font-weight: 800;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all ease-in-out 300ms;
-    &:hover {
-      background-color: white;
-      color: var(--light-green);
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.8rem;
+
+    .tag {
+      background: #f3f3f3;
+      color: #333;
+      font-size: 0.8rem;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .status {
+      font-size: 0.85rem;
+      text-transform: capitalize;
+      color: #ff9800;
+
+      &.planned {
+        color: #ff9800;
+      }
+
+      &.completed {
+        color: #4caf50;
+      }
+    }
+
+    .btn {
+      background: #2196f3;
+      color: #fff;
+      text-decoration: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: #1976d2;
+      }
     }
   }
 }
 
 @media (min-width: 800px) {
-  .template-wrapper {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    .template-unit {
-      margin-bottom: 0rem;
-      padding: 1rem;
+  .list {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+
+  .image img {
+    height: 220px;
+  }
+
+  .content {
+    .title {
+      font-size: 1.3rem;
+    }
+
+    .desc {
+      font-size: 1rem;
+    }
+
+    .btn {
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
     }
   }
 }
