@@ -1,2 +1,6 @@
 //coaching-mentorship app sample
 https://www.youraveragetechbro.com/
+
+//todo
+1. remove default input values from newsletter input
+2. add a  working download link

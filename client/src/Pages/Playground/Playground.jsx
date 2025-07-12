@@ -1,8 +1,11 @@
-import Upload from "../../components/Upload/Upload";
+import { downloadFile } from "../../services/services";
 const Playground = () => {
+  const handleDownload = async () => {
+    downloadFile();
+  };
   return (
     <div>
-      <Upload />
+      <button onClick={handleDownload}>Download</button>
     </div>
   );
 };

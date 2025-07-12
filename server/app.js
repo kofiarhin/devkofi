@@ -4,6 +4,7 @@ const cors = require("cors");
 const messagesRoute = require("./routes/messagesRoute");
 const contactRoute = require("./routes/contactRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
+const downloadRoutes = require("./routes/downloadRoutes");
 
 const app = express();
 
@@ -21,5 +22,6 @@ app.get("/api/templates", (req, res) => {
 app.use("/api/messages", messagesRoute);
 app.use("/api/contact", contactRoute);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/download", downloadRoutes);
 
 module.exports = app;

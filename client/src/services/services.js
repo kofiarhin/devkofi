@@ -62,4 +62,28 @@ const sendMessage = async (messageData) => {
     return { success: false, error: error.message };
   }
 };
-export { test, getUsers, getTemplates, sendMessage };
+
+const downloadFile = async (fileName = "default") => {
+  try {
+    const apiUrl = import.meta.env.DEV
+      ? `http://localhost:5000/api/download?filename=${fileName}`
+      : `${baseUrl}/api/download?name=${fileName}`;
+    const response = await fetch(apiUrl, {
+      method: "GET",
+    });
+    if (!response.ok) throw new Error("Network response was not ok");
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(new Blob([blob]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", fileName); // Filename
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+    return true;
+  } catch (error) {
+    console.error("Download error:", error);
+  }
+};
+export { test, getUsers, getTemplates, sendMessage, downloadFile };

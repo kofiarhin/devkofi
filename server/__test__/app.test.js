@@ -54,4 +54,9 @@ describe("app", () => {
       .post("/api/newsletter")
       .send({ email });
   });
+
+  it("should test for download route", async () => {
+    const { body, statusCode } = await request(app).get("/api/download");
+    expect(statusCode).toBe(200);
+  });
 });

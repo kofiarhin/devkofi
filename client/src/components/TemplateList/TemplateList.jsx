@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import "./templateList.styles.scss";
+import { downloadFile } from "../../services/services";
 
 const TemplateList = ({ data }) => {
   return (
@@ -27,9 +29,13 @@ const TemplateList = ({ data }) => {
             </div>
             <div className="footer">
               <span className={`status ${status}`}>{status}</span>
-              <a href={zip} className="btn" download>
+              <button
+                onClick={() => downloadFile(name)}
+                className="btn"
+                download
+              >
                 Download
-              </a>
+              </button>
             </div>
           </div>
         </div>
