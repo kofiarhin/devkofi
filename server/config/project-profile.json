@@ -7,7 +7,8 @@
     "path": "templates/fullstack/mern-starter",
     "zip": "server/downloads/mern-starter.zip",
     "tags": ["React", "Node.js", "MongoDB", "Express", "Auth"],
-    "status": "planned"
+    "status": "planned",
+    "file": "mern-starter.zip"
   },
   {
     "name": "REST API Boilerplate",
@@ -17,7 +18,8 @@
     "path": "templates/fullstack/rest-api-boilerplate",
     "zip": "server/downloads/rest-api-boilerplate.zip",
     "tags": ["Node.js", "Express", "API"],
-    "status": "planned"
+    "status": "planned",
+    "file": "rest-api-boilerplate.zip"
   },
   {
     "name": "Authentication Template",
@@ -27,7 +29,8 @@
     "path": "templates/fullstack/auth-template",
     "zip": "server/downloads/auth-template.zip",
     "tags": ["Node.js", "Auth", "JWT", "Bcrypt"],
-    "status": "planned"
+    "status": "planned",
+    "file": "auth-template.zip"
   },
   {
     "name": "Portfolio Website Template",
@@ -37,7 +40,8 @@
     "path": "templates/frontend/portfolio-website",
     "zip": "server/downloads/portfolio-website.zip",
     "tags": ["React", "SCSS", "Responsive"],
-    "status": "planned"
+    "status": "planned",
+    "file": "portfolio-website.zip"
   },
   {
     "name": "Landing Page Template",
@@ -47,7 +51,8 @@
     "path": "templates/frontend/landing-page",
     "zip": "server/downloads/landing-page.zip",
     "tags": ["HTML", "CSS", "Responsive"],
-    "status": "planned"
+    "status": "planned",
+    "file": "landing-page.zip"
   },
   {
     "name": "Responsive Navbar Templates",
@@ -57,7 +62,8 @@
     "path": "templates/frontend/responsive-navbar",
     "zip": "server/downloads/responsive-navbar.zip",
     "tags": ["React", "CSS", "UI"],
-    "status": "planned"
+    "status": "planned",
+    "file": "responsive-navbar.zip"
   },
   {
     "name": "Email Service Template",
@@ -67,7 +73,8 @@
     "path": "templates/backend/email-service",
     "zip": "server/downloads/email-service.zip",
     "tags": ["Node.js", "Email", "Nodemailer"],
-    "status": "planned"
+    "status": "planned",
+    "file": "email-service.zip"
   },
   {
     "name": "Cron Job Scheduler",
@@ -77,7 +84,8 @@
     "path": "templates/backend/cron-job-scheduler",
     "zip": "server/downloads/cron-job-scheduler.zip",
     "tags": ["Node.js", "Cron", "Utilities"],
-    "status": "planned"
+    "status": "planned",
+    "file": "cron-job-scheduler.zip"
   },
   {
     "name": "API Rate Limiter",
@@ -87,7 +95,8 @@
     "path": "templates/backend/api-rate-limiter",
     "zip": "server/downloads/api-rate-limiter.zip",
     "tags": ["Node.js", "Express", "Middleware"],
-    "status": "planned"
+    "status": "planned",
+    "file": "api-rate-limiter.zip"
   },
   {
     "name": "Business Website Starter",
@@ -97,7 +106,8 @@
     "path": "templates/business/business-website",
     "zip": "server/downloads/business-website.zip",
     "tags": ["HTML", "CSS", "Business"],
-    "status": "planned"
+    "status": "planned",
+    "file": "business-website.zip"
   },
   {
     "name": "SaaS Landing Page",
@@ -107,7 +117,8 @@
     "path": "templates/business/saas-landing-page",
     "zip": "server/downloads/saas-landing-page.zip",
     "tags": ["React", "Landing Page", "SaaS"],
-    "status": "planned"
+    "status": "planned",
+    "file": "saas-landing-page.zip"
   },
   {
     "name": "Newsletter Signup Template",
@@ -117,7 +128,8 @@
     "path": "templates/business/newsletter-signup",
     "zip": "server/downloads/newsletter-signup.zip",
     "tags": ["React", "Mailchimp", "Forms"],
-    "status": "planned"
+    "status": "planned",
+    "file": "newsletter-signup.zip"
   },
   {
     "name": "Markdown Editor",
@@ -127,7 +139,8 @@
     "path": "templates/bonus-tools/markdown-editor",
     "zip": "server/downloads/markdown-editor.zip",
     "tags": ["React", "Markdown", "Editor"],
-    "status": "planned"
+    "status": "planned",
+    "file": "markdown-editor.zip"
   },
   {
     "name": "Image Gallery Template",
@@ -137,7 +150,8 @@
     "path": "templates/bonus-tools/image-gallery",
     "zip": "server/downloads/image-gallery.zip",
     "tags": ["React", "Gallery", "UI"],
-    "status": "planned"
+    "status": "planned",
+    "file": "image-gallery.zip"
   },
   {
     "name": "Todo App Fullstack",
@@ -147,6 +161,7 @@
     "path": "templates/bonus-tools/todo-app",
     "zip": "server/downloads/todo-app.zip",
     "tags": ["React", "Node.js", "Fullstack"],
-    "status": "planned"
+    "status": "planned",
+    "file": "todo-app.zip"
   }
 ]

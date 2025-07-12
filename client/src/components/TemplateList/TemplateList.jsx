@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import "./templateList.styles.scss";
 import { downloadFile } from "../../services/services";
 
-const TemplateList = ({ data }) => {
+const TemplateList = ({ data = [] }) => {
   return (
     <div className="list">
-      {data.map(({ slug, name, description, tags, zip, status }) => (
+      {data.map(({ slug, name, description, tags, zip, status, file }) => (
         <div key={slug} className="card">
           <div className="image">
             <img
@@ -30,7 +30,7 @@ const TemplateList = ({ data }) => {
             <div className="footer">
               <span className={`status ${status}`}>{status}</span>
               <button
-                onClick={() => downloadFile(name)}
+                onClick={() => downloadFile(file)}
                 className="btn"
                 download
               >

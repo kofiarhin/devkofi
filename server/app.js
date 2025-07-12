@@ -5,6 +5,7 @@ const messagesRoute = require("./routes/messagesRoute");
 const contactRoute = require("./routes/contactRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
 const downloadRoutes = require("./routes/downloadRoutes");
+const templateRoutes = require("./routes/templateRoutes");
 
 const app = express();
 

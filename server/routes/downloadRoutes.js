@@ -9,12 +9,11 @@ router.get("/", async (req, res) => {
     const { filename: fileName } = req.query;
     let filePath;
     if (fileName) {
-      filePath = path.join(__dirname, "..", "files", `${fileName}.zip`);
+      filePath = path.join(__dirname, "..", "files", `${fileName}`);
     } else {
-      filePath = path.join(__dirname, "..", "files", "image-uploader.zip");
+      filePath = path.join(__dirname, "..", "files", "default.zip");
     }
     const check = fs.existsSync(filePath);
-    console.log({ check, filePath });
 
     if (!check) {
       throw new Error("file does not exist");

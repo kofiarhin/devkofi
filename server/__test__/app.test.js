@@ -59,4 +59,11 @@ describe("app", () => {
     const { body, statusCode } = await request(app).get("/api/download");
     expect(statusCode).toBe(200);
   });
+
+  it("should be able to download a specific file successfully", async () => {
+    const filename = "todo-app.zip";
+    const { statusCodce, body } = await request(app).get(
+      `/api/download?filename=${filename}`
+    );
+  });
 });
