@@ -7,7 +7,7 @@ const Pricing = () => {
     <section className="pricing">
       <div className="pricing-card">
         <h2>One-off Call</h2>
-        <p className="price">£299</p>
+        <p className="price">£150</p>
         <ul>
           <li>✓ 1-hour call for app advice</li>
           <li>✓ Personalised guidance</li>
@@ -27,7 +27,7 @@ const Pricing = () => {
       <div className="pricing-card">
         <h2>Monthly Coaching</h2>
         <p className="price">
-          £499<span>/month</span>
+          £350<span>/month</span>
         </p>
         <ul>
           <li>✓ 1:1 app build + marketing help</li>
