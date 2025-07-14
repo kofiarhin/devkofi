@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Newsletter = () => {
   const navigate = useNavigate();
   const { data, mutate, isPending, isSuccess } = useJoinNewsletterMutation();
-  const [email, setEmail] = useState("davidkraku69@gmail.com");
+  const [email, setEmail] = useState("");
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     mutate({ email });

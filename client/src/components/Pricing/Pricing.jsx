@@ -27,7 +27,7 @@ const Pricing = () => {
       <div className="pricing-card">
         <h2>Monthly Coaching</h2>
         <p className="price">
-          £350<span>/month</span>
+          £300<span>/month</span>
         </p>
         <ul>
           <li>✓ 1:1 app build + marketing help</li>

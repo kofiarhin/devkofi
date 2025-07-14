@@ -6,10 +6,10 @@
   bottom: 0;
   background-color: black;
   color: white;
-  display: grid;
-  place-content: center;
+  text-align: center;
+  padding: 8rem 0rem;
   .close {
-    font-size: 1rem;
+    font-size: 1.4rem;
     cursor: pointer;
     position: absolute;
     top: 20px;

@@ -5,10 +5,12 @@ import { FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 const Footer = () => {
   return (
     <footer className="footer">
-      <p>© 2024 Your Company Name. All rights reserved.</p>
+      <p>
+        © <span>DevKofi</span>. All rights reserved.
+      </p>
       <div className="footer-socials">
         <a
-          href="https://github.com"
+          href="https://github.com/kofiarhin"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub"
@@ -16,7 +18,7 @@ const Footer = () => {
           <FaGithub />
         </a>
         <a
-          href="https://instagram.com"
+          href="https://www.instagram.com/escodebar/"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Instagram"
@@ -24,7 +26,7 @@ const Footer = () => {
           <FaInstagram />
         </a>
         <a
-          href="https://twitter.com"
+          href="https://x.com/kwofiArhin"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Twitter"

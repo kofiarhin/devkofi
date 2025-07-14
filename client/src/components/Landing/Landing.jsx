@@ -6,13 +6,17 @@ import Services from "../Services/Services";
 
 const Landing = () => (
   <div id="landing">
-    <div className="hero">
-      <h1 className="heading">I help you build & market your SaaS app</h1>
-      <p>1:1 coaching to launch faster and reach real users</p>
-      <Link className="cta" to="/contact">
-        Get started
-      </Link>
-    </div>
+    <h1 className="heading">
+      Learn to build and grow your app from idea to launch.
+    </h1>
+    <p>
+      Personalized coaching to master programming, product design, and
+      marketing.
+    </p>
+
+    <Link className="cta" to="/contact">
+      Get started
+    </Link>
   </div>
 );
 
