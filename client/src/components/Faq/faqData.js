@@ -1,28 +1,27 @@
-// src/data/faqData.js
 export const faqData = [
   {
-    question: "What is the refund policy?",
+    question: "What is included in the mentorship?",
     answer:
-      "I offer a 100% refund guarantee if you're not satisfied with the service. Your satisfaction is my priority.",
+      "The mentorship includes 1:1 coaching, step-by-step guidance on building and marketing your app, personalized feedback, and accountability to help you stay on track.",
   },
   {
-    question: "Should you purchase this service?",
+    question: "Is this mentorship right for me?",
     answer:
-      "Only if you're 100% sure you want 1:1 help. There are many free resources available online, including my YouTube channel. This service is for those who want personalised guidance.",
+      "This program is for anyone serious about building and growing an app. Whether you're a complete beginner or an experienced developer, I’ll meet you where you are and help you level up.",
   },
   {
-    question: "What apps can you help with?",
+    question: "Do you write code or do marketing for me?",
     answer:
-      "I can help with a wide range of applications, from simple web apps to more complex SaaS products. Whether you're starting from scratch or improving an existing app, I can provide guidance.",
+      "No. I don’t build the app or create marketing content for you. Instead, I guide you through the process so you can gain the skills and confidence to do it yourself.",
   },
   {
-    question: "What marketing can you help with?",
+    question: "How long does the mentorship last?",
     answer:
-      "I can help you create social media content, develop marketing strategies, and find ways to grow your user base. I'll be your social media marketing assistant.",
+      "The standard mentorship runs for 8 weeks. However, I also offer custom durations if you need longer-term support.",
   },
   {
-    question: "Do you build apps/make marketing content for me?",
+    question: "What if I need a refund?",
     answer:
-      "No, I don't build the apps or create the marketing content for you. Instead, I provide guidance, feedback, and coaching to help you build and market your own app.",
+      "I offer a 100% refund within the first 14 days if you feel the mentorship isn’t right for you. No questions asked.",
   },
 ];

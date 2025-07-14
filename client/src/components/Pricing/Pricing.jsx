@@ -1,41 +1,40 @@
-// src/components/Pricing.jsx
 import "./pricing.styles.scss";
 import { Link } from "react-router-dom";
+import { pricingData } from "./pricingData";
 
 const Pricing = () => {
   return (
     <section className="pricing">
-      <div className="pricing-card">
-        <h2>One-off Call</h2>
-        <p className="price">£150</p>
-        <ul>
-          <li>✓ 1-hour call for app advice</li>
-          <li>✓ Personalised guidance</li>
-          <li>✓ Perfect for quick solutions</li>
-          <li>✓ No commitment</li>
-          <li>✓ 100% refund guarantee</li>
-        </ul>
-        <a
-          href="https://calendly.com/kofiarhin/coaching?back=1&month=2025-07"
-          target="_blank"
-          classNam="pricing-button"
-        >
-          Book a Call
-        </a>
-      </div>
-
-      <div className="pricing-card">
-        <h2>Monthly Coaching</h2>
-        <p className="price">
-          £300<span>/month</span>
-        </p>
-        <ul>
-          <li>✓ 1:1 app build + marketing help</li>
-          <li>✓ 4 calls per month</li>
-          <li>✓ 24/7 messaging access</li>
-          <li>✓ 100% refund guarantee</li>
-        </ul>
-        <Link to="/contact">Join Today</Link>
+      <h1 className="heading center">Pricing</h1>
+      <div className="pricing-container">
+        {pricingData.map((plan, index) => (
+          <div className="pricing-card" key={index}>
+            <h2>{plan.title}</h2>
+            <p className="price">
+              {plan.price}
+              {plan.priceSuffix && <span>{plan.priceSuffix}</span>}
+            </p>
+            <ul>
+              {plan.details.map((detail, i) => (
+                <li key={i}>{detail}</li>
+              ))}
+            </ul>
+            {plan.button.external ? (
+              <a
+                href={plan.button.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pricing-button"
+              >
+                {plan.button.text}
+              </a>
+            ) : (
+              <Link to={plan.button.url} className="pricing-button">
+                {plan.button.text}
+              </Link>
+            )}
+          </div>
+        ))}
       </div>
     </section>
   );

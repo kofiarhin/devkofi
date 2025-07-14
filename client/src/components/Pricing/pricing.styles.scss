@@ -1,95 +1,101 @@
 /* src/styles/pricing.styles.scss */
 .pricing {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  background: #121212;
-  color: #eee;
-  .pricing-card {
-    background: #1c1c1c;
-    border: 1px solid #333;
-    border-radius: 6px;
-    padding: 2rem 0rem 3rem 0rem;
-    text-align: center;
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
+  .pricing-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: #121212;
+    color: #eee;
 
-    a {
-      background: var(--light-green);
+    .pricing-card {
+      background: #1c1c1c;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 2rem 0rem 3rem 0rem;
+      text-align: center;
+      margin-bottom: 1rem;
+
+      a {
+        background: var(--light-green);
+        color: #fff;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        text-decoration: none;
+
+        &:hover {
+          background: #333;
+        }
+      }
+    }
+
+    .pricing-card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .price {
+      font-size: 2rem;
+      margin: 0.3rem 0;
+
+      span {
+        font-size: 0.8rem;
+        color: #888;
+      }
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    li {
+      margin-bottom: 0.8rem;
+    }
+
+    .pricing-button {
+      background: #000;
       color: #fff;
       border: none;
-      padding: 1rem 2rem;
+      padding: 0.8rem 0.8rem;
       border-radius: 4px;
       font-size: 0.85rem;
       cursor: pointer;
       transition: background 0.3s ease;
-      text-decoration: none;
 
       &:hover {
         background: #333;
       }
+
+      width: 100%; // Full-width on mobile for better UX
     }
-  }
-
-  .pricing-card h2 {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .price {
-    font-size: 2rem;
-    margin: 0.3rem 0;
-
-    span {
-      font-size: 0.8rem;
-      color: #888;
-    }
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    font-size: 0.85rem;
-    margin-bottom: 2rem;
-  }
-
-  li {
-    margin-bottom: 0.5rem;
-  }
-
-  .pricing-button {
-    background: #000;
-    color: #fff;
-    border: none;
-    padding: 0.8rem 0.8rem;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-
-    &:hover {
-      background: #333;
-    }
-
-    width: 100%; // Full-width on mobile for better UX
   }
 }
 
 @media (min-width: 600px) {
   .pricing {
-    flex-direction: row;
-    justify-content: center;
-  }
-
-  .pricing-card {
-    width: 500px;
-
-    .price {
-      font-size: 2.5rem;
+    .pricing-container {
+      flex-direction: row;
+      justify-content: center;
     }
-  }
 
-  .pricing-button {
-    width: auto; // Buttons shrink back on desktop
-    padding: 0.5rem 1rem;
+    .pricing-card {
+      width: 500px;
+
+      .price {
+        font-size: 2.5rem;
+      }
+    }
+
+    .pricing-button {
+      width: auto; // Buttons shrink back on desktop
+      padding: 0.5rem 1rem;
+    }
   }
 }

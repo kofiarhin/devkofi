@@ -22,7 +22,7 @@ const Newsletter = () => {
   }
   return (
     <section className="newsletter">
-      <h2>Join Our Newsletter</h2>
+      <h2>Join Newsletter</h2>
       <p>
         Subscribe to get updates, tips, and exclusive content straight to your
         inbox.

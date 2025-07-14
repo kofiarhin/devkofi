@@ -7,11 +7,11 @@ import Services from "../Services/Services";
 const Landing = () => (
   <div id="landing">
     <h1 className="heading">
-      Learn to build and grow your app from idea to launch.
+      Build Real-World Coding Skills with Expert Guidance
     </h1>
     <p>
-      Personalized coaching to master programming, product design, and
-      marketing.
+      Personalized mentorship to help you master programming, design real
+      projects, and grow from idea to launc
     </p>
 
     <Link className="cta" to="/contact">

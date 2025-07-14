@@ -1,17 +1,7 @@
 // src/components/Services/Services.jsx
 import React from "react";
 import "./services.styles.scss";
-
-const serviceList = [
-  {
-    title: "Chat",
-    description: "Unlimited Discord support for building/marketing your SaaS.",
-  },
-  {
-    title: "1‑1 Coaching Calls",
-    description: "Live calls for personalized guidance on product & growth.",
-  },
-];
+import { serviceList } from "./servicesData";
 
 const Services = () => (
   <div id="services">
