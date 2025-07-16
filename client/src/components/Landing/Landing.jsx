@@ -13,7 +13,7 @@ const Landing = () => (
       projects, and grow from idea to launch
     </p>
 
-    <Link className="cta" to="/contact">
+    <Link className="cta" to="/mentorship">
       Get started
     </Link>
   </div>

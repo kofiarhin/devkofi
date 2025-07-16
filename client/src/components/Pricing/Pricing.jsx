@@ -29,7 +29,7 @@ const Pricing = () => {
                 {plan.button.text}
               </a>
             ) : (
-              <Link to={plan.button.url} className="pricing-button">
+              <Link to="/mentorship" className="pricing-button">
                 {plan.button.text}
               </Link>
             )}

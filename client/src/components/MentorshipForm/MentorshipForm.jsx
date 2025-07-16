@@ -8,9 +8,9 @@ const MentorshipForm = () => {
   const navigate = useNavigate();
   const { mutate, isPending, error, isSuccess } = useMentorshipMutation();
   const [formData, setFormData] = useState({
-    fullName: "david kraku",
-    email: "davidkraku69@gmail.com",
-    phone: "2342342432",
+    fullName: "",
+    email: "",
+    phone: "",
   });
 
   const handleChange = (e) => {
@@ -21,6 +21,11 @@ const MentorshipForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(formData);
+    setFormData({
+      fullName: "",
+      email: "",
+      phone: "",
+    });
     return;
     if (!formData.fullName || !formData.email) {
       alert("Please fill in Full Name and Email.");

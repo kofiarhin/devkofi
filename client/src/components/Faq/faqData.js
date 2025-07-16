@@ -1,27 +1,37 @@
 export const faqData = [
   {
-    question: "What is included in the mentorship?",
+    question: "What is included in the Mentorship Programme?",
     answer:
-      "The mentorship includes 1:1 coaching, step-by-step guidance on building and marketing your app, personalized feedback, and accountability to help you stay on track.",
+      "The Mentorship Programme gives you access to a 6-week mentorship, weekly group coaching calls, a supportive developer community, a customised learning roadmap, and lifetime access to all recordings. Plus, you’re covered by a 100% refund guarantee within the first 7 days.",
   },
   {
-    question: "Is this mentorship right for me?",
+    question: "What extra benefits does Mentorship Premium offer?",
     answer:
-      "This program is for anyone serious about building and growing an app. Whether you're a complete beginner or an experienced developer, I’ll meet you where you are and help you level up.",
+      "Mentorship Premium includes everything in the standard Mentorship Programme, plus 3 private 1:1 coaching calls tailored to your project, priority email & chat support for 8 weeks, an exclusive bonus module on scaling your app, and your project showcased on my platform.",
   },
   {
-    question: "Do you write code or do marketing for me?",
+    question: "Is there a refund policy?",
     answer:
-      "No. I don’t build the app or create marketing content for you. Instead, I guide you through the process so you can gain the skills and confidence to do it yourself.",
+      "Yes. Both the Mentorship Programme and Mentorship Premium include a 100% refund guarantee if you decide to leave within the first 7 days.",
   },
   {
     question: "How long does the mentorship last?",
     answer:
-      "The standard mentorship runs for 8 weeks. However, I also offer custom durations if you need longer-term support.",
+      "The standard Mentorship Programme runs for 6 weeks. Mentorship Premium offers extended priority support for 8 weeks to help you go further.",
   },
   {
-    question: "What if I need a refund?",
+    question: "Who is this mentorship for?",
     answer:
-      "I offer a 100% refund within the first 14 days if you feel the mentorship isn’t right for you. No questions asked.",
+      "This mentorship is designed for developers at any level who want to build, launch, and scale their apps. Whether you’re just starting or looking to grow an existing project, the programme adapts to your needs.",
+  },
+  {
+    question: "Do you build my app or do the work for me?",
+    answer:
+      "No. I don’t build your app or create content for you. Instead, I guide you step by step so you gain the skills and confidence to build and grow your app yourself.",
+  },
+  {
+    question: "How do I join?",
+    answer:
+      "You can join by selecting your preferred option and filling out the contact form. Click 'Join Mentorship' or 'Go Premium' to get started.",
   },
 ];
