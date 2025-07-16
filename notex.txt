@@ -1,6 +1,154 @@
-//coaching-mentorship app sample
-https://www.youraveragetechbro.com/
+Here’s the same **structured inspiration context**—**clean and emoji-free** for a serious, professional tone:
 
-//todo
-1. remove default input values from newsletter input
-2. add a  working download link
+---
+
+# DevKofi – Inspiration Context
+
+## Site Overview
+
+* **Brand Name**: DevKofi
+* **URL**: [https://devkofi.com](https://devkofi.com)
+* **Inspiration Sources**:
+
+  * [Your Average Tech Bro](https://www.youraveragetechbro.com/) – minimal, modern, conversational style
+  * [The Dan Koe](https://thedankoe.com/) – aspirational, direct messaging for creators and builders
+* **Core Vibe**: Practical. Modern. For makers, not dreamers
+* **Target Audience**: Beginners transitioning to indie builders or developers stuck in “tutorial hell,” as well as small teams
+
+---
+
+## Landing Page Framework
+
+* **Headline (Hero)**:
+  Mentorship That Turns Beginners into Builders
+
+* **Subheadline**:
+  Get the guidance, support, and skills you need to build real-world apps—and launch with confidence
+
+* **Tone**: Empowering, no-fluff, outcome-focused
+
+* **Visual Style**: Clean, modern, focus on real-world results rather than abstract tech imagery
+
+* **CTA Buttons**: Clear, action-oriented (“Join Standard”, “Go Pro”, “Request Team Access”)
+
+---
+
+## Founder’s Profile (Storytelling Style)
+
+### Why Join My Coding Mentorship?
+
+#### I’ve Been Where You Are
+
+4 years. 13+ apps. Most failed. But the last 4 built £1,000+/month each
+
+#### No Guru Talk, Just Real Experience
+
+Not a millionaire founder. A developer in the trenches learning how to ship, market, and scale
+
+#### This Isn’t About Theory
+
+Learn by building. Avoid mistakes. Ship apps that don’t gather dust
+
+#### For Builders, Not Dreamers
+
+Escape tutorial hell. Build real skills. Get feedback. Ship things users want
+
+* **Voice**: First-person, raw honesty, relatable
+* **Positioning**: Anti-guru, pro-builder
+* **Audience Resonance**: “I’ve failed too—and figured out how to win small and real”
+
+---
+
+## Pricing Packages (Tiered System)
+
+### Full-Stack Bootcamp: Standard
+
+* **Price**: £1,200 (one-time)
+* **Includes**:
+
+  * 6-month full-stack web development bootcamp
+  * Weekly live sessions and lifetime recordings
+  * 10+ real-world portfolio projects
+  * Private student community
+  * End-of-course certificate
+  * 14-day refund guarantee
+* **CTA**: Join Standard (/contact)
+
+### Full-Stack Bootcamp: Pro
+
+* **Price**: £1,800 (one-time)
+* **Includes**:
+
+  * All Standard features
+  * Bi-weekly 1:1 mentorship
+  * Code reviews and feedback
+  * Personalized portfolio and career guidance
+  * Priority Slack/Discord support
+  * 14-day refund guarantee
+* **CTA**: Go Pro (/contact)
+
+### Team/Enterprise Package
+
+* **Price**: £5,000 (up to 5 members)
+* **Includes**:
+
+  * Team access and custom scheduling
+  * Team-focused projects
+  * Dedicated instructor support
+  * Post-course team audit and recommendations
+  * Private Slack channel for your team
+  * 14-day refund guarantee
+* **CTA**: Request Team Access (/contact)
+
+---
+
+## FAQ Style (Conversational)
+
+### What is included in the Mentorship Programme?
+
+The Mentorship Programme gives you access to a 6-week mentorship, weekly group coaching calls, a supportive developer community, a customised learning roadmap, and lifetime access to all recordings. Plus, you’re covered by a 100% refund guarantee within the first 7 days
+
+### What extra benefits does Mentorship Premium offer?
+
+Mentorship Premium includes everything in the standard Mentorship Programme, plus 3 private 1:1 coaching calls tailored to your project, priority email and chat support for 8 weeks, an exclusive bonus module on scaling your app, and your project showcased on my platform
+
+### What’s included in the Full-Stack Bootcamp: Standard?
+
+The Standard package gives you access to a 6-month full-stack web development bootcamp, weekly live sessions, lifetime access to all recordings, 10+ real-world portfolio projects, a private student community, and an end-of-course certificate. Plus, there’s a 100% refund guarantee within the first 14 days
+
+### What extra benefits does the Pro package offer?
+
+The Pro package includes everything in Standard, plus bi-weekly 1:1 mentorship sessions, personalized portfolio and career guidance, detailed code reviews on your projects, and priority support via Slack or Discord. Perfect if you want hands-on accountability and faster growth
+
+---
+
+## Core Principles (For Inspiration)
+
+* **Audience First**: Beginners tired of tutorials, craving practicality
+* **Honest Storytelling**: Founder shares failures and wins to build relatability
+* **Outcome-Oriented**: Frame content around results (“real-world apps”, “launch with confidence”)
+* **Simple Design**: Minimal clutter, modern typography, focus on CTAs and storytelling
+* **Refund Promise**: Reduces friction and risk for buyers
+
+---
+
+Do you want me to:
+
+* Keep it **as clean text only** (like above)?
+* Turn it into **a Markdown file for Notion or Docs?**
+* Or structure it as **JSON text for AI models and APIs?**
+* Or all three? Which do you prefer?
+
+
+What You’ll Get
+Code Mentorship Chat
+Unlimited support via Discord or Slack throughout your coding journey. Get quick answers to debugging issues, best practices, and project roadblocks.
+
+Weekly One-on-One Mentorship Calls
+Personalized video sessions to master coding fundamentals, build real-world projects, and receive actionable feedback to keep moving forward.
+
+Project Reviews and Feedback
+In-depth code and project reviews to improve your coding style, architecture decisions, and problem-solving. Learn to write clean, production-ready code.
+
+Career Guidance and Roadmaps
+Clear advice on building your learning roadmap, preparing for technical interviews, and transitioning into developer roles or freelance work.

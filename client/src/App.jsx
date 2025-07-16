@@ -8,6 +8,7 @@ import Success from "./Pages/Success/Success";
 import Error from "./Pages/Error/Error";
 import Playground from "./Pages/Playground/Playground";
 import JoinMentorship from "./Pages/JoinMentorship/JoinMentorship";
+import CourseOutline from "./Pages/CourseOutline/CourseOutline";
 // app component
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/error" element={<Error />} />
           <Route path="/playground" element={<Playground />} />
           <Route path="/mentorship" element={<JoinMentorship />} />
+          <Route path="/course-outline" element={<CourseOutline />} />
         </Routes>
         <Footer />
       </Router>

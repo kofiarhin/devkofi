@@ -1,9 +1,9 @@
-import MentorshipForm from "../../components/MentorshipForm/MentorshipForm";
+import CourseOutline from "../CourseOutline/CourseOutline";
 
 const Playground = () => {
   return (
     <div>
-      <MentorshipForm />
+      <CourseOutline />
     </div>
   );
 };
