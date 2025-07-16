@@ -6,6 +6,7 @@ const contactRoute = require("./routes/contactRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
 const downloadRoutes = require("./routes/downloadRoutes");
 const templateRoutes = require("./routes/templateRoutes");
+const mentorshipRoutes = require("./routes/mentorshopRoutes");
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use("/api/messages", messagesRoute);
 app.use("/api/contact", contactRoute);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/download", downloadRoutes);
+app.use("/api/mentorship", mentorshipRoutes);
 
 module.exports = app;

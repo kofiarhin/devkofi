@@ -30,6 +30,7 @@ const Header = () => {
           <Link to="/">Home</Link>
           {import.meta.env.DEV ? <Link to="/playground">Playground</Link> : ""}
           <Link to="/templates">Templates</Link>
+          <Link to="/mentorship">Mentorship</Link>
           <Link to="/contact">Contact</Link>
         </nav>
       </div>

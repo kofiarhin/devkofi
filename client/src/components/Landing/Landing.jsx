@@ -2,7 +2,6 @@
 import React from "react";
 import "./landing.styles.scss";
 import { Link } from "react-router-dom";
-import Services from "../Services/Services";
 
 const Landing = () => (
   <div id="landing">
@@ -11,7 +10,7 @@ const Landing = () => (
     </h1>
     <p>
       Personalized mentorship to help you master programming, design real
-      projects, and grow from idea to launc
+      projects, and grow from idea to launch
     </p>
 
     <Link className="cta" to="/contact">

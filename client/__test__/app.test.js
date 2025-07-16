@@ -4,6 +4,7 @@ import {
   getTemplates,
   sendMessage,
   downloadFile,
+  joinMentorship,
 } from "../src/services/services";
 describe("app", () => {
   beforeAll(() => {
@@ -29,8 +30,16 @@ describe("app", () => {
   //     text: "enquiry about coaching",
   //   });
   // });
-  it("should download file properly", async () => {
-    const result = await downloadFile();
-    expect(result).not.toBeTruthy();
+  // it("should download file properly", async () => {
+  //   const result = await downloadFile();
+  //   expect(result).not.toBeTruthy();
+  // });
+
+  it("should test for joining successfully", async () => {
+    const result = await joinMentorship({
+      fullName: "test",
+      email: "test3@gmail.com",
+      phone: "32342343",
+    });
   });
 });

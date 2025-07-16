@@ -5,7 +5,7 @@ import { serviceList } from "./servicesData";
 
 const Services = () => (
   <div id="services">
-    <h1 className="heading">What you’ll get</h1>
+    <h1 className="heading">What you’ll get?</h1>
     <div className="services-wrapper">
       {serviceList.map(({ title, description }) => (
         <div key={title} className="service-unit">

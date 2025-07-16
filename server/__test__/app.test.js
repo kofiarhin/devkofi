@@ -1,7 +1,11 @@
 const sendEmail = require("../utility/sendEmail");
 const request = require("supertest");
 const app = require("../app");
-const { createNewsletterUser, uploadImage } = require("../utility/helper");
+const {
+  createNewsletterUser,
+  uploadImage,
+  joinMentorship,
+} = require("../utility/helper");
 const path = require("path");
 const fs = require("fs");
 
@@ -65,5 +69,26 @@ describe("app", () => {
     const { statusCodce, body } = await request(app).get(
       `/api/download?filename=${filename}`
     );
+  });
+
+  it("shoudl join mentorship successfullly", async () => {
+    const result = await joinMentorship({
+      fullName: "david kraku",
+      email: "davidKraku69@gmail.com",
+      phone: "44234232432343",
+    });
+    expect(result).toBeTruthy();
+  });
+
+  it("should test join mentorship endpoint", async () => {
+    const { body, statusCode } = await request(app)
+      .post("/api/mentorship")
+      .send({
+        fullName: "david kraku",
+        email: "davidkraku@gmail.com",
+        phone: "323424",
+      });
+    expect(statusCode).toBe(200);
+    expect(body._id).toBeDefined();
   });
 });

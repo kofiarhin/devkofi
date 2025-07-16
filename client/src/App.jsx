@@ -7,6 +7,7 @@ import Footer from "./components/Footer/Footer";
 import Success from "./Pages/Success/Success";
 import Error from "./Pages/Error/Error";
 import Playground from "./Pages/Playground/Playground";
+import JoinMentorship from "./Pages/JoinMentorship/JoinMentorship";
 // app component
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/success" element={<Success />} />
           <Route path="/error" element={<Error />} />
           <Route path="/playground" element={<Playground />} />
+          <Route path="/mentorship" element={<JoinMentorship />} />
         </Routes>
         <Footer />
       </Router>

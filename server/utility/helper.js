@@ -1,4 +1,5 @@
 const Newsletter = require("../Model/newsletterModel");
+const Mentorship = require("../Model/mentorshipModel");
 
 const createNewsletterUser = async (data) => {
   try {
@@ -42,7 +43,18 @@ const uploadImage = async (file, folder = "test") => {
   return data.secure_url;
 };
 
+const joinMentorship = async (data) => {
+  try {
+    const user = await Mentorship.create(data);
+    return user;
+  } catch (error) {
+    console.log(error.message);
+    return { success: false, error: error.message };
+  }
+};
+
 module.exports = {
   createNewsletterUser,
   uploadImage,
+  joinMentorship,
 };

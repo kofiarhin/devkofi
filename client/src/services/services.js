@@ -86,4 +86,38 @@ const downloadFile = async (fileName = "default") => {
     console.error("Download error:", error);
   }
 };
-export { test, getUsers, getTemplates, sendMessage, downloadFile };
+
+const joinMentorship = async (data) => {
+  try {
+    const res = await fetch("/api/mentorship", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    // Check HTTP status — fetch only rejects on network/CORS errors
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error(`Server error (${res.status}):`, errText);
+      return { success: false, status: res.status, error: errText };
+    }
+
+    // Parse and return JSON
+    const payload = await res.json();
+    console.log("Success:", payload);
+    return { success: true, data: payload };
+  } catch (err) {
+    // Network/CORS errors, parsing errors, etc.
+    console.error("Fetch failed:", err);
+    return { success: false, error: err.message };
+  }
+};
+
+export {
+  test,
+  getUsers,
+  getTemplates,
+  sendMessage,
+  downloadFile,
+  joinMentorship,
+};

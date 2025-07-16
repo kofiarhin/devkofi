@@ -1,11 +1,9 @@
-import { downloadFile } from "../../services/services";
+import MentorshipForm from "../../components/MentorshipForm/MentorshipForm";
+
 const Playground = () => {
-  const handleDownload = async () => {
-    downloadFile();
-  };
   return (
     <div>
-      <button onClick={handleDownload}>Download</button>
+      <MentorshipForm />
     </div>
   );
 };
