@@ -4,6 +4,7 @@ import { FaBars } from "react-icons/fa";
 import { toggleNav } from "../../redux/navigation/navigationSlice";
 import "./header.styles.scss";
 import SideNav from "../SideNav/SideNav";
+import profileImage from "../../assets/img/profile.jpg";
 
 // header
 const Header = () => {
@@ -17,7 +18,7 @@ const Header = () => {
       {isOpen ? <SideNav /> : ""}
       <div className="container">
         <div className="logo-wrapper">
-          <img src="/img/profile.jpg" alt="" />
+          <img src={profileImage} alt="" />
           <Link to="/" className="logo">
             <h2>DevKofi</h2>
           </Link>
