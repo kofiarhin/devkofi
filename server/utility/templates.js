@@ -43,6 +43,27 @@ https://devkofi.com
   return { subject, html, text };
 };
 
+// notif y admin
+const generateNewSubscriptionEmail = (data) => {
+  const { fullName, email, phone } = data;
+
+  const subject = `New Subscription: ${fullName}`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
+      <h3 style="color: #000; margin-bottom: 1em;">New Subscriber Details</h3>
+      <p><strong>Name:</strong> ${fullName}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone}</p>
+      <p style="margin-top: 1.5em;">DevKofi Mentorship Notification</p>
+      <a href="https://devkofi.com" style="color: #2196F3; text-decoration: none;">devkofi.com</a>
+    </div>
+  `;
+
+  return { subject, html };
+};
+
 module.exports = {
   welcomeEmail,
+  generateNewSubscriptionEmail,
 };

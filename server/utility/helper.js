@@ -1,7 +1,10 @@
 const Newsletter = require("../Model/newsletterModel");
 const Mentorship = require("../Model/mentorshipModel");
 const sendEmail = require("./sendEmail");
-const { welcomeEmail } = require("./templates.js");
+const {
+  welcomeEmail,
+  generateNewSubscriptionEmail,
+} = require("./templates.js");
 
 const createNewsletterUser = async (data) => {
   try {
@@ -60,9 +63,27 @@ const sendWelcomeMessage = async ({ name, email }) => {
   await sendEmail({ to: email, html, subject });
 };
 
+const sendAdminNotification = async (data) => {
+  const { fullName, email, phone } = data;
+  const { subject, html } = generateNewSubscriptionEmail({
+    fullName,
+    email,
+    phone,
+  });
+  const adminEmail = "colorpalettevault@gmail.com";
+  try {
+    const result = await sendEmail({ to: adminEmail, subject, html });
+    return { success: true };
+  } catch (error) {
+    console.log(error.meesage);
+    return { success: false, error: error.message };
+  }
+};
+
 module.exports = {
   createNewsletterUser,
   uploadImage,
   joinMentorship,
   sendWelcomeMessage,
+  sendAdminNotification,
 };

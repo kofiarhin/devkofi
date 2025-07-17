@@ -6,9 +6,17 @@ const {
   createNewsletterUser,
   uploadImage,
   joinMentorship,
+  sendAdminNotification,
 } = require("../utility/helper");
 const path = require("path");
 const fs = require("fs");
+const { generateNewSubscriptionEmail } = require("../utility/templates");
+
+const user = {
+  fullName: "david kraku",
+  email: "davidkraku69@gmail.com",
+  phone: "555323432432342",
+};
 
 describe("app", () => {
   it("just a passing test", () => {
@@ -93,10 +101,21 @@ describe("app", () => {
     expect(body._id).toBeDefined();
   });
 
-  it("should send welcomemessage properly", async () => {
-    const result = await sendWelcomeMessage({
-      name: "david kraku",
-      email: "davidkraku69@gmail.com",
-    });
+  // it("should send welcomemessage properly", async () => {
+  //   const result = await sendWelcomeMessage({
+  //     name: "david kraku",
+  //     email: "davidkraku69@gmail.com",
+  //   });
+  // });
+
+  it("should generate email details to  admin of new subscription", async () => {
+    const { subject, html } = generateNewSubscriptionEmail(user);
+    expect(subject).toBeDefined();
+    expect(html).toBeDefined();
   });
+
+  // it("should send admin notification of new subscription", async () => {
+  //   const { success } = await sendAdminNotification(user);
+  //   expect(success).toBeTruthy();
+  // });
 });

@@ -2,7 +2,10 @@ const { Router } = require("express");
 const router = Router();
 const { joinMentorship } = require("../utility/helper");
 const Mentorship = require("../Model/mentorshipModel");
-const { sendWelcomeMessage } = require("../utility/helper");
+const {
+  sendWelcomeMessage,
+  sendAdminNotification,
+} = require("../utility/helper");
 
 router.post("/", async (req, res) => {
   try {
@@ -12,6 +15,7 @@ router.post("/", async (req, res) => {
     }
     const result = await joinMentorship({ fullName, email, phone });
     await sendWelcomeMessage({ name: fullName, email });
+    await sendAdminNotification({ fullName, email, phone });
     res.status(201).json(result);
   } catch (error) {
     return res.status(500).json({ error: ërror.message });
