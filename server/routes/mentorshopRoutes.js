@@ -5,9 +5,7 @@ const Mentorship = require("../Model/mentorshipModel");
 const { sendWelcomeMessage } = require("../utility/helper");
 
 router.post("/", async (req, res) => {
-  console.log("we are here");
   try {
-    await Mentorship.deleteMany();
     const { fullName, email, phone } = req.body;
     if (!email || !fullName || !email) {
       throw new Error("please fill out all fields");
