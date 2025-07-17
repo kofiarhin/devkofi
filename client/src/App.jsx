@@ -9,8 +9,21 @@ import Error from "./Pages/Error/Error";
 import Playground from "./Pages/Playground/Playground";
 import JoinMentorship from "./Pages/JoinMentorship/JoinMentorship";
 import CourseOutline from "./Pages/CourseOutline/CourseOutline";
+import { useEffect } from "react";
+import { baseUrl } from "./constants/constants";
 // app component
 const App = () => {
+  useEffect(() => {
+    const info = async () => {
+      try {
+        const url = import.meta.env.DEV ? "http://localhost:5000" : baseUrl;
+        const res = await fetch("http://localhost:5000");
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    info();
+  }, []);
   return (
     <div>
       <Router>
