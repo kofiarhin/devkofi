@@ -13,9 +13,14 @@ const logger = async (req, res, next) => {
     req.ip ||
     req.headers["x-forwarded-for"]?.split(",").shift() ||
     req.socket.remoteAddress;
-  console.log("Client IP:", ip);
   const filePath = path.join(__dirname, "..", "logs", "logs.txt");
-  await fs.appendFile(filePath, `${ip}\n`, "utf8");
+  const data = {
+    ip,
+    time: new Date().toISOString(), // e.g., "2025-07-17T10:23:54.123Z"
+  };
+
+  await fs.appendFile(filePath, JSON.stringify(data) + "\n", "utf8");
+
   next();
 };
 

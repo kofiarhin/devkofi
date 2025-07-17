@@ -1,6 +1,8 @@
 const express = require("express");
 const projectProfile = require("./config/project-profile.json");
 const cors = require("cors");
+const path = require("path");
+const fs = require("fs");
 const messagesRoute = require("./routes/messagesRoute");
 const contactRoute = require("./routes/contactRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
@@ -29,5 +31,19 @@ app.use("/api/contact", contactRoute);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/download", downloadRoutes);
 app.use("/api/mentorship", mentorshipRoutes);
+app.use("/api/logger", async (req, res) => {
+  const filePath = path.join(__dirname, "..", "server", "logs", "logs.txt");
+  if (fs.existsSync(filePath)) {
+    const fileContent = await fs.readFileSync(filePath, "utf-8");
+    const result = fileContent
+      .split("\n")
+      .filter((line) => line.trim() !== "")
+      .map((line) => JSON.parse(line));
+
+    console.log(result);
+    return res.json(result);
+  }
+  return res.json({ message: "logger" });
+});
 
 module.exports = app;
