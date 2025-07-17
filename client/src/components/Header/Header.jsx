@@ -28,11 +28,11 @@ const Header = () => {
 
         <nav>
           <Link to="/">Home</Link>
-          <Link to="/mentorship">Mentorship</Link>
           <Link to="/course-outline">Course Outline</Link>
-          <Link to="/templates">Templates</Link>
+          {/* <Link to="/templates">Templates</Link> */}
           <Link to="/contact">Contact</Link>
           {import.meta.env.DEV ? <Link to="/playground">Playground</Link> : ""}
+          <Link to="/mentorship">Join</Link>
         </nav>
       </div>
     </header>

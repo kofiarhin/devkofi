@@ -18,15 +18,16 @@ const SideNav = () => {
         Home
       </Link>
 
-      <Link to="/mentorship" onClick={nandleToggleNav}>
-        Mentorship
+      <Link to="/course-outline" onClick={nandleToggleNav}>
+        Course Outline
       </Link>
 
-      <Link to="/templates" onClick={nandleToggleNav}>
-        Templates
-      </Link>
       <Link to="/contact" onClick={nandleToggleNav}>
         Contact
+      </Link>
+
+      <Link to="/mentorship" className="join-btn" onClick={nandleToggleNav}>
+        Join
       </Link>
       {import.meta.env.DEV && (
         <Link to="/playground" onClick={nandleToggleNav}>

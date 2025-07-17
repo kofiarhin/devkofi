@@ -42,7 +42,7 @@ const MentorshipForm = () => {
   return (
     <section className="mentorship">
       <div className="overlay">
-        <h1>Join Mentorship</h1>
+        <h1 className="heading">Join Mentorship</h1>
         <p>Enter your information, and I’ll contact you soon.</p>
 
         <form className="form" onSubmit={handleSubmit}>
