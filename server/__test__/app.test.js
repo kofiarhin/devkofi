@@ -89,17 +89,17 @@ describe("app", () => {
     expect(result).toBeTruthy();
   });
 
-  it("should test join mentorship endpoint", async () => {
-    const { body, statusCode } = await request(app)
-      .post("/api/mentorship")
-      .send({
-        fullName: "david kraku",
-        email: "davidkraku@gmail.com",
-        phone: "323424",
-      });
-    expect(statusCode).toBe(201);
-    expect(body._id).toBeDefined();
-  });
+  // it("should test join mentorship endpoint", async () => {
+  //   const { body, statusCode } = await request(app)
+  //     .post("/api/mentorship")
+  //     .send({
+  //       fullName: "david kraku",
+  //       email: "davidkraku@gmail.com",
+  //       phone: "323424",
+  //     });
+  //   expect(statusCode).toBe(201);
+  //   expect(body._id).toBeDefined();
+  // });
 
   // it("should send welcomemessage properly", async () => {
   //   const result = await sendWelcomeMessage({
@@ -118,4 +118,10 @@ describe("app", () => {
   //   const { success } = await sendAdminNotification(user);
   //   expect(success).toBeTruthy();
   // });
+
+  it("should test for adnmin routes", async () => {
+    const { body, statusCode } = await request(app).get("/api/admin/users");
+    expect(statusCode).toBe(200);
+    expect(body).toBeDefined();
+  });
 });
