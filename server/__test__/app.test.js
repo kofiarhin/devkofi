@@ -1,6 +1,7 @@
 const sendEmail = require("../utility/sendEmail");
 const request = require("supertest");
 const app = require("../app");
+const { sendWelcomeMessage } = require("../utility/helper");
 const {
   createNewsletterUser,
   uploadImage,
@@ -88,7 +89,14 @@ describe("app", () => {
         email: "davidkraku@gmail.com",
         phone: "323424",
       });
-    expect(statusCode).toBe(200);
+    expect(statusCode).toBe(201);
     expect(body._id).toBeDefined();
+  });
+
+  it("should send welcomemessage properly", async () => {
+    const result = await sendWelcomeMessage({
+      name: "david kraku",
+      email: "davidkraku69@gmail.com",
+    });
   });
 });

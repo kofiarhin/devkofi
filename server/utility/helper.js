@@ -1,5 +1,7 @@
 const Newsletter = require("../Model/newsletterModel");
 const Mentorship = require("../Model/mentorshipModel");
+const sendEmail = require("./sendEmail");
+const { welcomeEmail } = require("./templates.js");
 
 const createNewsletterUser = async (data) => {
   try {
@@ -53,8 +55,14 @@ const joinMentorship = async (data) => {
   }
 };
 
+const sendWelcomeMessage = async ({ name, email }) => {
+  const { html, subject, text } = welcomeEmail({ name, email });
+  await sendEmail({ to: email, html, subject });
+};
+
 module.exports = {
   createNewsletterUser,
   uploadImage,
   joinMentorship,
+  sendWelcomeMessage,
 };
