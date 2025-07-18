@@ -26,9 +26,6 @@ const SideNav = () => {
         Contact
       </Link>
 
-      <Link to="/mentorship" className="join-btn" onClick={nandleToggleNav}>
-        Join
-      </Link>
       {import.meta.env.DEV && (
         <Link to="/playground" onClick={nandleToggleNav}>
           Playground

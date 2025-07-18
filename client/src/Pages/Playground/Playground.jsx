@@ -1,9 +1,8 @@
-import CourseOutline from "../CourseOutline/CourseOutline";
-
+import AdminDashboard from "../AdminDashboard/AdminDashboard";
 const Playground = () => {
   return (
     <div>
-      <CourseOutline />
+      <AdminDashboard />
     </div>
   );
 };

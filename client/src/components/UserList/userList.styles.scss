@@ -1,0 +1,44 @@
+.user-list {
+  .container {
+    .user-unit {
+      margin-bottom: 1rem;
+      h3 {
+        margin-bottom: 0.5rem;
+        text-transform: capitalize;
+      }
+      p {
+        color: var(--light-green);
+        font-weight: 800;
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 500px) {
+  .user-list {
+    .container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+}
+
+@media (min-width: 800px) {
+  .user-list {
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+  }
+}
+
+@media (min-width: 900px) {
+  .user-list {
+    .container {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+}
