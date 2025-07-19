@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const path = require("path");
-const fs = require("fs");
+const fs = require("fs").promises;
 
 const router = Router();
 
@@ -13,11 +13,7 @@ router.get("/", async (req, res) => {
     } else {
       filePath = path.join(__dirname, "..", "files", "default.zip");
     }
-    const check = fs.existsSync(filePath);
-
-    if (!check) {
-      throw new Error("file does not exist");
-    }
+    await fs.access(filePath);
 
     // send download file
     return res.download(filePath, fileName, (err) => {

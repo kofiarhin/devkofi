@@ -74,8 +74,8 @@ describe("app", () => {
   });
 
   it("should be able to download a specific file successfully", async () => {
-    const filename = "todo-app.zip";
-    const { statusCodce, body } = await request(app).get(
+    const filename = "mern-stack-starter.zip";
+    const { statusCode, body } = await request(app).get(
       `/api/download?filename=${filename}`
     );
   });
