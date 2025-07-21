@@ -70,7 +70,7 @@ const sendAdminNotification = async (data) => {
     email,
     phone,
   });
-  const adminEmail = "colorpalettevault@gmail.com";
+  const adminEmail = "devkofiteam@gmail.com";
   try {
     const result = await sendEmail({ to: adminEmail, subject, html });
     return { success: true };
