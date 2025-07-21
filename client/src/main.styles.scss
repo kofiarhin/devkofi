@@ -1,11 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
 
 :root {
-  --primary-color: #121212;
-  --sedondary-color: #gren;
-  --text-color: #f5f5f5;
-  --light-blue: #4cafef;
+  --primary-color: #90870d;
+  --text-color: #242323;
   --light-green: #1a9f5e;
+  --bg-background: #fffff;
 }
 
 * {
@@ -17,7 +16,7 @@
 body {
   font-family: "Inter", sans-serif;
   min-height: 100vh;
-  background-color: var(--primary-color);
+  background-color: var(--bg-background);
   color: var(--text-color);
 }
 

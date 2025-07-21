@@ -151,4 +151,17 @@ Project Reviews and Feedback
 In-depth code and project reviews to improve your coding style, architecture decisions, and problem-solving. Learn to write clean, production-ready code.
 
 Career Guidance and Roadmaps
-Clear advice on building your learning roadmap, preparing for technical interviews, and transitioning into developer roles or freelance work.
+
+
+Project Reviews and Feedback
+In-depth code and project reviews to improve your coding style, architecture decisions, and problem-solving. Learn to write clean, production-ready code.
+
+
+
+
+
+
+
+
+Clear advice on building your learning roadmap, preparing for technical interviews, and transitioning into developer roles or freelance work
+

@@ -19,7 +19,9 @@ const Header = () => {
       {isOpen ? <SideNav /> : ""}
       <div className="container">
         <div className="logo-wrapper">
-          <img src={profileImage} alt="" />
+          <Link to="/">
+            <img src={profileImage} alt="" />
+          </Link>
           <Link to="/" className="logo">
             <h2>
               Dev<span>Kofi</span>{" "}
