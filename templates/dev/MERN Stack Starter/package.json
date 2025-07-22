@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest server --watchAll",
     "server": "nodemon server/server.js",
     "client": "npm run dev --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/server/__test__/setup.js"
+    ]
   },
   "keywords": [],
   "author": "",

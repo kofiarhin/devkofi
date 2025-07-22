@@ -9,7 +9,7 @@ Here’s the same **structured inspiration context**—**clean and emoji-free** 
 * **Brand Name**: DevKofi
 * **URL**: [https://devkofi.com](https://devkofi.com)
 * **Inspiration Sources**:
-
+  *https://generalassemb.ly/
   * [Your Average Tech Bro](https://www.youraveragetechbro.com/) – minimal, modern, conversational style
   * [The Dan Koe](https://thedankoe.com/) – aspirational, direct messaging for creators and builders
 * **Core Vibe**: Practical. Modern. For makers, not dreamers
