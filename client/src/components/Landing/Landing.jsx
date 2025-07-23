@@ -14,12 +14,12 @@ const Landing = () => {
             fields like software engineering or data. With expert mentorship and
             hands-on MERN stack training, you can be job-ready in just 6 months.
           </p>
+          <Link to="/mentorship"> Get Started!</Link>
         </div>
         <div className="img-wrapper">
           <img src={profileImage} alt="" />
         </div>
       </div>
-      <Link to="/mentorship"> Get Started!</Link>
     </div>
   );
 };
