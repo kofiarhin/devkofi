@@ -2,6 +2,19 @@
   .landing-wrapper {
     display: flex;
     flex-direction: column;
+    .text-wrapper {
+      p {
+        margin-bottom: 2rem;
+      }
+      a {
+        text-decoration: none;
+        display: inline-block;
+        padding: 1rem 3rem;
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 800;
+      }
+    }
     .img-wrapper {
       order: -1;
       margin-bottom: 2rem;
@@ -15,17 +28,6 @@
       .text-wrapper {
         max-width: 500px;
         margin-right: 2rem;
-        p {
-          margin-bottom: 2rem;
-        }
-        a {
-          text-decoration: none;
-          display: inline-block;
-          padding: 1rem 3rem;
-          background-color: var(--primary-color);
-          color: white;
-          font-weight: 800;
-        }
       }
       flex-direction: row;
       align-items: center;
