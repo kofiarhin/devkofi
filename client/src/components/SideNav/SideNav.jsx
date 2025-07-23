@@ -2,36 +2,83 @@ import "./sideNav.styles.scss";
 import { FaTimes } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { toggleNav } from "../../redux/navigation/navigationSlice";
-
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const SideNav = () => {
   const dispatch = useDispatch();
-
-  const nandleToggleNav = () => {
+  const isOpen = true;
+  const handleToggleNav = () => {
     dispatch(toggleNav());
   };
+
+  // Container animation (scale + rotate + fade)
+  const containerVariants = {
+    hidden: { opacity: 0, scale: 0.8, rotate: -10 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      rotate: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.175, 0.885, 0.32, 1.275], // elastic spring
+        when: "beforeChildren",
+        staggerChildren: 0.15,
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.7,
+      rotate: 10,
+      transition: { duration: 0.4, ease: "easeInOut" },
+    },
+  };
+
+  // Link animation (pop + bounce)
+  const linkVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 20,
+      },
+    },
+  };
+
+  const links = [
+    { to: "/", text: "Home" },
+    { to: "/course-outline", text: "Course Outline" },
+    { to: "/contact", text: "Contact" },
+    ...(import.meta.env.DEV ? [{ to: "/playground", text: "Playground" }] : []),
+  ];
+
   return (
-    <div id="sideNav" className="close">
-      <FaTimes className="close" onClick={() => dispatch(toggleNav())} />
-      <Link to="/" onClick={nandleToggleNav}>
-        Home
-      </Link>
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          id="sideNav"
+          className="close"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <FaTimes className="close" onClick={handleToggleNav} />
 
-      <Link to="/course-outline" onClick={nandleToggleNav}>
-        Course Outline
-      </Link>
-
-      <Link to="/contact" onClick={nandleToggleNav}>
-        Contact
-      </Link>
-
-      {import.meta.env.DEV && (
-        <Link to="/playground" onClick={nandleToggleNav}>
-          Playground
-        </Link>
+          {links.map((link, i) => (
+            <motion.div key={link.to} variants={linkVariants}>
+              <Link to={link.to} onClick={handleToggleNav}>
+                {link.text}
+              </Link>
+            </motion.div>
+          ))}
+        </motion.div>
       )}
-    </div>
+    </AnimatePresence>
   );
 };
 
