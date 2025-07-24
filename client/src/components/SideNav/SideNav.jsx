@@ -1,13 +1,13 @@
 import "./sideNav.styles.scss";
 import { FaTimes } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleNav } from "../../redux/navigation/navigationSlice";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SideNav = () => {
   const dispatch = useDispatch();
-  const isOpen = true;
+  const { isOpen } = useSelector((state) => state.navigation);
   const handleToggleNav = () => {
     dispatch(toggleNav());
   };

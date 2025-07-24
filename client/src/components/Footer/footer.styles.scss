@@ -1,7 +1,6 @@
 /* src/styles/footer.styles.scss */
 .footer {
   padding: 2rem 0rem;
-  background: rgba(green, 0.3);
   color: #aaa;
   text-align: center;
   font-size: 0.9rem;
@@ -11,7 +10,7 @@
 .footer p {
   margin-bottom: 0.5rem;
   span {
-    color: var(--light-green);
+    color: var(--primary-color);
   }
 }
 

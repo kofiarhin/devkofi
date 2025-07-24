@@ -5,16 +5,14 @@ import Services from "../../components/Services/Services";
 import Pricing from "../../components/Pricing/Pricing";
 import Newsletter from "../../components/Newsletter/Newsletter";
 import Faq from "../../components/Faq/Faq";
+import Features from "../../components/Features/Features";
 
 const Home = () => {
   return (
     <div className="container">
       <Landing />
-      <About />
-      <Audience />
-      <Services />
+      <Features />
       <Pricing />
-      <Faq />
       <Newsletter />
     </div>
   );

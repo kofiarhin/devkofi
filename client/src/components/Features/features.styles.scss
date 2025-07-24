@@ -1,0 +1,35 @@
+#features {
+  .heading {
+    margin-bottom: 2rem;
+  }
+  .features-wrapper {
+    margin-bottom: 3rem;
+    .feature-unit {
+      margin-bottom: 1rem;
+      display: flex;
+      .icon {
+        font-size: 5rem;
+        align-self: top;
+        margin-right: 1rem;
+      }
+      .text-wrapper {
+        h2 {
+          margin-bottom: 0.8rem;
+        }
+        p {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 600px) {
+  #features {
+    .features-wrapper {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+}
