@@ -5,65 +5,56 @@ import {
   FaBullseye,
   FaChartLine,
 } from "react-icons/fa";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
+import { featuresData } from "./featuresData";
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.2,
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  }),
+};
 
 const Features = () => {
-  return (
-    <div id="features">
-      <h1 className="heading">Why DevKofi Mentorship Works</h1>
-      <div className="features-wrapper">
-        <div className="feature-unit">
-          <FaHammer className="icon" />
-          <div className="text-wrapper">
-            <h2>Real Builder Experience</h2>
-            <p>
-              No hype, no fluff. Just honest, hard-earned lessons from building
-              13+ real apps—most failed, some broke even, but 4 now generate
-              consistent revenue every month. You’ll learn what actually works,
-              what doesn't, and how to avoid the costly mistakes that slow most
-              devs down.
-            </p>
-          </div>
-        </div>
-        <div className="feature-unit">
-          <FaShippingFast className="icon" />
-          <div className="text-wrapper">
-            <h2>Ship Fast Approach</h2>
-            <p>
-              You don’t wait to “feel ready.” You build first—then learn,
-              refine, and improve. The mentorship is designed to push you into
-              action fast, with feedback and guidance at every step. No endless
-              planning, no perfectionism—just momentum, progress, and real
-              experience through doing.
-            </p>
-          </div>
-        </div>
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
 
-        <div className="feature-unit">
-          <FaBullseye className="icon" />
-          <div className="text-wrapper">
-            <h2>Outcome over theory</h2>
-            <p>
-              Every call, message, and roadmap is designed to help you ship
-              something real—an actual app, feature, or product you can show,
-              use, or sell. No academic filler. No memorizing things you’ll
-              forget. Just practical execution tied to real results, so every
-              hour you invest moves you forward.
-            </p>
-          </div>
-        </div>
-        <div className="feature-unit">
-          <FaChartLine className="icon" />
-          <div className="text-wrapper">
-            <h2>Feedback that levels you up</h2>
-            <p>
-              Get real, no-BS reviews on your code, user experience, and app
-              architecture. Not just “it works”—but how it performs, how it
-              scales, and how it reads to other developers. You’ll learn to
-              think like a senior dev, write cleaner code, and build projects
-              that hold up in the real world—not just on your local machine.
-            </p>
-          </div>
-        </div>
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [inView, controls]);
+
+  return (
+    <div id="features" ref={ref}>
+      <h1 className="heading">Why this works?</h1>
+      <div className="features-wrapper">
+        {featuresData.map(({ Icon, title, desc }, i) => (
+          <motion.div
+            className="features-unit"
+            key={i}
+            custom={i}
+            initial="hidden"
+            animate={controls}
+            variants={fadeInUp}
+          >
+            <div className="icon-wrapper">
+              <Icon className="icon" />
+            </div>
+            <div className="text-wrapper">
+              <h2>{title}</h2>
+              <p>{desc}</p>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   );

@@ -1,16 +1,14 @@
 #features {
-  .heading {
-    margin-bottom: 2rem;
-  }
+  margin-bottom: 3rem;
   .features-wrapper {
-    margin-bottom: 3rem;
-    .feature-unit {
+    .features-unit {
       margin-bottom: 1rem;
       display: flex;
-      .icon {
-        font-size: 5rem;
-        align-self: top;
+      .icon-wrapper {
         margin-right: 1rem;
+        .icon {
+          font-size: 2rem;
+        }
       }
       .text-wrapper {
         h2 {
@@ -18,6 +16,7 @@
         }
         p {
           font-size: 1.2rem;
+          line-height: 25px;
         }
       }
     }
