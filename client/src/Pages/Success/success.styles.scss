@@ -18,7 +18,7 @@
 
     h1 {
       font-size: 1.8rem; // compact on mobile
-      color: #4caf50;
+      color: var(--primary-color);
       margin-bottom: 0.75rem;
     }
 
@@ -30,7 +30,7 @@
 
     .primary-btn {
       display: inline-block;
-      background-color: #4caf50;
+      background-color: var(--primary-color);
       color: #fff;
       padding: 0.6rem 1rem; // compact button
       border-radius: 4px;
@@ -40,7 +40,8 @@
       transition: background 0.3s ease;
 
       &:hover {
-        background-color: #43a047;
+        background-color: transparent;
+        border: 2px solid white;
       }
     }
   }

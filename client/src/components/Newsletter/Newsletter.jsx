@@ -9,7 +9,7 @@ const Newsletter = () => {
   const navigate = useNavigate();
   const { data, mutate, isPending, isSuccess, error } =
     useJoinNewsletterMutation();
-  const [email, setEmail] = useState("colorpalettevault@gmail.com");
+  const [email, setEmail] = useState("amaniampongnicholas@gmail.com");
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     mutate({ email });
@@ -19,24 +19,26 @@ const Newsletter = () => {
     return <Spinner />;
   }
   if (isSuccess && !data?.error) {
-    navigate("/success");
+    navigate("/success?type=newsletter");
   }
   return (
-    <section className="newsletter">
-      <h2>Join Newsletter</h2>
+    <section id="newsletter">
+      <h1 className="heading center">Join Newsletter</h1>
       <p>
         Subscribe to get updates, tips, and exclusive content straight to your
         inbox.
       </p>
       <form className="newsletter-form" onSubmit={handleNewsletterSubmit}>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {data && data?.error && <p> {data?.error} </p>}
+        <div className="input-wrapper">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        {data && data?.error && <p className="text-error"> {data?.error} </p>}
         <button type="submit">Subscribe</button>
       </form>
     </section>
