@@ -124,4 +124,22 @@ describe("app", () => {
     expect(statusCode).toBe(200);
     expect(body).toBeDefined();
   });
+
+  it("should join news letter successfully", async () => {
+    const { body, statusCode } = await request(app)
+      .post("/api/newsletter")
+      .send({ email: "test@gamil.com" });
+    expect(statusCode).toBe(200);
+    expect(body._id).toBeTruthy();
+  });
+
+  it("should not register user twice", async () => {
+    const userEmail = "test2@gmail.com";
+    await request(app).post("/api/newsletter").send({ email: userEmail });
+    const { statusCode, body } = await request(app)
+      .post("/api/newsletter")
+      .send({ email: userEmail });
+    expect(statusCode).not.toBe(200);
+    expect(body.error).toBe("user already exist");
+  });
 });
