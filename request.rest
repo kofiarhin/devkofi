@@ -1,7 +1,7 @@
 GET http://localhost:5000
 
 ###
-GET http://localhost:5000/api/logger
+GET http://localhost:5000
 
 ###
 POST http://localhost:5000/api/mentorship

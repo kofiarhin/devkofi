@@ -14,10 +14,12 @@ export const joinNewsletter = async (data) => {
       body: JSON.stringify(data),
     });
     if (!res.ok) {
-      throw new Error("something went wrong");
+      const error = await res.json();
+      throw new Error(error.error);
     }
     const resData = await res.json();
-    console.log({ resData });
+    console.log(resData);
+    return resData;
   } catch (error) {
     console.log(error.message);
     return { error: error.message };
@@ -28,9 +30,6 @@ const useJoinNewsletterMutation = () => {
   return useMutation({
     mutationKey: ["newsletter"],
     mutationFn: joinNewsletter,
-    onSuccess: (data) => {
-      console.log("user joined successfully");
-    },
     onError: (data) => {
       console.log("something went wrong");
     },

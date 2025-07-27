@@ -43,20 +43,30 @@ https://devkofi.com
   return { subject, html, text };
 };
 
-// notif y admin
-const generateNewSubscriptionEmail = (data) => {
-  const { fullName, email, phone } = data;
-
-  const subject = `New Subscription: ${fullName}`;
+const generateNewSubscriptionEmail = (email) => {
+  const subject = `New Subscription: ${email}`;
 
   const html = `
     <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
       <h3 style="color: #000; margin-bottom: 1em;">New Subscriber Details</h3>
-      <p><strong>Name:</strong> ${fullName}</p>
       <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Phone:</strong> ${phone}</p>
       <p style="margin-top: 1.5em;">DevKofi Mentorship Notification</p>
       <a href="https://devkofi.com" style="color: #2196F3; text-decoration: none;">devkofi.com</a>
+    </div>
+  `;
+
+  return { subject, html };
+};
+
+const generateNewsLetterSubscriptionEmail = (email) => {
+  const subject = `Thank You for Joining Our Newsletter`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; line-height: 1.5;">
+      <h2>Welcome to DevKofi Mentorship</h2>
+      <p>Thank you for subscribing to our newsletter, ${email}.</p>
+      <p>You will now receive updates, tips, and exclusive content directly in your inbox.</p>
+      <p>Visit us anytime at devkofi.com</p>
     </div>
   `;
 
@@ -66,4 +76,5 @@ const generateNewSubscriptionEmail = (data) => {
 module.exports = {
   welcomeEmail,
   generateNewSubscriptionEmail,
+  generateNewsLetterSubscriptionEmail,
 };

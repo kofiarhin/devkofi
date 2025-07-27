@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 
 const Newsletter = () => {
   const navigate = useNavigate();
-  const { data, mutate, isPending, isSuccess } = useJoinNewsletterMutation();
-  const [email, setEmail] = useState("");
+  const { data, mutate, isPending, isSuccess, error } =
+    useJoinNewsletterMutation();
+  const [email, setEmail] = useState("colorpalettevault@gmail.com");
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     mutate({ email });
@@ -17,7 +18,7 @@ const Newsletter = () => {
   if (isPending) {
     return <Spinner />;
   }
-  if (isSuccess) {
+  if (isSuccess && !data?.error) {
     navigate("/success");
   }
   return (
@@ -35,6 +36,7 @@ const Newsletter = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        {data && data?.error && <p> {data?.error} </p>}
         <button type="submit">Subscribe</button>
       </form>
     </section>
