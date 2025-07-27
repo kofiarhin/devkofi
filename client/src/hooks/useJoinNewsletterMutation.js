@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { baseUrl } from "../constants/constants";
 
-const joinNewsletter = async (data) => {
+export const joinNewsletter = async (data) => {
   const url = import.meta.env.DEV
-    ? "/api/newsletter"
+    ? "http://localhost:5000/api/newsletter"
     : `${baseUrl}/api/newsletter`;
   try {
     const res = await fetch(url, {
@@ -13,9 +13,14 @@ const joinNewsletter = async (data) => {
       method: "POST",
       body: JSON.stringify(data),
     });
-    console.log(res.ok);
+    if (!res.ok) {
+      throw new Error("something went wrong");
+    }
+    const resData = await res.json();
+    console.log({ resData });
   } catch (error) {
-    throw new Error(error.message);
+    console.log(error.message);
+    return { error: error.message };
   }
 };
 

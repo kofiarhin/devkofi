@@ -1,7 +1,6 @@
 import "./about.styles.scss";
 import { aboutData } from "./aboutData";
-import profileImage from "../../assets/img/profile.jpg";
-
+import { profileImage } from "../../constants/constants";
 const About = () => {
   return (
     <div id="about">

@@ -4,9 +4,8 @@ import { FaBars } from "react-icons/fa";
 import { toggleNav } from "../../redux/navigation/navigationSlice";
 import "./header.styles.scss";
 import SideNav from "../SideNav/SideNav";
-import profileImage from "../../assets/img/profile.jpg";
-
-// header
+import { profileImage } from "../../constants/constants";
+// header
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();

@@ -1,8 +1,8 @@
-import AdminDashboard from "../AdminDashboard/AdminDashboard";
+import Upload from "../../components/Upload/Upload";
 const Playground = () => {
   return (
     <div>
-      <AdminDashboard />
+      <Upload />
     </div>
   );
 };

@@ -165,3 +165,6 @@ In-depth code and project reviews to improve your coding style, architecture dec
 
 Clear advice on building your learning roadmap, preparing for technical interviews, and transitioning into developer roles or freelance work
 
+//profile image
+https://res.cloudinary.com/dlsiabgiw/image/upload/v1753586196/devkofi/bnxcwfcq2mrrv3qio0uf.jpg
+

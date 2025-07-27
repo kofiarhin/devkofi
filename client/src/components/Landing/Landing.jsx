@@ -1,7 +1,7 @@
 import "./landing.styles.scss";
-import profileImage from "../../assets/img/profile-small.png";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { profileImage } from "../../constants/constants";
 
 // Creative text animation
 const textVariant = {

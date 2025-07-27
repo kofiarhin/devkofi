@@ -1,7 +1,7 @@
 // upload image to cloudinary
 
 // upload images
-export const uploadImage = async (file, folder = "test") => {
+export const uploadImage = async (file, folder = "devkofi") => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
