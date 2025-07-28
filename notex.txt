@@ -8,10 +8,13 @@ Here’s the same **structured inspiration context**—**clean and emoji-free** 
 
 * **Brand Name**: DevKofi
 * **URL**: [https://devkofi.com](https://devkofi.com)
+
 * **Inspiration Sources**:
   *https://generalassemb.ly/
   * [Your Average Tech Bro](https://www.youraveragetechbro.com/) – minimal, modern, conversational style
   * [The Dan Koe](https://thedankoe.com/) – aspirational, direct messaging for creators and builders
+
+  
 * **Core Vibe**: Practical. Modern. For makers, not dreamers
 * **Target Audience**: Beginners transitioning to indie builders or developers stuck in “tutorial hell,” as well as small teams
 
@@ -170,4 +173,5 @@ https://res.cloudinary.com/dlsiabgiw/image/upload/v1753586196/devkofi/bnxcwfcq2m
 
 //mentorship url
 https://res.cloudinary.com/dlsiabgiw/image/upload/v1753666892/devkofi/qam76btza4l1avr6vmic.png
+https://res.cloudinary.com/dlsiabgiw/image/upload/v1753669719/devkofi/tri8gqr0qksux018d1bj.png
 

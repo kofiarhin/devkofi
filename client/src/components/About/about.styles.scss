@@ -1,29 +1,7 @@
 #about {
-  margin-bottom: 2rem;
-  padding: 2rem 1rem;
-  .heading {
-    text-align: center;
-  }
-  img {
-    width: 200px;
-    display: block;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 1rem;
-    margin: 0 auto 1rem;
-    cursor: Pointer;
-  }
-  p {
-    margin-bottom: 1rem;
-  }
-}
-
-@media (min-width: 800px) {
-  #about {
-    .about-wrapper {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      align-items: center;
-    }
+  margin-bottom: 3rem;
+  h1 {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
   }
 }
