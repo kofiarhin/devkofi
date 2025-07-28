@@ -9,10 +9,11 @@ const Newsletter = () => {
   const navigate = useNavigate();
   const { data, mutate, isPending, isSuccess, error } =
     useJoinNewsletterMutation();
-  const [email, setEmail] = useState("amaniampongnicholas@gmail.com");
+  const [email, setEmail] = useState("");
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     mutate({ email });
+    setEmail("");
   };
 
   if (isPending) {
