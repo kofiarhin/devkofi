@@ -6,11 +6,13 @@ import Pricing from "../../components/Pricing/Pricing";
 import Newsletter from "../../components/Newsletter/Newsletter";
 import Faq from "../../components/Faq/Faq";
 import Features from "../../components/Features/Features";
+import Overview from "../../components/Overview/Overview";
 
 const Home = () => {
   return (
     <div className="container">
       <Landing />
+      <Overview />
       <Features />
       <Pricing />
       <Newsletter />

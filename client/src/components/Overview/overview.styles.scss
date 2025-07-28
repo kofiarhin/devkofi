@@ -1,0 +1,39 @@
+#overview {
+  margin-bottom: 3rem;
+  .image-wrapper {
+    margin-bottom: 1rem;
+  }
+  .text-wrapper {
+    h1 span {
+      display: block;
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+
+    a {
+      background-color: var(--primary-color);
+      display: inline-block;
+      cursor: pointer;
+      padding: 1rem 2rem;
+      color: white;
+      text-decoration: none;
+    }
+  }
+}
+
+@media (min-width: 600px) {
+  #overview {
+    .overview-wrapper {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      align-items: center;
+      .text-wrapper {
+        h1 {
+          font-size: 3rem;
+        }
+      }
+    }
+  }
+}
