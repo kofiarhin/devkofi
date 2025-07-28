@@ -3,9 +3,11 @@
     text-align: center;
     margin-bottom: 1rem;
   }
+
   form {
     max-width: 400px;
     margin: 0 auto;
+
     input {
       display: block;
       width: 100%;
@@ -13,20 +15,51 @@
       text-indent: 20px;
       font-size: 16px;
       margin-bottom: 1rem;
+      background-color: #1e1e1e; // dark background for the input
+      color: #f1f1f1; // white-ish text color for input value
+      border: 1px solid #333;
+      border-radius: 6px;
+
+      &::placeholder {
+        color: #777; // muted gray placeholder
+        font-style: italic;
+        opacity: 0.8;
+        transition: color 0.3s ease, opacity 0.3s ease;
+      }
+
+      &:focus {
+        border-color: #555;
+        outline: none;
+
+        &::placeholder {
+          color: #aaa;
+          opacity: 1;
+        }
+      }
     }
+
     .text-error {
       color: red;
     }
 
     button {
       background-color: var(--primary-color);
-      padding: 0.8rem 0rem;
+      padding: 1rem 0rem;
       display: block;
       width: 80%;
       margin: 0 auto;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
       outline: none;
+      color: white;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: transparent;
+        color: white;
+        border: 2px solid var(--primary-color);
+      }
     }
   }
 }
