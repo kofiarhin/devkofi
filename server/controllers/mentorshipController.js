@@ -1,0 +1,42 @@
+const {
+  generateJoinEmail,
+  generateAdminNotificationEmail,
+} = require("../utility/templates");
+const sendEmail = require("../utility/sendEmail");
+
+const Mentorship = require("../Model/mentorshipModel");
+const createMentorship = async (req, res, next) => {
+  try {
+    const { fullName, email, phone } = req.body;
+    if (!fullName || !email || !phone) {
+      throw new Error("please fill out all fields");
+    }
+    // check if useralready exist
+    const check = await Mentorship.findOne({ email });
+    if (check) {
+      throw new Error("user already exist");
+    }
+    const newUser = await Mentorship.create({ fullName, email, phone });
+    // notify user
+    const { subject, html } = generateJoinEmail({ fullName, email });
+    await sendEmail({ to: email, subject, html });
+
+    // notify admin
+    const { subject: adminSubject, html: adminHtml } =
+      generateAdminNotificationEmail({ fullName, email, phone });
+    await sendEmail({
+      to: "devkofiteam@gmail.com",
+      subject: adminSubject,
+      html: adminHtml,
+    });
+
+    // return data
+    return res.status(201).json({ success: true, user: newUser });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+module.exports = {
+  createMentorship,
+};

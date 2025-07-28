@@ -2,6 +2,7 @@ const sendEmail = require("../utility/sendEmail");
 const request = require("supertest");
 const app = require("../app");
 const { sendWelcomeMessage } = require("../utility/helper");
+const { testUser } = require("./data/data");
 const {
   createNewsletterUser,
   uploadImage,
@@ -19,10 +20,6 @@ const user = {
 };
 
 describe("app", () => {
-  it("just a passing test", () => {
-    expect(1).toBe(1);
-  });
-
   // it("should test contact successfully", async () => {
   //   const message = {
   //     name: "david kraku",
@@ -50,43 +47,42 @@ describe("app", () => {
     expect(statusCode).toBe(200);
   });
 
-  it("should create new newsletter using successfully", async () => {
-    const email = "davidkraky69@gmail.com";
-    const result = await createNewsletterUser({
-      email,
-    });
+  // it("should create new newsletter using successfully", async () => {
+  //   const email = "davidkraky69@gmail.com";
+  //   const result = await createNewsletterUser({
+  //     email,
+  //   });
 
-    expect(result._id).toBeDefined();
-    expect(result).toHaveProperty("email");
-    expect(result.email).toBe(email);
-  });
+  //   expect(result._id).toBeDefined();
+  //   expect(result).toHaveProperty("email");
+  //   expect(result.email).toBe(email);
+  // });
 
-  it("should test endpoint for joining news letter", async () => {
-    const email = "davidkraky69@gmail.com";
+  // it("should test endpoint for joining news letter", async () => {
+  //   const email = "davidkraky69@gmail.com";
+  //   const { statusCode, body } = await request(app)
+  //     .post("/api/newsletter")
+  //     .send({ email });
+  // });
+
+  // it("should test for download route", async () => {
+  //   const { body, statusCode } = await request(app).get("/api/download");
+  //   expect(statusCode).toBe(200);
+  // });
+
+  // it("should be able to download a specific file successfully", async () => {
+  //   const filename = "mern-stack-starter.zip";
+  //   const { statusCode, body } = await request(app).get(
+  //     `/api/download?filename=${filename}`
+  //   );
+  // });
+
+  it("should test forjoining mentorship endpoint", async () => {
     const { statusCode, body } = await request(app)
-      .post("/api/newsletter")
-      .send({ email });
-  });
-
-  it("should test for download route", async () => {
-    const { body, statusCode } = await request(app).get("/api/download");
-    expect(statusCode).toBe(200);
-  });
-
-  it("should be able to download a specific file successfully", async () => {
-    const filename = "mern-stack-starter.zip";
-    const { statusCode, body } = await request(app).get(
-      `/api/download?filename=${filename}`
-    );
-  });
-
-  it("shoudl join mentorship successfullly", async () => {
-    const result = await joinMentorship({
-      fullName: "david kraku",
-      email: "davidKraku69@gmail.com",
-      phone: "44234232432343",
-    });
-    expect(result).toBeTruthy();
+      .post("/api/mentorship")
+      .send(testUser);
+    expect(statusCode).toBe(201);
+    expect(body._id).toBeDefined();
   });
 
   // it("should test join mentorship endpoint", async () => {

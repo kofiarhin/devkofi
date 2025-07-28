@@ -15,7 +15,7 @@ const joinMentorship = async (data) => {
 
     if (!res.ok) {
       const error = await res.json();
-      throw new Error(error);
+      throw new Error(error.error);
     }
     const result = await res.json();
     return result;

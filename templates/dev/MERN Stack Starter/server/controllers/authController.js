@@ -57,7 +57,6 @@ const loginUser = async (req, res, next) => {
     const { password: userPassword, ...rest } = user._doc;
     return res.json({ ...rest, token });
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ success: false, error: error.message });
   }
 };

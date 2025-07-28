@@ -17,6 +17,10 @@ const mentorshipSchema = new mongoose.Schema(
       lowercase: true,
       match: [/.+@.+\..+/, "Invalid email format"],
     },
+    package: {
+      type: String,
+      default: "standard",
+    },
     phone: {
       type: String,
       trim: true,

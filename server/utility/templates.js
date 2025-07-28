@@ -1,10 +1,10 @@
-const welcomeEmail = (data) => {
-  const { name, email } = data;
+const generateJoinEmail = (data) => {
+  const { fullName, email } = data;
   const subject = "Join DevKofi Mentorship Programme";
 
   const html = `
     <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
-      <h2 style="color: #000;">Hi ${name},</h2>
+      <h2 style="color: #000;">Hi ${fullName},</h2>
       <p>Thank you for joining <strong>DevKofi</strong>. I’m excited to have you on board as you take this step toward building real-world apps and leveling up your skills.</p>
       <p>We’ll be reaching out shortly—within the next <strong>2 business days</strong>—with all the details you need to get started:</p>
       <ul>
@@ -21,7 +21,7 @@ const welcomeEmail = (data) => {
   `;
 
   const text = `
-Hi ${name},
+Hi ${fullName},
 
 Thank you for joining DevKofi. I’m excited to have you on board as you take this step toward building real-world apps and leveling up your skills.
 
@@ -73,8 +73,40 @@ const generateNewsLetterSubscriptionEmail = (email) => {
   return { subject, html };
 };
 
+const generateAdminNotificationEmail = (data) => {
+  const { fullName, email, phone } = data;
+  const subject = `New DevKofi Mentorship Signup: ${fullName}`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+      <h2 style="color: #000;">New Signup Alert 🚀</h2>
+      <p><strong>${fullName}</strong> has just joined the <strong>DevKofi Mentorship Programme</strong>.</p>
+      <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #2196F3;">${email}</a></p>
+      <p><strong>Phone:</strong> <a href="tel:${phone}" style="color: #2196F3;">${phone}</a></p>
+      <p style="margin-top: 1.5em;">Be sure to follow up within the next <strong>2 business days</strong> with onboarding details.</p>
+      <p style="margin-top: 2em;">— DevKofi System Notification</p>
+    </div>
+  `;
+
+  const text = `
+New Signup Alert 🚀
+
+${fullName} has just joined the DevKofi Mentorship Programme.
+
+Email: ${email}
+Phone: ${phone}
+
+Be sure to follow up within the next 2 business days with onboarding details.
+
+— DevKofi System Notification
+  `;
+
+  return { subject, html, text };
+};
+
 module.exports = {
-  welcomeEmail,
   generateNewSubscriptionEmail,
   generateNewsLetterSubscriptionEmail,
+  generateJoinEmail,
+  generateAdminNotificationEmail,
 };

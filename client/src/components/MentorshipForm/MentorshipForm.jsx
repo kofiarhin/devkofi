@@ -6,11 +6,11 @@ import "./mentorship.styles.scss";
 
 const MentorshipForm = () => {
   const navigate = useNavigate();
-  const { mutate, isPending, error, isSuccess } = useMentorshipMutation();
+  const { mutate, isPending, error, isSuccess, data } = useMentorshipMutation();
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
+    fullName: "nicholas owusu amaniampong",
+    email: "amaniampongnicholas@gmail.com",
+    phone: "2343242343243",
   });
 
   const handleChange = (e) => {
@@ -26,18 +26,13 @@ const MentorshipForm = () => {
       email: "",
       phone: "",
     });
-    return;
-    if (!formData.fullName || !formData.email) {
-      alert("Please fill in Full Name and Email.");
-      return;
-    }
-    mutate(formData);
-    setFormData({ fullName: "david karku", email: "", phone: "" });
   };
 
-  if (error) navigate("/error");
   if (isPending) return <Spinner />;
-  if (isSuccess) navigate("/success");
+  if (data && data?.success) {
+    navigate("/success?type=mentorship");
+  }
+  // if (isSuccess) navigate("/success?type=mentorship");
 
   return (
     <section className="mentorship">
@@ -79,6 +74,7 @@ const MentorshipForm = () => {
             />
           </div>
 
+          {data && data?.error && <p className="text-error"> {data?.error} </p>}
           <button type="submit" className="primary-btn">
             Submit
           </button>

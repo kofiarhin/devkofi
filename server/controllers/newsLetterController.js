@@ -17,7 +17,6 @@ const joinNewsLetter = async (req, res, next) => {
     await sendEmail({ to: email, subject, html });
     return res.json(newUser);
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ success: false, error: error.message });
   }
 };
