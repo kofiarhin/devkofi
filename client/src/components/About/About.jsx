@@ -3,7 +3,14 @@ import "./about.styles.scss";
 export default function About() {
   return (
     <section className="about-section" id="about">
-      <h1 className="heading">Learn Test Driven Development</h1>
+      <h1 className="heading">Write, Test, Deploy...</h1>
+      <p>
+        A development rhythm that meets you where you are—flexible, methodical,
+        and built to keep momentum. From the first line of code to the final
+        push, this approach adapts to your flow: write with intent, test with
+        rigor, fix with focus, and deploy with confidence. It’s not just a
+        process—it’s how great work ships.
+      </p>
       <div
         style={{
           position: "relative",
