@@ -4,11 +4,17 @@
     margin-bottom: 1rem;
   }
   .text-wrapper {
+    h1 {
+      color: var(--primary-color);
+      font-size: 3rem;
+      margin-bottom: 3rem;
+    }
     h1 span {
       display: block;
     }
     p {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
     }
 
     a {
@@ -31,7 +37,7 @@
       align-items: center;
       .text-wrapper {
         h1 {
-          font-size: 3rem;
+          font-size: 4rem;
         }
       }
     }
