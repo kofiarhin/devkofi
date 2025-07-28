@@ -8,9 +8,9 @@ const MentorshipForm = () => {
   const navigate = useNavigate();
   const { mutate, isPending, error, isSuccess, data } = useMentorshipMutation();
   const [formData, setFormData] = useState({
-    fullName: "nicholas owusu amaniampong",
-    email: "amaniampongnicholas@gmail.com",
-    phone: "2343242343243",
+    fullName: "",
+    email: "",
+    phone: "",
   });
 
   const handleChange = (e) => {
