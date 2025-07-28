@@ -8,7 +8,7 @@ const Overview = () => {
       <div className="overview-wrapper">
         <div className="image-wrapper">
           <img
-            src="https://res.cloudinary.com/dlsiabgiw/image/upload/v1753666892/devkofi/qam76btza4l1avr6vmic.png"
+            src="https://res.cloudinary.com/dlsiabgiw/image/upload/v1753669719/devkofi/tri8gqr0qksux018d1bj.png"
             alt=""
           />
         </div>
