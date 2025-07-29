@@ -8,7 +8,7 @@ const Scale = () => {
         <div className="scale-wrapper">
           <div className="text-wrapper">
             <h1 className="heading">
-              Write Code that <br /> scales....
+              Code Meant to <br /> Scale...
             </h1>
             <p>
               A deliberate, disciplined mindset for building systems that
