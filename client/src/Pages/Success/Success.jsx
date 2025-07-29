@@ -1,6 +1,33 @@
 import { Link, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 import "./success.styles.scss";
 import { successData } from "./successData";
+
+// Animation Variants
+const containerVariant = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2, delayChildren: 0.1 },
+  },
+};
+
+const headingVariant = {
+  hidden: { opacity: 0, y: -30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+const textVariant = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
+
+const buttonVariant = {
+  hidden: { opacity: 0, scale: 0.9 },
+  show: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
+  hover: { scale: 1.05 },
+  tap: { scale: 0.95 },
+};
 
 const Success = () => {
   const location = useLocation();
@@ -15,15 +42,32 @@ const Success = () => {
 
   return (
     <section className="success">
-      <div className="overlay">
-        <div className="content">
-          <h1>{heading}</h1>
-          <p>{slug}</p>
-          <Link to="/" className="primary-btn">
-            Back to Home
-          </Link>
-        </div>
-      </div>
+      <motion.div
+        className="overlay"
+        variants={containerVariant}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.div className="content" variants={containerVariant}>
+          {/* Heading */}
+          <motion.h1 variants={headingVariant}>{heading}</motion.h1>
+
+          {/* Message */}
+          <motion.p variants={textVariant}>{slug}</motion.p>
+
+          {/* Back Home Button */}
+          <motion.div variants={buttonVariant}>
+            <Link
+              to="/"
+              className="primary-btn"
+              whileHover="hover"
+              whileTap="tap"
+            >
+              Back to Home
+            </Link>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 };

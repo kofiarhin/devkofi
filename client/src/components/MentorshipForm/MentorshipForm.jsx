@@ -2,7 +2,34 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner/Spinner";
 import useMentorshipMutation from "../../hooks/useMentorshipMutation";
+import { motion } from "framer-motion";
 import "./mentorship.styles.scss";
+
+// Animation variants
+const containerVariant = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2, delayChildren: 0.1 },
+  },
+};
+
+const headingVariant = {
+  hidden: { opacity: 0, y: -30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+const fieldVariant = {
+  hidden: { opacity: 0, x: -20 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.4 } },
+};
+
+const buttonVariant = {
+  hidden: { opacity: 0, scale: 0.9 },
+  show: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
+  hover: { scale: 1.05 },
+  tap: { scale: 0.95 },
+};
 
 const MentorshipForm = () => {
   const navigate = useNavigate();
@@ -32,16 +59,28 @@ const MentorshipForm = () => {
   if (data && data?.success) {
     navigate("/success?type=mentorship");
   }
-  // if (isSuccess) navigate("/success?type=mentorship");
 
   return (
     <section className="mentorship">
-      <div className="overlay">
-        <h1 className="heading">Join Mentorship</h1>
-        <p>Enter your information, and I’ll contact you soon.</p>
+      <motion.div
+        className="overlay"
+        variants={containerVariant}
+        initial="hidden"
+        animate="show"
+      >
+        {/* Heading */}
+        <motion.h1 className="heading" variants={headingVariant}>
+          Join Mentorship
+        </motion.h1>
 
-        <form className="form" onSubmit={handleSubmit}>
-          <div className="form-group">
+        <motion.p variants={headingVariant}>
+          Enter your information, and I’ll contact you soon.
+        </motion.p>
+
+        {/* Form */}
+        <motion.form className="form" onSubmit={handleSubmit}>
+          {/* Full Name */}
+          <motion.div className="form-group" variants={fieldVariant}>
             <label htmlFor="fullName">Full Name*</label>
             <input
               id="fullName"
@@ -50,9 +89,10 @@ const MentorshipForm = () => {
               onChange={handleChange}
               required
             />
-          </div>
+          </motion.div>
 
-          <div className="form-group">
+          {/* Email */}
+          <motion.div className="form-group" variants={fieldVariant}>
             <label htmlFor="email">Email*</label>
             <input
               type="email"
@@ -62,9 +102,10 @@ const MentorshipForm = () => {
               onChange={handleChange}
               required
             />
-          </div>
+          </motion.div>
 
-          <div className="form-group">
+          {/* Phone */}
+          <motion.div className="form-group" variants={fieldVariant}>
             <label htmlFor="phone">Phone</label>
             <input
               id="phone"
@@ -72,20 +113,37 @@ const MentorshipForm = () => {
               value={formData.phone}
               onChange={handleChange}
             />
-          </div>
+          </motion.div>
 
-          {data && data?.error && <p className="text-error"> {data?.error} </p>}
-          <button type="submit" className="primary-btn">
+          {data && data?.error && (
+            <motion.p
+              className="text-error"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              {data?.error}
+            </motion.p>
+          )}
+
+          {/* Submit Button */}
+          <motion.button
+            type="submit"
+            className="primary-btn"
+            variants={buttonVariant}
+            whileHover="hover"
+            whileTap="tap"
+          >
             Submit
-          </button>
-        </form>
+          </motion.button>
+        </motion.form>
 
-        <div className="actions">
+        {/* Actions */}
+        <motion.div className="actions" variants={buttonVariant}>
           <Link to="/" className="secondary-btn">
             Back to Home
           </Link>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 };
