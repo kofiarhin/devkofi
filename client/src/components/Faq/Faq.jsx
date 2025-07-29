@@ -12,7 +12,9 @@ const Faq = () => {
 
   return (
     <section className="faq">
-      <h1 className="heading">Frequently Asked Questions</h1>
+      <h1 className="heading">
+        Frequently Asked <br /> Questions
+      </h1>
       <div className="faq-list">
         {faqData.map((item, index) => (
           <div key={index} className="faq-item">

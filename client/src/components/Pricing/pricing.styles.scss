@@ -1,6 +1,10 @@
 /* src/styles/pricing.styles.scss */
 .pricing {
   margin-bottom: 1rem;
+  h1 {
+    color: var(--primary-color);
+    font-size: 3rem;
+  }
   .pricing-container {
     display: flex;
     flex-direction: column;
@@ -78,7 +82,7 @@
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 800px) {
   .pricing {
     .pricing-container {
       flex-direction: row;

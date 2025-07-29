@@ -7,6 +7,7 @@ import Newsletter from "../../components/Newsletter/Newsletter";
 import Faq from "../../components/Faq/Faq";
 import Features from "../../components/Features/Features";
 import Overview from "../../components/Overview/Overview";
+import Scale from "../../components/Scale/Scale";
 
 const Home = () => {
   return (
@@ -14,8 +15,9 @@ const Home = () => {
       <Landing />
       <Overview />
       <About />
-      {/* <Features /> */}
+      <Scale />
       <Pricing />
+      <Faq />
       <Newsletter />
     </div>
   );

@@ -4,6 +4,9 @@
   background: #121212;
   color: #eee;
   text-align: center;
+  .heading {
+    color: var(--primary-color);
+  }
 }
 
 .faq h2 {

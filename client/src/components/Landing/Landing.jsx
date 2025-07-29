@@ -39,6 +39,16 @@ const Landing = () => {
   return (
     <div id="landing">
       <div className="landing-wrapper">
+        <motion.div
+          className="image-wrapper"
+          variants={imageVariant}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          whileHover={{ scale: 1.05, rotate: -2 }}
+        >
+          <img src={profileImage} alt="Profile" />
+        </motion.div>
         {/* Text Section */}
         <motion.div
           className="text-wrapper"
@@ -48,8 +58,11 @@ const Landing = () => {
           viewport={{ once: true, amount: 0.3 }}
         >
           <h1 className="heading">
-            LAND A NEW CAREER WITH NEXT-LEVEL MENTORSHIP
+            MERN STACK MENTORSHIP <br /> PROGRAMME 2025
           </h1>
+          <h2>
+            LAND A NEW CAREER WITH <br /> NEXT-LEVEL MENTORSHIP
+          </h2>
           <p>
             Start Your Tech Career in 6 Months. Master the MERN Stack, gain
             hands-on experience with AI tools, and accelerate your journey with
@@ -62,16 +75,6 @@ const Landing = () => {
         </motion.div>
 
         {/* Image Section */}
-        <motion.div
-          className="img-wrapper"
-          variants={imageVariant}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          whileHover={{ scale: 1.05, rotate: -2 }}
-        >
-          <img src={profileImage} alt="Profile" />
-        </motion.div>
       </div>
     </div>
   );
