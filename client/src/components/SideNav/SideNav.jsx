@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const SideNav = () => {
   const dispatch = useDispatch();
   const { isOpen } = useSelector((state) => state.navigation);
+  const { user } = useSelector((state) => state.auth);
   const handleToggleNav = () => {
     dispatch(toggleNav());
   };
@@ -52,6 +53,10 @@ const SideNav = () => {
   const links = [
     { to: "/", text: "Home" },
     { to: "/course-outline", text: "Course Outline" },
+    {
+      to: `${user ? "" : "/login"}`,
+      text: `${user ? "" : "Login"}`,
+    },
     { to: "/contact", text: "Contact" },
     ...(import.meta.env.DEV ? [{ to: "/playground", text: "Playground" }] : []),
   ];

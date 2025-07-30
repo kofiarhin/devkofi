@@ -1,6 +1,7 @@
 const Newsletter = require("../Model/newsletterModel");
 const Mentorship = require("../Model/mentorshipModel");
 const sendEmail = require("./sendEmail");
+const jwt = require("jsonwebtoken");
 const {
   welcomeEmail,
   generateNewSubscriptionEmail,
@@ -79,6 +80,9 @@ const sendAdminNotification = async (data) => {
     return { success: false, error: error.message };
   }
 };
+const generateToken = (data) => {
+  return jwt.sign({ ...data }, process.env.JWT_SECRET, { expiresIn: "30d" });
+};
 
 module.exports = {
   createNewsletterUser,
@@ -86,4 +90,5 @@ module.exports = {
   joinMentorship,
   sendWelcomeMessage,
   sendAdminNotification,
+  generateToken,
 };

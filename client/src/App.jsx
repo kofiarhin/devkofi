@@ -9,21 +9,12 @@ import Error from "./Pages/Error/Error";
 import Playground from "./Pages/Playground/Playground";
 import JoinMentorship from "./Pages/JoinMentorship/JoinMentorship";
 import CourseOutline from "./Pages/CourseOutline/CourseOutline";
+import Dashboard from "./Pages/Dashboard/DAshboard";
 import { useEffect } from "react";
 import { baseUrl } from "./constants/constants";
+import Login from "./Pages/Login/Login";
 // app component
 const App = () => {
-  useEffect(() => {
-    const info = async () => {
-      try {
-        const url = import.meta.env.DEV ? "http://localhost:5000" : baseUrl;
-        const res = await fetch("http://localhost:5000");
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    info();
-  }, []);
   return (
     <div>
       <Router>
@@ -37,6 +28,8 @@ const App = () => {
           <Route path="/playground" element={<Playground />} />
           <Route path="/mentorship" element={<JoinMentorship />} />
           <Route path="/course-outline" element={<CourseOutline />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
         <Footer />
       </Router>

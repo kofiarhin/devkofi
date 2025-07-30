@@ -5,13 +5,21 @@ import { toggleNav } from "../../redux/navigation/navigationSlice";
 import "./header.styles.scss";
 import SideNav from "../SideNav/SideNav";
 import { profileImage } from "../../constants/constants";
+import { logoutUser } from "../../redux/auth/authSlice";
+
 // header
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isOpen } = useSelector((state) => state.navigation);
+  const { user } = useSelector((state) => state.auth);
   const handleToggleNav = () => {
     dispatch(toggleNav());
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+
+    dispatch(logoutUser());
   };
   return (
     <header className="header">
@@ -29,7 +37,12 @@ const Header = () => {
         </div>
 
         <div className="center-nav">
-          <button onClick={() => navigate("/mentorship")}> Join Now!</button>
+          {user ? (
+            <button onClick={handleLogout}> Logout</button>
+          ) : (
+            <button onClick={() => navigate("/mentorship")}> Join Now!</button>
+          )}
+
           <FaBars onClick={handleToggleNav} className="menu" />
         </div>
         <nav>
@@ -38,9 +51,16 @@ const Header = () => {
           {/* <Link to="/templates">Templates</Link> */}
           <Link to="/contact">Contact</Link>
           {import.meta.env.DEV ? <Link to="/playground">Playground</Link> : ""}
-          <button onClick={() => navigate("/mentorship")} className="join">
-            Join Now
-          </button>
+          {user ? (
+            <button onClick={handleLogout}> Logout</button>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <button onClick={() => navigate("/mentorship")} className="join">
+                Join Now
+              </button>
+            </>
+          )}
         </nav>
       </div>
     </header>

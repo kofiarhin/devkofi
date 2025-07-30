@@ -12,6 +12,7 @@ const mentorshipRoutes = require("./routes/mentorshopRoutes");
 const logger = require("./middlewares/logger");
 const adminRoutes = require("./routes/adminRoutes");
 const cleaner = require("./middlewares/cleaner");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -33,5 +34,6 @@ app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/download", downloadRoutes);
 app.use("/api/mentorship", mentorshipRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/auth", authRoutes);
 
 module.exports = app;
