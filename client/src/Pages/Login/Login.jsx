@@ -37,7 +37,6 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  console.log({ user });
   const { mutate, isPending, error, isSuccess, data } = useLoginMutation();
   const [formData, setFormData] = useState({
     email: "",
@@ -58,16 +57,16 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(formData);
-    setFormData({
-      email: "",
-      password: "",
-    });
   };
 
   if (isPending) return <Spinner />;
   if (data && data?.success) {
     dispatch(setUser(data?.user));
     localStorage.setItem("user", JSON.stringify(data?.user));
+    setFormData({
+      email: "",
+      password: "",
+    });
     navigate("/dashboard");
   }
 
