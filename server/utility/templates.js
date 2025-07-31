@@ -142,10 +142,77 @@ ${verificationLink}
   return { subject, html, text, verificationLink };
 };
 
+const generateContactThankYouEmail = (data) => {
+  const { fullName, email } = data;
+  const subject = `Thanks for Contacting Us, ${fullName}!`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+      <h2 style="color: #000;">Thank You for Contacting Us!</h2>
+      <p>Hi <strong>${fullName}</strong>,</p>
+      <p>We’ve received your message sent from <a href="mailto:${email}" style="color: #2196F3;">${email}</a> and our team is reviewing it. You can expect a response within <strong>2 business days</strong>.</p>
+      <p>We appreciate your patience and look forward to assisting you soon.</p>
+      <p style="margin-top: 2em;">— DevKofi Support Team</p>
+    </div>
+  `;
+
+  const text = `
+Thank You for Contacting Us!
+
+Hi ${fullName},
+
+We’ve received your message sent from ${email} and our team is reviewing it. You can expect a response within 2 business days.
+
+We appreciate your patience and look forward to assisting you soon.
+
+— DevKofi Support Team
+  `;
+
+  return { subject, html, text };
+};
+
+const generateAdminContactNotificationEmail = (data) => {
+  const { fullName, email, message } = data;
+  const subject = `📩 New Contact Message from ${fullName}`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+      <h2 style="color: #000;">New Contact Message Received</h2>
+      <p><strong>${fullName}</strong> has submitted a new contact request.</p>
+      <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #2196F3;">${email}</a></p>
+      <p><strong>Message:</strong></p>
+      <blockquote style="margin: 1em 0; padding: 0.5em 1em; background: #f9f9f9; border-left: 4px solid #2196F3;">
+        ${message}
+      </blockquote>
+      <p style="margin-top: 1.5em;">Please review and respond within <strong>2 business days</strong>.</p>
+      <p style="margin-top: 2em;">— DevKofi System Notification</p>
+    </div>
+  `;
+
+  const text = `
+New Contact Message Received
+
+${fullName} has submitted a new contact request.
+
+Email: ${email}
+
+Message:
+"${message}"
+
+Please review and respond within 2 business days.
+
+— DevKofi System Notification
+  `;
+
+  return { subject, html, text };
+};
+
 module.exports = {
   generateNewSubscriptionEmail,
   generateNewsLetterSubscriptionEmail,
   generateJoinEmail,
   generateAdminNotificationEmail,
   generateVerifyUserEmail,
+  generateContactThankYouEmail,
+  generateAdminContactNotificationEmail,
 };

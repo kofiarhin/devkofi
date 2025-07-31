@@ -52,7 +52,6 @@ const verifyUser = async (req, res, next) => {
     );
   } catch (error) {
     return res.status(500).send(`<p> ${error.message} </p>`);
-    // return res.status(500).json({ success: false, error: error.message });
   }
 };
 

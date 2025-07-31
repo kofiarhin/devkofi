@@ -41,7 +41,7 @@ const Contact = () => {
   const navigate = useNavigate();
   const { mutate, isPending, error, isSuccess } = usecontactMutation();
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
     message: "",
   });
@@ -57,13 +57,6 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     mutate(formData);
-
-    // Clear form after submit
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
-    });
   };
 
   if (error) {
@@ -75,7 +68,14 @@ const Contact = () => {
   }
 
   if (isSuccess) {
+    // Clear form after submit
+    setFormData({
+      fullName: "",
+      email: "",
+      message: "",
+    });
     navigate("/success");
+    console.log("message sent successfully");
   }
 
   return (
@@ -98,14 +98,14 @@ const Contact = () => {
 
           {/* Form */}
           <motion.form className="form" onSubmit={handleSubmit}>
-            {/* Name Field */}
+            {/* Full Name Field */}
             <motion.div className="form-group" variants={fieldVariant}>
-              <label htmlFor="name">Name</label>
+              <label htmlFor="name">Full Name</label>
               <input
                 type="text"
-                id="name"
-                placeholder="Your Name"
-                value={formData.name}
+                id="fullName"
+                placeholder="Your Full Name"
+                value={formData.fullName}
                 onChange={handleChange}
                 required
               />

@@ -3,6 +3,7 @@ const dotenv = require("dotenv").config();
 const Newsletter = require("../Model/newsletterModel");
 const newsletterModel = require("../Model/newsletterModel");
 const Mentorship = require("../Model/mentorshipModel");
+const Contact = require("../Model/contactModel");
 const { userOne } = require("./data/data");
 
 beforeAll(async () => {
@@ -12,6 +13,7 @@ beforeAll(async () => {
     await Newsletter.deleteMany();
     await Mentorship.deleteMany();
     await Mentorship.create({ ...userOne });
+    await Contact.deleteMany();
   } catch (error) {
     console.log(error);
     process.exit(1);

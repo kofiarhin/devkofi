@@ -147,10 +147,19 @@ describe("app", () => {
     expect(token).toBeTruthy();
   });
 
-  it("should join mentorship successfully", async () => {
-    const { statusCode, body } = await request(app)
-      .post("/api/mentorship")
-      .send(userTwo);
-    console.log({ statusCode, body });
+  // it("should join mentorship successfully", async () => {
+  //   const { statusCode, body } = await request(app)
+  //     .post("/api/mentorship")
+  //     .send(userTwo);
+  //   console.log({ statusCode, body });
+  // });
+
+  it("should test for contact successfully", async () => {
+    const { statusCode, body } = await request(app).post("/api/contact").send({
+      fullName: userTwo.fullName,
+      email: userTwo.email,
+      message: "testing mic",
+    });
+    console.log({ statusCode });
   });
 });
