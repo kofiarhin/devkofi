@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import Templates from "./Pages/Templates/Templates";
@@ -10,9 +11,9 @@ import Playground from "./Pages/Playground/Playground";
 import JoinMentorship from "./Pages/JoinMentorship/JoinMentorship";
 import CourseOutline from "./Pages/CourseOutline/CourseOutline";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import { useEffect } from "react";
 import { baseUrl } from "./constants/constants";
 import Login from "./Pages/Login/Login";
+import PrivateRoutes from "./components/PrivateRoute/PrivateRoutes";
 // app component
 const App = () => {
   return (
@@ -21,7 +22,6 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/templates" element={<Templates />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/success" element={<Success />} />
           <Route path="/error" element={<Error />} />
@@ -29,7 +29,10 @@ const App = () => {
           <Route path="/mentorship" element={<JoinMentorship />} />
           <Route path="/course-outline" element={<CourseOutline />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/templates" element={<Templates />} />
+          </Route>
         </Routes>
         <Footer />
       </Router>

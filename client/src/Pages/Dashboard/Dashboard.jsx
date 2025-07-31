@@ -1,19 +1,26 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import "./dashboard.styles.scss";
 
-// dashboard
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-  }, [user]);
   return (
-    <div>
-      <h1 className="heading center">Dashboard</h1>
+    <div className="dashboard">
+      <header className="dashboard-header">
+        <h1>Admin Dashboard</h1>
+      </header>
+
+      <div className="dashboard-content">
+        <div className="card">
+          <h2>Users</h2>
+          <p>Manage all registered users.</p>
+          <button>View Users</button>
+        </div>
+
+        <div className="card">
+          <h2>Messages</h2>
+          <p>Check contact form submissions.</p>
+          <button>View Messages</button>
+        </div>
+      </div>
     </div>
   );
 };
