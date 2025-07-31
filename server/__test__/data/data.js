@@ -3,14 +3,20 @@ const userOne = {
   email: "david kraku69@gmail.com",
   phone: "342334234234",
 };
+const userTwo = {
+  fullName: "esco visualz",
+  email: "escovisualz@gmail.com",
+  phone: "232342423",
+};
 
 const testUser = {
-  fullName: "nicholas owusu amaniampong",
-  email: "amaniampongnicholas@gmail.com",
+  fullName: "color palette",
+  email: "colorpalettevault@gmail.com",
   phone: "23243243434",
 };
 
 module.exports = {
   userOne,
   testUser,
+  userTwo,
 };

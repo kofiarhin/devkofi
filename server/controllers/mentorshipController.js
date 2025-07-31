@@ -1,10 +1,12 @@
 const {
   generateJoinEmail,
   generateAdminNotificationEmail,
+  generateVerifyUserEmail,
 } = require("../utility/templates");
 const sendEmail = require("../utility/sendEmail");
 
 const Mentorship = require("../Model/mentorshipModel");
+const { generateToken } = require("../utility/helper");
 const createMentorship = async (req, res, next) => {
   try {
     const { fullName, email, phone } = req.body;
@@ -20,6 +22,16 @@ const createMentorship = async (req, res, next) => {
     // notify user
     const { subject, html } = generateJoinEmail({ fullName, email });
     await sendEmail({ to: email, subject, html });
+
+    // send verification code
+    const token = generateToken({ email });
+    const { subject: verificationSubject, html: verificationHtml } =
+      generateVerifyUserEmail({ fullName, token });
+    await sendEmail({
+      to: email,
+      subject: verificationSubject,
+      html: verificationHtml,
+    });
 
     // notify admin
     const { subject: adminSubject, html: adminHtml } =

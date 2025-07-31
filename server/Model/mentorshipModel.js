@@ -27,7 +27,7 @@ const mentorshipSchema = new mongoose.Schema(
     },
     verified: {
       type: Boolean,
-      defaut: false,
+      default: false,
     },
   },
   { timestamps: true }

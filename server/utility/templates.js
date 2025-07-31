@@ -1,3 +1,5 @@
+const { baseUrl } = require("../constants/constants");
+
 const generateJoinEmail = (data) => {
   const { fullName, email } = data;
   const subject = "Join DevKofi Mentorship Programme";
@@ -104,9 +106,46 @@ Be sure to follow up within the next 2 business days with onboarding details.
   return { subject, html, text };
 };
 
+const generateVerifyUserEmail = (data) => {
+  const { fullName, token } = data;
+  const subject = `Verify Your DevKofi Account, ${fullName}`;
+
+  // const verificationLink = `https://devkofi.com/api/auth/verify?token=${token}`;
+  const verificationLink =
+    process.env.NODE_ENV === "production"
+      ? `${baseUrl}/api/auth/verify?token=${token}`
+      : `http://localhost:5000/api/auth/verify?token=${token}`;
+
+  const html = `
+    <h2>Welcome to DevKofi</h2>
+    <p>Hi ${fullName},</p>
+    <p>Thanks for signing up! Please verify your email address to activate your DevKofi account.</p>
+    <p><a href="${verificationLink}">Verify My Account</a></p>
+    <p>If the link doesn’t work, copy and paste this URL into your browser:</p>
+    <p>${verificationLink}</p>
+    <p>— The DevKofi Team</p>
+  `;
+
+  const text = `
+Welcome to DevKofi
+
+Hi ${fullName},
+
+Thanks for signing up! Please verify your email address to activate your DevKofi account.
+
+Click the link below to verify:
+${verificationLink}
+
+— The DevKofi Team
+  `;
+
+  return { subject, html, text, verificationLink };
+};
+
 module.exports = {
   generateNewSubscriptionEmail,
   generateNewsLetterSubscriptionEmail,
   generateJoinEmail,
   generateAdminNotificationEmail,
+  generateVerifyUserEmail,
 };
