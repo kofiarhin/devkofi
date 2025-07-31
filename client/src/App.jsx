@@ -9,7 +9,7 @@ import Error from "./Pages/Error/Error";
 import Playground from "./Pages/Playground/Playground";
 import JoinMentorship from "./Pages/JoinMentorship/JoinMentorship";
 import CourseOutline from "./Pages/CourseOutline/CourseOutline";
-import Dashboard from "./Pages/Dashboard/DAshboard";
+import Dashboard from "./Pages/Dashboard/Dashboard";
 import { useEffect } from "react";
 import { baseUrl } from "./constants/constants";
 import Login from "./Pages/Login/Login";
