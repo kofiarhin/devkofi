@@ -7,6 +7,7 @@ const projectProfile = require("./config/project-profile.json");
 
 // Middlewares
 const logger = require("./middlewares/logger");
+const auth = require("./middlewares/auth");
 const cleaner = require("./middlewares/cleaner");
 
 // Routes
@@ -18,17 +19,18 @@ const templateRoutes = require("./routes/templateRoutes");
 const mentorshipRoutes = require("./routes/mentorshopRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
 // Middleware setup
 app.use(cors());
 app.use(express.json());
-app.use(cleaner); //remove this code later
+// app.use(cleaner); //remove this code later
 
 // Root endpoint
 app.get("/", (req, res) => {
-  res.json({ message: "hello world" });
+  res.json({ message: "welcome to dev kofi" });
 });
 
 // Templates endpoint
@@ -44,5 +46,6 @@ app.use("/api/download", downloadRoutes);
 app.use("/api/mentorship", mentorshipRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 module.exports = app;
