@@ -1,7 +1,8 @@
 const app = require("../app");
 const request = require("supertest");
-const { userTwo, userOne } = require("./data");
+const { userTwo, userOne, userThree } = require("./data");
 const User = require("../models/userModel");
+const { loginUser, registerUser } = require("./helper");
 
 describe("app", () => {
   it("should test auth route", async () => {
@@ -57,5 +58,38 @@ describe("app", () => {
         password: "wrongpassword",
       });
     expect(body.error).toBeDefined();
+  });
+  it("should test for error handling", async () => {
+    const { statusCode, body } = await request(app).get("/api/afdafdfadf");
+    // expect(statusCode).toBe(404);
+    expect(body.error).toBeDefined();
+  });
+
+  it("should check if user is authenticated", async () => {
+    // login user
+    const {
+      statusCode,
+      body: { token },
+    } = await request(app)
+      .post("/api/auth/login")
+      .send({ email: userOne.email, password: userOne.password });
+    const { statusCode: authStatus, body } = await request(app)
+      .get("/api/users")
+      .set("Authorization", `Bearer ${token}`);
+    expect(statusCode).toBe(200);
+    expect(body.data).toBeDefined();
+  });
+
+  it("should login user with the loginUser function", async () => {
+    const {
+      statusCode,
+      body: { token },
+    } = await loginUser(userOne);
+    expect(token).toBeTruthy();
+  });
+
+  it("should test register user function", async () => {
+    const { statusCode, body } = await registerUser(userThree);
+    expect(statusCode).toBe(201);
   });
 });
