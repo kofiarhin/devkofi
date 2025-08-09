@@ -1,56 +1,76 @@
 import "./typeWriter.styles.scss";
-import React, { useEffect, useRef, useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Typewriter({
+  title = "",
+  subtitle = "",
   text = "",
-  speed = 40, // ms per char
-  startDelay = 0, // ms before typing starts
-  cursor = true, // show blinking caret
-  onDone, // callback when finished
-  className = "",
+  titleSpeed = 10,
+  subtitleSpeed = 20,
+  textSpeed = 10,
 }) {
-  const [out, setOut] = useState("");
-  const iRef = useRef(0);
-  const timerRef = useRef(null);
+  const [titleText, setTitleText] = useState("");
+  const [subtitleText, setSubtitleText] = useState("");
+  const [bodyText, setBodyText] = useState("");
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [subtitleIndex, setSubtitleIndex] = useState(0);
+  const [bodyIndex, setBodyIndex] = useState(0);
+  const [titleDone, setTitleDone] = useState(false);
+  const [subtitleDone, setSubtitleDone] = useState(false);
 
+  // Title typing
   useEffect(() => {
-    // reset on text change
-    clearTimeout(timerRef.current);
-    setOut("");
-    iRef.current = 0;
+    if (titleIndex < title.length) {
+      const timeout = setTimeout(() => {
+        setTitleText((prev) => prev + title.charAt(titleIndex));
+        setTitleIndex((prev) => prev + 1);
+      }, titleSpeed);
+      return () => clearTimeout(timeout);
+    } else {
+      setTitleDone(true);
+    }
+  }, [titleIndex, title, titleSpeed]);
 
-    if (!text || typeof text !== "string") return; // guard non-string/empty
+  // Subtitle typing (after title is done)
+  useEffect(() => {
+    if (titleDone && subtitleIndex < subtitle.length) {
+      const timeout = setTimeout(() => {
+        setSubtitleText((prev) => prev + subtitle.charAt(subtitleIndex));
+        setSubtitleIndex((prev) => prev + 1);
+      }, subtitleSpeed);
+      return () => clearTimeout(timeout);
+    } else if (titleDone && subtitleIndex >= subtitle.length) {
+      setSubtitleDone(true);
+    }
+  }, [titleDone, subtitleIndex, subtitle, subtitleSpeed]);
 
-    const tick = () => {
-      const i = iRef.current;
-      if (i >= text.length) {
-        if (onDone) onDone();
-        return;
-      }
-      const ch = text.charAt(i); // always defined string
-      setOut((prev) => prev + ch);
-      iRef.current = i + 1;
-      timerRef.current = setTimeout(tick, speed);
-    };
-
-    timerRef.current = setTimeout(tick, startDelay);
-    return () => clearTimeout(timerRef.current);
-  }, [text, speed, startDelay, onDone]);
+  // Body text typing (after subtitle is done)
+  useEffect(() => {
+    if (subtitleDone && bodyIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setBodyText((prev) => prev + text.charAt(bodyIndex));
+        setBodyIndex((prev) => prev + 1);
+      }, textSpeed);
+      return () => clearTimeout(timeout);
+    }
+  }, [subtitleDone, bodyIndex, text, textSpeed]);
 
   return (
     <div id="type-writer">
-      <span className={className} style={{ whiteSpace: "pre-wrap" }}>
-        {out}
-        {cursor && <span className="tw-caret">|</span>}
-      </span>
+      {title && <h1>{titleText}</h1>}
+      {subtitle && <h2>{subtitleText}</h2>}
+      {text && <p>{bodyText}</p>}
     </div>
   );
 }
 
-/* Optional CSS:
-.tw-caret {
-  display: inline-block;
-  animation: twblink 1s step-end infinite;
-}
-@keyframes twblink { 50% { opacity: 0; } }
+/* Usage:
+<Typewriter
+  title="Welcome"
+  subtitle="We build fast apps"
+  text="This is a demo of a typewriter effect with title, subtitle, and text."
+  titleSpeed={80}
+  subtitleSpeed={60}
+  textSpeed={40}
+/>
 */

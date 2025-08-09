@@ -1,78 +1,25 @@
 import "./landing.styles.scss";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { profileImage } from "../../constants/constants";
 import Typewriter from "../TypeWriter/TypeWrite";
-import { text } from "./landingData";
-// Creative text animation
-const textVariant = {
-  hidden: { opacity: 0, y: 50, rotate: -5 },
-  show: {
-    opacity: 1,
-    y: 0,
-    rotate: 0,
-    transition: {
-      type: "spring",
-      stiffness: 80,
-      damping: 12,
-      duration: 0.8,
-    },
-  },
-};
-
-// Creative image animation
-const imageVariant = {
-  hidden: { opacity: 0, scale: 0.8, rotate: 5 },
-  show: {
-    opacity: 1,
-    scale: 1,
-    rotate: 0,
-    transition: {
-      type: "spring",
-      stiffness: 70,
-      damping: 10,
-      delay: 0.3,
-    },
-  },
-};
+import { text, title, subTitle } from "./landingData";
 
 const Landing = () => {
   return (
     <div id="landing">
       <div className="landing-wrapper">
-        <motion.div
-          className="image-wrapper"
-          variants={imageVariant}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          whileHover={{ scale: 1.05, rotate: -2 }}
-        >
-          <img src={profileImage} alt="Profile" />
-        </motion.div>
         {/* Text Section */}
-        <motion.div
-          className="text-wrapper"
-          variants={textVariant}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <h1 className="heading">
-            MERN STACK MENTORSHIP <br /> PROGRAMME 2025
-          </h1>
-          <h2>
-            LAND A NEW CAREER WITH <br /> NEXT-LEVEL MENTORSHIP
-          </h2>
-
-          <Typewriter text={text} />
-
+        <div className="text-wrapper">
+          <Typewriter title={title} subtitle={subTitle} text={text} />
           <Link to="/mentorship" className="cta">
             Get Started!
           </Link>
-        </motion.div>
+        </div>
 
         {/* Image Section */}
+        <div className="image-wrapper">
+          <img src={profileImage} alt="Profile" />
+        </div>
       </div>
     </div>
   );

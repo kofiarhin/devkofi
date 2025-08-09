@@ -5,6 +5,7 @@
       margin-bottom: 2rem;
     }
     .text-wrapper {
+      margin-bottom: 3rem;
       .heading {
         color: var(--primary-color);
       }
@@ -32,8 +33,8 @@
 @media (min-width: 800px) {
   #landing {
     .landing-wrapper {
-      display: flex;
-      align-items: center;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       .image-wrapper {
         margin-right: 20px;
         order: 1;
