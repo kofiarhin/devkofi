@@ -8,6 +8,7 @@ import Faq from "../../components/Faq/Faq";
 import Features from "../../components/Features/Features";
 import Overview from "../../components/Overview/Overview";
 import Scale from "../../components/Scale/Scale";
+import IntegrateAI from "../../components/IntegrateAi/IntegrateAi";
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
       <Overview />
       <About />
       <Scale />
+      <IntegrateAI />
       <Pricing />
       <Faq />
       <Newsletter />
