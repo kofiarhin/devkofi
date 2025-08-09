@@ -2,7 +2,8 @@ import "./landing.styles.scss";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { profileImage } from "../../constants/constants";
-
+import Typewriter from "../TypeWriter/TypeWrite";
+import { text } from "./landingData";
 // Creative text animation
 const textVariant = {
   hidden: { opacity: 0, y: 50, rotate: -5 },
@@ -63,12 +64,9 @@ const Landing = () => {
           <h2>
             LAND A NEW CAREER WITH <br /> NEXT-LEVEL MENTORSHIP
           </h2>
-          <p>
-            Start Your Tech Career in 6 Months. Master the MERN Stack, gain
-            hands-on experience with AI tools, and accelerate your journey with
-            expert mentorship to become fully job-ready in today’s high-demand
-            tech industry.
-          </p>
+
+          <Typewriter text={text} />
+
           <Link to="/mentorship" className="cta">
             Get Started!
           </Link>

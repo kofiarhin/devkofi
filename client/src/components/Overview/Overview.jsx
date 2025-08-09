@@ -1,6 +1,8 @@
 import "./overview.styles.scss";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Typewriter from "../TypeWriter/TypeWrite";
+import { text } from "./overviewData";
 
 // Text animation variant
 const textVariant = {
@@ -64,12 +66,7 @@ const Overview = () => {
           <h1 className="heading">
             Your Mentorship....<span>Your way.... </span>
           </h1>
-          <p>
-            A personalized approach to guidance that adapts to your pace, your
-            goals, and your style of learning. Whether you seek direction,
-            accountability, or breakthrough strategies, this mentorship is built
-            around you—flexible, focused, and designed to unlock your next level
-          </p>
+          <Typewriter text={text} />
           <Link to="/mentorship" className="cta">
             Join Now
           </Link>
