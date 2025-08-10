@@ -17,9 +17,9 @@ const mentorshipSchema = new mongoose.Schema(
       lowercase: true,
       match: [/.+@.+\..+/, "Invalid email format"],
     },
-    package: {
+    packageName: {
       type: String,
-      default: "standard",
+      default: "Full-Stack Bootcamp: Standard",
     },
     phone: {
       type: String,

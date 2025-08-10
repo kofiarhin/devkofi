@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner/Spinner";
 import useMentorshipMutation from "../../hooks/useMentorshipMutation";
 import { motion } from "framer-motion";
+import { pricingData } from "./pricingData";
 import "./mentorship.styles.scss";
 
 // Animation variants
@@ -31,13 +32,17 @@ const buttonVariant = {
   tap: { scale: 0.95 },
 };
 
+const packageOptions = pricingData.map((pkg) => pkg.title);
+
 const MentorshipForm = () => {
   const navigate = useNavigate();
-  const { mutate, isPending, error, isSuccess, data } = useMentorshipMutation();
+  const { mutate, isPending, data } = useMentorshipMutation();
+
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
+    fullName: "david kraku",
+    email: "davidkraku69@gmail.com",
+    phone: "23422342432",
+    packageName: "",
   });
 
   const handleChange = (e) => {
@@ -47,18 +52,22 @@ const MentorshipForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(formData);
+    mutate(formData, {
+      onSuccess: (res) => {
+        if (res && res.success) {
+          navigate("/success?type=mentorship");
+        }
+      },
+    });
     setFormData({
       fullName: "",
       email: "",
       phone: "",
+      packageName: "",
     });
   };
 
   if (isPending) return <Spinner />;
-  if (data && data?.success) {
-    navigate("/success?type=mentorship");
-  }
 
   return (
     <section className="mentorship">
@@ -115,13 +124,34 @@ const MentorshipForm = () => {
             />
           </motion.div>
 
-          {data && data?.error && (
+          {/* Package */}
+          <motion.div className="form-group" variants={fieldVariant}>
+            <label htmlFor="packageName">Select Package*</label>
+            <select
+              id="packageName"
+              value={formData.packageName}
+              onChange={handleChange}
+              required
+            >
+              <option value="" disabled>
+                Choose a package
+              </option>
+              {packageOptions.map((pkg) => (
+                <option key={pkg} value={pkg}>
+                  {pkg}
+                </option>
+              ))}
+            </select>
+          </motion.div>
+
+          {/* API Error */}
+          {data && data.error && (
             <motion.p
               className="text-error"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              {data?.error}
+              {data.error}
             </motion.p>
           )}
 

@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import "./success.styles.scss";
 import { successData } from "./successData";
 
-// Animation Variants
 const containerVariant = {
   hidden: { opacity: 0 },
   show: {
@@ -29,12 +28,14 @@ const buttonVariant = {
   tap: { scale: 0.95 },
 };
 
+// ✅ Updated to motion.create()
+const MotionLink = motion.create(Link);
+
 const Success = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const type = queryParams.get("type");
 
-  // Fallback to default message if type is not provided or invalid
   const { heading, slug } = successData[type] || {
     heading: "Thank You for Contacting Me",
     slug: "Your message has been received successfully. I’ll get back to you as soon as possible.",
@@ -49,23 +50,20 @@ const Success = () => {
         animate="show"
       >
         <motion.div className="content" variants={containerVariant}>
-          {/* Heading */}
           <motion.h1 variants={headingVariant}>{heading}</motion.h1>
-
-          {/* Message */}
           <motion.p variants={textVariant}>{slug}</motion.p>
 
-          {/* Back Home Button */}
-          <motion.div variants={buttonVariant}>
-            <Link
-              to="/"
-              className="primary-btn"
-              whileHover="hover"
-              whileTap="tap"
-            >
-              Back to Home
-            </Link>
-          </motion.div>
+          <MotionLink
+            to="/"
+            className="primary-btn"
+            variants={buttonVariant}
+            initial="hidden"
+            animate="show"
+            whileHover="hover"
+            whileTap="tap"
+          >
+            Back to Home
+          </MotionLink>
         </motion.div>
       </motion.div>
     </section>

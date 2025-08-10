@@ -26,7 +26,7 @@ const app = express();
 // Middleware setup
 app.use(cors());
 app.use(express.json());
-// app.use(cleaner); //remove this code later
+app.use(cleaner); //remove this code later
 
 // Root endpoint
 app.get("/", (req, res) => {

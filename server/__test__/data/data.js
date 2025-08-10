@@ -7,6 +7,7 @@ const userTwo = {
   fullName: "esco visualz",
   email: "escovisualz@gmail.com",
   phone: "232342423",
+  packageName: "Team FullStack",
 };
 
 const testUser = {
