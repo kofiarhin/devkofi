@@ -20,6 +20,7 @@ const mentorshipRoutes = require("./routes/mentorshopRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 
@@ -47,5 +48,12 @@ app.use("/api/mentorship", mentorshipRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+
+app.use((req, res, next) => {
+  res.status(300);
+  throw new Error("page not found");
+});
+
+app.use(errorHandler);
 
 module.exports = app;
