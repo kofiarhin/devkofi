@@ -16,7 +16,7 @@ const contactRoute = require("./routes/contactRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
 const downloadRoutes = require("./routes/downloadRoutes");
 const templateRoutes = require("./routes/templateRoutes");
-const mentorshipRoutes = require("./routes/mentorshopRoutes");
+const mentorshipRoutes = require("./routes/mentorshipRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -50,7 +50,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
 app.use((req, res, next) => {
-  res.status(300);
+  res.status(404);
   throw new Error("page not found");
 });
 
