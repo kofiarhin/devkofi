@@ -60,6 +60,7 @@ img {
 .heading,
 .heading-medium,
 .heading-small {
+  color: var(--primary-color);
   &.center {
     text-align: center;
   }

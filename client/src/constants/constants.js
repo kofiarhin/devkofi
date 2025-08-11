@@ -6,3 +6,6 @@ export const codeSnippetImage =
 
 export const aiImage =
   "https://res.cloudinary.com/dlsiabgiw/image/upload/v1754713919/devkofi/nkhpiuk3ez4jv5jtgxl0.png";
+
+export const aboutMeImage =
+  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1754808945/devkofi/h1kotd65jlzqqyr1yrjh.png";

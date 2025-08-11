@@ -10,7 +10,7 @@ const Playground = () => {
 
   return (
     <div>
-      <TypeWriter text={text} speed={30} title={title} />
+      <Upload />
     </div>
   );
 };

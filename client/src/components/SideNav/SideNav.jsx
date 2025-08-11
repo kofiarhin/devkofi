@@ -52,6 +52,7 @@ const SideNav = () => {
 
   const links = [
     { to: "/", text: "Home" },
+    { to: "/about-me", text: "About Me" },
     { to: "/course-outline", text: "Course Outline" },
     {
       to: `${user ? "" : "/login"}`,

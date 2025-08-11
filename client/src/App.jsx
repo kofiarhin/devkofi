@@ -14,6 +14,8 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import { baseUrl } from "./constants/constants";
 import Login from "./Pages/Login/Login";
 import PrivateRoutes from "./components/PrivateRoute/PrivateRoutes";
+import AboutMe from "./Pages/AboutMe/AboutMe";
+
 // app component
 const App = () => {
   return (
@@ -29,6 +31,7 @@ const App = () => {
           <Route path="/mentorship" element={<JoinMentorship />} />
           <Route path="/course-outline" element={<CourseOutline />} />
           <Route path="/login" element={<Login />} />
+          <Route path="about-me" element={<AboutMe />} />
           <Route element={<PrivateRoutes />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/templates" element={<Templates />} />
