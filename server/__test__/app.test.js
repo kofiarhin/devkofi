@@ -34,6 +34,7 @@ describe("app", () => {
 
   it("should test for 404 page not found", async () => {
     const { statusCode, body } = await request(app).get("/api/no-route");
-    console.log({ statusCode, body });
+    expect(statusCode).toBe(404);
+    expect(body.error).toBeDefined();
   });
 });
