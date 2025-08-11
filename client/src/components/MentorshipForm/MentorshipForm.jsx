@@ -39,9 +39,9 @@ const MentorshipForm = () => {
   const { mutate, isPending, data } = useMentorshipMutation();
 
   const [formData, setFormData] = useState({
-    fullName: "david kraku",
-    email: "davidkraku69@gmail.com",
-    phone: "23422342432",
+    fullName: "",
+    email: "",
+    phone: "",
     packageName: "",
   });
 
