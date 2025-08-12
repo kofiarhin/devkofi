@@ -9,3 +9,6 @@ export const aiImage =
 
 export const aboutMeImage =
   "https://res.cloudinary.com/dlsiabgiw/image/upload/v1754808945/devkofi/h1kotd65jlzqqyr1yrjh.png";
+
+export const profileSmall =
+  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1754978051/devkofi/pj7bwbv4di9bznwv3qxp.jpg";

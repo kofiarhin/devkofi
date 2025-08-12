@@ -5,6 +5,11 @@ import { motion } from "framer-motion";
 import useJoinNewsletterMutation from "../../hooks/useJoinNewsletterMutation";
 import Spinner from "../Spinner/Spinner";
 import { useNavigate } from "react-router-dom";
+import {
+  aboutMeImage,
+  profileImage,
+  profileSmall,
+} from "../../constants/constants";
 
 // Variants
 const headingVariant = {
@@ -65,6 +70,10 @@ const Newsletter = () => {
       >
         Join Newsletter
       </motion.h1>
+
+      <div className="image-wrapper">
+        <img src={profileSmall} alt="" />
+      </div>
 
       {/* Animated Paragraph */}
       <motion.p
