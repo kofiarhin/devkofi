@@ -112,7 +112,7 @@ const Newsletter = () => {
     >
       {/* Animated Heading */}
       <motion.h1 className="heading center" variants={headingVariant}>
-        Join Newsletter
+        Get Free Developer Tips & Tools Every Week
       </motion.h1>
 
       {/* Profile Image */}
@@ -127,8 +127,8 @@ const Newsletter = () => {
 
       {/* Animated Paragraph */}
       <motion.p variants={paragraphVariant}>
-        Subscribe to get updates, tips, and exclusive content straight to your
-        inbox.
+        Learn faster, code smarter, and get insider developer tips delivered
+        every Monday
       </motion.p>
 
       {/* Animated Form */}
