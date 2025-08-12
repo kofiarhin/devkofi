@@ -110,11 +110,6 @@ const Newsletter = () => {
       whileInView="show"
       viewport={{ once: true, amount: 0.3 }}
     >
-      {/* Animated Heading */}
-      <motion.h1 className="heading center" variants={headingVariant}>
-        Get Free Developer Tips & Tools Every Week
-      </motion.h1>
-
       {/* Profile Image */}
       <motion.div
         className="image-wrapper"
@@ -124,6 +119,11 @@ const Newsletter = () => {
       >
         <img src={profileSmall} alt="" />
       </motion.div>
+
+      {/* Animated Heading */}
+      <motion.h1 className="heading center" variants={headingVariant}>
+        Get Free Developer Tips & Tools Every Week
+      </motion.h1>
 
       {/* Animated Paragraph */}
       <motion.p variants={paragraphVariant}>
