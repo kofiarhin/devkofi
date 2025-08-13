@@ -89,7 +89,10 @@ const downloadFile = async (fileName = "default") => {
 
 const joinMentorship = async (data) => {
   try {
-    const res = await fetch("/api/mentorship", {
+    const url = import.meta.env.DEV
+      ? "/api/mentorship"
+      : `${baseUrl}/api/mentorship`;
+    const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -115,7 +118,9 @@ const joinMentorship = async (data) => {
 
 // src/services/services.js
 const getGitHubInfo = async (query = "daily") => {
-  const url = "http://localhost:5000/api/info/github?query=daily";
+  const url = import.meta.env.DEV
+    ? "http://localhost:5000/api/info/github?query=daily"
+    : `${baseUrl}/api/info/github?query=daily`;
   const res = await fetch(url);
   const data = await res.json();
   return data;
