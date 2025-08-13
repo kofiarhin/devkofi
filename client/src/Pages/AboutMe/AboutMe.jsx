@@ -1,4 +1,5 @@
 import "./aboutMe.styles.scss";
+import GitHubHeatMap from "../../components/GitHubHeatMap/GitHubHeatMap";
 import { aboutMeImage } from "../../constants/constants";
 // import { textVariant, imageVariant } from "../Animations/animationVariants";
 import {
@@ -7,8 +8,10 @@ import {
 } from "../../components/Animations/animationVariants";
 // import AnimatedSection from "../Animations/AnimatedSection";
 import AnimatedSection from "../../components/Animations/AnimatedSection";
+import useGithubInfoQuery from "../../hooks/useGithubInfoQuery";
 
 const AboutMe = () => {
+  const { data } = useGithubInfoQuery();
   return (
     <div id="about-me">
       <div className="container">
@@ -60,6 +63,13 @@ const AboutMe = () => {
             </p>
           </AnimatedSection>
         </div>
+
+        {/* git conttribution */}
+        <>
+          <h2>Git Contributions</h2>
+          {data && data.length > 0 && <GitHubHeatMap data={data} />}
+        </>
+        {/* end git contribution */}
       </div>
     </div>
   );

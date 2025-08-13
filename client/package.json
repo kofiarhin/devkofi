@@ -8,9 +8,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start-server": "cd ../ && npm run server",
-    "test": "vitest",
-    "test:current": "vitest run ."
+    "start:server": "cd ../ && npm run server",
+    "test:start": "vitest .",
+    "test": "concurrently \"npm run start:server\" \"npm run test:start\" ",
+    "test:client": "vitest ."
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",

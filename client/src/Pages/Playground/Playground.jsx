@@ -1,17 +1,11 @@
-import Upload from "../../components/Upload/Upload";
-import TypeWriter from "../../components/TypeWriter/TypeWrite";
-import Login from "../Login/Login";
-import IntegrateAI from "../../components/IntegrateAi/IntegrateAi";
+import GitHubHeatMap from "../../components/GitHubHeatMap/GitHubHeatMap";
+import useGithubInfoQuery from "../../hooks/useGithubInfoQuery";
+
 const Playground = () => {
-  const text =
-    "Harness the power of the ChatGPT API and Grok API to add intelligence to your apps. From natural language understanding to real-time insights, build smarter, faster, and more adaptive experiences—tailored to your vision.";
-
-  const title = "Mern Stack Mentorship";
-
+  const { data } = useGithubInfoQuery();
+  console.log({ data });
   return (
-    <div>
-      <Upload />
-    </div>
+    <div className="container">{data && <GitHubHeatMap data={data} />}</div>
   );
 };
 

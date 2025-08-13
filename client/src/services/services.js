@@ -113,6 +113,14 @@ const joinMentorship = async (data) => {
   }
 };
 
+// src/services/services.js
+const getGitHubInfo = async (query = "daily") => {
+  const url = "http://localhost:5000/api/info/github?query=daily";
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
+};
+
 export {
   test,
   getUsers,
@@ -120,4 +128,5 @@ export {
   sendMessage,
   downloadFile,
   joinMentorship,
+  getGitHubInfo,
 };

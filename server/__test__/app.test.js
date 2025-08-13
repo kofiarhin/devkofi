@@ -1,4 +1,8 @@
 const app = require("../app");
+const {
+  fetchGitHubContributions,
+  fetchDailyGitHubContributions,
+} = require("../utility/helper");
 const request = require("supertest");
 const { userTwo } = require("./data/data");
 
@@ -36,5 +40,33 @@ describe("app", () => {
     const { statusCode, body } = await request(app).get("/api/no-route");
     expect(statusCode).toBe(404);
     expect(body.error).toBeDefined();
+  });
+
+  it("should fetch git contributions successfully", async () => {
+    const result = await fetchGitHubContributions();
+    expect(result).toBeDefined();
+  });
+
+  it("should test fot daily git contribution data successfully", async () => {
+    const { data } = await fetchDailyGitHubContributions();
+    expect(data.length).toBeGreaterThan(0);
+  });
+
+  it("should test fo info routes succefully", async () => {
+    const { statusCode, body } = await request(app).get("/api/info");
+    console.log({ statusCode, body });
+  });
+
+  it("should test fo info on daily git hub contribution routes succefully", async () => {
+    const { statusCode, body } = await request(app).get(
+      "/api/info/github?query=daily"
+    );
+    expect(statusCode).toBe(200);
+  });
+
+  it("should get total git contributions when query is not provided", async () => {
+    const { statusCode, body } = await request(app).get("/api/info/github");
+    expect(statusCode).toBe(200);
+    expect(body).toBeGreaterThan(0);
   });
 });

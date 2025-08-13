@@ -21,6 +21,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const errorHandler = require("./middlewares/errorHandler");
+const infoRoutes = require("./routes/infoRoutes");
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use("/api/mentorship", mentorshipRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/info", infoRoutes);
 
 app.use((req, res, next) => {
   res.status(404);
