@@ -1,21 +1,24 @@
 import "./aboutMe.styles.scss";
 import GitHubHeatMap from "../../components/GitHubHeatMap/GitHubHeatMap";
 import { aboutMeImage } from "../../constants/constants";
-// import { textVariant, imageVariant } from "../Animations/animationVariants";
 import {
   textVariant,
   imageVariant,
 } from "../../components/Animations/animationVariants";
-// import AnimatedSection from "../Animations/AnimatedSection";
 import AnimatedSection from "../../components/Animations/AnimatedSection";
 import useGithubInfoQuery from "../../hooks/useGithubInfoQuery";
 
 const AboutMe = () => {
   const { data } = useGithubInfoQuery();
+
+  // Ensure we only render if we truly have an array with items
+  const hasContribData = Array.isArray(data) && data.length > 0;
+
   return (
     <div id="about-me">
       <div className="container">
         <h1 className="heading center">About Me</h1>
+
         <div className="about-me-wrapper">
           {/* image-wrapper */}
           <AnimatedSection
@@ -62,17 +65,16 @@ const AboutMe = () => {
               experimenting, and contributing to something meaningful.
             </p>
           </AnimatedSection>
+          {/* end text-wrapper */}
         </div>
 
-        {/* git conttribution */}
-        <>
-          {data && data.length > 0 && (
-            <>
-              <h2>Git Contributions</h2>
-              <GitHubHeatMap data={data} />
-            </>
-          )}
-        </>
+        {/* git contribution */}
+        {hasContribData && (
+          <>
+            <h2>Git Contributions</h2>
+            <GitHubHeatMap data={data} />
+          </>
+        )}
         {/* end git contribution */}
       </div>
     </div>
