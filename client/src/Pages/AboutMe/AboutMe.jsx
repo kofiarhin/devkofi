@@ -66,8 +66,12 @@ const AboutMe = () => {
 
         {/* git conttribution */}
         <>
-          <h2>Git Contributions</h2>
-          {data && data.length > 0 && <GitHubHeatMap data={data} />}
+          {data && data.length > 0 && (
+            <>
+              <h2>Git Contributions</h2>
+              <GitHubHeatMap data={data} />
+            </>
+          )}
         </>
         {/* end git contribution */}
       </div>
