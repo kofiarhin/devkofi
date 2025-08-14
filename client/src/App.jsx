@@ -15,6 +15,7 @@ import { baseUrl } from "./constants/constants";
 import Login from "./Pages/Login/Login";
 import PrivateRoutes from "./components/PrivateRoute/PrivateRoutes";
 import AboutMe from "./Pages/AboutMe/AboutMe";
+import Register from "./Pages/Register/Register";
 
 // app component
 const App = () => {

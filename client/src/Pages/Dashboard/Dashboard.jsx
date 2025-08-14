@@ -1,5 +1,5 @@
-import React from "react";
 import "./dashboard.styles.scss";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   return (
@@ -9,6 +9,12 @@ const Dashboard = () => {
       </header>
 
       <div className="dashboard-content">
+        <div className="card">
+          <h2>Register User</h2>
+          <p>Register a new user</p>
+          <Link to="/register">Register User</Link>
+        </div>
+
         <div className="card">
           <h2>Users</h2>
           <p>Manage all registered users.</p>

@@ -5,19 +5,30 @@ const newsletterModel = require("../Model/newsletterModel");
 const Mentorship = require("../Model/mentorshipModel");
 const Contact = require("../Model/contactModel");
 const { userOne } = require("./data/data");
+const User = require("../Model/userModel");
+
+const clearDB = async () => {
+  await Newsletter.deleteMany();
+  await Mentorship.deleteMany();
+  await Contact.deleteMany();
+  await User.deleteMany();
+};
 
 beforeAll(async () => {
   try {
     const url = process.env.MONGO_URI_TEST;
     const conn = await mongoose.connect(url);
-    await Newsletter.deleteMany();
-    await Mentorship.deleteMany();
+
     await Mentorship.create({ ...userOne });
-    await Contact.deleteMany();
+    clearDB();
   } catch (error) {
     console.log(error);
     process.exit(1);
   }
+});
+
+beforeEach(async () => {
+  await User.deleteMany();
 });
 
 afterAll(async () => {

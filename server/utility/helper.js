@@ -2,6 +2,8 @@ const Newsletter = require("../Model/newsletterModel");
 const Mentorship = require("../Model/mentorshipModel");
 const sendEmail = require("./sendEmail");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const User = require("../Model/userModel");
 const {
   welcomeEmail,
   generateNewSubscriptionEmail,
@@ -117,7 +119,6 @@ const fetchGitHubContributions = async () => {
   if (!res.ok) throw new Error(`GitHub API error: ${res.statusText}`);
 
   const data = await res.json();
-  console.log({ data });
   return data.data.user.contributionsCollection.contributionCalendar
     .totalContributions;
 };
@@ -181,7 +182,21 @@ const fetchDailyGitHubContributions = async () => {
   return { data: days };
 };
 
+const createUser = async (userData) => {
+  const { password, ...rest } = userData;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  const newUser = await User.create({
+    ...rest,
+    password: hashedPassword,
+  });
+
+  const { password: userPassword, ...r } = newUser._doc;
+  return { ...r };
+};
+
 module.exports = {
+  createUser,
   createNewsletterUser,
   uploadImage,
   joinMentorship,

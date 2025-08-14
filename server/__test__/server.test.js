@@ -2,9 +2,10 @@ const app = require("../app");
 const {
   fetchGitHubContributions,
   fetchDailyGitHubContributions,
+  createUser,
 } = require("../utility/helper");
 const request = require("supertest");
-const { userTwo } = require("./data/data");
+const { userTwo, testUser } = require("./data/data");
 
 describe("app", () => {
   it("should just pass", async () => {
@@ -57,7 +58,7 @@ describe("app", () => {
     console.log({ statusCode, body });
   });
 
-  it("should test fo info on daily git hub contribution routes succefully", async () => {
+  it("should test info on daily git hub contribution routes succefully", async () => {
     const { statusCode, body } = await request(app).get(
       "/api/info/github?query=daily"
     );
@@ -68,5 +69,35 @@ describe("app", () => {
     const { statusCode, body } = await request(app).get("/api/info/github");
     expect(statusCode).toBe(200);
     expect(body).toBeGreaterThan(0);
+  });
+
+  it("should get list pricing list successfully", async () => {
+    const { statusCode, body } = await request(app).get("/api/pricing");
+    expect(statusCode).toBe(200);
+    expect(body.length).toBeGreaterThan(0);
+  });
+
+  it("should get pricing item successfully", async () => {
+    const { statusCode, body } = await request(app).get("/api/pricing/1");
+    expect(statusCode).toBe(200);
+    expect(body).toBeDefined();
+  });
+
+  it("should register user properly", async () => {
+    const { statusCode, body } = await request(app)
+      .post("/api/auth/register")
+      .send(testUser);
+    expect(statusCode).toBe(201);
+  });
+
+  it("should create user properly", async () => {
+    const user = await createUser({
+      fullName: "test",
+      email: "test@gmail.com",
+      password: "password",
+      pricingId: 1,
+    });
+
+    expect(user._id).toBeDefined();
   });
 });

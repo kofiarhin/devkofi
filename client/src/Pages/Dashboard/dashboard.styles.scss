@@ -3,6 +3,10 @@
   color: #f1f1f1;
   min-height: 100vh;
   padding: 20px;
+  a {
+    color: white;
+    text-decoration: none;
+  }
 }
 
 .dashboard-header {
@@ -43,7 +47,8 @@
   margin-bottom: 15px;
 }
 
-.card button {
+.card button,
+.card a {
   background-color: #ffeb3b;
   color: #000;
   padding: 10px 15px;

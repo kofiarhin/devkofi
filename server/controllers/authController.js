@@ -1,4 +1,4 @@
-const { generateToken } = require("../utility/helper");
+const { generateToken, createUser } = require("../utility/helper");
 const jwt = require("jsonwebtoken");
 const Mentorship = require("../Model/mentorshipModel");
 
@@ -20,8 +20,21 @@ const loginUser = async (req, res, next) => {
 
 // register user
 const registerUser = async (req, res, next) => {
-  return res.json({ message: "register user" });
+  try {
+    const { fullName, email, password, pricingId } = req.body;
+    if (!fullName || !email || !password || !pricingId) {
+      res.status(400);
+      throw new Error("please fill out all fields");
+    }
+    const user = await createUser({ fullName, email, password, pricingId });
+    res.status(201);
+    return res.json(user);
+  } catch (error) {
+    next(error);
+  }
 };
+
+// verify user
 const verifyUser = async (req, res, next) => {
   try {
     const { token } = req.query;

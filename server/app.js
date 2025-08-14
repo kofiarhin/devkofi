@@ -22,6 +22,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const errorHandler = require("./middlewares/errorHandler");
 const infoRoutes = require("./routes/infoRoutes");
+const pricingRoutes = require("./routes/pricingRoutes");
 
 const app = express();
 
@@ -50,6 +51,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/info", infoRoutes);
+app.use("/api/pricing", pricingRoutes);
 
 app.use((req, res, next) => {
   res.status(404);

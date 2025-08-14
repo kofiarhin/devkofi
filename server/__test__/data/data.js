@@ -13,7 +13,9 @@ const userTwo = {
 const testUser = {
   fullName: "color palette",
   email: "colorpalettevault@gmail.com",
+  password: "password",
   phone: "23243243434",
+  pricingId: 2,
 };
 
 module.exports = {
