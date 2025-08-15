@@ -83,13 +83,6 @@ describe("app", () => {
     expect(body).toBeDefined();
   });
 
-  it("should register user properly", async () => {
-    const { statusCode, body } = await request(app)
-      .post("/api/auth/register")
-      .send(testUser);
-    expect(statusCode).toBe(201);
-  });
-
   it("should create user properly", async () => {
     const user = await createUser({
       fullName: "test",
@@ -99,5 +92,22 @@ describe("app", () => {
     });
 
     expect(user._id).toBeDefined();
+  });
+
+  it("should register user properly", async () => {
+    const { statusCode, body } = await request(app)
+      .post("/api/auth/register")
+      .send(testUser);
+    expect(statusCode).toBe(201);
+  });
+
+  it("should login user properly user properly", async () => {
+    await request(app).post("/api/auth/register").send(testUser);
+
+    const { statusCode, body } = await request(app)
+      .post("/api/auth/login")
+      .send({ email: testUser.email, password: testUser.password });
+    expect(statusCode).toBe(200);
+    expect(body.token).toBeDefined();
   });
 });
