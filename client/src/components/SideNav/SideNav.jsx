@@ -55,6 +55,10 @@ const SideNav = () => {
     { to: "/about-me", text: "About Me" },
     { to: "/course-outline", text: "Course Outline" },
     {
+      to: `${user ? "" : "/register"}`,
+      text: `${user ? "" : "Register"}`,
+    },
+    {
       to: `${user ? "" : "/login"}`,
       text: `${user ? "" : "Login"}`,
     },
