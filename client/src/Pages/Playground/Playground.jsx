@@ -1,11 +1,10 @@
-import GitHubHeatMap from "../../components/GitHubHeatMap/GitHubHeatMap";
-import useGithubInfoQuery from "../../hooks/useGithubInfoQuery";
+import Register from "../../Pages/Register/Register";
 
 const Playground = () => {
-  const { data } = useGithubInfoQuery();
-  console.log({ data });
   return (
-    <div className="container">{data && <GitHubHeatMap data={data} />}</div>
+    <div>
+      <Register />
+    </div>
   );
 };
 

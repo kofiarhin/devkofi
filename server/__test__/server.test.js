@@ -1,11 +1,12 @@
 const app = require("../app");
+const { mockRegisterUser, mockLoginUser, fullAuth } = require("./helper");
 const {
   fetchGitHubContributions,
   fetchDailyGitHubContributions,
   createUser,
 } = require("../utility/helper");
 const request = require("supertest");
-const { userTwo, testUser } = require("./data/data");
+const { userTwo, testUser, invalidUser } = require("./data/data");
 
 describe("app", () => {
   it("should just pass", async () => {
@@ -55,7 +56,6 @@ describe("app", () => {
 
   it("should test fo info routes succefully", async () => {
     const { statusCode, body } = await request(app).get("/api/info");
-    console.log({ statusCode, body });
   });
 
   it("should test info on daily git hub contribution routes succefully", async () => {
@@ -109,5 +109,27 @@ describe("app", () => {
       .send({ email: testUser.email, password: testUser.password });
     expect(statusCode).toBe(200);
     expect(body.token).toBeDefined();
+  });
+
+  it("should get user profile properly", async () => {
+    await request(app).post("/api/auth/register").send(testUser);
+    const {
+      body: { token, user },
+    } = await request(app)
+      .post("/api/auth/login")
+      .send({ email: testUser.email, password: testUser.password });
+
+    const { statusCode, body } = await request(app)
+      .get(`/api/users/${user._id}`)
+      .set("Authorization", `Bearer ${token}`);
+    expect(statusCode).toBe(200);
+    expect(body._id).toBeDefined();
+  });
+
+  it("should not login user with invalid credentials", async () => {
+    const { statusCode, body } = await mockLoginUser(invalidUser);
+    expect(statusCode).toBe(404);
+    console.log({ body });
+    expect(body.success).toBe(false);
   });
 });

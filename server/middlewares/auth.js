@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const mentorship = require("../Model/mentorshipModel");
+const User = require("../Model/userModel");
 
 const auth = async (req, res, next) => {
   try {
@@ -15,7 +16,7 @@ const auth = async (req, res, next) => {
     if (!email) {
       throw new Error("unauthorized access: invalid email");
     }
-    const foundUser = await mentorship.findOne({ email });
+    const foundUser = await User.findOne({ email });
     if (!foundUser) {
       throw new Error("unauthorized access: user not found");
     }

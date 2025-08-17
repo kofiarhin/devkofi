@@ -17,9 +17,15 @@ const testUser = {
   phone: "23243243434",
   pricingId: 2,
 };
+const invalidUser = {
+  fullName: "invalid user",
+  email: "invalidUser@gmail.com",
+  password: "password",
+};
 
 module.exports = {
   userOne,
   testUser,
   userTwo,
+  invalidUser,
 };
