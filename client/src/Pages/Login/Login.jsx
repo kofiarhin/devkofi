@@ -39,15 +39,15 @@ const Login = () => {
   const { user } = useSelector((state) => state.auth);
   const { mutate, isPending, error, isSuccess, data } = useLoginMutation();
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: "test@gmail.com",
+    password: "password",
   });
 
-  useEffect(() => {
-    if (user) {
-      navigate("/dashboard");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate("/dashboard");
+  //   }
+  // }, [user]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -56,19 +56,19 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(formData);
-  };
-
-  if (isPending) return <Spinner />;
-  if (data && data?.success) {
-    dispatch(setUser(data?.user));
-    localStorage.setItem("user", JSON.stringify(data?.user));
-    setFormData({
-      email: "",
-      password: "",
+    mutate(formData, {
+      onSuccess: (data) => {
+        console.log({ data });
+        dispatch(setUser(data?.user));
+        localStorage.setItem("user", JSON.stringify(data?.user));
+        setFormData({
+          email: "",
+          password: "",
+        });
+        navigate("/dashboard");
+      },
     });
-    navigate("/dashboard");
-  }
+  };
 
   return (
     <section className="mentorship">

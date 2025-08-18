@@ -7,29 +7,26 @@ const bcrypt = require("bcryptjs");
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
+    if (!email || !password) {
+      res.status(400);
+      throw new Error("please fill out all fields");
+    }
+    const foundUser = await User.findOne({ email });
+    if (!foundUser) {
       res.status(404);
       throw new Error("user not found");
     }
 
-    // compare password;
-    const check = await bcrypt.compare(password, user.password);
-
-    if (!check) {
+    // compare passwords
+    const auth = await bcrypt.compare(password, foundUser.password);
+    if (!auth) {
       res.status(400);
       throw new Error("invalid credentials");
     }
 
-    const { password: userPassword, ...rest } = user._doc;
-    const token = generateToken({ email });
+    const token = await generateToken(foundUser._id);
+    const { password: userPassword, ...rest } = foundUser._doc;
     return res.json({ success: true, user: { ...rest }, token });
-    if (
-      email !== process.env.ADMIN_EMAIL ||
-      password !== process.env.ADMIN_PASSWORD
-    ) {
-      throw new Error("invalid credentials");
-    }
   } catch (error) {
     next(error);
   }

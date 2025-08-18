@@ -37,7 +37,6 @@ const pricingOptions = pricingData.map((price) => ({
   id: price.id,
   title: price.title,
 }));
-console.log({ pricingOptions });
 
 const Register = () => {
   const navigate = useNavigate();
@@ -62,7 +61,7 @@ const Register = () => {
     mutate(formData, {
       onSuccess: (res) => {
         console.log("where we at with it... ");
-        console.log({ data });
+        navigate("/login");
         // if (res && res.success) {
         //   navigate("/success?type=mentorship");
         // }
