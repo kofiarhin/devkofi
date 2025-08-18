@@ -10,12 +10,12 @@ import Error from "./Pages/Error/Error";
 import Playground from "./Pages/Playground/Playground";
 import JoinMentorship from "./Pages/JoinMentorship/JoinMentorship";
 import CourseOutline from "./Pages/CourseOutline/CourseOutline";
-import Dashboard from "./Pages/Dashboard/Dashboard";
 import { baseUrl } from "./constants/constants";
 import Login from "./Pages/Login/Login";
 import PrivateRoutes from "./components/PrivateRoute/PrivateRoutes";
 import AboutMe from "./Pages/AboutMe/AboutMe";
 import Register from "./Pages/Register/Register";
+import Portal from "./Pages/Portal/Portal";
 
 // app component
 const App = () => {
@@ -35,8 +35,8 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="about-me" element={<AboutMe />} />
           <Route element={<PrivateRoutes />}>
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/templates" element={<Templates />} />
+            <Route path="/portal" element={<Portal />} />
           </Route>
         </Routes>
         <Footer />

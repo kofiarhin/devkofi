@@ -65,7 +65,7 @@ const Login = () => {
           email: "",
           password: "",
         });
-        navigate("/dashboard");
+        navigate("/portal");
       },
     });
   };
