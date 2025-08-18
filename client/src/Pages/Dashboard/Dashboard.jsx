@@ -9,10 +9,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <header className="dashboard-header">
-        <h1> Welcome {user?.fullName} </h1>
-      </header>
-      {user.role === "student" && <StudentDashboard />}
+      {user.role === "student" && <StudentDashboard user={user} />}
       {user.role === "admin" && <AdminDashboard />}
     </div>
   );
