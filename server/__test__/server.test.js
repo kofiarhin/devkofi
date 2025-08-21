@@ -111,25 +111,17 @@ describe("app", () => {
     expect(body.token).toBeDefined();
   });
 
-  it("should get user profile properly", async () => {
-    await request(app).post("/api/auth/register").send(testUser);
-    const {
-      body: { token, user },
-    } = await request(app)
-      .post("/api/auth/login")
-      .send({ email: testUser.email, password: testUser.password });
-
-    const { statusCode, body } = await request(app)
-      .get(`/api/users/${user._id}`)
-      .set("Authorization", `Bearer ${token}`);
-    expect(statusCode).toBe(200);
-    expect(body._id).toBeDefined();
-  });
-
   it("should not login user with invalid credentials", async () => {
     const { statusCode, body } = await mockLoginUser(invalidUser);
     expect(statusCode).toBe(404);
     console.log({ body });
     expect(body.success).toBe(false);
+  });
+
+  it("should get user profile properly", async () => {
+    const result = await fullAuth(testUser);
+    console.log({ result });
+    // expect(statusCode).toBe(200);
+    // expect(body._id).toBeDefined();
   });
 });

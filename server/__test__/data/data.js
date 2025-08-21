@@ -1,21 +1,26 @@
 const userOne = {
   fullName: "david kraku",
   email: "david kraku69@gmail.com",
+  password: "password",
   phone: "342334234234",
+  role: "student",
 };
 const userTwo = {
   fullName: "esco visualz",
   email: "escovisualz@gmail.com",
+  password: "password",
   phone: "232342423",
-  packageName: "Team FullStack",
+  pricingId: 2,
+  role: "student",
 };
 
 const testUser = {
-  fullName: "color palette",
-  email: "colorpalettevault@gmail.com",
-  password: "password",
-  phone: "23243243434",
+  fullName: "John Doe",
+  email: "johndoe@example.com",
+  password: "hashedpassword123",
+  phone: "434324242342",
   pricingId: 2,
+  role: "student",
 };
 const invalidUser = {
   fullName: "invalid user",

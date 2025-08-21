@@ -53,7 +53,10 @@ const Header = () => {
           <Link to="/contact">Contact</Link>
           {import.meta.env.DEV ? <Link to="/playground">Playground</Link> : ""}
           {user ? (
-            <button onClick={handleLogout}> Logout</button>
+            <>
+              <Link to="/portal">Portal</Link>
+              <button onClick={handleLogout}> Logout</button>
+            </>
           ) : (
             <>
               <Link to="/login">Login</Link>

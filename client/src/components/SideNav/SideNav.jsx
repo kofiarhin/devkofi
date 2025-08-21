@@ -59,6 +59,10 @@ const SideNav = () => {
       text: `${user ? "" : "Register"}`,
     },
     {
+      to: `${user ? "/portal" : ""}`,
+      text: `${user ? "Portal" : ""}`,
+    },
+    {
       to: `${user ? "" : "/login"}`,
       text: `${user ? "" : "Login"}`,
     },
