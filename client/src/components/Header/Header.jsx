@@ -40,7 +40,7 @@ const Header = () => {
           {user ? (
             <button onClick={handleLogout}> Logout</button>
           ) : (
-            <button onClick={() => navigate("/mentorship")}> Join Now!</button>
+            <button onClick={() => navigate("/register")}> Join Now!</button>
           )}
 
           <FaBars onClick={handleToggleNav} className="menu" />
@@ -60,7 +60,7 @@ const Header = () => {
           ) : (
             <>
               <Link to="/login">Login</Link>
-              <button onClick={() => navigate("/mentorship")} className="join">
+              <button onClick={() => navigate("/register")} className="join">
                 Join Now
               </button>
             </>
