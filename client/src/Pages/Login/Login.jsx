@@ -60,7 +60,11 @@ const Login = () => {
       onSuccess: (data) => {
         console.log({ data });
         dispatch(setUser(data?.user));
-        localStorage.setItem("user", JSON.stringify(data?.user));
+        if (data?.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+        } else {
+          localStorage.removeItem("user");
+        }
         setFormData({
           email: "",
           password: "",
