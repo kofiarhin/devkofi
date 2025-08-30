@@ -1,4 +1,4 @@
-name: Deploy client to Namecheap public_html
+name: Deploy client to Namecheap (root)
 
 on:
   push:
@@ -11,11 +11,9 @@ jobs:
     environment: Production
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
@@ -31,12 +29,12 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          username: ${{ secrets.FTP_USERNAME }}   # deploy@devkofi.com
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          protocol: ${{ secrets.FTP_PROTOCOL }}
-          local-dir: client/dist/       # only the contents
-          server-dir: /public_html/     # root public_html
+          port: ${{ secrets.FTP_PORT }}           # 21
+          protocol: ${{ secrets.FTP_PROTOCOL }}   # ftps
+          local-dir: client/dist/                 # uploads CONTENTS only
+          server-dir: /                           # 👈 home == /public_html; don't nest another folder
           exclude: |
             **/.git*
             **/.github/**
