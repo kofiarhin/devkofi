@@ -44,9 +44,9 @@ const Register = () => {
 
   const [formData, setFormData] = useState({
     fullName: "test",
-    email: "",
-    phone: "",
-    password: "",
+    email: "test@gmail.com",
+    phone: "12121212",
+    password: "password",
     packageName: "",
     pricingId: 1,
   });

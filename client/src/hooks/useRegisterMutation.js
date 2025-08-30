@@ -5,7 +5,7 @@ const registerUser = async (userData) => {
   try {
     const url = import.meta.env.DEV
       ? "/api/auth/register"
-      : `${baseUrl}/api/register`;
+      : `${baseUrl}/api/auth/register`;
     const res = await fetch(url, {
       headers: {
         "content-type": "application/json",
