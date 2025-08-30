@@ -2,7 +2,7 @@ name: Deploy client to Namecheap
 
 on:
   push:
-    branches: [ main ]  # change if needed
+    branches: [ master ]  # change if needed
 
 jobs:
   deploy:
