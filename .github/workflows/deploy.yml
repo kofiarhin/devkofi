@@ -2,7 +2,7 @@ name: Deploy client to Namecheap
 
 on:
   push:
-    branches: [ master ]  # change if needed
+    branches: [ master, main ]
 
 jobs:
   deploy:
@@ -22,18 +22,18 @@ jobs:
         working-directory: client
         run: |
           npm ci
-          npm run build   # outputs to client/dist
+          npm run build
 
       - name: Upload dist contents to public_html
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ${{ secrets.FTP_PROTOCOL }}  # ftps
-          local-dir: client/dist/   # uploads the CONTENTS of dist
-          server-dir: /             # / == public_html for your FTP user
+          local-dir: client/dist/
+          server-dir: /
           exclude: |
             **/.git*
             **/.github/**
