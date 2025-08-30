@@ -1,7 +1,7 @@
 // src/components/Footer.jsx
 import { motion } from "framer-motion";
 import { FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
-import "../styles/footer.styles.scss";
+import "./footer.styles.scss";
 
 const footerVariant = {
   hidden: { opacity: 0, y: 20 },
@@ -25,8 +25,6 @@ const sections = [
       { label: "About DevKofi", href: "/about" },
       { label: "Contact Us", href: "/contact" },
       { label: "Support", href: "/support" },
-      { label: "API Docs", href: "/api" },
-      { label: "System Status", href: "/status" },
     ],
   },
   {
@@ -49,9 +47,7 @@ const sections = [
     title: "Legal",
     links: [
       { label: "Terms of Use", href: "/terms" },
-      { label: "API Terms", href: "/api-terms" },
       { label: "Privacy Policy", href: "/privacy" },
-      { label: "DMCA Policy", href: "/dmca" },
     ],
   },
 ];
@@ -76,10 +72,6 @@ const Footer = () => {
           <a href="/" aria-label="DevKofi Home">
             <span className="brand__name">DevKofi</span>
           </a>
-
-          <form className="search" role="search" aria-label="Footer search" onSubmit={(e) => e.preventDefault()}>
-            <input type="search" placeholder="Search" aria-label="Search" />
-          </form>
         </div>
 
         <div className="grid">
