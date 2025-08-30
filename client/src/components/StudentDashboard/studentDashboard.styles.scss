@@ -3,7 +3,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: var(--bg-dark-light);
   min-height: 100vh;
 }
 
@@ -19,7 +19,7 @@
 }
 
 .nav {
-  margin-bottom: 30px;
+  margin-bottom: 2px;
 }
 
 .main {
@@ -27,17 +27,8 @@
   grid-template-columns: 1fr;
   gap: 20px;
 }
-
-@media (min-width: 768px) {
-  .main {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .main {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.main .card .card-icon {
+  margin-bottom: 1rem;
 }
 
 .card {
@@ -75,4 +66,17 @@
   font-size: 1.2rem;
   color: #666;
   margin: 5px 0 0 0;
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+  .main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .main {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

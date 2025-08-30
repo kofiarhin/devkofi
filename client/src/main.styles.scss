@@ -5,6 +5,7 @@
   --text-color: #e2e2e2;
   --light-green: #1a9f5e;
   --bg-background: #1a1c1d;
+  --bg-dark-light: #212324;
 }
 
 * {
@@ -182,7 +183,7 @@ img {
   }
 }
 
-/* 📱 Tablet (min-width: 600px) */
+// media queries
 @media (min-width: 600px) {
   .overlay {
     padding: 2rem;
@@ -212,7 +213,12 @@ img {
   }
 }
 
-/* 💻 Desktop (min-width: 1024px) */
+@media (min-width: 800px) {
+  .heading {
+    font-size: 2.5rem;
+  }
+}
+
 @media (min-width: 1024px) {
   .overlay {
     max-width: 700px;
@@ -241,12 +247,5 @@ img {
   .actions .secondary-btn {
     font-size: 1.1rem;
     padding: 0.9rem 2.2rem;
-  }
-}
-
-// media queries
-@media (min-width: 800px) {
-  .heading {
-    font-size: 2.5rem;
   }
 }

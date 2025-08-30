@@ -88,16 +88,6 @@
   gap: var(--space-5);
   padding: var(--space-6);
   grid-template-columns: 1fr;
-
-  @media (min-width: 700px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media (min-width: 1280px) {
-    grid-template-columns: repeat(5, 1fr);
-  }
 }
 
 .card {
@@ -166,4 +156,29 @@
 .card-value {
   font-size: 0.95rem;
   color: var(--muted);
+}
+
+/* Media Queries */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+@media (min-width: 700px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }

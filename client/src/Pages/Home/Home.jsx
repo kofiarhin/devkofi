@@ -13,7 +13,7 @@ import IntegrateAI from "../../components/IntegrateAi/IntegrateAi";
 const Home = () => {
   return (
     <div className="container">
-      <Landing />
+      {/* <Landing /> */}
       <Overview />
       <About />
       <Scale />
