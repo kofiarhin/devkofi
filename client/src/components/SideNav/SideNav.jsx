@@ -50,25 +50,17 @@ const SideNav = () => {
     },
   };
 
+  // Build links without empty entries (avoids duplicate key="")
   const links = [
     { to: "/", text: "Home" },
     { to: "/about-me", text: "About Me" },
     { to: "/course-outline", text: "Course Outline" },
-    {
-      to: `${user ? "" : "/register"}`,
-      text: `${user ? "" : "Register"}`,
-    },
-    {
-      to: `${user ? "/portal" : ""}`,
-      text: `${user ? "Portal" : ""}`,
-    },
-    {
-      to: `${user ? "" : "/login"}`,
-      text: `${user ? "" : "Login"}`,
-    },
+    !user && { to: "/register", text: "Register" },
+    user && { to: "/portal", text: "Portal" },
+    !user && { to: "/login", text: "Login" },
     { to: "/contact", text: "Contact" },
     ...(import.meta.env.DEV ? [{ to: "/playground", text: "Playground" }] : []),
-  ];
+  ].filter(Boolean);
 
   return (
     <AnimatePresence>
@@ -84,7 +76,7 @@ const SideNav = () => {
           <FaTimes className="close" onClick={handleToggleNav} />
 
           {links.map((link, i) => (
-            <motion.div key={link.to} variants={linkVariants}>
+            <motion.div key={`${link.to}-${link.text}`} variants={linkVariants}>
               <Link to={link.to} onClick={handleToggleNav}>
                 {link.text}
               </Link>

@@ -6,7 +6,7 @@ const {
   createUser,
 } = require("../utility/helper");
 const request = require("supertest");
-const { userTwo, testUser, invalidUser } = require("./data/data");
+const { userTwo, testUser, invalidUser, adminUser } = require("./data/data");
 
 describe("app", () => {
   it("should just pass", async () => {
@@ -123,5 +123,13 @@ describe("app", () => {
     console.log({ result });
     // expect(statusCode).toBe(200);
     // expect(body._id).toBeDefined();
+  });
+
+  it("should get list of users properly", async () => {
+    await mockRegisterUser(adminUser);
+    await mockRegisterUser(userTwo);
+    const { statusCode, body } = await request(app).get("/api/admin/users");
+    expect(statusCode).toBe(200);
+    expect(body.length).toBeGreaterThan(0);
   });
 });

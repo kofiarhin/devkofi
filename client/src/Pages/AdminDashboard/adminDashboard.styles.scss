@@ -1,3 +1,169 @@
-#admin-dashboard {
+/* Consistent dark theme + spacing scale; shared variables can be hoisted later */
+:root {
+  --radius: 14px;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+
+  --bg: #0f1113; /* page */
+  --panel: #15181c; /* central panel */
+  --card: #1c2025; /* cards */
+  --text: #e7e8ea;
+  --muted: #a8acb3;
+  --border: #2b3037;
+  --border-strong: #3a4049;
+  --accent: #8b5cf6; /* subtle purple to match DevKofi tone */
+  --shadow: rgba(0, 0, 0, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+.admin-dashboard {
+  background: var(--bg);
+  color: var(--text);
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+  padding: clamp(var(--space-5), 3vw, 2rem) var(--space-5);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px var(--shadow);
+}
+
+.header {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.welcome {
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  letter-spacing: 0.2px;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.actions {
+  min-height: 0;
+} /* reserved slot to keep layout stable */
+
+.status {
+  margin: var(--space-6);
+  padding: var(--space-5);
+  text-align: center;
+  color: var(--muted);
+  background: color-mix(in oklab, var(--panel) 95%, white 5%);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+
+  &.error {
+    color: #ffb3b3;
+    border-style: solid;
+  }
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  grid-template-columns: 1fr;
+
+  @media (min-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 18px var(--shadow);
+  padding: var(--space-6) var(--space-5);
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 120px;
+
+  transition: transform 0.16s ease, box-shadow 0.16s ease,
+    border-color 0.16s ease, background-color 0.16s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+    border-color: var(--border-strong);
+    background: color-mix(in oklab, var(--card) 90%, white 10%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: calc(var(--radius) - 6px);
+  background: color-mix(in oklab, var(--card) 70%, var(--panel) 30%);
+  border: 1px solid var(--border);
+
+  svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    color: var(--muted);
+    transition: color 0.16s ease;
+  }
+
+  /* Accent icon on hover/focus for visual feedback */
+  .card:hover & svg,
+  .card:focus-visible & svg {
+    color: var(--accent);
+  }
+}
+
+.card-text {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.card-value {
+  font-size: 0.95rem;
+  color: var(--muted);
 }

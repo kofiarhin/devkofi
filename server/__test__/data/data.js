@@ -14,6 +14,15 @@ const userTwo = {
   role: "student",
 };
 
+const adminUser = {
+  fullName: "admin",
+  email: "amdin@example.com",
+  password: "hashedpassword123",
+  phone: "434324242342",
+  pricingId: 2,
+  role: "admin",
+};
+
 const testUser = {
   fullName: "John Doe",
   email: "johndoe@example.com",
@@ -32,5 +41,6 @@ module.exports = {
   userOne,
   testUser,
   userTwo,
+  adminUser,
   invalidUser,
 };

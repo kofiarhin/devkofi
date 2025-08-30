@@ -35,12 +35,18 @@ const loginUser = async (req, res, next) => {
 // register user
 const registerUser = async (req, res, next) => {
   try {
-    const { fullName, email, password, pricingId } = req.body;
+    const { fullName, email, password, pricingId, role } = req.body;
     if (!fullName || !email || !password || !pricingId) {
       res.status(400);
       throw new Error("please fill out all fields");
     }
-    const user = await createUser({ fullName, email, password, pricingId });
+    const user = await createUser({
+      fullName,
+      email,
+      password,
+      pricingId,
+      role,
+    });
     res.status(201);
     return res.json(user);
   } catch (error) {
