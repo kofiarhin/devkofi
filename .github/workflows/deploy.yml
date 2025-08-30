@@ -1,7 +1,9 @@
 name: Deploy client to Namecheap
+
 on:
   push:
     branches: [ master, main ]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -9,9 +11,11 @@ jobs:
     environment: Production
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
@@ -21,34 +25,22 @@ jobs:
         working-directory: client
         run: |
           npm ci
-          npm run build
+          npm run build   # -> client/dist
 
-      # --- DEBUG: prove dist exists & show files ---
-      - name: Show build output
+      - name: Verify build output exists
         run: |
-          pwd
-          ls -la
-          ls -la client
-          ls -la client/dist || true
           test -d client/dist && echo "dist exists ✅" || (echo "dist missing ❌" && exit 1)
-
-      # (Optional) keep an artifact of dist so you can inspect it from the run
-      - name: Upload dist as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: client-dist
-          path: client/dist/**
 
       - name: Upload dist contents to public_html
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}          # e.g. server345.web-hosting.com
-          username: ${{ secrets.FTP_USERNAME }}      # deploy@devkofi.com
+          server: ${{ secrets.FTP_SERVER }}       # e.g. server345.web-hosting.com
+          username: ${{ secrets.FTP_USERNAME }}   # deploy@devkofi.com
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}              # 21
-          protocol: ${{ secrets.FTP_PROTOCOL }}      # ftps
-          local-dir: client/dist/                    # uploads CONTENTS of dist
-          server-dir: /                              # for your FTP user, '/' == public_html
+          port: ${{ secrets.FTP_PORT }}           # 21
+          protocol: ${{ secrets.FTP_PROTOCOL }}   # ftps
+          local-dir: client/dist/                 # uploads CONTENTS of dist
+          server-dir: /public_html/               # explicit web root
           exclude: |
             **/.git*
             **/.github/**
