@@ -1,4 +1,4 @@
-name: Deploy client to root public_html
+name: Deploy client to Namecheap public_html
 
 on:
   push:
@@ -27,16 +27,16 @@ jobs:
           npm ci
           npm run build   # -> client/dist
 
-      - name: Upload dist contents to *root* public_html
+      - name: Upload dist contents to root public_html
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}       # e.g. server345.web-hosting.com
-          username: ${{ secrets.FTP_USERNAME }}   # deploy@devkofi.com
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}           # 21
-          protocol: ${{ secrets.FTP_PROTOCOL }}   # ftps
-          local-dir: client/dist/                 # upload CONTENTS of dist
-          server-dir: /../public_html/            # go up one level, then into root public_html
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ${{ secrets.FTP_PROTOCOL }}
+          local-dir: client/dist/       # only the contents
+          server-dir: /public_html/     # root public_html
           exclude: |
             **/.git*
             **/.github/**
