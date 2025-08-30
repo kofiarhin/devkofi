@@ -6,7 +6,7 @@ const connectDB = async () => {
       process.env.NODE_ENV === "development"
         ? process.env.MONGO_URI_DEV
         : process.env.MONGO_URI_PROD;
-    console.log(url);
+    // Avoid logging the full MongoDB connection string to the terminal
     const conn = await mongoose.connect(url);
     console.log(conn.connection.host);
   } catch (error) {
