@@ -1,5 +1,4 @@
 name: Deploy client to Namecheap
-
 on:
   push:
     branches: [ master, main ]
@@ -24,16 +23,32 @@ jobs:
           npm ci
           npm run build
 
+      # --- DEBUG: prove dist exists & show files ---
+      - name: Show build output
+        run: |
+          pwd
+          ls -la
+          ls -la client
+          ls -la client/dist || true
+          test -d client/dist && echo "dist exists ✅" || (echo "dist missing ❌" && exit 1)
+
+      # (Optional) keep an artifact of dist so you can inspect it from the run
+      - name: Upload dist as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-dist
+          path: client/dist/**
+
       - name: Upload dist contents to public_html
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          server: ${{ secrets.FTP_SERVER }}          # e.g. server345.web-hosting.com
+          username: ${{ secrets.FTP_USERNAME }}      # deploy@devkofi.com
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          protocol: ${{ secrets.FTP_PROTOCOL }}  # ftps
-          local-dir: client/dist/
-          server-dir: /
+          port: ${{ secrets.FTP_PORT }}              # 21
+          protocol: ${{ secrets.FTP_PROTOCOL }}      # ftps
+          local-dir: client/dist/                    # uploads CONTENTS of dist
+          server-dir: /                              # for your FTP user, '/' == public_html
           exclude: |
             **/.git*
             **/.github/**
