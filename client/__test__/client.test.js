@@ -1,6 +1,5 @@
 import { describe, it } from "vitest";
-import { joinNewsletter } from "../src/hooks/useJoinNewsletterMutation";
-import { getGitHubInfo, getUsers } from "../src/services/services";
+import { getGitHubInfo } from "../src/services/services";
 
 describe("app test", () => {
   // it("should just pass", async () => {

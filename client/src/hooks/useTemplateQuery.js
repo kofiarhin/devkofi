@@ -16,7 +16,6 @@ const getTemplates = async () => {
     console.log(error.message);
     return { error: error.message };
   }
-  return { data: "get templates" };
 };
 const useTemplateQuery = () => {
   return useQuery({

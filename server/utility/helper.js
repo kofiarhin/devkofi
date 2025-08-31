@@ -29,28 +29,6 @@ const createNewsletterUser = async (data) => {
   }
 };
 
-// upload image
-const uploadImage = async (file, folder = "test") => {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", "gzbuxpwt");
-  formData.append("folder", folder);
-
-  const url = "https://api.cloudinary.com/v1_1/dlsiabgiw/image/upload";
-
-  const response = await fetch(url, {
-    method: "POST",
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error("something went wrong");
-  }
-
-  const data = await response.json();
-  return data.secure_url;
-};
-
 const joinMentorship = async (data) => {
   try {
     const user = await Mentorship.create(data);
@@ -61,27 +39,6 @@ const joinMentorship = async (data) => {
   }
 };
 
-const sendWelcomeMessage = async ({ name, email }) => {
-  const { html, subject, text } = welcomeEmail({ name, email });
-  await sendEmail({ to: email, html, subject });
-};
-
-const sendAdminNotification = async (data) => {
-  const { fullName, email, phone } = data;
-  const { subject, html } = generateNewSubscriptionEmail({
-    fullName,
-    email,
-    phone,
-  });
-  const adminEmail = "devkofiteam@gmail.com";
-  try {
-    const result = await sendEmail({ to: adminEmail, subject, html });
-    return { success: true };
-  } catch (error) {
-    console.log(error.meesage);
-    return { success: false, error: error.message };
-  }
-};
 const generateToken = (data) => {
   return jwt.sign({ ...data }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
@@ -198,10 +155,7 @@ const createUser = async (userData) => {
 module.exports = {
   createUser,
   createNewsletterUser,
-  uploadImage,
   joinMentorship,
-  sendWelcomeMessage,
-  sendAdminNotification,
   generateToken,
   fetchGitHubContributions,
   fetchDailyGitHubContributions,

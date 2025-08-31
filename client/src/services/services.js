@@ -1,38 +1,5 @@
 import { baseUrl } from "../constants/constants";
 
-const test = async () => {
-  return { message: "get users" };
-};
-
-const getUsers = async () => {
-  try {
-    const url = "http://localhost:5000";
-    const res = await fetch(url);
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data);
-    }
-    return { success: true, data };
-  } catch (error) {
-    console.log(error.message);
-    return { success: false, error: error.message };
-  }
-};
-
-const getTemplates = async () => {
-  try {
-    const url = "http://localhost:5000/api/templates";
-    const res = await fetch(url);
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data);
-    }
-    return { success: true, data };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-};
-
 // send message
 const sendMessage = async (messageData) => {
   const url = import.meta.env.DEV
@@ -48,19 +15,6 @@ const sendMessage = async (messageData) => {
   const data = await res.json();
   console.log("xxxx", data);
   return { message: "testing mic" };
-
-  try {
-    const res = await fetch(url, {
-      headers: {
-        "content-type": "äpplication/json",
-      },
-      method: "POST",
-      body: JSON.stringify(messageData),
-    });
-    const data = await res.json();
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
 };
 
 const downloadFile = async (fileName = "default") => {
@@ -87,35 +41,6 @@ const downloadFile = async (fileName = "default") => {
   }
 };
 
-const joinMentorship = async (data) => {
-  try {
-    const url = import.meta.env.DEV
-      ? "/api/mentorship"
-      : `${baseUrl}/api/mentorship`;
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-
-    // Check HTTP status — fetch only rejects on network/CORS errors
-    if (!res.ok) {
-      const errText = await res.text();
-      console.error(`Server error (${res.status}):`, errText);
-      return { success: false, status: res.status, error: errText };
-    }
-
-    // Parse and return JSON
-    const payload = await res.json();
-    console.log("Success:", payload);
-    return { success: true, data: payload };
-  } catch (err) {
-    // Network/CORS errors, parsing errors, etc.
-    console.error("Fetch failed:", err);
-    return { success: false, error: err.message };
-  }
-};
-
 // src/services/services.js
 const getGitHubInfo = async (query = "daily") => {
   const url = import.meta.env.DEV
@@ -126,12 +51,4 @@ const getGitHubInfo = async (query = "daily") => {
   return data;
 };
 
-export {
-  test,
-  getUsers,
-  getTemplates,
-  sendMessage,
-  downloadFile,
-  joinMentorship,
-  getGitHubInfo,
-};
+export { sendMessage, downloadFile, getGitHubInfo };
