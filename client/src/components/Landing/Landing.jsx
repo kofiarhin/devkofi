@@ -11,7 +11,7 @@ const Landing = () => {
         {/* Text Section */}
         <div className="text-wrapper">
           <Typewriter title={title} subtitle={subTitle} text={text} />
-          <Link to="/mentorship" className="cta">
+          <Link to="/register" className="cta">
             Get Started!
           </Link>
         </div>
