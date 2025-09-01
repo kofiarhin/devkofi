@@ -67,7 +67,7 @@ const Overview = () => {
             Your Mentorship....<span>Your way.... </span>
           </h1>
           <Typewriter text={text} />
-          <Link to="/mentorship" className="cta">
+          <Link to="/register" className="cta">
             Join Now
           </Link>
         </motion.div>

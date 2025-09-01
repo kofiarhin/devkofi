@@ -76,7 +76,7 @@ const Pricing = () => {
                 {plan.button.text}
               </a>
             ) : (
-              <Link to="/mentorship" className="pricing-button">
+              <Link to="/register" className="pricing-button">
                 {plan.button.text}
               </Link>
             )}

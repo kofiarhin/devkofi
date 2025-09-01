@@ -19,7 +19,7 @@ const Scale = () => {
             last—design with foresight, architect with clarity, refactor with
             purpose, and ship solutions that grow without breaking.
           </p>
-          <Link to="/mentorship" className="cta">
+          <Link to="/register" className="cta">
             Join Now
           </Link>
         </AnimatedSection>
