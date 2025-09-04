@@ -54,14 +54,18 @@ const sections = [
 
 const socials = [
   { href: "https://github.com/kofiarhin", icon: <FaGithub />, label: "GitHub" },
-  { href: "https://www.instagram.com/escodebar/", icon: <FaInstagram />, label: "Instagram" },
+  {
+    href: "https://www.instagram.com/escodebar/",
+    icon: <FaInstagram />,
+    label: "Instagram",
+  },
   { href: "https://x.com/kwofiArhin", icon: <FaTwitter />, label: "Twitter" },
 ];
 
 const Footer = () => {
   return (
     <motion.footer
-      className="footer"
+      className="footer container"
       variants={footerVariant}
       initial="hidden"
       whileInView="show"
@@ -76,7 +80,13 @@ const Footer = () => {
 
         <div className="grid">
           {sections.map((sec) => (
-            <motion.div key={sec.title} className="col" variants={listContainer} initial="hidden" whileInView="show">
+            <motion.div
+              key={sec.title}
+              className="col"
+              variants={listContainer}
+              initial="hidden"
+              whileInView="show"
+            >
               <motion.h4 variants={item}>{sec.title.toUpperCase()}</motion.h4>
               <ul>
                 {sec.links.map((l) => (
