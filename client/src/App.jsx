@@ -20,7 +20,19 @@ import Portal from "./Pages/Portal/Portal";
 // app component
 const App = () => {
   useEffect(() => {
-    console.log("testing mic");
+    const getData = async () => {
+      try {
+        const res = await fetch(baseUrl);
+        if (!res.ok) {
+          throw new Error("something went wrong. SERVER NOT CONNNECTED");
+        }
+        console.log("server connected: ", baseUrl);
+      } catch (error) {
+        console.log({ error: error.message });
+      }
+    };
+
+    getData();
   }, []);
   return (
     <div>
