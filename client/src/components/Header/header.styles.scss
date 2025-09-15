@@ -1,18 +1,27 @@
 .header {
+  position: sticky; // keeps it at the top while scrolling
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(15, 15, 15, 0.9); // slightly transparent for blur
+  backdrop-filter: blur(8px); // frosted-glass effect
+  -webkit-backdrop-filter: blur(8px); // Safari support
   padding: 0rem 0rem;
 
   .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     .center-nav {
       display: flex;
       align-items: center;
+
       .menu {
         margin-left: 1rem;
         font-size: 1.5rem;
         cursor: pointer;
       }
+
       button {
         padding: 0.8rem 1rem;
         background-color: var(--primary-color);
@@ -23,12 +32,15 @@
         border: none;
       }
     }
+
     nav {
       display: none;
     }
+
     .logo-wrapper {
       display: flex;
       align-items: center;
+
       img {
         width: 50px;
         border-radius: 50px;
@@ -53,14 +65,17 @@
       .center-nav {
         display: none;
       }
+
       nav {
         display: block;
+
         a {
           color: white;
           text-decoration: none;
           display: inline-block;
           margin-left: 1rem;
         }
+
         button {
           padding: 0.8rem 3rem;
           background-color: var(--primary-color);
