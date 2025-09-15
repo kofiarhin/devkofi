@@ -19,6 +19,14 @@ import Portal from "./Pages/Portal/Portal";
 
 // app component
 const App = () => {
+  useEffect(() => {
+    const getData = async () => {
+      const res = await fetch(baseUrl);
+      console.log("connected to server: ", baseUrl);
+    };
+
+    getData();
+  }, []);
   return (
     <div>
       <Router>
