@@ -30,7 +30,7 @@ const App = () => {
           message: "connected to server successfully",
           url: baseUrl,
           environment: process.env.NODE_ENV,
-          database: process.env.MONGO_URI,
+          database: process.env.MONGO_URI_PROD,
         });
       } catch (error) {
         console.log({ error: error.message });
