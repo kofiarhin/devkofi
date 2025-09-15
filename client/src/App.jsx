@@ -26,7 +26,10 @@ const App = () => {
         if (!res.ok) {
           throw new Error("something went wrong. SERVER NOT CONNNECTED");
         }
-        console.log("server connected: ", baseUrl);
+        console.log({
+          message: "connected to server successfully",
+          url: baseUrl,
+        });
       } catch (error) {
         console.log({ error: error.message });
       }
