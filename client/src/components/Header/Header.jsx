@@ -48,7 +48,7 @@ const Header = () => {
         <nav>
           <Link to="/">Home</Link>
           <Link to="/course-outline">Course Outline</Link>
-          <Link to="about-me">About Me</Link>
+          <Link to="about-me">About</Link>
           {/* <Link to="/templates">Templates</Link> */}
           <Link to="/contact">Contact</Link>
           {import.meta.env.DEV ? <Link to="/playground">Playground</Link> : ""}
