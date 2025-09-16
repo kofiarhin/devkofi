@@ -39,8 +39,8 @@ const joinMentorship = async (data) => {
   }
 };
 
-const generateToken = (data) => {
-  return jwt.sign({ ...data }, process.env.JWT_SECRET, { expiresIn: "30d" });
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
 // fetchContributions.js

@@ -4,8 +4,9 @@ const Newsletter = require("../Model/newsletterModel");
 const newsletterModel = require("../Model/newsletterModel");
 const Mentorship = require("../Model/mentorshipModel");
 const Contact = require("../Model/contactModel");
-const { userOne } = require("./data/data");
+const { userOne, adminUser, userTwo } = require("./data/data");
 const User = require("../Model/userModel");
+const { createUser } = require("../utility/helper");
 
 const clearDB = async () => {
   await Newsletter.deleteMany();
@@ -14,21 +15,27 @@ const clearDB = async () => {
   await User.deleteMany();
 };
 
+const populateDataBase = async () => {
+  await Promise.all(
+    [adminUser, userOne, userTwo].map(async (user) => {
+      const newUser = await createUser(user);
+      return newUser;
+    })
+  );
+};
+
 beforeAll(async () => {
   try {
     const url = process.env.MONGO_URI_TEST;
-    const conn = await mongoose.connect(url);
+    await mongoose.connect(url);
 
-    await Mentorship.create({ ...userOne });
+    await populateDataBase();
+
     clearDB();
   } catch (error) {
     console.log(error);
     process.exit(1);
   }
-});
-
-beforeEach(async () => {
-  await User.deleteMany();
 });
 
 afterAll(async () => {

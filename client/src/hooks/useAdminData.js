@@ -1,10 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
-export default function useAdminData() {
+export default function useAdminData(token) {
   return useQuery({
     queryKey: ["admin-overview"],
     queryFn: async () => {
-      const res = await fetch("/api/admin/overview");
+      const res = await fetch("/api/admin/overview", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) throw new Error("Failed to fetch admin overview");
       return res.json();
     },

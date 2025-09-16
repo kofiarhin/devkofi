@@ -13,6 +13,7 @@ import CourseOutline from "./Pages/CourseOutline/CourseOutline";
 import { baseUrl } from "./constants/constants";
 import Login from "./Pages/Login/Login";
 import PrivateRoutes from "./components/PrivateRoute/PrivateRoutes";
+import Users from "./Pages/users/Users";
 import AboutMe from "./Pages/AboutMe/AboutMe";
 import Register from "./Pages/Register/Register";
 import Portal from "./Pages/Portal/Portal";
@@ -55,6 +56,7 @@ const App = () => {
           <Route element={<PrivateRoutes />}>
             <Route path="/templates" element={<Templates />} />
             <Route path="/portal" element={<Portal />} />
+            <Route path="/users" element={<Users />} />
           </Route>
         </Routes>
         <Footer />

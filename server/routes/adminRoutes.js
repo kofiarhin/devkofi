@@ -2,13 +2,13 @@ const { Router } = require("express");
 const Mentorship = require("../Model/mentorshipModel");
 const User = require("../Model/userModel");
 const Contact = require("../Model/contactModel");
+const auth = require("../middlewares/auth");
 
 const router = Router();
 
 router.get("/users", async (req, res) => {
   try {
     const users = await User.find();
-    console.log({ users });
     return res.json(users);
   } catch (error) {
     console.log(error.message);
@@ -17,7 +17,7 @@ router.get("/users", async (req, res) => {
 });
 
 // Admin overview metrics
-router.get("/overview", async (req, res) => {
+router.get("/overview", auth, async (req, res) => {
   try {
     const [usersCount, messagesCount] = await Promise.all([
       User.countDocuments().exec(),
@@ -25,7 +25,7 @@ router.get("/overview", async (req, res) => {
     ]);
 
     // Placeholders for non-existent resources in this codebase
-    const coursesCount = 0;
+    const coursesCount = 11;
     const paymentsCount = 0;
     const transactionsCount = 0;
 

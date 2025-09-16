@@ -4,6 +4,7 @@ const userOne = {
   password: "password",
   phone: "342334234234",
   role: "student",
+  pricingId: 1,
 };
 const userTwo = {
   fullName: "esco visualz",

@@ -1,15 +1,18 @@
 import "./adminDashboard.styles.scss";
 import useAdminData from "../../hooks/useAdminData";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-export default function AdminDashboard({ name = "Admin" }) {
-  const { data, isLoading, error } = useAdminData();
+export default function AdminDashboard({ user }) {
+  const { fullName, token, ...rest } = user;
+  const { data, isLoading, error } = useAdminData(token);
 
   const n = (v) => (typeof v === "number" ? v.toLocaleString() : v ?? "N/A");
 
   return (
     <div className="admin-dashboard">
       <div className="container">
-        <h1 className="welcome">Welcome, {name}!</h1>
+        <h1 className="welcome">Welcome, {fullName}!</h1>
 
         {isLoading && (
           <div className="status" role="status">
@@ -23,26 +26,35 @@ export default function AdminDashboard({ name = "Admin" }) {
 
         {!isLoading && !error && (
           <section className="grid">
-            <Card title="Users" icon="users" value={n(data?.usersCount)} />
+            <Card
+              title="Users"
+              icon="users"
+              value={n(data?.usersCount)}
+              url="/users"
+            />
             <Card
               title="Courses"
               icon="courses"
               value={n(data?.coursesCount)}
+              url="/courses"
             />
             <Card
               title="Messages"
               icon="messages"
               value={n(data?.messagesCount)}
+              url="/messages"
             />
             <Card
               title="Payments"
               icon="payments"
               value={n(data?.paymentsCount)}
+              url="/payments"
             />
             <Card
               title="Transactions"
               icon="transactions"
               value={n(data?.transactionsCount)}
+              url="/transactions"
             />
           </section>
         )}
@@ -51,13 +63,13 @@ export default function AdminDashboard({ name = "Admin" }) {
   );
 }
 
-function Card({ title, value, icon }) {
+function Card({ title, value, icon, url }) {
   return (
-    <article className="card" aria-label={title}>
+    <Link to={url} className="card" aria-label={title}>
       <div className="card-icon">{getIcon(icon)}</div>
       <div className="card-title">{title}</div>
       <div className="card-value">{value}</div>
-    </article>
+    </Link>
   );
 }
 

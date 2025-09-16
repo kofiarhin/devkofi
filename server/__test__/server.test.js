@@ -1,12 +1,19 @@
 const app = require("../app");
 const { mockRegisterUser, mockLoginUser, fullAuth } = require("./helper");
+const request = require("supertest");
+const {
+  userTwo,
+  testUser,
+  invalidUser,
+  adminUser,
+  userOne,
+} = require("./data/data");
 const {
   fetchGitHubContributions,
   fetchDailyGitHubContributions,
   createUser,
 } = require("../utility/helper");
-const request = require("supertest");
-const { userTwo, testUser, invalidUser, adminUser } = require("./data/data");
+const { loginUser } = require("../controllers/authController");
 
 describe("app", () => {
   it("should just pass", async () => {
@@ -114,13 +121,11 @@ describe("app", () => {
   it("should not login user with invalid credentials", async () => {
     const { statusCode, body } = await mockLoginUser(invalidUser);
     expect(statusCode).toBe(404);
-    console.log({ body });
     expect(body.success).toBe(false);
   });
 
   it("should get user profile properly", async () => {
     const result = await fullAuth(testUser);
-    console.log({ result });
     // expect(statusCode).toBe(200);
     // expect(body._id).toBeDefined();
   });
@@ -131,5 +136,23 @@ describe("app", () => {
     const { statusCode, body } = await request(app).get("/api/admin/users");
     expect(statusCode).toBe(200);
     expect(body.length).toBeGreaterThan(0);
+  });
+
+  it("should get users properly", async () => {
+    const { token } = await mockLoginUser(adminUser);
+    const { statusCode, body } = await request(app)
+      .get("/api/users")
+      .set("Authorization", `Bearer ${token}`);
+    expect(statusCode).toBe(200);
+    expect(body.length).toBeGreaterThan(0);
+  });
+
+  it("should not get users if role is not admin", async () => {
+    const { token } = await fullAuth(userOne);
+    const { statusCode, body } = await request(app)
+      .get("/api/users")
+      .set("Authorization", `Bearer ${token}`);
+    expect(statusCode).toBe(400);
+    expect(body.error).toBeDefined();
   });
 });

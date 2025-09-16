@@ -16,7 +16,7 @@ const mockLoginUser = async (userData) => {
     .post("/api/auth/login")
     .send({ email, password });
   if (statusCode === 200) {
-    return { statusCode, body };
+    return { statusCode, ...body };
   }
   return { statusCode, body };
 };

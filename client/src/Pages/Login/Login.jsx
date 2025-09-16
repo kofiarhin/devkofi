@@ -43,12 +43,6 @@ const Login = () => {
     password: "password",
   });
 
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/dashboard");
-  //   }
-  // }, [user]);
-
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
@@ -58,10 +52,12 @@ const Login = () => {
     e.preventDefault();
     mutate(formData, {
       onSuccess: (data) => {
-        console.log({ data });
-        dispatch(setUser(data?.user));
+        dispatch(setUser({ token: data.token, ...data.user }));
         if (data?.user) {
-          localStorage.setItem("user", JSON.stringify(data.user));
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ token: data.token, ...data.user })
+          );
         } else {
           localStorage.removeItem("user");
         }
