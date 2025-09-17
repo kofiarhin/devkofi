@@ -7,10 +7,9 @@ import AdminDashboard from "../../components/AdminDashboard/AdminDashboard";
 
 const Portal = () => {
   const { user } = useSelector((state) => state.auth);
-  console.log("xxxxxxx", user);
   return (
     <div className="container" id="portal">
-      {user && user?.role === "student" && <StudentDashboard name="big man" />}
+      {user && user?.role === "student" && <StudentPortal name="big man" />}
       {user && user?.role === "admin" && <AdminDashboard user={user} />}
     </div>
   );
