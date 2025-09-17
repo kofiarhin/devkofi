@@ -1,3 +1,4 @@
+import "./home.styles.scss";
 import Landing from "../../components/Landing/Landing";
 import About from "../../components/About/About";
 import Audience from "../../components/Audience/Audience";
@@ -12,7 +13,7 @@ import IntegrateAI from "../../components/IntegrateAi/IntegrateAi";
 
 const Home = () => {
   return (
-    <div className="container">
+    <div id="home" className="container">
       <Landing />
       <Overview />
       <About />
