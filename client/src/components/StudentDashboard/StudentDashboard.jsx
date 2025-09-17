@@ -1,64 +1,50 @@
-import React from "react";
-import useStudentData from "../../hooks/useStudentData";
-import { useSelector } from "react-redux";
 import "./studentDashboard.styles.scss";
-
+import { useSelector } from "react-redux";
+import { MdMessage, MdAssignment, MdPerson } from "react-icons/md";
 const StudentDashboard = () => {
-  const { data, isLoading, error } = useStudentData();
   const { user } = useSelector((state) => state.auth);
-  const { fullName: name, email } = user;
-
+  const { fullName, ...rest } = user;
   return (
-    <div className="dashboard">
-      <header className="header">
-        <h1 className="title">Welcome, {name}!</h1>
-      </header>
+    <div id="student-dashboard">
+      <h1 className="heading center">Welcome! {fullName} </h1>
 
-      <nav className="nav">{/* Navigation content if needed */}</nav>
-
-      <main className="main">
-        <div className="card">
-          <div className="card-content">
-            <div className="card-icon">📚</div>
-            <h3 className="card-title">Assignments</h3>
-            <p>
-              {isLoading
-                ? "Loading..."
-                : error
-                ? "Error loading data"
-                : data?.assignmentsCount || 0}
-            </p>
-          </div>
+      {/* dashboard-wrapper */}
+      <div className="dashboard-wrapper">
+        {/* dashboard-unit */}
+        <div className="dashboard-unit">
+          <h3>Messages</h3>
+          <MdMessage className="icon" />
+          <p>
+            Stay connected with your instructors and classmates. View new
+            messages, respond quickly, and keep track of important announcements
+            all in one place.
+          </p>
         </div>
+        {/* end dashboard-unit */}
 
-        <div className="card">
-          <div className="card-content">
-            <div className="card-icon">💬</div>
-            <h3 className="card-title">Messages</h3>
-            <p>
-              {isLoading
-                ? "Loading..."
-                : error
-                ? "Error loading data"
-                : data?.messagesCount || 0}
-            </p>
-          </div>
+        {/* dashboard-unit */}
+        <div className="dashboard-unit">
+          <h3>Assignments</h3>
+          <MdAssignment className="icon" />
+          <p>
+            Access your upcoming assignments, track submission deadlines, and
+            review feedback. Stay organized and never miss an important task.
+          </p>
         </div>
+        {/* end dashboard-unit */}
 
-        <div className="card">
-          <div className="card-content">
-            <div className="card-icon">👤</div>
-            <h3 className="card-title">Profile</h3>
-            <p>
-              {isLoading
-                ? "Loading..."
-                : error
-                ? "Error loading data"
-                : `${data?.profileCompletion || 0}%`}
-            </p>
-          </div>
+        {/* dashboard-unit */}
+        <div className="dashboard-unit">
+          <h3>Profile</h3>
+          <MdPerson className="icon" />
+          <p>
+            Manage your personal information, update account details, and
+            customize your student profile to keep your portal up to date.
+          </p>
         </div>
-      </main>
+        {/* end dashboard-unit */}
+      </div>
+      {/* end dashboard-wrapper */}
     </div>
   );
 };
