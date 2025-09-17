@@ -17,6 +17,7 @@ import Users from "./Pages/users/Users";
 import AboutMe from "./Pages/AboutMe/AboutMe";
 import Register from "./Pages/Register/Register";
 import Portal from "./Pages/Portal/Portal";
+import Messages from "./Pages/Messages/Messages";
 
 // app component
 const App = () => {
@@ -57,6 +58,7 @@ const App = () => {
             <Route path="/templates" element={<Templates />} />
             <Route path="/portal" element={<Portal />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/messages" element={<Messages />} />
           </Route>
         </Routes>
         <Footer />
