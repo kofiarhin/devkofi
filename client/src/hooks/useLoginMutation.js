@@ -13,6 +13,10 @@ const loginUser = async (userData) => {
     body: JSON.stringify(userData),
   });
   const data = await res.json();
+
+  if (data?.error) {
+    throw new Error(data?.error);
+  }
   return data;
 };
 const useLoginMutation = () => {

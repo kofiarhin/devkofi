@@ -51,6 +51,9 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     mutate(formData, {
+      onError: (data) => {
+        // console.log("error", data.message);
+      },
       onSuccess: (data) => {
         dispatch(setUser({ token: data.token, ...data.user }));
         if (data?.user) {
@@ -114,15 +117,7 @@ const Login = () => {
             />
           </motion.div>
 
-          {data && data?.error && (
-            <motion.p
-              className="text-error"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              {data?.error}
-            </motion.p>
-          )}
+          {error && <p className="text-error"> {error.message} </p>}
 
           {/* Submit Button */}
           <motion.button
