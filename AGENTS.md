@@ -1,86 +1,91 @@
-# Repository Guidelines
+# DevKofi Automation Charter
 
-This repository pairs a Vite React client with an Express/Mongo API. Follow these standards to keep code consistent and production-ready.
+DevKofi pairs a Vite/React mentorship portal with an Express/Mongo API. Every contribution must respect the house rules: JavaScript only, SCSS modules on the client, CommonJS on the server, arrow functions everywhere, React Query for server state, strict MVC, and zero hard-coded secrets.
 
-## Project Structure & Module Organization
+---
 
-- **client/** → Vite React app
-  - `src/components` — functional components (PascalCase)
-  - `src/pages` — route-level views
-  - `src/hooks` — custom React hooks
-  - `src/constants` — constants (e.g., `baseUrl.js`)
-  - `src/assets` — images, icons, fonts
-  - `__test__/` — Vitest test specs
-- **server/** → Express + Mongo API
-  - `models/` — Mongoose schemas (PascalCase)
-  - `controllers/` — business logic
-  - `routes/` — REST endpoints
-  - `middlewares/` — Express middleware
-  - `utility/` — helpers
-  - `__test__/` — Jest + Supertest suites
-  - `__test__/data/` — fixtures and seed data
-- **templates/** — shared assets (emails, decks)
-- **logs/** — server logs
-- **.env** — environment variables (never commit; ignored via `.gitignore`)
+## Roles & Prompts
 
-## Build, Test, and Development Commands
+### Router Agent
+- **Goal:** Keep navigation, route guards, and URL structure in sync across `client/src/App.jsx`, `client/src/components/Header`, and `client/src/components/SideNav`.
+- **Inputs:** Current router config, Redux `auth` slice, private route requirements.
+- **Outputs:** Updated route maps, guards, and any accompanying link changes.
+- **Constraints / System Prompt:** Operate only within React Router + Redux Toolkit patterns already in `client/src`. Use arrow-function components, SCSS modules, and keep dev-only routes behind `import.meta.env.DEV` checks.
 
-- `npm run dev` — run Vite client + Nodemon server concurrently.
-- `npm run server` — start API in dev mode.
-- `npm run client` — start client in dev mode (Vite, port 5000).
-- `npm run --prefix client build` — bundle client for production.
-- `npm start` — run Express server in production mode.
-- `npm test` — Jest + Supertest against `server/`.
-- `npm run --prefix client test` — Vitest for React client.
-- `npm run --prefix client lint` — ESLint check before PR.
+### Curriculum Agent
+- **Goal:** Maintain curriculum data (`client/src/Pages/CourseOutline/courseData.json`) and related presentation components.
+- **Inputs:** JSON course data, `CourseOutline` page, supporting components.
+- **Outputs:** Up-to-date module timelines, requirements, and CTA copy that match mentorship offerings.
+- **Constraints / System Prompt:** Store curriculum content in JSON or plain JS objects—no hard-coded strings inside components beyond descriptive labels. Preserve Framer Motion patterns already in use.
 
-## Coding Style & Naming Conventions
+### Frontend Agent
+- **Goal:** Build and refine UI inside `client/`.
+- **Inputs:** Components, hooks, SCSS modules, React Query services.
+- **Outputs:** Accessible, responsive React components with colocated `ComponentName.styles.scss` files.
+- **Constraints / System Prompt:** JavaScript + JSX only, arrow-function components, SCSS modules, default exports. Use React Query + custom hooks for server state, Redux Toolkit for UI state, and never introduce Tailwind or inline global CSS.
 
-- **JavaScript only** — no TypeScript.
-- **Backend:** CommonJS (`require`, `module.exports`).
-- **Frontend:** ES modules (`import`, `export default`).
-- Always use **arrow functions** for components, hooks, services, and controllers.
-- **Indentation:** 2 spaces.
-- **Naming:**
-  - React components, Mongoose models → **PascalCase**
-  - Hooks, utils, Express handlers → **camelCase**
-- **Styling:**
-  - No Tailwind — SCSS modules only.
-  - `<Component>.styles.scss` colocated with component.
-  - Dark/light themes via SCSS variables.
-- **Exports:**
-  - Components, hooks, services → default export.
-  - Backend → `module.exports`.
+### Backend Agent
+- **Goal:** Extend the Express API under `server/` following strict MVC.
+- **Inputs:** `server/app.js`, `routes`, `controllers`, `Model`, `utility`, `middlewares`.
+- **Outputs:** Routes, controllers, models, and utilities that align with existing patterns, plus accompanying Jest + Supertest coverage.
+- **Constraints / System Prompt:** CommonJS modules, arrow functions for controllers/utilities, keep logic pure and layered (route → controller → service/helper → model). Enable CORS via `cors()` only, respect environment variables, and ensure new routes are mounted in `app.js`.
 
-## Testing Guidelines
+### Content & Marketing Agent
+- **Goal:** Update copywriting, assets, and marketing collateral across the site and `templates/`.
+- **Inputs:** JSON data files, SCSS modules, components that render marketing copy.
+- **Outputs:** On-brand DevKofi messaging, updated pricing cards, testimonials, and downloadable template metadata.
+- **Constraints / System Prompt:** Source strings from data objects where possible. No lorem ipsum. Ensure copy reflects actual mentorship benefits shown in the current repo.
 
-- **Backend:**
-  - Place Jest + Supertest tests inside `server/__test__/`.
-  - Seed data lives in `__test__/data/`.
-  - Use `describe` blocks for API flows.
-- **Frontend:**
-  - Place Vitest specs in `client/__test__/`.
-  - Name tests after implementation (`Header.jsx` → `header.test.js`).
-  - Use jsdom + setup mocks in `client/__test__/setup.js`.
+### Docs Agent
+- **Goal:** Maintain high-fidelity documentation (`README.md`, `/templates` guides, inline comments where essential).
+- **Inputs:** Existing docs, repo structure, scripts.
+- **Outputs:** Accurate, concise documentation that reinforces house rules and references real commands/files.
+- **Constraints / System Prompt:** Keep docs evergreen—avoid placeholders. Reference real paths, scripts, and URLs present in the repo. Mirror CI/CD strategy (Vercel + Render/Heroku).
 
-## Commit & Pull Request Guidelines
+### QA Agent
+- **Goal:** Safeguard quality with automated tests and manual acceptance criteria.
+- **Inputs:** Jest/Vitest suites, GitHub Actions configs (when present), testing docs.
+- **Outputs:** Expanded coverage, reproducible test plans, and bug reproduction steps.
+- **Constraints / System Prompt:** Use Jest + Supertest in `server/__test__/`, Vitest in `client/__test__/`. Add fixtures under `server/__test__/data/` when needed. Never mix testing frameworks.
 
-- **Commits:** short, imperative style (`fix login bug`, `add auth controller`). ≤72 chars.
-- **Branches:** focused topic branches (`feature/auth`, `fix/header-ui`).
-- **PRs:**
-  - Must include scope of change, test evidence (manual + automated), env updates, and screenshots (UI).
-  - Link related issues.
-  - Tag reviewers across client + server when changes span layers.
+### DevOps Agent
+- **Goal:** Streamline local/dev/prod workflows, scripts, and deployment automation.
+- **Inputs:** Root `package.json`, deployment guides, CI configs, environment variable docs.
+- **Outputs:** Updated scripts, deployment instructions, and infrastructure-as-code tweaks aligned with Vercel (client) and Render/Heroku (server).
+- **Constraints / System Prompt:** Do not introduce alternative hosting stacks. Keep `.env` usage consistent, rely on `concurrently` for dev, and respect the existing port contract (Express on 5000, Vite on 5173).
 
-## Automation Shortcuts
+### Analytics Agent
+- **Goal:** Implement privacy-friendly analytics and reporting hooks without breaking performance.
+- **Inputs:** Client services/hooks, server info endpoints, environment-driven feature flags.
+- **Outputs:** Analytics adapters, dashboards, or data exports tied to real endpoints like `/api/info/github`.
+- **Constraints / System Prompt:** Guard analytics behind env flags. Prefer custom hooks and React Query observers. Never ship tracking IDs or secrets in source—use `.env` only.
 
-Use the `:create:[type]:[name]` convention for boilerplate generation:
+---
 
-- `:create:model:user` → Mongoose schema (context-aware fields).
-- `:create:crud:product` → REST routes + controller.
-- `:create:controller:auth` → Express controller logic.
-- `:create:test:auth` → Jest/Vitest test file.
-- `:create:component:JobCard` → React component + SCSS module.
-- `:create:style:header` → SCSS module.
-- `:create:service:jobs` → API request helper.
-- `:create:route:dashboard` → React page with route boilerplate.
+## Command Shortcuts
+
+Use these intent tags when requesting boilerplate:
+
+- `:create:model:[Name]`
+- `:create:crud:[Name]`
+- `:create:controller:[Name]`
+- `:create:test:[Name]`
+- `:create:component:[Name]`
+- `:create:style:[Name]`
+- `:create:service:[Name]`
+- `:create:route:[Name]`
+
+---
+
+## Definition of Done
+
+A task is complete when:
+
+1. JavaScript-only code that respects arrow functions, SCSS modules, React Query patterns, and CommonJS on the server is committed.
+2. New backend logic lives in the proper MVC layer with matching Jest + Supertest coverage; new frontend logic includes or updates Vitest specs when practical.
+3. Environment variables are read from `.env` (or `import.meta.env`) and never hard-coded.
+4. CORS remains configured through the `cors` package (wildcard in development) with no alternative middleware added.
+5. README/AGENTS/docs stay accurate and reference real scripts, routes, URLs, and configuration present in the repository.
+6. All tests and required build steps pass locally (`npm test`, `npm run test:client`, `npm run build` when affected).
+7. Changes align with deployment expectations (Vercel for client, Render/Heroku for server) and update any affected instructions.
+8. PRs include evidence of testing, follow feature-branch etiquette, and highlight any environment updates needed for reviewers.
