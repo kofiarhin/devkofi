@@ -3,6 +3,7 @@ import { http, HttpResponse } from "msw";
 const API_ORIGINS = [
   "http://localhost:5000",
   "https://devkofi-883f1d7b0ba0.herokuapp.com",
+  "https://api.devkofi.com",
 ];
 
 const basePings = API_ORIGINS.map((origin) =>

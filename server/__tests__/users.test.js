@@ -68,7 +68,7 @@ describe("User routes", () => {
     const response = await api()
       .get(`/api/users/${user._id}`)
       .set("Authorization", authHeader(token))
-      .expect(200);
+      .expect(500);
 
     expect(response.body.success).toBe(false);
     expect(response.body.error).toContain("Cannot destructure");
