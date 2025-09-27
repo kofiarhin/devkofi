@@ -18,6 +18,8 @@ import AboutMe from "./Pages/AboutMe/AboutMe";
 import Register from "./Pages/Register/Register";
 import Portal from "./Pages/Portal/Portal";
 import Messages from "./Pages/Messages/Messages";
+import BlogList from "./features/blog/BlogList";
+import BlogPost from "./features/blog/BlogPost";
 
 // app component
 const App = () => {
@@ -53,6 +55,8 @@ const App = () => {
           <Route path="/course-outline" element={<CourseOutline />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/blog" element={<BlogList />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="about-me" element={<AboutMe />} />
           <Route element={<PrivateRoutes />}>
             <Route path="/templates" element={<Templates />} />

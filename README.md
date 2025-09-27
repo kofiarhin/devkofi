@@ -175,3 +175,18 @@ VITE_UPLOAD_PRESET=devkofi_uploads
 ## License
 
 MIT
+
+## Blog: How to publish
+1) Add a new `.md` file to `client/public/blog/`, e.g. `my-post.md`.
+2) Append a new entry to `client/public/blog/posts.json`:
+   {
+     "title": "My Post",
+     "slug": "my-post",
+     "date": "YYYY-MM-DD",
+     "tags": ["tag1","tag2"],
+     "excerpt": "Short summary…",
+     "cover": "/blog/optional-cover.jpg",
+     "file": "/blog/my-post.md",
+     "published": true
+   }
+3) Commit and deploy.

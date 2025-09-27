@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Welcome to the DevKofi Blog",
+    "slug": "welcome",
+    "date": "2025-09-26",
+    "tags": ["update"],
+    "excerpt": "Quick intro and why this blog exists.",
+    "cover": "/blog/welcome-cover.jpg",
+    "file": "/blog/welcome.md",
+    "published": true
+  }
+]
