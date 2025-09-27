@@ -1,14 +1,12 @@
 const express = require("express");
-const cors = require("cors");
-const path = require("path");
-const fs = require("fs");
+const createCors = require("./middleware/cors");
 
 const projectProfile = require("./config/project-profile.json");
 
 // Middlewares
-const logger = require("./middlewares/logger");
-const auth = require("./middlewares/auth");
 const cleaner = require("./middlewares/cleaner");
+const notFound = require("./middleware/notFound");
+const errorHandler = require("./middleware/errorHandler");
 
 // Routes
 const messagesRoute = require("./routes/messagesRoute");
@@ -21,14 +19,15 @@ const studentRoutes = require("./routes/studentRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
-const errorHandler = require("./middlewares/errorHandler");
 const infoRoutes = require("./routes/infoRoutes");
 const pricingRoutes = require("./routes/pricingRoutes");
+const healthRoute = require("./health.route");
 
 const app = express();
 
 // Middleware setup
-app.use(cors());
+app.disable("x-powered-by");
+app.use(createCors());
 app.use(express.json());
 app.use(cleaner); //remove this code later
 
@@ -54,12 +53,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/info", infoRoutes);
 app.use("/api/pricing", pricingRoutes);
+app.use("/health", healthRoute);
 
-app.use((req, res, next) => {
-  res.status(404);
-  throw new Error("page not found");
-});
-
+app.use(notFound);
 app.use(errorHandler);
 
 module.exports = app;

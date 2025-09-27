@@ -1,10 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { baseUrl } from "../constants/constants";
+import { buildApiUrl } from "../lib/api";
 
 export const joinNewsletter = async (data) => {
-  const url = import.meta.env.DEV
-    ? "http://localhost:5000/api/newsletter"
-    : `${baseUrl}/api/newsletter`;
+  const url = buildApiUrl("/api/newsletter");
   try {
     const res = await fetch(url, {
       headers: {

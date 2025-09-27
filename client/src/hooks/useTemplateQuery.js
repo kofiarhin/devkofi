@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { baseUrl } from "../constants/constants";
+import { buildApiUrl } from "../lib/api";
 
 const getTemplates = async () => {
   try {
-    const surfix = "/api/templates";
-    const url = import.meta.env.DEV ? surfix : `${baseUrl}${surfix}`;
+    const url = buildApiUrl("/api/templates");
     const res = await fetch(url);
     const data = await res.json();
     if (!res.ok) {

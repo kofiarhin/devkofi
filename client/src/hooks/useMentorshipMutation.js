@@ -1,10 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { baseUrl } from "../constants/constants";
+import { buildApiUrl } from "../lib/api";
 const joinMentorship = async (data) => {
   try {
-    const url = import.meta.env.DEV
-      ? "/api/mentorship"
-      : `${baseUrl}/api/mentorship`;
+    const url = buildApiUrl("/api/mentorship");
     const res = await fetch(url, {
       headers: {
         "content-type": "application/json",

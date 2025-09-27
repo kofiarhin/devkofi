@@ -1,9 +1,8 @@
-import { baseUrl } from "../constants/constants";
+import { buildApiUrl } from "../lib/api";
 
 // send message
 const sendMessage = async (messageData) => {
-  const path = "/api/contact";
-  const url = import.meta.env.DEV ? path : `${baseUrl}${path}`;
+  const url = buildApiUrl("/api/contact");
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -22,9 +21,9 @@ const sendMessage = async (messageData) => {
 
 const downloadFile = async (fileName = "default") => {
   try {
-    const apiUrl = import.meta.env.DEV
-      ? `http://localhost:5000/api/download?filename=${fileName}`
-      : `${baseUrl}/api/download?name=${fileName}`;
+    const apiUrl = buildApiUrl(
+      `/api/download?filename=${encodeURIComponent(fileName)}`
+    );
     const response = await fetch(apiUrl, {
       method: "GET",
     });
@@ -46,9 +45,7 @@ const downloadFile = async (fileName = "default") => {
 
 // src/services/services.js
 const getGitHubInfo = async (query = "daily") => {
-  const url = import.meta.env.DEV
-    ? "http://localhost:5000/api/info/github?query=daily"
-    : `${baseUrl}/api/info/github?query=daily`;
+  const url = buildApiUrl(`/api/info/github?query=${encodeURIComponent(query)}`);
   const res = await fetch(url);
   const data = await res.json();
   return data;

@@ -1,11 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import { baseUrl } from "../constants/constants";
+import { buildApiUrl } from "../lib/api";
 
 const registerUser = async (userData) => {
   try {
-    const url = import.meta.env.DEV
-      ? "/api/auth/register"
-      : `${baseUrl}/api/auth/register`;
+    const url = buildApiUrl("/api/auth/register");
     const res = await fetch(url, {
       headers: {
         "content-type": "application/json",
