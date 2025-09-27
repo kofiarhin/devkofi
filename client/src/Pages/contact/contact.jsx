@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import "./contact.styles.scss";
@@ -59,23 +59,26 @@ const Contact = () => {
     mutate(formData);
   };
 
-  if (error) {
-    navigate("/error");
-  }
+  useEffect(() => {
+    if (error) {
+      navigate("/error");
+    }
+  }, [error, navigate]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setFormData({
+        fullName: "",
+        email: "",
+        message: "",
+      });
+      navigate("/success");
+      console.log("message sent successfully");
+    }
+  }, [isSuccess, navigate]);
 
   if (isPending) {
     return <Spinner />;
-  }
-
-  if (isSuccess) {
-    // Clear form after submit
-    setFormData({
-      fullName: "",
-      email: "",
-      message: "",
-    });
-    navigate("/success");
-    console.log("message sent successfully");
   }
 
   return (

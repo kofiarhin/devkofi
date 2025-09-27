@@ -9,7 +9,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "jest --roots server --watchAll",
     "test:server": "cross-env NODE_ENV=test jest --config server/jest.config.cjs --runInBand",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "test:client": "npm --prefix client run test:client"
   },
   "jest": {
     "setupFilesAfterEnv": [

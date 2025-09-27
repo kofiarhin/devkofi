@@ -2,9 +2,8 @@ import { baseUrl } from "../constants/constants";
 
 // send message
 const sendMessage = async (messageData) => {
-  const url = import.meta.env.DEV
-    ? "http://localhost:5000/api/contact"
-    : `${baseUrl}/api/contact`;
+  const path = "/api/contact";
+  const url = import.meta.env.DEV ? path : `${baseUrl}${path}`;
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -13,8 +12,12 @@ const sendMessage = async (messageData) => {
     body: JSON.stringify(messageData),
   });
   const data = await res.json();
-  console.log("xxxx", data);
-  return { message: "testing mic" };
+
+  if (!res.ok) {
+    throw new Error(data?.error || "Failed to send message");
+  }
+
+  return data;
 };
 
 const downloadFile = async (fileName = "default") => {
