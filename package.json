@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
-    "dev:client": "cd client && vite",
+    "dev:client": "cd client && npm run dev",
     "dev:server": "cd server && nodemon server.js",
     "build": "cd client && npm run build",
     "start": "node server/index.js",
