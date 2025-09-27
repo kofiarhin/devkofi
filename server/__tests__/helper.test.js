@@ -89,6 +89,25 @@ describe("Helper utilities", () => {
     global.fetch = originalFetch;
   });
 
+  it("returns an empty dataset when the contribution calendar is missing", async () => {
+    const originalFetch = global.fetch;
+    const originalToken = process.env.GITHUB_TOKEN;
+    const originalUsername = process.env.GITHUB_USERNAME;
+    process.env.GITHUB_TOKEN = "token";
+    process.env.GITHUB_USERNAME = "user";
+    global.fetch = jest.fn(async () => ({
+      ok: true,
+      json: async () => ({ data: {} }),
+    }));
+
+    const result = await fetchDailyGitHubContributions();
+    expect(result).toEqual({ data: [] });
+
+    global.fetch = originalFetch;
+    process.env.GITHUB_TOKEN = originalToken;
+    process.env.GITHUB_USERNAME = originalUsername;
+  });
+
   it("validates missing credentials for daily contributions", async () => {
     const originalToken = process.env.GITHUB_TOKEN;
     const originalUsername = process.env.GITHUB_USERNAME;

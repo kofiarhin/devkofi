@@ -24,6 +24,14 @@ describe("Newsletter routes", () => {
     expect(response.body).toEqual({ success: false, error: "user already exist" });
   });
 
+  it("requires an email address to subscribe", async () => {
+    const response = await api().post("/api/newsletter").send({}).expect(500);
+    expect(response.body).toEqual({
+      success: false,
+      error: "please fill out all fields",
+    });
+  });
+
   it("requires authentication to list newsletter subscribers", async () => {
     const { token } = await createUserAndToken({
       fullName: "Admin User",

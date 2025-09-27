@@ -16,4 +16,13 @@ describe("Student routes", () => {
       profileCompletion: 0,
     });
   });
+
+  it("handles aggregation failures gracefully", async () => {
+    jest
+      .spyOn(Contact, "countDocuments")
+      .mockReturnValueOnce({ exec: async () => { throw new Error("overview failed"); } });
+
+    const response = await api().get("/api/student/overview").expect(500);
+    expect(response.body).toEqual({ success: false, error: "overview failed" });
+  });
 });

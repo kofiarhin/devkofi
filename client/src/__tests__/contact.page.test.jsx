@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Routes, Route } from "react-router-dom";
 import { http, HttpResponse } from "msw";
@@ -79,5 +79,38 @@ describe("Contact page", () => {
     expect(
       await screen.findByRole("heading", { name: /something went wrong/i })
     ).toBeInTheDocument();
+  });
+
+  it("shows a spinner while the request is pending", async () => {
+    let resolveRequest;
+    server.use(
+      http.post("*/api/contact", () =>
+        new Promise((resolve) => {
+          resolveRequest = () => resolve(HttpResponse.json({ success: true }));
+        })
+      )
+    );
+
+    const user = userEvent.setup();
+    const { container } = renderWithProviders(
+      <Routes>
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/success" element={<Success />} />
+      </Routes>,
+      { route: "/contact" }
+    );
+
+    await populateForm(user);
+    await user.click(screen.getByRole("button", { name: /send message/i }));
+
+    await waitFor(() =>
+      expect(container.querySelector(".spinner-wrapper")).toBeInTheDocument()
+    );
+
+    resolveRequest();
+
+    await waitFor(() =>
+      expect(container.querySelector(".spinner-wrapper")).not.toBeInTheDocument()
+    );
   });
 });

@@ -12,6 +12,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const isDevEnvironment = import.meta.env.MODE !== "production";
   const handleToggleNav = () => {
     dispatch(toggleNav());
   };
@@ -51,7 +52,7 @@ const Header = () => {
             <Link to="about-me">About</Link>
             {/* <Link to="/templates">Templates</Link> */}
             <Link to="/contact">Contact</Link>
-            {import.meta.env.DEV ? <Link to="/playground">Playground</Link> : ""}
+              {isDevEnvironment ? <Link to="/playground">Playground</Link> : null}
             {user ? (
               <>
                 <Link to="/portal">Portal</Link>

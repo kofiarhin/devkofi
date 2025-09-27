@@ -28,9 +28,6 @@ const useJoinNewsletterMutation = () => {
   return useMutation({
     mutationKey: ["newsletter"],
     mutationFn: joinNewsletter,
-    onError: (data) => {
-      console.log("something went wrong");
-    },
   });
 };
 

@@ -7,7 +7,7 @@
     "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
     "dev:client": "cd client && vite",
     "dev:server": "cd server && nodemon server.js",
-    "build": "cd client && vite build",
+    "build": "cd client && npm run build",
     "start": "node server/index.js",
     "test": "npm run test:server",
     "test:server": "cross-env NODE_ENV=test jest --config server/jest.config.cjs --runInBand",
