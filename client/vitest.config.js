@@ -10,11 +10,12 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "lcov"],
+      all: true,
       thresholds: {
-        statements: 85,
-        branches: 85,
-        functions: 85,
-        lines: 85,
+        statements: 100,
+        branches: 100,
+        functions: 100,
+        lines: 100,
       },
       include: [
         "src/Pages/Home/**",

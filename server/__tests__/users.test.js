@@ -74,3 +74,35 @@ describe("User routes", () => {
     expect(response.body.error).toContain("Cannot destructure");
   });
 });
+
+describe("getUsers controller", () => {
+  it("returns an unauthorized error when req.user is missing", async () => {
+    const { getUsers } = require("../controllers/userController");
+    const json = jest.fn();
+    const res = { json, status: jest.fn().mockReturnThis() };
+
+    await getUsers({ user: null }, res, jest.fn());
+
+    expect(json).toHaveBeenCalledWith({
+      success: false,
+      error: "unauthorized",
+    });
+  });
+});
+
+describe("userRoutes individual handler", () => {
+  it("omits passwords when returning the authenticated user", async () => {
+    const router = require("../routes/userRoutes");
+    const routeLayer = router.stack.find((layer) => layer.route?.path === "/:id");
+    const handler = routeLayer.route.stack[1].handle;
+    const json = jest.fn();
+    const res = { json };
+
+    await handler(
+      { user: { _doc: { email: "member@test.dev", role: "admin", password: "secret" } } },
+      res
+    );
+
+    expect(json).toHaveBeenCalledWith({ email: "member@test.dev", role: "admin" });
+  });
+});

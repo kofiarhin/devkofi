@@ -3,6 +3,7 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { act } from "react";
 import { http, HttpResponse } from "msw";
+import { vi } from "vitest";
 import useGithubInfoQuery from "../hooks/useGithubInfoQuery";
 import useMentorshipMutation from "../hooks/useMentorshipMutation";
 import usecontactMutation from "../hooks/useContactMutation";
@@ -99,14 +100,23 @@ describe("API hooks", () => {
   });
 
   it("reports newsletter validation feedback", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const { wrapper } = createWrapper();
     const { result } = renderHook(() => useJoinNewsletterMutation(), { wrapper });
 
-    let response;
+    let success;
     await act(async () => {
-      response = await result.current.mutateAsync({ email: "invalid-email" });
+      success = await result.current.mutateAsync({ email: "valid@test.dev" });
     });
-    expect(response.error).toMatch(/invalid email/i);
+    expect(success).toEqual({ success: true });
+
+    let failure;
+    await act(async () => {
+      failure = await result.current.mutateAsync({ email: "invalid-email" });
+    });
+    expect(failure.error).toMatch(/invalid email/i);
+
+    logSpy.mockRestore();
   });
 
   it("retrieves templates, admin, student and user data", async () => {

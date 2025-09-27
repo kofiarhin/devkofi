@@ -31,4 +31,15 @@ describe("Mentorship routes", () => {
     const response = await api().post("/api/mentorship").send(payload).expect(500);
     expect(response.body).toEqual({ success: false, error: "user already exist" });
   });
+
+  it("validates required fields when joining the mentorship", async () => {
+    const response = await api()
+      .post("/api/mentorship")
+      .send({ email: "missing@test.dev" })
+      .expect(500);
+    expect(response.body).toEqual({
+      success: false,
+      error: "please fill out all fields",
+    });
+  });
 });

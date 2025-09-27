@@ -55,15 +55,18 @@ const Login = () => {
         // console.log("error", data.message);
       },
       onSuccess: (data) => {
-        dispatch(setUser({ token: data.token, ...data.user }));
-        if (data?.user) {
-          localStorage.setItem(
-            "user",
-            JSON.stringify({ token: data.token, ...data.user })
-          );
+        const userPayload = data?.user
+          ? { token: data.token, ...data.user }
+          : null;
+
+        dispatch(setUser(userPayload));
+
+        if (userPayload) {
+          localStorage.setItem("user", JSON.stringify(userPayload));
         } else {
           localStorage.removeItem("user");
         }
+
         setFormData({
           email: "",
           password: "",

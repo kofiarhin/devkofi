@@ -75,6 +75,22 @@ describe("Auth routes", () => {
     expect(response.text).toContain("jwt");
   });
 
+  it("handles verification when the token payload is empty", async () => {
+    jest.spyOn(jwt, "verify").mockReturnValueOnce(null);
+    const response = await api()
+      .get("/api/auth/verify?token=dummy")
+      .expect(500);
+    expect(response.text).toContain("token invalid");
+  });
+
+  it("returns an error when the verification target cannot be found", async () => {
+    const token = jwt.sign({ email: "missing@test.dev" }, process.env.JWT_SECRET);
+    const response = await api()
+      .get(`/api/auth/verify?token=${token}`)
+      .expect(500);
+    expect(response.text).toContain("user not found");
+  });
+
   it("verifies mentorship accounts with a valid token", async () => {
     await Mentorship.create({
       fullName: "Verifier",

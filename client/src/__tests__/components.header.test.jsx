@@ -5,10 +5,16 @@ import {
   renderWithProviders,
   createTestStore,
 } from "../tests/utils/renderWithProviders";
+import { vi, afterEach } from "vitest";
+import { Routes, Route } from "react-router-dom";
 
 describe("Header component", () => {
   beforeEach(() => {
     window.localStorage.clear();
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   it("shows guest navigation with a call to action", () => {
@@ -63,5 +69,39 @@ describe("Header component", () => {
 
     await user.click(logoutButtons[0]);
     expect(store.getState().auth.user).toBeNull();
+  });
+
+  it("hides the playground link outside development", () => {
+    vi.stubEnv("MODE", "production");
+
+    renderWithProviders(<Header />);
+
+    expect(screen.queryByRole("link", { name: /playground/i })).not.toBeInTheDocument();
+  });
+
+  it("navigates to the register page from the hero call to action", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(
+      <Routes>
+        <Route path="/" element={<Header />} />
+        <Route path="/register" element={<p>Registration</p>} />
+      </Routes>
+    );
+
+    await user.click(screen.getAllByRole("button", { name: /join now/i })[0]);
+    expect(await screen.findByText(/registration/i)).toBeInTheDocument();
+  });
+
+  it("navigates to the register page from the nav menu button", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(
+      <Routes>
+        <Route path="/" element={<Header />} />
+        <Route path="/register" element={<p>Register CTA</p>} />
+      </Routes>
+    );
+
+    await user.click(screen.getAllByRole("button", { name: /join now/i })[1]);
+    expect(await screen.findByText(/register cta/i)).toBeInTheDocument();
   });
 });

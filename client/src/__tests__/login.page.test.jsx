@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Routes, Route } from "react-router-dom";
 import Login from "../Pages/Login/Login";
@@ -7,6 +7,8 @@ import {
   renderWithProviders,
   createTestStore,
 } from "../tests/utils/renderWithProviders";
+import { http, HttpResponse } from "msw";
+import { server } from "../tests/msw/server";
 
 const completeLoginForm = async (user, password = "password123") => {
   await user.type(screen.getByLabelText(/email/i), "student@example.com");
@@ -54,5 +56,32 @@ describe("Login page", () => {
       await screen.findByText(/invalid credentials/i)
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /login/i })).toBeInTheDocument();
+  });
+
+  it("removes persisted sessions when the API omits the user payload", async () => {
+    const user = userEvent.setup();
+    const store = createTestStore();
+
+    window.localStorage.setItem("user", JSON.stringify({ token: "old" }));
+
+    server.use(
+      http.post("*/api/auth/login", async () =>
+        HttpResponse.json({ token: "jwt-token" })
+      )
+    );
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/portal" element={<Portal />} />
+      </Routes>,
+      { route: "/login", store }
+    );
+
+    await completeLoginForm(user);
+    await user.click(screen.getByRole("button", { name: /submit/i }));
+
+    await waitFor(() => expect(store.getState().auth.user).toBeNull());
+    expect(window.localStorage.getItem("user")).toBeNull();
   });
 });

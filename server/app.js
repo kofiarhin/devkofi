@@ -53,7 +53,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/info", infoRoutes);
 app.use("/api/pricing", pricingRoutes);
-app.use("/health", healthRoute);
+app.use(["/health", "/api/health"], healthRoute);
 
 app.use(notFound);
 app.use(errorHandler);

@@ -29,6 +29,20 @@ describe("error handler", () => {
     expect(res.json).toHaveBeenCalledWith({ success: false, error: "boom" });
   });
 
+  it("falls back to a generic message when the error lacks one", () => {
+    process.env.NODE_ENV = "test";
+    const res = createResponse();
+    const error = {};
+
+    errorHandler(error, {}, res, () => {});
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({
+      success: false,
+      error: "Internal server error",
+    });
+  });
+
   it("preserves an explicit status code and includes stack traces in development", () => {
     process.env.NODE_ENV = "development";
     const res = createResponse();
@@ -45,5 +59,18 @@ describe("error handler", () => {
         stack: expect.stringContaining("Error: missing"),
       })
     );
+  });
+
+  it("omits stack traces in development when unavailable", () => {
+    process.env.NODE_ENV = "development";
+    const res = createResponse();
+    res.statusCode = 401;
+    const error = new Error("auth");
+    error.stack = undefined;
+
+    errorHandler(error, {}, res, () => {});
+
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith({ success: false, error: "auth" });
   });
 });
