@@ -10,8 +10,10 @@
     "build": "cd client && npm run build",
     "start": "node server/index.js",
     "test": "npm run test:server",
-    "test:server": "cross-env NODE_ENV=test jest --config server/jest.config.cjs --runInBand",
-    "test:client": "npm --prefix client run test:client"
+    "test:server": "cross-env NODE_ENV=test jest --config server/jest.config.cjs --coverage --runInBand --colors",
+    "test:server:ci": "cross-env NODE_ENV=test jest --config server/jest.config.cjs --coverage --ci --runInBand --colors",
+    "test:client": "npm --prefix client run test:client",
+    "test:client:ci": "npm --prefix client run test:client:ci"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -38,6 +40,7 @@
     "express": "^5.1.0",
     "express-useragent": "^1.0.15",
     "geoip-lite": "^1.4.10",
+    "groq-sdk": "^0.33.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.1",
     "nodemailer": "^7.0.5"
