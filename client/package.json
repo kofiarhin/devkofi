@@ -11,7 +11,8 @@
     "start:server": "cd ../ && npm run server",
     "test:start": "vitest .",
     "test": "concurrently \"npm run start:server\" \"npm run test:start\" ",
-    "test:client": "vitest run --config vitest.config.js --coverage"
+    "test:client": "vitest --coverage",
+    "test:client:ci": "vitest --coverage run"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
