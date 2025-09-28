@@ -20,7 +20,9 @@ const loadEnv = () => {
 
   const nodeEnv = process.env.NODE_ENV || "development";
   const port = Number.parseInt(process.env.PORT, 10) || 5000;
-  let mongoUri = sanitize(process.env.MONGODB_URI);
+  let mongoUri = sanitize(
+    process.env.MONGODB_URI || process.env.MONGO_URI_DEV || process.env.MONGO_URI
+  ); // CODex: allow README-documented fallbacks for Mongo connection strings
   let jwtSecret = sanitize(process.env.JWT_SECRET);
   const corsOrigin = sanitize(process.env.CORS_ORIGIN);
 

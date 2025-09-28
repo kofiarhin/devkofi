@@ -2,11 +2,31 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const sendEmail = async (options) => {
+  const username = process.env.EMAIL_USERNAME;
+  const password = process.env.EMAIL_APP_PASSWORD;
+  const skipSmtp =
+    process.env.NODE_ENV !== "production" &&
+    process.env.ENABLE_SMTP !== "true";
+
+  if (skipSmtp) {
+    console.warn(
+      `[email] Skipping SMTP send in ${process.env.NODE_ENV} mode`,
+      { to: options.to, subject: options.subject }
+    ); // CODex: allow local flows to succeed without real email credentials
+
+    return {
+      accepted: [options.to],
+      rejected: [],
+      messageId: `dev-${Date.now()}`,
+      envelope: { from: username || "dev@localhost", to: [options.to] },
+    };
+  }
+
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_APP_PASSWORD,
+      user: username,
+      pass: password,
     },
     tls: {
       rejectUnauthorized: false, // ✅ allow self-signed certs
@@ -14,7 +34,7 @@ const sendEmail = async (options) => {
   });
 
   const mailOptions = {
-    from: process.env.EMAIL_USERNAME,
+    from: username,
     to: options.to,
     subject: options.subject,
     text: options.text || "",
