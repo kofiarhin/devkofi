@@ -1,5 +1,5 @@
 const DEV_API_URL = "http://localhost:5000";
-const PROD_API_URL = "https://api.devkofi.com";
+const PROD_API_URL = "https://devkofi-883f1d7b0ba0.herokuapp.com";
 
 const normalizeUrl = (url) => {
   if (typeof url !== "string") {
