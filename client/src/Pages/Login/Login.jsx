@@ -39,8 +39,8 @@ const Login = () => {
   const { user } = useSelector((state) => state.auth);
   const { mutate, isPending, error, isSuccess, data } = useLoginMutation();
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: "test@gmail.com",
+    password: "password",
   });
 
   const handleChange = (e) => {

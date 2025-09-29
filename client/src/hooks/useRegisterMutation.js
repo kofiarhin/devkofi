@@ -12,6 +12,11 @@ const registerUser = async (userData) => {
       body: JSON.stringify(userData),
     });
 
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error);
+    }
+
     const result = await res.json();
     console.log({ result });
   } catch (error) {

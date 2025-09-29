@@ -5,9 +5,10 @@
   "scripts": {
     "start": "node server.js"
   },
-  "engines": {
-    "node": ">=18.x"
-  },
+"engines": {
+  "node": "20.x",
+  "npm": "10.x"
+},
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",

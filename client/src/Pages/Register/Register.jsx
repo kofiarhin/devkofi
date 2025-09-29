@@ -43,10 +43,10 @@ const Register = () => {
   const { mutate, isPending, data } = useRegisterMutation();
 
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    password: "",
+    fullName: "kofi arhin",
+    email: "kofiarhin@gmail.com",
+    phone: "122342132",
+    password: "password",
     packageName: "",
     pricingId: 1,
   });
@@ -60,8 +60,9 @@ const Register = () => {
     e.preventDefault();
     mutate(formData, {
       onSuccess: (res) => {
-        console.log("where we at with it... ");
-        navigate("/login");
+        console.log({ res });
+        console.log("registration successful");
+        // navigate("/login");
         // if (res && res.success) {
         //   navigate("/success?type=mentorship");
         // }

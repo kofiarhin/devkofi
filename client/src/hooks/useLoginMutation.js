@@ -10,6 +10,11 @@ const loginUser = async (userData) => {
     method: "POST",
     body: JSON.stringify(userData),
   });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    console.log({ errorData });
+  }
   const data = await res.json();
 
   if (data?.error) {

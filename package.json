@@ -13,7 +13,8 @@
     "test:server": "cross-env NODE_ENV=test jest --config server/jest.config.cjs --coverage --runInBand --colors",
     "test:server:ci": "cross-env NODE_ENV=test jest --config server/jest.config.cjs --coverage --ci --runInBand --colors",
     "test:client": "npm --prefix client run test:client",
-    "test:client:ci": "npm --prefix client run test:client:ci"
+    "test:client:ci": "npm --prefix client run test:client:ci",
+    "heroku-postbuild": "cd server && npm install"
   },
   "jest": {
     "setupFilesAfterEnv": [
