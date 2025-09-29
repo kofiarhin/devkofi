@@ -43,10 +43,10 @@ const Register = () => {
   const { mutate, isPending, data } = useRegisterMutation();
 
   const [formData, setFormData] = useState({
-    fullName: "kofi arhin",
-    email: "kofiarhin@gmail.com",
-    phone: "122342132",
-    password: "password",
+    fullName: "",
+    email: "",
+    phone: "",
+    password: "",
     packageName: "",
     pricingId: 1,
   });
