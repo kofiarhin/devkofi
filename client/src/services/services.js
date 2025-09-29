@@ -1,8 +1,13 @@
-import { buildApiUrl } from "../lib/api";
+import { API_BASE } from "../constants/server";
+
+const ensureLeadingSlash = (path = "") =>
+  path.startsWith("/") ? path : `/${path}`;
+
+const buildUrl = (path = "") => `${API_BASE}${ensureLeadingSlash(path)}`;
 
 // send message
 const sendMessage = async (messageData) => {
-  const url = buildApiUrl("/api/contact");
+  const url = buildUrl("/api/contact");
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -21,7 +26,7 @@ const sendMessage = async (messageData) => {
 
 const downloadFile = async (fileName = "default") => {
   try {
-    const apiUrl = buildApiUrl(
+    const apiUrl = buildUrl(
       `/api/download?filename=${encodeURIComponent(fileName)}`
     );
     const response = await fetch(apiUrl, {
@@ -45,7 +50,7 @@ const downloadFile = async (fileName = "default") => {
 
 // src/services/services.js
 const getGitHubInfo = async (query = "daily") => {
-  const url = buildApiUrl(`/api/info/github?query=${encodeURIComponent(query)}`);
+  const url = buildUrl(`/api/info/github?query=${encodeURIComponent(query)}`);
   const res = await fetch(url);
   const data = await res.json();
   return data;
