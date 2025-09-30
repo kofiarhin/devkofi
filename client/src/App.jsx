@@ -18,6 +18,7 @@ import AboutMe from "./Pages/AboutMe/AboutMe";
 import Register from "./Pages/Register/Register";
 import Portal from "./Pages/Portal/Portal";
 import Messages from "./Pages/Messages/Messages";
+import Chat from "./Pages/Chat/Chat";
 
 // app component
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="about-me" element={<AboutMe />} />
+          <Route path="/chat" element={<Chat />} />
           <Route element={<PrivateRoutes />}>
             <Route path="/templates" element={<Templates />} />
             <Route path="/portal" element={<Portal />} />

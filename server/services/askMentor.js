@@ -1,3 +1,4 @@
+// askMentor.js  (CommonJS)
 const Groq = require("groq-sdk");
 const systemPrompt = require("../prompts/systemPrompt");
 
@@ -11,19 +12,28 @@ const FALLBACK_RESPONSE = {
 
 const API_KEY = process.env.GROQ_API_KEY || "";
 const MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
+
+// ⬇️ Fail loudly if key is missing (don’t pretend it’s a JSON error)
+if (!API_KEY) {
+  console.error("[askMentor] Missing GROQ_API_KEY");
+}
+
 const groq = API_KEY ? new Groq({ apiKey: API_KEY }) : null;
 
 const parseMentorContent = (content) => {
   if (typeof content !== "string" || !content.trim())
     return { ...FALLBACK_RESPONSE };
   try {
-    // Strip common code-fence wrappers before parsing
     const cleaned = content
       .replace(/```json\s*([\s\S]*?)\s*```/i, "$1")
       .replace(/```\s*([\s\S]*?)\s*```/g, "$1")
       .trim();
 
-    const payload = JSON.parse(cleaned);
+    // fallback: extract first JSON object if extra text sneaks in
+    const match = cleaned.match(/\{[\s\S]*\}/);
+    const jsonStr = match ? match[0] : cleaned;
+
+    const payload = JSON.parse(jsonStr);
 
     return {
       title:
@@ -45,7 +55,8 @@ const parseMentorContent = (content) => {
           ? payload.confidence
           : FALLBACK_RESPONSE.confidence,
     };
-  } catch {
+  } catch (e) {
+    console.error("[parseMentorContent] JSON parse failed:", e?.message || e);
     return { ...FALLBACK_RESPONSE };
   }
 };
@@ -55,11 +66,18 @@ const askMentor = async (userQuestion, history = []) => {
     throw new Error("Question must be a non-empty string.");
   }
 
-  if (!groq) return { ...FALLBACK_RESPONSE };
+  // Surface missing key clearly
+  if (!groq) {
+    return {
+      title: "Missing GROQ_API_KEY",
+      explanation: "Set GROQ_API_KEY in Heroku config vars and redeploy.",
+      code: "",
+      difficulty: "medium",
+      confidence: 0,
+    };
+  }
 
   const sanitizedHistory = Array.isArray(history) ? history : [];
-  const trimmedQuestion = userQuestion.trim();
-
   const messages = [
     { role: "system", content: systemPrompt },
     ...sanitizedHistory,
@@ -68,14 +86,16 @@ const askMentor = async (userQuestion, history = []) => {
       content:
         'Return ONLY a single valid JSON object with keys: "title","explanation","code","difficulty","confidence". No markdown fences, no comments, no prose.',
     },
-    { role: "user", content: trimmedQuestion },
+    { role: "user", content: userQuestion.trim() },
   ];
 
   try {
     const completion = await groq.chat.completions.create({
       model: MODEL,
       messages,
-      temperature: 0.2,
+      temperature: 0, // keep deterministic
+      // 🔒 Force valid JSON output
+      response_format: { type: "json_object" },
       stream: false,
     });
 

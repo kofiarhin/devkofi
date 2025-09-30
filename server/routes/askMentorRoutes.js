@@ -1,20 +1,12 @@
 const { Router } = require("express");
-const askMentor = require("../services/askMentor");
+const { ask } = require("../controllers/mentorController");
 
 const router = Router();
 
-router.get("/", async (req, res, next) => {
-  return res.json({ message: "ask me anything" });
+router.get("/", (req, res) => {
+  res.json({ message: "ask me anything" });
 });
 
-router.post("/", async (req, res, next) => {
-  try {
-    const { question } = req.body;
-    const result = await askMentor(question, []);
-    return res.json(result);
-  } catch (error) {
-    next(error);
-  }
-});
+router.post("/", ask);
 
 module.exports = router;

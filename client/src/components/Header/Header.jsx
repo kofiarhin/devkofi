@@ -49,10 +49,11 @@ const Header = () => {
           <nav>
             <Link to="/">Home</Link>
             <Link to="/course-outline">Course Outline</Link>
+            <Link to="/chat">Chat</Link>
             <Link to="about-me">About</Link>
             {/* <Link to="/templates">Templates</Link> */}
             <Link to="/contact">Contact</Link>
-              {isDevEnvironment ? <Link to="/playground">Playground</Link> : null}
+            {isDevEnvironment ? <Link to="/playground">Playground</Link> : null}
             {user ? (
               <>
                 <Link to="/portal">Portal</Link>
