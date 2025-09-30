@@ -1,0 +1,29 @@
+.fab {
+  align-items: center;
+  background-color: var(--accent);
+  border-radius: 999px;
+  border: none;
+  bottom: 1.5rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  color: #0b0b0c;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.25rem;
+  font-weight: 700;
+  height: 52px;
+  justify-content: center;
+  position: sticky;
+  align-self: flex-end;
+  right: 1.5rem;
+  width: 52px;
+  transition: transform 0.2s ease;
+}
+
+.fab:hover {
+  transform: translateY(-2px);
+}
+
+.fab:focus-visible {
+  outline: 3px solid color-mix(in srgb, #fff 40%, var(--accent) 60%);
+  outline-offset: 3px;
+}

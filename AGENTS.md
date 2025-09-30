@@ -89,3 +89,12 @@ A task is complete when:
 6. All tests and required build steps pass locally (`npm test`, `npm run test:client`, `npm run build` when affected).
 7. Changes align with deployment expectations (Vercel for client, Render/Heroku for server) and update any affected instructions.
 8. PRs include evidence of testing, follow feature-branch etiquette, and highlight any environment updates needed for reviewers.
+
+---
+
+## Chat UI Module
+
+- Components live at `client/src/components/` (`ChatBox.jsx`, `MessageList.jsx`, `SuggestionChips.jsx`, `Composer.jsx`, `JumpToBottomFAB.jsx`) with SCSS modules.
+- Server interactions flow through `client/src/services/chatAdapter.js` and React Query (retry=2, exponential backoff, optimistic updates with rollback).
+- Utilities such as `client/src/utils/autoGrowTextarea.js` support the composer auto-grow behavior (max 5 lines).
+- Tests: `npm --prefix client exec vitest run src/__tests__/ChatBox.test.jsx src/__tests__/MessageFlow.test.jsx src/__tests__/Composer.test.jsx src/__tests__/SelfHealing.test.jsx`.
