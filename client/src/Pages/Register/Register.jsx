@@ -62,7 +62,7 @@ const Register = () => {
       onSuccess: (res) => {
         console.log({ res });
         console.log("registration successful");
-        // navigate("/login");
+        navigate("/login");
         // if (res && res.success) {
         //   navigate("/success?type=mentorship");
         // }

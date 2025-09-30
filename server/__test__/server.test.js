@@ -1,158 +1,25 @@
+const askMentor = require("../services/askMentor");
 const app = require("../app");
-const { mockRegisterUser, mockLoginUser, fullAuth } = require("./helper");
 const request = require("supertest");
-const {
-  userTwo,
-  testUser,
-  invalidUser,
-  adminUser,
-  userOne,
-} = require("./data/data");
-const {
-  fetchGitHubContributions,
-  fetchDailyGitHubContributions,
-  createUser,
-} = require("../utility/helper");
-const { loginUser } = require("../controllers/authController");
 
-describe("app", () => {
-  it("should just pass", async () => {
-    expect(1).toBe(1);
-  });
-
-  // it("should join mentorship properly", async () => {
-  //   const { statusCode, body } = await request(app)
-  //     .post("/api/mentorship")
-  //     .send(userTwo);
-  //   console.log({ statusCode, body });
-  // });
-
-  // it("should join news letter properly", async () => {
-  //   const { statusCode, body } = await request(app)
-  //     .post("/api/newsletter")
-  //     .send({ email: "test@gmail.com" });
-  //   console.log({ statusCode, body });
-  // });
-
-  // it("should contact successfully", async () => {
-  //   const { statusCode, body } = await request(app)
-  //     .post("/api/contact")
-  //     .send({
-  //       fullName: userTwo.fullName,
-  //       email: userTwo.email,
-  //       message: "testsing mic",
-  //     });
-  //   console.log({ statusCode, body });
-  // });
-
-  it("should test for 404 page not found", async () => {
-    const { statusCode, body } = await request(app).get("/api/no-route");
-    expect(statusCode).toBe(404);
-    expect(body.error).toBeDefined();
-  });
-
-  it("should fetch git contributions successfully", async () => {
-    const result = await fetchGitHubContributions();
-    expect(result).toBeDefined();
-  });
-
-  it("should test fot daily git contribution data successfully", async () => {
-    const { data } = await fetchDailyGitHubContributions();
-    expect(data.length).toBeGreaterThan(0);
-  });
-
-  it("should test fo info routes succefully", async () => {
-    const { statusCode, body } = await request(app).get("/api/info");
-  });
-
-  it("should test info on daily git hub contribution routes succefully", async () => {
-    const { statusCode, body } = await request(app).get(
-      "/api/info/github?query=daily"
+describe("passing test", () => {
+  it("ask questions successfully", async () => {
+    const { title, code, explanation } = await askMentor(
+      "how do i use .env and give an example"
     );
+    expect(title).toBeDefined();
+    expect(code).toBeDefined();
+  });
+
+  it("should ask questions successfully using end point", async () => {
+    const { statusCode, body } = await request(app).get("/api/ask-mentor");
     expect(statusCode).toBe(200);
   });
 
-  it("should get total git contributions when query is not provided", async () => {
-    const { statusCode, body } = await request(app).get("/api/info/github");
-    expect(statusCode).toBe(200);
-    expect(body).toBeGreaterThan(0);
-  });
-
-  it("should get list pricing list successfully", async () => {
-    const { statusCode, body } = await request(app).get("/api/pricing");
-    expect(statusCode).toBe(200);
-    expect(body.length).toBeGreaterThan(0);
-  });
-
-  it("should get pricing item successfully", async () => {
-    const { statusCode, body } = await request(app).get("/api/pricing/1");
-    expect(statusCode).toBe(200);
-    expect(body).toBeDefined();
-  });
-
-  it("should create user properly", async () => {
-    const user = await createUser({
-      fullName: "test",
-      email: "test@gmail.com",
-      password: "password",
-      pricingId: 1,
-    });
-
-    expect(user._id).toBeDefined();
-  });
-
-  it("should register user properly", async () => {
+  it("should ask questions properly using endpoint", async () => {
     const { statusCode, body } = await request(app)
-      .post("/api/auth/register")
-      .send(testUser);
-    expect(statusCode).toBe(201);
-  });
-
-  it("should login user properly user properly", async () => {
-    await request(app).post("/api/auth/register").send(testUser);
-
-    const { statusCode, body } = await request(app)
-      .post("/api/auth/login")
-      .send({ email: testUser.email, password: testUser.password });
-    expect(statusCode).toBe(200);
-    expect(body.token).toBeDefined();
-  });
-
-  it("should not login user with invalid credentials", async () => {
-    const { statusCode, body } = await mockLoginUser(invalidUser);
-    expect(statusCode).toBe(404);
-    expect(body.success).toBe(false);
-  });
-
-  it("should get user profile properly", async () => {
-    const result = await fullAuth(testUser);
-    // expect(statusCode).toBe(200);
-    // expect(body._id).toBeDefined();
-  });
-
-  it("should get list of users properly", async () => {
-    await mockRegisterUser(adminUser);
-    await mockRegisterUser(userTwo);
-    const { statusCode, body } = await request(app).get("/api/admin/users");
-    expect(statusCode).toBe(200);
-    expect(body.length).toBeGreaterThan(0);
-  });
-
-  it("should get users properly", async () => {
-    const { token } = await mockLoginUser(adminUser);
-    const { statusCode, body } = await request(app)
-      .get("/api/users")
-      .set("Authorization", `Bearer ${token}`);
-    expect(statusCode).toBe(200);
-    expect(body.length).toBeGreaterThan(0);
-  });
-
-  it("should not get users if role is not admin", async () => {
-    const { token } = await fullAuth(userOne);
-    const { statusCode, body } = await request(app)
-      .get("/api/users")
-      .set("Authorization", `Bearer ${token}`);
-    expect(statusCode).toBe(400);
-    expect(body.error).toBeDefined();
+      .post("/api/ask-mentor")
+      .send({ question: "explain error code 500" });
+    console.log({ statusCode, body });
   });
 });

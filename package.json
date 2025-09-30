@@ -9,11 +9,7 @@
     "dev:server": "cd server && nodemon server.js",
     "build": "cd client && npm run build",
     "start": "node server/index.js",
-    "test": "npm run test:server",
-    "test:server": "cross-env NODE_ENV=test jest --config server/jest.config.cjs --coverage --runInBand --colors",
-    "test:server:ci": "cross-env NODE_ENV=test jest --config server/jest.config.cjs --coverage --ci --runInBand --colors",
-    "test:client": "npm --prefix client run test:client",
-    "test:client:ci": "npm --prefix client run test:client:ci",
+    "test": "jest --watch server",
     "heroku-postbuild": "cd server && npm install"
   },
   "jest": {

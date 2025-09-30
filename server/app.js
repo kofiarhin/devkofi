@@ -1,8 +1,6 @@
 const express = require("express");
 const createCors = require("./middleware/cors");
 
-const projectProfile = require("./config/project-profile.json");
-
 // Middlewares
 const cleaner = require("./middlewares/cleaner");
 const notFound = require("./middleware/notFound");
@@ -23,6 +21,7 @@ const userRoutes = require("./routes/userRoutes");
 const infoRoutes = require("./routes/infoRoutes");
 const pricingRoutes = require("./routes/pricingRoutes");
 const healthRoute = require("./health.route");
+const askMentorRoutes = require("./routes/askMentorRoutes");
 
 const app = express();
 
@@ -39,7 +38,7 @@ app.get("/", (req, res) => {
 
 // Templates endpoint
 app.get("/api/templates", (req, res) => {
-  res.json(projectProfile);
+  res.json([]);
 });
 
 // API Routes
@@ -55,6 +54,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/info", infoRoutes);
 app.use("/api/pricing", pricingRoutes);
+app.use("/api/ask-mentor", askMentorRoutes);
 app.use(["/health", "/api/health"], healthRoute);
 
 app.use(notFound);
