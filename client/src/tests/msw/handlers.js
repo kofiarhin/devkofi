@@ -107,4 +107,60 @@ const handlers = [
   }),
 ];
 
-export { handlers };
+const chatMessageStore = {
+  data: [
+    {
+      id: "seed-assistant",
+      role: "assistant",
+      text: "Hello from the assistant",
+      createdAt: Date.now() - 1000,
+      chatId: "default",
+    },
+  ],
+};
+
+handlers.push(
+  http.get("*/api/chats/:chatId/messages", ({ params }) => {
+    const chatId = params.chatId;
+    const messages = chatMessageStore.data
+      .filter((message) => message.chatId === chatId)
+      .sort((a, b) => a.createdAt - b.createdAt)
+      .map(({ chatId: _chatId, ...rest }) => rest);
+
+    return HttpResponse.json({ messages });
+  }),
+  http.post("*/api/chats/:chatId/messages", async ({ request, params }) => {
+    const chatId = params.chatId;
+    const body = await request.json().catch(() => ({}));
+    const text = typeof body.text === "string" ? body.text : "";
+    const now = Date.now();
+
+    const userMessage = {
+      id: `server-user-${now}`,
+      role: "user",
+      text,
+      createdAt: now,
+    };
+
+    const assistantMessage = {
+      id: `server-assistant-${now}`,
+      role: "assistant",
+      text: `Echo: ${text}`,
+      createdAt: now + 10,
+    };
+
+    const existing = chatMessageStore.data.filter((message) => message.chatId === chatId);
+    const others = chatMessageStore.data.filter((message) => message.chatId !== chatId);
+
+    chatMessageStore.data = others.concat(
+      existing.concat([{ ...userMessage, chatId }, { ...assistantMessage, chatId }])
+    );
+
+    return HttpResponse.json({
+      user: { ...userMessage, pendingId: body?.tempId },
+      assistant: assistantMessage,
+    });
+  })
+);
+
+export { handlers, chatMessageStore };

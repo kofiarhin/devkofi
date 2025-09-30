@@ -154,6 +154,13 @@ VITE_UPLOAD_PRESET=devkofi_uploads
 - Prefer pure functions with early returns and small modules; split large flows into helpers.
 - Tests live beside their domain: Jest + Supertest only in `server/__test__/`, Vitest in `client/__test__/`.
 
+## Chat Box UI
+
+- **Usage:** `<ChatBox chatId="demo" chips={["Hello there", "Share deployment"]} />`
+- **Behavior:** Optimistic user sends, assistant replies on mutation success, auto-scroll with jump-to-bottom FAB, and message normalization (id repair, de-dupe, chronological sort).
+- **Testing:** `npm --prefix client exec vitest run src/__tests__/ChatBox.test.jsx src/__tests__/MessageFlow.test.jsx src/__tests__/Composer.test.jsx src/__tests__/SelfHealing.test.jsx`
+- **Integration:** The React Query adapter pulls from `client/src/constants/server.js` (`API_BASE`) and gracefully falls back to relative `/api` paths when the base URL is unset.
+
 ## Testing
 
 - **Server:** `npm test` (Jest + Supertest) covers GitHub info fetchers, pricing endpoints, auth flows, and error handling.
