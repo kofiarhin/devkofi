@@ -1,5 +1,10 @@
 import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import Templates from "./Pages/Templates/Templates";
 import Header from "./components/Header/Header";
@@ -20,8 +25,9 @@ import Portal from "./Pages/Portal/Portal";
 import Messages from "./Pages/Messages/Messages";
 import Chat from "./Pages/Chat/Chat";
 
-// app component
-const App = () => {
+const AppContent = () => {
+  const location = useLocation();
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -37,33 +43,40 @@ const App = () => {
 
     getData();
   }, []);
+
   return (
-    <div>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/success" element={<Success />} />
-          <Route path="/error" element={<Error />} />
-          <Route path="/playground" element={<Playground />} />
-          <Route path="/mentorship" element={<JoinMentorship />} />
-          <Route path="/course-outline" element={<CourseOutline />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="about-me" element={<AboutMe />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route element={<PrivateRoutes />}>
-            <Route path="/templates" element={<Templates />} />
-            <Route path="/portal" element={<Portal />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/messages" element={<Messages />} />
-          </Route>
-        </Routes>
-        <Footer />
-      </Router>
-    </div>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="/error" element={<Error />} />
+        <Route path="/playground" element={<Playground />} />
+        <Route path="/mentorship" element={<JoinMentorship />} />
+        <Route path="/course-outline" element={<CourseOutline />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="about-me" element={<AboutMe />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/templates" element={<Templates />} />
+          <Route path="/portal" element={<Portal />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/messages" element={<Messages />} />
+        </Route>
+      </Routes>
+
+      {/* Hide footer on /chat */}
+      {location.pathname !== "/chat" && <Footer />}
+    </>
   );
 };
+
+const App = () => (
+  <Router>
+    <AppContent />
+  </Router>
+);
 
 export default App;
