@@ -5,6 +5,23 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  .intro {
+    text-align: center;
+    padding-bottom: 2rem;
+    .text-wrapper {
+      max-width: 500px;
+      margin: 20px auto 0;
+    }
+  }
+  .image-wrapper {
+    width: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 2rem auto 0rem;
+    img {
+      width: 100%;
+    }
+  }
 
   .messages {
     flex: 1;

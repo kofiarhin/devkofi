@@ -1,6 +1,7 @@
 import "./chatBox.styles.scss";
 import { useEffect, useRef, useState } from "react";
 import useChatMutation from "../hooks/useChatMutation";
+import { profileImage } from "../constants/constants";
 
 const ChatBox = () => {
   const [question, setQuestion] = useState("");
@@ -84,6 +85,22 @@ const ChatBox = () => {
 
   return (
     <div id="chat-box">
+      {/* intro */}
+      {messages?.length === 0 && (
+        <div className="intro">
+          <div className="image-wrapper">
+            <img src={profileImage} alt="" />
+          </div>
+          <div className="text-wrapper">
+            <p>
+              "Welcome to DevKofi — a platform where I teach coding, mentor
+              aspiring developers, and share strategies to grow as a full-stack
+              engineer. Explore my courses, connect through the chat, and build
+              projects that sharpen your skills and mindset.
+            </p>
+          </div>
+        </div>
+      )}
       <div className="messages" ref={listRef}>
         {messages.map((m) => (
           <div key={m.ts} className={`message ${m.role}`}>
