@@ -34,7 +34,7 @@ app.use(cleaner); //remove this code later
 
 // Root endpoint
 app.get("/", (req, res) => {
-  res.json({ message: "welcome to dev kofi" });
+  res.json({ message: "welcome to dev kofi!!!!" });
 });
 
 // Templates endpoint
