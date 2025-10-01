@@ -2,35 +2,37 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
-      - name: Install root dependencies
+      - name: Install dependencies
         run: npm install
+
+      - name: Install server dependencies
+        run: cd server && npm install
 
       - name: Install client dependencies
-        run: npm install
-        working-directory: client
-
-      - name: Build client
-        run: npm run build
+        run: cd client && npm install
 
       - name: Run server tests
-        run: npm run test:server:ci
+        run: npm test -- --testPathPattern=server --passWithNoTests
 
       - name: Run client tests
-        run: npm run test:client:ci
+        run: cd client && npm run test -- --run --reporter verbose
+
+      - name: Build client (if needed)
+        run: cd client && npm run build

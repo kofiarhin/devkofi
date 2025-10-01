@@ -1,18 +1,28 @@
-import "./chatBox.styles.scss";
+import "./ChatBox.styles.scss";
 import { useEffect, useRef, useState } from "react";
 import useChatMutation from "../hooks/useChatMutation";
-import { profileImage } from "../constants/constants";
 
 const ChatBox = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [sending, setSending] = useState(false);
+
   const listRef = useRef(null);
+  const bottomRef = useRef(null); // NEW
+
   const { mutate } = useChatMutation();
 
+  // Auto-scroll to newest message
   useEffect(() => {
-    if (listRef.current)
-      listRef.current.scrollTop = listRef.current.scrollHeight;
+    if (!bottomRef.current) return;
+    // wait for DOM paint, then scroll
+    const id = requestAnimationFrame(() => {
+      bottomRef.current.scrollIntoView({
+        behavior: messages.length <= 2 ? "auto" : "smooth",
+        block: "end",
+      });
+    });
+    return () => cancelAnimationFrame(id);
   }, [messages]);
 
   const handleSubmit = (e) => {
@@ -20,103 +30,63 @@ const ChatBox = () => {
     const text = question.trim();
     if (!text || sending) return;
 
-    setMessages((prev) => [...prev, { role: "student", text, ts: Date.now() }]);
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: text, id: Date.now() + Math.random() },
+    ]);
     setQuestion("");
     setSending(true);
 
-    mutate(text, {
-      onSuccess: (data) => {
-        // expected dataset: { title, difficulty, confidence, explanation }
-        const isDataset =
-          data &&
-          typeof data === "object" &&
-          ("title" in data || "explanation" in data || "difficulty" in data);
-
-        if (isDataset) {
+    mutate(
+      { text, history: messages },
+      {
+        onSuccess: (data) => {
           setMessages((prev) => [
             ...prev,
-            { role: "mentor", data, ts: Date.now() },
+            {
+              role: "assistant",
+              content: data.answer,
+              id: Date.now() + Math.random(),
+            },
           ]);
-        } else {
-          const answer = data?.answer || data?.text || String(data || "");
+        },
+        onError: () => {
           setMessages((prev) => [
             ...prev,
-            { role: "mentor", text: answer, ts: Date.now() },
+            {
+              role: "system",
+              content: "Something went wrong. Try again.",
+              id: Date.now() + Math.random(),
+            },
           ]);
-        }
-      },
-      onError: () => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "system",
-            text: "Something went wrong. Try again.",
-            ts: Date.now(),
-          },
-        ]);
-      },
-      onSettled: () => setSending(false),
-    });
+        },
+        onSettled: () => setSending(false),
+      }
+    );
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) handleSubmit(e);
   };
 
-  const MentorCard = ({ data }) => {
-    const { title, difficulty, confidence, explanation } = data || {};
-    return (
-      <div className="mentor-card">
-        {title && <h4 className="mc-title">{title}</h4>}
-        {(difficulty || confidence !== undefined) && (
-          <div className="mc-meta">
-            {difficulty && (
-              <span className="tag">Difficulty: {difficulty}</span>
-            )}
-            {confidence !== undefined && (
-              <span className="tag">Confidence: {confidence}</span>
-            )}
-          </div>
-        )}
-        {explanation && <p className="mc-expl">{explanation}</p>}
-      </div>
-    );
-  };
-
   return (
     <div id="chat-box">
-      {/* intro */}
-      {messages?.length === 0 && (
-        <div className="intro">
-          <div className="image-wrapper">
-            <img src={profileImage} alt="" />
-          </div>
-          <div className="text-wrapper">
-            <p>
-              "Welcome to DevKofi — a platform where I teach coding, mentor
-              aspiring developers, and share strategies to grow as a full-stack
-              engineer. Explore my courses, connect through the chat, and build
-              projects that sharpen your skills and mindset.
-            </p>
-          </div>
-        </div>
-      )}
       <div className="messages" ref={listRef}>
-        {messages.map((m) => (
-          <div key={m.ts} className={`message ${m.role}`}>
-            {m.role === "mentor" && m.data ? (
-              <MentorCard data={m.data} />
-            ) : (
-              <span>{m.text}</span>
-            )}
-          </div>
-        ))}
+        <div className="messages-inner">
+          {messages.map((m) => (
+            <div key={m.id} className={`message ${m.role}`}>
+              <div className="bubble">
+                <span className="text">{m.content}</span>
+              </div>
+            </div>
+          ))}
+          <div ref={bottomRef} /> {/* ANCHOR */}
+        </div>
       </div>
 
       <div className="composer">
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
+          <textarea
             name="question"
             placeholder="Ask your question…"
             value={question}

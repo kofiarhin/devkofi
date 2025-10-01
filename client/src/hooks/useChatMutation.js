@@ -1,35 +1,29 @@
 import { useMutation } from "@tanstack/react-query";
 import { baseUrl } from "../constants/constants";
 
-const askQuestion = async (input) => {
-  const payload =
-    typeof input === "string"
-      ? { question: input, history: [] }
-      : {
-          question: input?.question,
-          history: Array.isArray(input?.history) ? input.history : [],
-        };
+const askQuestion = async (questionData) => {
+  const { text: input, history } = questionData;
+  const payload = {
+    question: input,
+    messages: history,
+  };
 
   if (typeof payload.question !== "string" || !payload.question.trim()) {
     throw new Error("Please provide a valid question.");
   }
 
-  const res = await fetch(`${baseUrl}/api/ask-mentor`, {
+  const res = await fetch(`${baseUrl}/api/chat/ask`, {
     headers: {
       "content-type": "application/json",
     },
     method: "POST",
-    body: JSON.stringify({
-      question: payload.question.trim(),
-      history: payload.history,
-    }),
+    body: JSON.stringify(payload),
   });
 
   const data = await res.json().catch(() => null);
-  console.log({ data });
 
   if (!res.ok) {
-    const message = data?.message || "Unable to reach mentor.";
+    const message = data?.error || "Unable to process request.";
     throw new Error(message);
   }
 
