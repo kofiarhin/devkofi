@@ -49,6 +49,13 @@ jobs:
         with:
           node-version: 20
 
+      # Install Heroku CLI and auth (for logs + verification)
+      - name: Setup Heroku CLI
+        uses: heroku/actions/setup@v2
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          email: ${{ secrets.HEROKU_EMAIL }}
+
       - name: Deploy API to Heroku (server subdir)
         uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
@@ -60,8 +67,8 @@ jobs:
       - name: Health check (retry until 200)
         shell: bash
         env:
-          HEROKU_URL: https://devkofi.herokuapp.com
-          HEALTH_PATH: /health # change if your route differs
+          HEROKU_URL: https://devkofi-883f1d7b0ba0.herokuapp.com
+          HEALTH_PATH: /health
         run: |
           set -e
           ATTEMPTS=20
@@ -77,3 +84,8 @@ jobs:
           done
           echo "Health check failed ❌ after $ATTEMPTS attempts"
           exit 1
+
+      - name: Print recent Heroku logs on failure
+        if: failure()
+        run: |
+          heroku logs -n 300 -a devkofi || true
