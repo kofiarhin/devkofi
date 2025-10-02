@@ -1,11 +1,7 @@
-import Register from "../../Pages/Register/Register";
+import React from "react";
 
 const Playground = () => {
-  return (
-    <div>
-      <Register />
-    </div>
-  );
+  return <div>Playground</div>;
 };
 
 export default Playground;

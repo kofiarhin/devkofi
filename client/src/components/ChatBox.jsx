@@ -8,14 +8,13 @@ const ChatBox = () => {
   const [sending, setSending] = useState(false);
 
   const listRef = useRef(null);
-  const bottomRef = useRef(null); // NEW
+  const bottomRef = useRef(null);
 
   const { mutate } = useChatMutation();
 
   // Auto-scroll to newest message
   useEffect(() => {
     if (!bottomRef.current) return;
-    // wait for DOM paint, then scroll
     const id = requestAnimationFrame(() => {
       bottomRef.current.scrollIntoView({
         behavior: messages.length <= 2 ? "auto" : "smooth",
@@ -25,15 +24,22 @@ const ChatBox = () => {
     return () => cancelAnimationFrame(id);
   }, [messages]);
 
+  const createMessage = (role, content) => ({
+    role,
+    content,
+    id: Date.now() + Math.random(),
+    time: new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const text = question.trim();
     if (!text || sending) return;
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", content: text, id: Date.now() + Math.random() },
-    ]);
+    setMessages((prev) => [...prev, createMessage("user", text)]);
     setQuestion("");
     setSending(true);
 
@@ -43,21 +49,13 @@ const ChatBox = () => {
         onSuccess: (data) => {
           setMessages((prev) => [
             ...prev,
-            {
-              role: "assistant",
-              content: data.answer,
-              id: Date.now() + Math.random(),
-            },
+            createMessage("assistant", data.answer),
           ]);
         },
         onError: () => {
           setMessages((prev) => [
             ...prev,
-            {
-              role: "system",
-              content: "Something went wrong. Try again.",
-              id: Date.now() + Math.random(),
-            },
+            createMessage("system", "Something went wrong. Try again."),
           ]);
         },
         onSettled: () => setSending(false),
@@ -72,15 +70,25 @@ const ChatBox = () => {
   return (
     <div id="chat-box">
       <div className="messages" ref={listRef}>
+        {messages.length === 0 && (
+          <div className="empty-state">
+            <h2 className="empty-text">What can i help you with?...</h2>
+          </div>
+        )}
+
         <div className="messages-inner">
           {messages.map((m) => (
             <div key={m.id} className={`message ${m.role}`}>
               <div className="bubble">
                 <span className="text">{m.content}</span>
+                {m.role === "assistant" && (
+                  <span className="time">{m.time}</span>
+                )}
               </div>
+              {m.role !== "assistant" && <span className="time">{m.time}</span>}
             </div>
           ))}
-          <div ref={bottomRef} /> {/* ANCHOR */}
+          <div ref={bottomRef} />
         </div>
       </div>
 
