@@ -3,10 +3,6 @@ name: Deploy client + server
 on:
   push:
     branches: [master, main]
-    paths:
-      - "client/**"
-      - "server/**"
-      - ".github/workflows/**"
   workflow_dispatch:
 
 concurrency:
@@ -14,8 +10,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ---------- Frontend -> Namecheap ----------
+  # Frontend: build and deploy to Namecheap (FTP)
   deploy_client:
+    if: contains(github.event.head_commit.message, 'client') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment: Production
     steps:
@@ -27,31 +24,31 @@ jobs:
           cache: npm
           cache-dependency-path: client/package-lock.json
 
-      - name: Build client
+      - name: Install & build (client)
         working-directory: client
         run: |
           npm ci
-          npm run build   # outputs client/dist
+          npm run build   # -> client/dist
 
-      - name: Upload dist to Namecheap (root public_html)
+      - name: Upload dist contents to root public_html
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }} # e.g. 21
-          protocol: ${{ secrets.FTP_PROTOCOL }} # e.g. ftps
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ${{ secrets.FTP_PROTOCOL }}
           local-dir: client/dist/
-          server-dir: / # home == public_html on Namecheap
+          server-dir: /
           exclude: |
             **/.git*
             **/.github/**
             **/node_modules/**
 
-  # ---------- Backend -> Heroku ----------
+  # Backend: deploy /server to Heroku and verify
   deploy_heroku:
+    if: contains(github.event.head_commit.message, 'server') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    needs: [deploy_client] # remove if you want parallel jobs
     steps:
       - uses: actions/checkout@v4
 
@@ -64,27 +61,17 @@ jobs:
           curl https://cli-assets.heroku.com/install.sh | sh
           heroku --version
 
-      - name: Reset Heroku buildpacks to Node (once per run; idempotent)
+      - name: Reset Heroku buildpacks
         run: |
-          heroku buildpacks:clear -a devkofi || true
+          heroku buildpacks:clear -a devkofi
           heroku buildpacks:set heroku/nodejs -a devkofi
-          heroku buildpacks -a devkofi
 
-      - name: Ensure Procfile exists in server/
-        run: |
-          echo "web: node server.js" > server/Procfile
-          cat server/Procfile
-
-      - name: Force-push server/ subtree to Heroku main
-        env:
-          HEROKU_GIT: https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/devkofi.git
+      - name: Deploy API to Heroku (server subtree)
         run: |
           git config --global user.email "action@github.com"
-          git config --global user.name  "GitHub Action"
-          # Create a commit consisting only of server/ and force update Heroku main
-          SUBTREE_SHA=$(git subtree split --prefix server HEAD)
-          echo "Subtree SHA: $SUBTREE_SHA"
-          git push --force "$HEROKU_GIT" "$SUBTREE_SHA:main"
+          git config --global user.name "GitHub Action"
+          git fetch --unshallow
+          git push https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/devkofi.git `git subtree split --prefix server HEAD`:refs/heads/main --force
 
       - name: Health check (retry until 200)
         shell: bash
@@ -106,7 +93,3 @@ jobs:
           done
           echo "Health check failed ❌ after $ATTEMPTS attempts"
           exit 1
-
-      - name: Print recent Heroku logs on failure
-        if: failure()
-        run: heroku logs -n 300 -a devkofi || true
