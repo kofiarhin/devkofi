@@ -3,17 +3,11 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import useChatMutation from "../hooks/useChatMutation";
 
 /**
- * WhatsApp-style chat:
- * - Composer sticky at bottom
- * - Messages align to bottom and grow upward
- * - Scroll up to view older messages
+ * Fixed composer version (WhatsApp-style)
+ * - Composer is FIXED to the bottom, always fully visible (safe-area aware)
+ * - Messages align to bottom and grow upward; scroll up to see older
  * - Auto-scroll only when user is at bottom
- * - Top sentinel for lazy-loading older (optional; see onLoadOlder)
- *
- * Optional props:
- * - initialMessages: array of { id, role, content, time }
- * - hasMore: boolean (if you have older history to load)
- * - onLoadOlder: async (oldestMessage) => olderMessages[]
+ * - VisualViewport integration to lift the composer with the mobile keyboard
  */
 const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) => {
   const [question, setQuestion] = useState("");
@@ -21,11 +15,11 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
   const [sending, setSending] = useState(false);
 
   // layout + scroll refs
-  const boxRef = useRef(null);        // #chat-box root (for --composer-h var)
+  const boxRef = useRef(null);        // #chat-box root (for CSS vars)
   const listRef = useRef(null);       // scrollable messages container
-  const topRef = useRef(null);        // top sentinel for loading older
-  const bottomRef = useRef(null);     // bottom sentinel for "at bottom"
-  const composerRef = useRef(null);   // sticky composer
+  const topRef = useRef(null);        // top sentinel (optional: load older)
+  const bottomRef = useRef(null);     // bottom sentinel (to detect at-bottom)
+  const composerRef = useRef(null);   // fixed composer
 
   // scroll state
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -42,24 +36,51 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
     el.scrollTo({ top: el.scrollHeight, behavior });
   }, []);
 
-  // Measure → set CSS var for composer height; keeps last bubble clear
+  // Keep --composer-h in sync with actual fixed composer height
   useEffect(() => {
     if (!composerRef.current || !boxRef.current) return;
-    const setH = () => {
+
+    const applyHeights = () => {
       const h = Math.ceil(composerRef.current.getBoundingClientRect().height);
       boxRef.current.style.setProperty("--composer-h", `${h}px`);
     };
-    setH();
-    const ro = new ResizeObserver(setH);
+
+    applyHeights();
+    const ro = new ResizeObserver(applyHeights);
     ro.observe(composerRef.current);
-    window.addEventListener("resize", setH);
+    window.addEventListener("resize", applyHeights);
+
     return () => {
       ro.disconnect();
-      window.removeEventListener("resize", setH);
+      window.removeEventListener("resize", applyHeights);
     };
   }, []);
 
-  // Track "at bottom" via IntersectionObserver on bottom sentinel
+  // VisualViewport: lift fixed composer with mobile keyboard so it’s never clipped
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv || !composerRef.current || !boxRef.current) return;
+
+    const handleVV = () => {
+      // Amount of visual area covered at the bottom (keyboard/browser UI)
+      const offset = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
+      composerRef.current.style.transform = offset ? `translateY(-${offset}px)` : "translateY(0)";
+      boxRef.current.style.setProperty("--vv-offset", `${offset}px`);
+    };
+
+    handleVV();
+    vv.addEventListener("resize", handleVV);
+    vv.addEventListener("scroll", handleVV);
+    window.addEventListener("orientationchange", handleVV);
+
+    return () => {
+      vv.removeEventListener("resize", handleVV);
+      vv.removeEventListener("scroll", handleVV);
+      window.removeEventListener("orientationchange", handleVV);
+    };
+  }, []);
+
+  // Track "at bottom" via IntersectionObserver on the bottom sentinel
   useEffect(() => {
     if (!bottomRef.current || !listRef.current) return;
     const io = new IntersectionObserver(
@@ -70,7 +91,7 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
     return () => io.disconnect();
   }, []);
 
-  // Initial scroll after first paint (land at bottom)
+  // Initial scroll after first paint: land at bottom
   useEffect(() => {
     if (didInitScroll) return;
     const id = requestAnimationFrame(() => {
@@ -80,7 +101,7 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
     return () => cancelAnimationFrame(id);
   }, [didInitScroll, scrollToBottom]);
 
-  // Auto-scroll on new messages only if at bottom
+  // Auto-scroll on new messages only if user is at bottom
   useEffect(() => {
     if (!didInitScroll) return;
     if (isAtBottom) {
@@ -89,7 +110,7 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
     }
   }, [messages, isAtBottom, didInitScroll, scrollToBottom]);
 
-  // Top sentinel → load older messages (optional)
+  // Optional: load older when top sentinel appears
   useEffect(() => {
     if (!topRef.current || !listRef.current) return;
     if (!onLoadOlder || !canLoadMore) return;
@@ -97,27 +118,25 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
     const root = listRef.current;
     const io = new IntersectionObserver(
       async ([entry]) => {
-        if (!entry.isIntersecting) return;
-        if (loadingOlder) return;
+        if (!entry.isIntersecting || loadingOlder) return;
         setLoadingOlder(true);
 
-        // Preserve scroll position during prepend
         const prevScrollHeight = root.scrollHeight;
         const oldest = messages[0];
+
         try {
           const older = await onLoadOlder(oldest);
           if (Array.isArray(older) && older.length) {
             setMessages((prev) => [...older, ...prev]);
-            // Next frame, restore visual position after DOM grows
             requestAnimationFrame(() => {
               const delta = root.scrollHeight - prevScrollHeight;
-              root.scrollTop = root.scrollTop + delta;
+              root.scrollTop = root.scrollTop + delta; // keep viewport stable
             });
           } else {
             setCanLoadMore(false);
           }
         } catch {
-          // ignore fetch error; keep canLoadMore as-is
+          // ignore fetch error
         } finally {
           setLoadingOlder(false);
         }
@@ -134,10 +153,7 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
     role,
     content,
     id: Date.now() + Math.random(),
-    time: new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
+    time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
   });
 
   const handleSubmit = (e) => {
@@ -154,16 +170,10 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
       { text, history: messages },
       {
         onSuccess: (data) => {
-          setMessages((prev) => [
-            ...prev,
-            createMessage("assistant", data.answer),
-          ]);
+          setMessages((prev) => [...prev, createMessage("assistant", data.answer)]);
         },
         onError: () => {
-          setMessages((prev) => [
-            ...prev,
-            createMessage("system", "Something went wrong. Try again."),
-          ]);
+          setMessages((prev) => [...prev, createMessage("system", "Something went wrong. Try again.")]);
         },
         onSettled: () => setSending(false),
       }
@@ -186,7 +196,7 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
           </div>
         )}
 
-        {/* Align to bottom (WhatsApp-like) */}
+        {/* Align to bottom so newest message hugs the composer */}
         <div
           className="messages-inner"
           role="log"
@@ -197,9 +207,7 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
             <div key={m.id} className={`message ${m.role}`}>
               <div className="bubble">
                 <span className="text">{m.content}</span>
-                {m.role === "assistant" && (
-                  <span className="time">{m.time}</span>
-                )}
+                {m.role === "assistant" && <span className="time">{m.time}</span>}
               </div>
               {m.role !== "assistant" && <span className="time">{m.time}</span>}
             </div>
@@ -221,7 +229,7 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
           </button>
         )}
 
-        {/* Optional loader at top when fetching older */}
+        {/* Optional loader shown near the top when fetching older */}
         {loadingOlder && (
           <div className="top-loader" aria-live="polite">
             Loading earlier messages…
@@ -229,6 +237,7 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
         )}
       </div>
 
+      {/* FIXED composer dock (CSS handles fixed positioning; JS adjusts transform for keyboard) */}
       <div className="composer" ref={composerRef}>
         <form onSubmit={handleSubmit}>
           <textarea
@@ -238,6 +247,8 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={handleKeyDown}
             autoComplete="off"
+            // iOS: prevent zoom on focus with small fonts
+            style={{ fontSize: 16 }}
           />
           <button type="submit" disabled={!question.trim() || sending}>
             {sending ? "Sending…" : "Send"}
