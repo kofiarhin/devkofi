@@ -5,19 +5,31 @@
   --text: #e9e9ea;
   --muted: #a5a7ac;
   --primary: var(--primary-color, #4caf50);
+  --composer-h: 64px; /* live-updated from JS */
 
-  min-height: 100vh;
+  height: 100dvh; /* dynamic viewport for mobile keyboards */
   display: flex;
   flex-direction: column;
   background: var(--bg);
   color: var(--text);
+  min-width: 0; /* prevent overflow in flex children */
 
   .messages {
     flex: 1;
+    position: relative;
     overflow-y: auto;
     padding: 1rem;
     background: var(--bg);
-    position: relative; /* allow empty-state overlay */
+
+    /* ensure last message is never under the composer */
+    padding-bottom: calc(var(--composer-h) + env(safe-area-inset-bottom));
+    scroll-padding-bottom: var(--composer-h);
+
+    /* mobile polish */
+    min-height: 0;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    overflow-anchor: auto;
 
     .messages-inner {
       max-width: 920px;
@@ -26,18 +38,40 @@
       flex-direction: column;
       gap: 8px;
     }
+
+    /* “new messages” chip when scrolled up */
+    .new-toast {
+      position: sticky;
+      bottom: calc(8px + env(safe-area-inset-bottom));
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 0.85rem;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.12s ease, opacity 0.2s ease, background 0.2s ease;
+      &:hover { transform: translateY(-1px); }
+      &:active { transform: translateY(0); }
+    }
   }
 
   .empty-state {
     position: absolute;
-    inset: 0; /* fill the messages area */
+    inset: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 12px;
     text-align: center;
-    pointer-events: none; /* don’t block scroll */
+    pointer-events: none;
     color: var(--muted);
 
     .empty-logo {
@@ -62,7 +96,7 @@
 
       .bubble {
         position: relative;
-        padding-bottom: 20px; // space for timestamp
+        padding-bottom: 20px; // room for timestamp
       }
 
       .time {
@@ -134,13 +168,14 @@
   .composer {
     position: sticky;
     bottom: 0;
+    z-index: 1;
     background: linear-gradient(
       180deg,
       rgba(15, 16, 16, 0) 0%,
       var(--bg) 30%,
       var(--bg) 100%
     );
-    padding: 12px 0 12px;
+    padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
     border-top: 1px solid rgba(255, 255, 255, 0.06);
 
     form {
@@ -150,6 +185,7 @@
       align-items: center;
       gap: 0.6rem;
       padding: 0 1rem;
+      min-width: 0; /* allow textarea to shrink correctly */
     }
 
     textarea {
@@ -186,13 +222,8 @@
       font-weight: 600;
       cursor: pointer;
       transition: transform 0.06s ease, opacity 0.15s ease;
-      &:active {
-        transform: translateY(1px);
-      }
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
+      &:active { transform: translateY(1px); }
+      &:disabled { opacity: 0.6; cursor: not-allowed; }
     }
   }
 
@@ -201,8 +232,6 @@
       max-width: 90%;
       font-size: 0.94rem;
     }
-    .composer form {
-      padding: 0 0.5rem;
-    }
+    .composer form { padding: 0 0.5rem; }
   }
 }
