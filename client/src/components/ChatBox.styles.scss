@@ -5,9 +5,10 @@
   --text: #e9e9ea;
   --muted: #a5a7ac;
   --primary: var(--primary-color, #4caf50);
-  --composer-h: 64px; // updated live from JS
+  --composer-h: 64px;         // updated live from JS
+  --vv-offset: 0px;           // visualViewport offset from JS
 
-  height: 100dvh; // dynamic viewport for mobile keyboards
+  height: 100dvh;             // dynamic viewport for mobile keyboards
   display: flex;
   flex-direction: column;
   background: var(--bg);
@@ -21,8 +22,8 @@
     padding: 1rem;
     background: var(--bg);
 
-    // Keep last bubble fully clear of the composer
-    padding-bottom: calc(var(--composer-h) + env(safe-area-inset-bottom));
+    // Keep last bubble fully above the fixed composer (and keyboard)
+    padding-bottom: calc(var(--composer-h) + env(safe-area-inset-bottom) + var(--vv-offset));
     scroll-padding-bottom: var(--composer-h);
 
     min-height: 0;
@@ -37,13 +38,14 @@
       min-height: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end; // align last bubble to the bottom
+      justify-content: flex-end;
       gap: 8px;
     }
 
+    // “new messages” chip when scrolled up
     .new-toast {
       position: sticky;
-      bottom: calc(8px + env(safe-area-inset-bottom));
+      bottom: calc(var(--composer-h) + 8px + env(safe-area-inset-bottom) + var(--vv-offset));
       margin-left: auto;
       display: inline-flex;
       align-items: center;
@@ -89,12 +91,6 @@
     text-align: center;
     pointer-events: none;
     color: var(--muted);
-
-    .empty-logo {
-      width: 120px;
-      height: auto;
-      opacity: 0.85;
-    }
 
     .empty-text {
       font-size: 1.3rem;
@@ -180,18 +176,22 @@
     }
   }
 
+  /* FIXED composer dock (always visible) */
   .composer {
-    position: sticky;
-    bottom: 0;
-    z-index: 1;
-    background: linear-gradient(
-      180deg,
-      rgba(15, 16, 16, 0) 0%,
-      var(--bg) 30%,
-      var(--bg) 100%
-    );
-    padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: env(safe-area-inset-bottom);
+    z-index: 10;
+    // JS applies translateY(-offset) when keyboard opens
+    transform: translateY(0);
+    will-change: transform;
+
+    background: var(--bg); // opaque so content doesn't bleed through
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
     border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+    padding: 12px 0; // visual padding; total height measured by ResizeObserver
 
     form {
       max-width: 920px;
@@ -212,7 +212,7 @@
       border-radius: 10px;
       background: var(--surface-2);
       color: var(--text);
-      font-size: 0.95rem;
+      font-size: 16px; // >=16px prevents iOS zoom-on-focus
       resize: none;
       overflow-y: auto;
 
@@ -221,9 +221,7 @@
         border-color: #2f7dff55;
         box-shadow: 0 0 0 3px #2f7dff22;
       }
-      &::placeholder {
-        color: var(--muted);
-      }
+      &::placeholder { color: var(--muted); }
     }
 
     button {
