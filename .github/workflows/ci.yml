@@ -1,4 +1,4 @@
-name: Deploy client to Namecheap (root)
+name: Deploy client + server
 
 on:
   push:
@@ -14,8 +14,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Frontend: build and deploy to Namecheap (FTP)
-  deploy:
+  # ---------- Frontend -> Namecheap ----------
+  deploy_client:
     runs-on: ubuntu-latest
     environment: Production
     steps:
@@ -27,31 +27,31 @@ jobs:
           cache: npm
           cache-dependency-path: client/package-lock.json
 
-      - name: Install & build (client)
+      - name: Build client
         working-directory: client
         run: |
           npm ci
-          npm run build   # -> client/dist
+          npm run build   # outputs client/dist
 
-      - name: Upload dist contents to root public_html
+      - name: Upload dist to Namecheap (root public_html)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          protocol: ${{ secrets.FTP_PROTOCOL }}
+          port: ${{ secrets.FTP_PORT }} # e.g. 21
+          protocol: ${{ secrets.FTP_PROTOCOL }} # e.g. ftps
           local-dir: client/dist/
-          server-dir: /
+          server-dir: / # home == public_html on Namecheap
           exclude: |
             **/.git*
             **/.github/**
             **/node_modules/**
 
-  # Backend: deploy /server to Heroku and verify
+  # ---------- Backend -> Heroku ----------
   deploy_heroku:
     runs-on: ubuntu-latest
-    needs: [deploy] # remove this line if you want parallel runs
+    needs: [deploy_client] # remove if you want parallel jobs
     steps:
       - uses: actions/checkout@v4
 
@@ -59,22 +59,32 @@ jobs:
         with:
           node-version: 20
 
-      # 👇 Ensure Heroku CLI is installed on runner
       - name: Install Heroku CLI
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
           heroku --version
 
-      - name: Reset Heroku buildpacks
+      - name: Reset Heroku buildpacks to Node (once per run; idempotent)
         run: |
-          heroku buildpacks:clear -a devkofi
+          heroku buildpacks:clear -a devkofi || true
           heroku buildpacks:set heroku/nodejs -a devkofi
+          heroku buildpacks -a devkofi
 
-      - name: Deploy API to Heroku (server subdir)
+      - name: Ensure Procfile exists in server/
+        run: |
+          echo "web: node server.js" > server/Procfile
+          cat server/Procfile
+
+      - name: Force-push server/ subtree to Heroku main
+        env:
+          HEROKU_GIT: https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/devkofi.git
         run: |
           git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git subtree push --prefix server https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/devkofi.git main
+          git config --global user.name  "GitHub Action"
+          # Create a commit consisting only of server/ and force update Heroku main
+          SUBTREE_SHA=$(git subtree split --prefix server HEAD)
+          echo "Subtree SHA: $SUBTREE_SHA"
+          git push --force "$HEROKU_GIT" "$SUBTREE_SHA:main"
 
       - name: Health check (retry until 200)
         shell: bash
@@ -99,5 +109,4 @@ jobs:
 
       - name: Print recent Heroku logs on failure
         if: failure()
-        run: |
-          heroku logs -n 300 -a devkofi || true
+        run: heroku logs -n 300 -a devkofi || true
