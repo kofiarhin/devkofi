@@ -59,6 +59,12 @@ jobs:
         with:
           node-version: 20
 
+      # 👇 Ensure Heroku CLI is installed on runner
+      - name: Install Heroku CLI
+        run: |
+          curl https://cli-assets.heroku.com/install.sh | sh
+          heroku --version
+
       - name: Deploy API to Heroku (server subdir)
         uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
@@ -66,7 +72,7 @@ jobs:
           heroku_app_name: devkofi
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           appdir: server
-          dontautocreate: true # 👈 prevents heroku create
+          dontautocreate: true # prevents trying "heroku create"
 
       - name: Health check (retry until 200)
         shell: bash
