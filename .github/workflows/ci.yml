@@ -71,13 +71,10 @@ jobs:
           heroku buildpacks:set heroku/nodejs -a devkofi
 
       - name: Deploy API to Heroku (server subdir)
-        uses: AkhileshNS/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: devkofi
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
-          appdir: server
-          dontautocreate: true # prevents trying "heroku create"
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git subtree push --prefix server https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/devkofi.git main
 
       - name: Health check (retry until 200)
         shell: bash
