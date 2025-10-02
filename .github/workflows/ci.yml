@@ -2,7 +2,7 @@ name: Deploy client to Namecheap (root)
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [master, main]
   workflow_dispatch:
 
 jobs:
@@ -52,9 +52,9 @@ jobs:
       - name: Deploy API to Heroku (server subdir)
         uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
-          heroku_api_key: ${{ vars.HEROKU_API_KEY }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: devkofi
-          heroku_email: ${{ vars.HEROKU_EMAIL }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
           appdir: server
 
       - name: Health check (retry until 200)
