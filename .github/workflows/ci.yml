@@ -65,6 +65,11 @@ jobs:
           curl https://cli-assets.heroku.com/install.sh | sh
           heroku --version
 
+      - name: Reset Heroku buildpacks
+        run: |
+          heroku buildpacks:clear -a devkofi
+          heroku buildpacks:set heroku/nodejs -a devkofi
+
       - name: Deploy API to Heroku (server subdir)
         uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
