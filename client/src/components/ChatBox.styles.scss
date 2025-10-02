@@ -5,14 +5,14 @@
   --text: #e9e9ea;
   --muted: #a5a7ac;
   --primary: var(--primary-color, #4caf50);
-  --composer-h: 64px; /* live-updated from JS */
+  --composer-h: 64px; // updated live from JS
 
-  height: 100dvh; /* dynamic viewport for mobile keyboards */
+  height: 100dvh; // dynamic viewport for mobile keyboards
   display: flex;
   flex-direction: column;
   background: var(--bg);
   color: var(--text);
-  min-width: 0; /* prevent overflow in flex children */
+  min-width: 0;
 
   .messages {
     flex: 1;
@@ -21,25 +21,26 @@
     padding: 1rem;
     background: var(--bg);
 
-    /* ensure last message is never under the composer */
+    // Keep last bubble fully clear of the composer
     padding-bottom: calc(var(--composer-h) + env(safe-area-inset-bottom));
     scroll-padding-bottom: var(--composer-h);
 
-    /* mobile polish */
     min-height: 0;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     overflow-anchor: auto;
 
+    // WhatsApp-like: content hugs the composer and grows upward
     .messages-inner {
       max-width: 920px;
       margin: 0 auto;
+      min-height: 100%;
       display: flex;
       flex-direction: column;
+      justify-content: flex-end; // align last bubble to the bottom
       gap: 8px;
     }
 
-    /* “new messages” chip when scrolled up */
     .new-toast {
       position: sticky;
       bottom: calc(8px + env(safe-area-inset-bottom));
@@ -59,6 +60,21 @@
       transition: transform 0.12s ease, opacity 0.2s ease, background 0.2s ease;
       &:hover { transform: translateY(-1px); }
       &:active { transform: translateY(0); }
+    }
+
+    .top-loader {
+      position: sticky;
+      top: 8px;
+      margin: 0 auto;
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: rgba(29, 31, 35, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
     }
   }
 
@@ -164,7 +180,6 @@
     }
   }
 
-  /* sticky composer */
   .composer {
     position: sticky;
     bottom: 0;
@@ -185,7 +200,7 @@
       align-items: center;
       gap: 0.6rem;
       padding: 0 1rem;
-      min-width: 0; /* allow textarea to shrink correctly */
+      min-width: 0;
     }
 
     textarea {
@@ -225,6 +240,22 @@
       &:active { transform: translateY(1px); }
       &:disabled { opacity: 0.6; cursor: not-allowed; }
     }
+  }
+
+  // Optional: sticky date headers (if you add them)
+  .date-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    align-self: center;
+    margin: 6px 0;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    color: var(--muted);
+    background: rgba(21, 22, 25, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
   }
 
   @media (max-width: 520px) {
