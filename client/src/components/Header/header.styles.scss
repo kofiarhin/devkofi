@@ -88,3 +88,57 @@
     }
   }
 }
+
+/* ===== Tablet Fix (800px–1024px) ===== */
+@media (min-width: 800px) and (max-width: 1024px) {
+  .header .container {
+    padding: 0.6rem 1rem;
+
+    .logo-wrapper img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo-wrapper a {
+      font-size: 1rem;
+    }
+
+    .center-nav {
+      display: flex !important;
+      gap: 0.5rem;
+
+      button {
+        display: none; // hide mobile CTA
+      }
+
+      .menu {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+        margin-left: 0;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.05);
+      }
+    }
+
+    nav {
+      display: flex !important;
+      align-items: center;
+      gap: 0.7rem;
+
+      a {
+        font-size: 0.95rem;
+        padding: 0.35rem 0.5rem;
+      }
+
+      .join {
+        padding: 0.5rem 1.1rem;
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
