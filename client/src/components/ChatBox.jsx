@@ -1,159 +1,160 @@
 import "./ChatBox.styles.scss";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, Fragment } from "react";
 import useChatMutation from "../hooks/useChatMutation";
 
-/**
- * Fixed composer version (WhatsApp-style)
- * - Composer is FIXED to the bottom, always fully visible (safe-area aware)
- * - Messages align to bottom and grow upward; scroll up to see older
- * - Auto-scroll only when user is at bottom
- * - VisualViewport integration to lift the composer with the mobile keyboard
- */
-const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) => {
+// ⬇️ Syntax highlighter (Prism Light build)
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+import oneDark from "react-syntax-highlighter/dist/esm/styles/prism/one-dark";
+// languages (register only what you need)
+import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
+import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javascript";
+import tsx from "react-syntax-highlighter/dist/esm/languages/prism/tsx";
+import typescript from "react-syntax-highlighter/dist/esm/languages/prism/typescript";
+import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
+import markup from "react-syntax-highlighter/dist/esm/languages/prism/markup";
+
+SyntaxHighlighter.registerLanguage("jsx", jsx);
+SyntaxHighlighter.registerLanguage("javascript", javascript);
+SyntaxHighlighter.registerLanguage("js", javascript);
+SyntaxHighlighter.registerLanguage("tsx", tsx);
+SyntaxHighlighter.registerLanguage("typescript", typescript);
+SyntaxHighlighter.registerLanguage("ts", typescript);
+SyntaxHighlighter.registerLanguage("json", json);
+SyntaxHighlighter.registerLanguage("xml", markup);
+SyntaxHighlighter.registerLanguage("html", markup);
+
+// --- helpers: tokenize LLM text and render plain text nicely ---
+const tokenizeBlocks = (text = "") => {
+  // split into [{type:'text',content}, {type:'code',lang,content}]
+  const tokens = [];
+  let last = 0;
+  const re = /```(\w+)?\n([\s\S]*?)```/g;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last)
+      tokens.push({ type: "text", content: text.slice(last, m.index) });
+    tokens.push({
+      type: "code",
+      lang: (m[1] || "plaintext").toLowerCase(),
+      content: m[2].trimEnd(),
+    });
+    last = re.lastIndex;
+  }
+  if (last < text.length)
+    tokens.push({ type: "text", content: text.slice(last) });
+  return tokens;
+};
+
+const linkifyAndBreak = (s = "") => {
+  // turns URLs clickable and preserves newlines without innerHTML
+  const urlRe = /(https?:\/\/[^\s]+)/g;
+  const parts = s.split(urlRe);
+  const nodes = [];
+  parts.forEach((part, i) => {
+    const isUrl = /^https?:\/\//.test(part);
+    const content = isUrl
+      ? [part]
+      : part
+          .split("\n")
+          .flatMap((line, j, arr) =>
+            j < arr.length - 1 ? [line, "\n"] : [line]
+          );
+    content.forEach((chunk, k) => {
+      if (chunk === "\n") nodes.push(<br key={`br-${i}-${k}`} />);
+      else if (isUrl)
+        nodes.push(
+          <a
+            key={`a-${i}-${k}`}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {part}
+          </a>
+        );
+      else nodes.push(<Fragment key={`t-${i}-${k}`}>{chunk}</Fragment>);
+    });
+  });
+  return nodes;
+};
+
+const ChatBox = () => {
   const [question, setQuestion] = useState("");
-  const [messages, setMessages] = useState(initialMessages);
+  const [messages, setMessages] = useState([]);
   const [sending, setSending] = useState(false);
 
-  // layout + scroll refs
-  const boxRef = useRef(null);        // #chat-box root (for CSS vars)
-  const listRef = useRef(null);       // scrollable messages container
-  const topRef = useRef(null);        // top sentinel (optional: load older)
-  const bottomRef = useRef(null);     // bottom sentinel (to detect at-bottom)
-  const composerRef = useRef(null);   // fixed composer
+  // ✅ track copied state per code block (key: `${messageId}-${blockIndex}`)
+  const [copiedMap, setCopiedMap] = useState({});
 
-  // scroll state
-  const [isAtBottom, setIsAtBottom] = useState(true);
-  const [didInitScroll, setDidInitScroll] = useState(false);
-  const [loadingOlder, setLoadingOlder] = useState(false);
-  const [canLoadMore, setCanLoadMore] = useState(hasMore);
+  const chatRef = useRef(null);
+  const listRef = useRef(null);
+  const bottomRef = useRef(null);
+  const composerRef = useRef(null);
 
   const { mutate } = useChatMutation();
 
-  // ----- Helpers -----
-  const scrollToBottom = useCallback((behavior = "smooth") => {
-    const el = listRef.current;
-    if (!el) return;
-    el.scrollTo({ top: el.scrollHeight, behavior });
-  }, []);
-
-  // Keep --composer-h in sync with actual fixed composer height
+  // ✅ Keep --composer-h in sync with the real composer height
   useEffect(() => {
-    if (!composerRef.current || !boxRef.current) return;
+    if (!chatRef.current || !composerRef.current) return;
+    const el = composerRef.current;
 
-    const applyHeights = () => {
-      const h = Math.ceil(composerRef.current.getBoundingClientRect().height);
-      boxRef.current.style.setProperty("--composer-h", `${h}px`);
+    const setHeightVar = () => {
+      const h = el.getBoundingClientRect().height;
+      chatRef.current.style.setProperty("--composer-h", `${Math.round(h)}px`);
     };
 
-    applyHeights();
-    const ro = new ResizeObserver(applyHeights);
-    ro.observe(composerRef.current);
-    window.addEventListener("resize", applyHeights);
+    const ro = new ResizeObserver(setHeightVar);
+    ro.observe(el);
+    setHeightVar();
 
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", applyHeights);
-    };
+    return () => ro.disconnect();
   }, []);
 
-  // VisualViewport: lift fixed composer with mobile keyboard so it’s never clipped
+  // ✅ Track on-screen keyboard overlap via visualViewport → --vv-offset
   useEffect(() => {
+    if (!chatRef.current || !window.visualViewport) return;
     const vv = window.visualViewport;
-    if (!vv || !composerRef.current || !boxRef.current) return;
 
-    const handleVV = () => {
-      // Amount of visual area covered at the bottom (keyboard/browser UI)
-      const offset = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
-      composerRef.current.style.transform = offset ? `translateY(-${offset}px)` : "translateY(0)";
-      boxRef.current.style.setProperty("--vv-offset", `${offset}px`);
+    const setOffset = () => {
+      // how much shorter the viewport is vs window innerHeight
+      const overlap = Math.max(0, window.innerHeight - vv.height);
+      chatRef.current.style.setProperty(
+        "--vv-offset",
+        `${Math.round(overlap)}px`
+      );
     };
 
-    handleVV();
-    vv.addEventListener("resize", handleVV);
-    vv.addEventListener("scroll", handleVV);
-    window.addEventListener("orientationchange", handleVV);
+    vv.addEventListener("resize", setOffset);
+    vv.addEventListener("scroll", setOffset);
+    setOffset();
 
     return () => {
-      vv.removeEventListener("resize", handleVV);
-      vv.removeEventListener("scroll", handleVV);
-      window.removeEventListener("orientationchange", handleVV);
+      vv.removeEventListener("resize", setOffset);
+      vv.removeEventListener("scroll", setOffset);
     };
   }, []);
 
-  // Track "at bottom" via IntersectionObserver on the bottom sentinel
+  // Auto-scroll to newest message (respect bottom padding)
   useEffect(() => {
-    if (!bottomRef.current || !listRef.current) return;
-    const io = new IntersectionObserver(
-      ([entry]) => setIsAtBottom(entry.isIntersecting),
-      { root: listRef.current, threshold: 1.0 }
-    );
-    io.observe(bottomRef.current);
-    return () => io.disconnect();
-  }, []);
-
-  // Initial scroll after first paint: land at bottom
-  useEffect(() => {
-    if (didInitScroll) return;
+    if (!bottomRef.current) return;
     const id = requestAnimationFrame(() => {
-      scrollToBottom("auto");
-      setDidInitScroll(true);
+      bottomRef.current.scrollIntoView({
+        behavior: messages.length <= 2 ? "auto" : "smooth",
+        block: "end",
+        inline: "nearest",
+      });
     });
     return () => cancelAnimationFrame(id);
-  }, [didInitScroll, scrollToBottom]);
+  }, [messages]);
 
-  // Auto-scroll on new messages only if user is at bottom
-  useEffect(() => {
-    if (!didInitScroll) return;
-    if (isAtBottom) {
-      const id = requestAnimationFrame(() => scrollToBottom("smooth"));
-      return () => cancelAnimationFrame(id);
-    }
-  }, [messages, isAtBottom, didInitScroll, scrollToBottom]);
-
-  // Optional: load older when top sentinel appears
-  useEffect(() => {
-    if (!topRef.current || !listRef.current) return;
-    if (!onLoadOlder || !canLoadMore) return;
-
-    const root = listRef.current;
-    const io = new IntersectionObserver(
-      async ([entry]) => {
-        if (!entry.isIntersecting || loadingOlder) return;
-        setLoadingOlder(true);
-
-        const prevScrollHeight = root.scrollHeight;
-        const oldest = messages[0];
-
-        try {
-          const older = await onLoadOlder(oldest);
-          if (Array.isArray(older) && older.length) {
-            setMessages((prev) => [...older, ...prev]);
-            requestAnimationFrame(() => {
-              const delta = root.scrollHeight - prevScrollHeight;
-              root.scrollTop = root.scrollTop + delta; // keep viewport stable
-            });
-          } else {
-            setCanLoadMore(false);
-          }
-        } catch {
-          // ignore fetch error
-        } finally {
-          setLoadingOlder(false);
-        }
-      },
-      { root, threshold: 1.0 }
-    );
-
-    io.observe(topRef.current);
-    return () => io.disconnect();
-  }, [onLoadOlder, canLoadMore, loadingOlder, messages]);
-
-  // ----- Messaging -----
   const createMessage = (role, content) => ({
     role,
     content,
     id: Date.now() + Math.random(),
-    time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    time: new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
   });
 
   const handleSubmit = (e) => {
@@ -161,8 +162,7 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
     const text = question.trim();
     if (!text || sending) return;
 
-    const userMsg = createMessage("user", text);
-    setMessages((prev) => [...prev, userMsg]);
+    setMessages((prev) => [...prev, createMessage("user", text)]);
     setQuestion("");
     setSending(true);
 
@@ -170,10 +170,16 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
       { text, history: messages },
       {
         onSuccess: (data) => {
-          setMessages((prev) => [...prev, createMessage("assistant", data.answer)]);
+          setMessages((prev) => [
+            ...prev,
+            createMessage("assistant", data.answer),
+          ]);
         },
         onError: () => {
-          setMessages((prev) => [...prev, createMessage("system", "Something went wrong. Try again.")]);
+          setMessages((prev) => [
+            ...prev,
+            createMessage("system", "Something went wrong. Try again."),
+          ]);
         },
         onSettled: () => setSending(false),
       }
@@ -184,60 +190,142 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
     if (e.key === "Enter" && !e.shiftKey) handleSubmit(e);
   };
 
-  return (
-    <div id="chat-box" ref={boxRef}>
-      <div className="messages" ref={listRef}>
-        {/* Top sentinel for upward pagination */}
-        <div ref={topRef} />
+  // ✅ copy handler
+  const handleCopy = async (key, text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedMap((m) => ({ ...m, [key]: true }));
+      setTimeout(() => {
+        setCopiedMap((m) => {
+          const next = { ...m };
+          delete next[key];
+          return next;
+        });
+      }, 1200);
+    } catch {
+      // fallback if Clipboard API fails
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "absolute";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        setCopiedMap((m) => ({ ...m, [key]: true }));
+        setTimeout(() => {
+          setCopiedMap((m) => {
+            const next = { ...m };
+            delete next[key];
+            return next;
+          });
+        }, 1200);
+      } finally {
+        document.body.removeChild(ta);
+      }
+    }
+  };
 
+  return (
+    <div id="chat-box" ref={chatRef}>
+      <div className="messages" ref={listRef}>
         {messages.length === 0 && (
           <div className="empty-state">
             <h2 className="empty-text">What can i help you with?...</h2>
           </div>
         )}
 
-        {/* Align to bottom so newest message hugs the composer */}
-        <div
-          className="messages-inner"
-          role="log"
-          aria-live="polite"
-          aria-relevant="additions"
-        >
+        <div className="messages-inner">
           {messages.map((m) => (
             <div key={m.id} className={`message ${m.role}`}>
               <div className="bubble">
-                <span className="text">{m.content}</span>
-                {m.role === "assistant" && <span className="time">{m.time}</span>}
+                {m.role === "assistant" ? (
+                  // Render with syntax highlighting when blocks are present
+                  tokenizeBlocks(m.content).map((t, idx) =>
+                    t.type === "code" ? (
+                      <div className="code-wrap" key={`code-${m.id}-${idx}`}>
+                        <button
+                          type="button"
+                          className="copy-btn"
+                          aria-label={
+                            copiedMap[`${m.id}-${idx}`] ? "Copied" : "Copy code"
+                          }
+                          title={
+                            copiedMap[`${m.id}-${idx}`] ? "Copied" : "Copy"
+                          }
+                          onClick={() =>
+                            handleCopy(`${m.id}-${idx}`, t.content)
+                          }
+                        >
+                          {copiedMap[`${m.id}-${idx}`] ? (
+                            // check icon
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                            >
+                              <path
+                                fill="currentColor"
+                                d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"
+                              />
+                            </svg>
+                          ) : (
+                            // copy icon
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                            >
+                              <path
+                                fill="currentColor"
+                                d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"
+                              />
+                            </svg>
+                          )}
+                        </button>
+
+                        <SyntaxHighlighter
+                          language={t.lang}
+                          style={oneDark}
+                          customStyle={{
+                            borderRadius: 10,
+                            padding: "12px 14px",
+                            margin: "8px 0",
+                            fontSize: "0.9rem",
+                            overflow: "auto",
+                          }}
+                          PreTag="div"
+                        >
+                          {t.content}
+                        </SyntaxHighlighter>
+                      </div>
+                    ) : (
+                      <span key={`text-${m.id}-${idx}`} className="text">
+                        {linkifyAndBreak(t.content)}
+                      </span>
+                    )
+                  )
+                ) : (
+                  <span className="text">{m.content}</span>
+                )}
+                {m.role === "assistant" && (
+                  <span className="time">{m.time}</span>
+                )}
               </div>
               {m.role !== "assistant" && <span className="time">{m.time}</span>}
             </div>
           ))}
-
-          {/* Bottom sentinel (detect at-bottom & scroll target) */}
-          <div ref={bottomRef} />
+          {/* ✅ bottom anchor with scroll margin equal to composer height */}
+          <div
+            ref={bottomRef}
+            style={{ scrollMarginBottom: "var(--composer-h)" }}
+          />
         </div>
-
-        {/* New messages chip (visible only when scrolled up) */}
-        {!isAtBottom && messages.length > 0 && (
-          <button
-            className="new-toast"
-            type="button"
-            onClick={() => scrollToBottom("smooth")}
-            aria-label="Scroll to latest messages"
-          >
-            New messages ↓
-          </button>
-        )}
-
-        {/* Optional loader shown near the top when fetching older */}
-        {loadingOlder && (
-          <div className="top-loader" aria-live="polite">
-            Loading earlier messages…
-          </div>
-        )}
       </div>
 
-      {/* FIXED composer dock (CSS handles fixed positioning; JS adjusts transform for keyboard) */}
       <div className="composer" ref={composerRef}>
         <form onSubmit={handleSubmit}>
           <textarea
@@ -247,8 +335,6 @@ const ChatBox = ({ initialMessages = [], hasMore = false, onLoadOlder = null }) 
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={handleKeyDown}
             autoComplete="off"
-            // iOS: prevent zoom on focus with small fonts
-            style={{ fontSize: 16 }}
           />
           <button type="submit" disabled={!question.trim() || sending}>
             {sending ? "Sending…" : "Send"}
