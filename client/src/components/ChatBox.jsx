@@ -47,7 +47,6 @@ const normalizeLang = (raw = "") => {
 };
 
 const tokenizeBlocks = (text = "") => {
-  // supports ```lang\n ... ``` and gracefully ends at EOF
   const re = /```[ \t]*([A-Za-z0-9+#.\-_]*)[ \t]*\r?\n?([\s\S]*?)(?:```|$)/g;
   const tokens = [];
   let last = 0, m;
@@ -95,7 +94,7 @@ const ChatBox = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [sending, setSending] = useState(false);
-  const [copiedMap, setCopiedMap] = useState({}); // key: `${msgId}-${idx}`
+  const [copiedMap, setCopiedMap] = useState({});
 
   const chatRef = useRef(null);
   const bottomRef = useRef(null);
@@ -103,7 +102,6 @@ const ChatBox = () => {
 
   const { mutate } = useChatMutation();
 
-  // keep --composer-h in sync with actual composer height
   useEffect(() => {
     if (!chatRef.current || !composerRef.current) return;
     const el = composerRef.current;
@@ -117,7 +115,6 @@ const ChatBox = () => {
     return () => ro.disconnect();
   }, []);
 
-  // handle on-screen keyboard overlap (mobile)
   useEffect(() => {
     if (!chatRef.current || !window.visualViewport) return;
     const vv = window.visualViewport;
@@ -134,7 +131,6 @@ const ChatBox = () => {
     };
   }, []);
 
-  // auto-scroll to newest
   useEffect(() => {
     if (!bottomRef.current) return;
     const id = requestAnimationFrame(() => {
@@ -159,7 +155,6 @@ const ChatBox = () => {
     const text = question.trim();
     if (!text || sending) return;
     setQuestion("");
-    // push user message first
     setMessages((prev) => [...prev, createMessage("user", text)]);
     setSending(true);
 
@@ -234,7 +229,7 @@ const ChatBox = () => {
 
         <div className="messages-inner">
           {messages.map((m) => {
-            const parts = tokenizeBlocks(m.content); // pure function (no hooks)
+            const parts = tokenizeBlocks(m.content);
             return (
               <div key={m.id} className={`message ${m.role}`}>
                 <div className="bubble">
@@ -293,7 +288,6 @@ const ChatBox = () => {
                     )}
                 </div>
 
-                {/* timestamp below bubble (fits your SCSS .time-row) */}
                 <div className={`time-row ${m.role}`}>{m.time}</div>
               </div>
             );
@@ -306,7 +300,7 @@ const ChatBox = () => {
         <form onSubmit={handleSubmit}>
           <textarea
             name="question"
-            placeholder="Ask your question… (Shift + Enter for newline)"
+            placeholder="Ask your question."
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -324,7 +318,6 @@ const ChatBox = () => {
             </svg>
           </button>
         </form>
-        <div className="composer-hint">Shift + Enter → newline</div>
       </div>
     </div>
   );
