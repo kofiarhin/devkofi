@@ -1,8 +1,9 @@
+// ChatBox.jsx
 import "./ChatBox.styles.scss";
 import { useEffect, useRef, useState, Fragment } from "react";
 import useChatMutation from "../hooks/useChatMutation";
 
-// Syntax highlighter (Prism Light)
+// Prism Light
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import oneDark from "react-syntax-highlighter/dist/esm/styles/prism/one-dark";
 import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
@@ -12,7 +13,6 @@ import typescript from "react-syntax-highlighter/dist/esm/languages/prism/typesc
 import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
 import markup from "react-syntax-highlighter/dist/esm/languages/prism/markup";
 
-// register a minimal set you actually use
 SyntaxHighlighter.registerLanguage("jsx", jsx);
 SyntaxHighlighter.registerLanguage("javascript", javascript);
 SyntaxHighlighter.registerLanguage("js", javascript);
@@ -90,6 +90,12 @@ const STARTERS = [
   "Design a MongoDB aggregation for analytics",
 ];
 
+const TypingDots = () => (
+  <span className="typing" aria-label="Assistant is typing">
+    <i /><i /><i />
+  </span>
+);
+
 const ChatBox = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
@@ -99,6 +105,7 @@ const ChatBox = () => {
   const chatRef = useRef(null);
   const bottomRef = useRef(null);
   const composerRef = useRef(null);
+  const textareaRef = useRef(null);
 
   const { mutate } = useChatMutation();
 
@@ -141,7 +148,15 @@ const ChatBox = () => {
       });
     });
     return () => cancelAnimationFrame(id);
-  }, [messages]);
+  }, [messages, sending]);
+
+  // autosize textarea
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "0px";
+    el.style.height = Math.min(160, el.scrollHeight) + "px";
+  }, [question]);
 
   const createMessage = (role, content) => ({
     role,
@@ -217,7 +232,7 @@ const ChatBox = () => {
         {messages.length === 0 && (
           <div className="empty-state">
             <h2 className="empty-text">What can I help you with?</h2>
-            <div className="starter-list">
+            <div className="starter-list" role="list">
               {STARTERS.map((s) => (
                 <button key={s} type="button" className="starter-pill" onClick={() => setQuestion(s)}>
                   {s}
@@ -227,7 +242,7 @@ const ChatBox = () => {
           </div>
         )}
 
-        <div className="messages-inner">
+        <div className="messages-inner" aria-live="polite">
           {messages.map((m) => {
             const parts = tokenizeBlocks(m.content);
             return (
@@ -292,6 +307,16 @@ const ChatBox = () => {
               </div>
             );
           })}
+
+          {sending && (
+            <div className="message assistant">
+              <div className="bubble">
+                <TypingDots />
+              </div>
+              <div className="time-row assistant">…</div>
+            </div>
+          )}
+
           <div ref={bottomRef} style={{ scrollMarginBottom: "var(--composer-h)" }} />
         </div>
       </div>
@@ -299,23 +324,27 @@ const ChatBox = () => {
       <div className="composer" ref={composerRef}>
         <form onSubmit={handleSubmit}>
           <textarea
+            ref={textareaRef}
             name="question"
             placeholder="Ask your question."
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={handleKeyDown}
             autoComplete="off"
+            rows={1}
           />
           <button
             type="submit"
-            className="send-btn"
+            className={`send-btn ${sending ? "is-sending" : ""}`}
             disabled={!question.trim() || sending}
             title="Send (Enter)"
             aria-label="Send"
           >
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-              <path fill="currentColor" d="M2 21l21-9L2 3v7l15 2-15 2z" />
-            </svg>
+            {sending ? <span className="spinner" aria-hidden="true" /> : (
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path fill="currentColor" d="M2 21l21-9L2 3v7l15 2-15 2z" />
+              </svg>
+            )}
           </button>
         </form>
       </div>
