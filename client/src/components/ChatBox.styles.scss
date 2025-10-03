@@ -1,3 +1,4 @@
+/* ChatBox.styles.scss */
 #chat-box {
   --bg: #0f0f10;
   --surface: #151619;
@@ -6,7 +7,7 @@
   --muted: #a5a7ac;
   --primary: var(--primary-color, #4caf50);
 
-  /* updated live from JS */
+  /* live from JS */
   --composer-h: 64px;
   --vv-offset: 0px;
 
@@ -41,7 +42,7 @@
     }
   }
 
-  /* Empty state with starter suggestions */
+  /* Empty state */
   .empty-state {
     position: absolute;
     inset: 0;
@@ -104,7 +105,7 @@
       background: var(--surface);
       color: var(--text);
       border-top-left-radius: 8px;
-      border-left: 3px solid var(--primary); /* accent stripe */
+      border-left: 3px solid var(--primary);
     }
 
     &.user .bubble {
@@ -128,9 +129,10 @@
       word-break: break-word;
       text-align: left;
       display: block;
+      a { color: #9fd2ff; text-decoration: underline; }
     }
 
-    /* Timestamp below bubble */
+    /* Timestamp */
     .time-row {
       font-size: .75rem;
       color: var(--muted);
@@ -210,9 +212,6 @@
     right: 0;
     bottom: env(safe-area-inset-bottom);
     z-index: 10;
-    transform: translateY(0);
-    will-change: transform;
-
     background: rgba(15,16,17,.7);
     backdrop-filter: blur(8px);
     box-shadow: 0 -8px 24px rgba(0,0,0,.35);
@@ -238,7 +237,7 @@
       border-radius: 14px;
       background: var(--surface-2);
       color: var(--text);
-      font-size: 16px; /* prevents iOS zoom-on-focus */
+      font-size: 16px; /* prevent iOS zoom-on-focus */
       line-height: 1.4;
       resize: none;
       overflow-y: auto;
@@ -256,7 +255,7 @@
       width: 44px;
       height: 44px;
       border: none;
-      border-radius: 999px; /* circular */
+      border-radius: 999px;
       background: var(--primary);
       color: #fff;
       display: inline-flex;
@@ -267,18 +266,46 @@
       &:active { transform: translateY(1px); }
       &:disabled { opacity: .6; cursor: not-allowed; }
       svg { display: block; }
-    }
-
-    .composer-hint {
-      max-width: 920px;
-      margin: 6px auto 0;
-      padding: 0 1rem;
-      font-size: .8rem;
-      color: var(--muted);
+      &.is-sending svg { display: none; }
     }
   }
 
-  /* Simple message animation */
+  /* typing dots */
+  .typing {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #cfd2d8;
+      opacity: .5;
+      animation: dot 1.2s infinite ease-in-out;
+      &:nth-child(2) { animation-delay: .15s; }
+      &:nth-child(3) { animation-delay: .3s; }
+    }
+  }
+  @keyframes dot {
+    0%, 80%, 100% { transform: translateY(0); opacity: .5; }
+    40% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* spinner for send button */
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* message animation */
   @keyframes fadeSlideIn {
     from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: translateY(0); }
