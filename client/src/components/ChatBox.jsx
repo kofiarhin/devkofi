@@ -83,11 +83,12 @@ const linkifyAndBreak = (s = "") => {
   return nodes;
 };
 
+/* ======= simple React starter questions ======= */
 const STARTERS = [
-  "Generate a MERN boilerplate with auth",
-  "Explain git rebase vs merge with examples",
-  "Build an Express route with JWT guard",
-  "Design a MongoDB aggregation for analytics",
+  "What is JSX in React?",
+  "Explain props vs state",
+  "What are React hooks?",
+  "How does useEffect work?",
 ];
 
 const TypingDots = () => (
@@ -109,6 +110,7 @@ const ChatBox = () => {
 
   const { mutate } = useChatMutation();
 
+  // keep composer height in a CSS var
   useEffect(() => {
     if (!chatRef.current || !composerRef.current) return;
     const el = composerRef.current;
@@ -122,6 +124,7 @@ const ChatBox = () => {
     return () => ro.disconnect();
   }, []);
 
+  // visual viewport (keyboard) offset
   useEffect(() => {
     if (!chatRef.current || !window.visualViewport) return;
     const vv = window.visualViewport;
@@ -138,6 +141,7 @@ const ChatBox = () => {
     };
   }, []);
 
+  // scroll to bottom on updates
   useEffect(() => {
     if (!bottomRef.current) return;
     const id = requestAnimationFrame(() => {
@@ -340,7 +344,9 @@ const ChatBox = () => {
             title="Send (Enter)"
             aria-label="Send"
           >
-            {sending ? <span className="spinner" aria-hidden="true" /> : (
+            {sending ? (
+              <span className="spinner" aria-hidden="true" />
+            ) : (
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                 <path fill="currentColor" d="M2 21l21-9L2 3v7l15 2-15 2z" />
               </svg>
