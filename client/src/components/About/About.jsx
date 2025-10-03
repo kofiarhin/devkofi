@@ -6,12 +6,7 @@ const textVariant = {
   show: {
     opacity: 1,
     x: 0,
-    transition: {
-      type: "spring",
-      stiffness: 80,
-      damping: 12,
-      duration: 0.8,
-    },
+    transition: { type: "spring", stiffness: 80, damping: 12, duration: 0.8 },
   },
 };
 
@@ -21,20 +16,15 @@ const videoVariant = {
     opacity: 1,
     x: 0,
     scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 70,
-      damping: 10,
-      delay: 0.3,
-    },
+    transition: { type: "spring", stiffness: 70, damping: 10, delay: 0.3 },
   },
 };
 
-export default function About() {
+const About = () => {
   return (
     <section className="about-section" id="about">
       <div className="about-wrapper">
-        {/* Text Section Animation */}
+        {/* Text Section */}
         <motion.div
           className="text-wrapper"
           variants={textVariant}
@@ -44,12 +34,12 @@ export default function About() {
         >
           <h1 className="heading">Write, Test, Deploy...</h1>
           <p>
-            A flexible, focused rhythm for building and shipping—write with
-            intent, test with rigor, fix with focus, deploy with confidence.
+            A proven rhythm for building and shipping fast. Write with intent.
+            Test with rigor. Deploy with confidence.
           </p>
         </motion.div>
 
-        {/* Video Section Animation */}
+        {/* Video Section */}
         <motion.div
           className="video-wrapper"
           variants={videoVariant}
@@ -57,25 +47,10 @@ export default function About() {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <div
-            style={{
-              position: "relative",
-              paddingBottom: "56.25%",
-              height: 0,
-              marginTop: "1rem",
-            }}
-          >
+          <div className="video-container">
             <iframe
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-              }}
-              src="https://www.youtube.com/embed/b5wDQTlpeFI?si=LWc-h1Xm7Vn6k_fg"
-              title="YouTube video player"
-              frameBorder="0"
+              src="https://www.youtube.com/embed/b5wDQTlpeFI?modestbranding=1&rel=0&playsinline=1"
+              title="Learn Test-Driven Development (TDD)"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
@@ -85,4 +60,6 @@ export default function About() {
       </div>
     </section>
   );
-}
+};
+
+export default About;
