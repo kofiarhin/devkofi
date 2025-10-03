@@ -6,11 +6,11 @@
   --muted: #a5a7ac;
   --primary: var(--primary-color, #4caf50);
 
-  // updated live from JS
+  /* updated live from JS */
   --composer-h: 64px;
   --vv-offset: 0px;
 
-  height: 100dvh; // dynamic viewport for mobile keyboards
+  height: 100dvh; /* dynamic viewport for mobile keyboards */
   display: flex;
   flex-direction: column;
   background: var(--bg);
@@ -24,7 +24,7 @@
     padding: 1rem;
     background: var(--bg);
 
-    // ✅ bottom padding accounts for composer height + safe-area + viewport offset
+    /* bottom padding accounts for composer height + safe-area + viewport offset */
     padding-bottom: calc(
       var(--composer-h) + env(safe-area-inset-bottom) + var(--vv-offset)
     );
@@ -112,12 +112,13 @@
     max-width: 100%;
 
     &.assistant {
-      align-items: stretch; // full width
+      align-items: stretch; /* full width */
       .bubble {
         position: relative;
-        padding-bottom: 20px;
+        padding-bottom: 20px; /* room for timestamp */
         max-width: 100%;
         width: 100%;
+        line-height: 1.6;
       }
 
       .time {
@@ -190,9 +191,19 @@
     position: relative;
 
     > div {
-      padding-right: 48px !important;
+      /* SyntaxHighlighter PreTag="div" */
+      padding-right: 48px !important; /* space for copy btn */
       overflow: auto;
-      width: 100%; // make code fill full bubble
+      width: 100%; /* code fills bubble width */
+
+      /* optional: nicer horizontal scrollbar */
+      &::-webkit-scrollbar {
+        height: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
     }
   }
 
@@ -279,7 +290,7 @@
       border-radius: 10px;
       background: var(--surface-2);
       color: var(--text);
-      font-size: 16px;
+      font-size: 16px; /* >=16px prevents iOS zoom-on-focus */
       resize: none;
       overflow-y: auto;
 

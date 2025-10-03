@@ -23,20 +23,44 @@ SyntaxHighlighter.registerLanguage("json", json);
 SyntaxHighlighter.registerLanguage("xml", markup);
 SyntaxHighlighter.registerLanguage("html", markup);
 
-// --- helpers: tokenize LLM text and render plain text nicely ---
+/* ---------- tolerant fenced-code parser ---------- */
+const normalizeLang = (s = "") => {
+  const lang = s.toLowerCase();
+  const map = {
+    js: "javascript",
+    mjs: "javascript",
+    cjs: "javascript",
+    jsx: "jsx",
+    ts: "typescript",
+    tsx: "tsx",
+    html: "html",
+    xml: "xml",
+    yml: "yaml",
+    md: "markdown",
+    sh: "bash",
+    shell: "bash",
+    py: "python",
+    "c#": "cs",
+    csharp: "cs",
+  };
+  return map[lang] || lang || "plaintext";
+};
+
 const tokenizeBlocks = (text = "") => {
-  // split into [{type:'text',content}, {type:'code',lang,content}]
+  // Matches ```lang? [opt spaces][opt newline] ... until closing ``` or end
+  const re = /```[ \t]*([A-Za-z0-9+#.\-_]*)[ \t]*\r?\n?([\s\S]*?)(?:```|$)/g;
+
   const tokens = [];
   let last = 0;
-  const re = /```(\w+)?\n([\s\S]*?)```/g;
   let m;
+
   while ((m = re.exec(text)) !== null) {
     if (m.index > last)
       tokens.push({ type: "text", content: text.slice(last, m.index) });
     tokens.push({
       type: "code",
-      lang: (m[1] || "plaintext").toLowerCase(),
-      content: m[2].trimEnd(),
+      lang: normalizeLang(m[1]),
+      content: (m[2] || "").trim(),
     });
     last = re.lastIndex;
   }
@@ -44,9 +68,9 @@ const tokenizeBlocks = (text = "") => {
     tokens.push({ type: "text", content: text.slice(last) });
   return tokens;
 };
+/* ------------------------------------------------- */
 
 const linkifyAndBreak = (s = "") => {
-  // turns URLs clickable and preserves newlines without innerHTML
   const urlRe = /(https?:\/\/[^\s]+)/g;
   const parts = s.split(urlRe);
   const nodes = [];
@@ -82,9 +106,7 @@ const ChatBox = () => {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [sending, setSending] = useState(false);
-
-  // ✅ track copied state per code block (key: `${messageId}-${blockIndex}`)
-  const [copiedMap, setCopiedMap] = useState({});
+  const [copiedMap, setCopiedMap] = useState({}); // key: `${messageId}-${blockIndex}`
 
   const chatRef = useRef(null);
   const listRef = useRef(null);
@@ -93,7 +115,7 @@ const ChatBox = () => {
 
   const { mutate } = useChatMutation();
 
-  // ✅ Keep --composer-h in sync with the real composer height
+  // Keep --composer-h in sync
   useEffect(() => {
     if (!chatRef.current || !composerRef.current) return;
     const el = composerRef.current;
@@ -106,35 +128,30 @@ const ChatBox = () => {
     const ro = new ResizeObserver(setHeightVar);
     ro.observe(el);
     setHeightVar();
-
     return () => ro.disconnect();
   }, []);
 
-  // ✅ Track on-screen keyboard overlap via visualViewport → --vv-offset
+  // Track keyboard overlap via visualViewport → --vv-offset
   useEffect(() => {
     if (!chatRef.current || !window.visualViewport) return;
     const vv = window.visualViewport;
-
     const setOffset = () => {
-      // how much shorter the viewport is vs window innerHeight
       const overlap = Math.max(0, window.innerHeight - vv.height);
       chatRef.current.style.setProperty(
         "--vv-offset",
         `${Math.round(overlap)}px`
       );
     };
-
     vv.addEventListener("resize", setOffset);
     vv.addEventListener("scroll", setOffset);
     setOffset();
-
     return () => {
       vv.removeEventListener("resize", setOffset);
       vv.removeEventListener("scroll", setOffset);
     };
   }, []);
 
-  // Auto-scroll to newest message (respect bottom padding)
+  // Auto-scroll to newest message
   useEffect(() => {
     if (!bottomRef.current) return;
     const id = requestAnimationFrame(() => {
@@ -169,18 +186,16 @@ const ChatBox = () => {
     mutate(
       { text, history: messages },
       {
-        onSuccess: (data) => {
+        onSuccess: (data) =>
           setMessages((prev) => [
             ...prev,
             createMessage("assistant", data.answer),
-          ]);
-        },
-        onError: () => {
+          ]),
+        onError: () =>
           setMessages((prev) => [
             ...prev,
             createMessage("system", "Something went wrong. Try again."),
-          ]);
-        },
+          ]),
         onSettled: () => setSending(false),
       }
     );
@@ -190,7 +205,6 @@ const ChatBox = () => {
     if (e.key === "Enter" && !e.shiftKey) handleSubmit(e);
   };
 
-  // ✅ copy handler
   const handleCopy = async (key, text) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -203,7 +217,6 @@ const ChatBox = () => {
         });
       }, 1200);
     } catch {
-      // fallback if Clipboard API fails
       const ta = document.createElement("textarea");
       ta.value = text;
       ta.setAttribute("readonly", "");
@@ -237,88 +250,95 @@ const ChatBox = () => {
         )}
 
         <div className="messages-inner">
-          {messages.map((m) => (
-            <div key={m.id} className={`message ${m.role}`}>
-              <div className="bubble">
-                {m.role === "assistant" ? (
-                  // Render with syntax highlighting when blocks are present
-                  tokenizeBlocks(m.content).map((t, idx) =>
-                    t.type === "code" ? (
-                      <div className="code-wrap" key={`code-${m.id}-${idx}`}>
-                        <button
-                          type="button"
-                          className="copy-btn"
-                          aria-label={
-                            copiedMap[`${m.id}-${idx}`] ? "Copied" : "Copy code"
-                          }
-                          title={
-                            copiedMap[`${m.id}-${idx}`] ? "Copied" : "Copy"
-                          }
-                          onClick={() =>
-                            handleCopy(`${m.id}-${idx}`, t.content)
-                          }
+          {messages.map((m) => {
+            const parts = tokenizeBlocks(m.content); // ← tolerant parsing
+            return (
+              <div key={m.id} className={`message ${m.role}`}>
+                <div className="bubble">
+                  {m.role === "assistant" ? (
+                    parts.map((t, idx) =>
+                      t.type === "code" ? (
+                        <div
+                          className="code-wrap"
+                          key={`code-${m.id}-${idx}`}
+                          data-lang={t.lang}
                         >
-                          {copiedMap[`${m.id}-${idx}`] ? (
-                            // check icon
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fill="currentColor"
-                                d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"
-                              />
-                            </svg>
-                          ) : (
-                            // copy icon
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fill="currentColor"
-                                d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"
-                              />
-                            </svg>
-                          )}
-                        </button>
+                          <button
+                            type="button"
+                            className="copy-btn"
+                            aria-label={
+                              copiedMap[`${m.id}-${idx}`]
+                                ? "Copied"
+                                : "Copy code"
+                            }
+                            title={
+                              copiedMap[`${m.id}-${idx}`] ? "Copied" : "Copy"
+                            }
+                            onClick={() =>
+                              handleCopy(`${m.id}-${idx}`, t.content)
+                            }
+                          >
+                            {copiedMap[`${m.id}-${idx}`] ? (
+                              <svg
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"
+                                />
+                              </svg>
+                            ) : (
+                              <svg
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  fill="currentColor"
+                                  d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"
+                                />
+                              </svg>
+                            )}
+                          </button>
 
-                        <SyntaxHighlighter
-                          language={t.lang}
-                          style={oneDark}
-                          customStyle={{
-                            borderRadius: 10,
-                            padding: "12px 14px",
-                            margin: "8px 0",
-                            fontSize: "0.9rem",
-                            overflow: "auto",
-                          }}
-                          PreTag="div"
-                        >
-                          {t.content}
-                        </SyntaxHighlighter>
-                      </div>
-                    ) : (
-                      <span key={`text-${m.id}-${idx}`} className="text">
-                        {linkifyAndBreak(t.content)}
-                      </span>
+                          <SyntaxHighlighter
+                            language={t.lang}
+                            style={oneDark}
+                            customStyle={{
+                              borderRadius: 10,
+                              padding: "12px 14px",
+                              margin: "8px 0",
+                              fontSize: "0.9rem",
+                              overflow: "auto",
+                            }}
+                            PreTag="div"
+                          >
+                            {t.content}
+                          </SyntaxHighlighter>
+                        </div>
+                      ) : (
+                        <span key={`text-${m.id}-${idx}`} className="text">
+                          {linkifyAndBreak(t.content)}
+                        </span>
+                      )
                     )
-                  )
-                ) : (
-                  <span className="text">{m.content}</span>
-                )}
-                {m.role === "assistant" && (
+                  ) : (
+                    <span className="text">{m.content}</span>
+                  )}
+                  {m.role === "assistant" && (
+                    <span className="time">{m.time}</span>
+                  )}
+                </div>
+                {m.role !== "assistant" && (
                   <span className="time">{m.time}</span>
                 )}
               </div>
-              {m.role !== "assistant" && <span className="time">{m.time}</span>}
-            </div>
-          ))}
-          {/* ✅ bottom anchor with scroll margin equal to composer height */}
+            );
+          })}
           <div
             ref={bottomRef}
             style={{ scrollMarginBottom: "var(--composer-h)" }}
