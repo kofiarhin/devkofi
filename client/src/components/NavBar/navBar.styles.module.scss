@@ -1,0 +1,116 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 12px 16px;
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.desktopLinks {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.link {
+  color: #0f172a;
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.link:hover {
+  background: #f8fafc;
+}
+
+.active {
+  background: #eef2ff;
+}
+
+.cta {
+  background: #111827;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.mobileButton {
+  display: none;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 8px 10px;
+  align-items: center;
+  gap: 8px;
+  color: #0f172a;
+}
+
+.mobilePanel {
+  display: none;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.mobilePanelOpen {
+  display: block;
+}
+
+.mobileList {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mobileItem {
+  width: 100%;
+}
+
+.mobileLink {
+  display: block;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: #0f172a;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.mobileLink:hover {
+  background: #f8fafc;
+}
+
+.mobileActive {
+  @extend .mobileLink;
+  background: #eef2ff;
+}
+
+@media (max-width: 768px) {
+  .desktopLinks {
+    display: none;
+  }
+
+  .mobileButton {
+    display: inline-flex;
+  }
+}

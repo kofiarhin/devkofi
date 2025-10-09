@@ -24,6 +24,8 @@ import Register from "./Pages/Register/Register";
 import Portal from "./Pages/Portal/Portal";
 import Messages from "./Pages/Messages/Messages";
 import Chat from "./Pages/Chat/Chat";
+import Blog from "./Pages/Blog/Blog";
+import BlogPost from "./Pages/Blog/BlogPost";
 
 const AppContent = () => {
   const location = useLocation();
@@ -44,9 +46,11 @@ const AppContent = () => {
     getData();
   }, []);
 
+  const isBlogRoute = location.pathname.startsWith("/blog");
+
   return (
     <>
-      <Header />
+      {!isBlogRoute && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
@@ -59,6 +63,8 @@ const AppContent = () => {
         <Route path="/register" element={<Register />} />
         <Route path="about-me" element={<AboutMe />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/templates" element={<Templates />} />
           <Route path="/portal" element={<Portal />} />

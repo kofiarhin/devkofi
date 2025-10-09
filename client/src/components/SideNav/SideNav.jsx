@@ -53,6 +53,7 @@ const SideNav = () => {
   // Build links without empty entries (avoids duplicate key="")
   const links = [
     { to: "/", text: "Home" },
+    { to: "/blog", text: "Blog" },
     { to: "/about-me", text: "About Me" },
     { to: "/course-outline", text: "Course Outline" },
     { to: "/chat", text: "Chat" },
