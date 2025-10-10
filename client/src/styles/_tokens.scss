@@ -1,0 +1,70 @@
+// Design System Tokens - Unified for DevKofi App
+// Colors
+$color-bg: #0f1115;
+$color-surface: #151821;
+$color-primary: #90870d; // Adapted from main app --primary-color
+$color-secondary: #7aa7ff;
+$color-muted: #8a8fa3;
+$color-border: #232736;
+$color-success: #19c37d;
+$color-danger: #ff6b6b;
+$color-warning: #f8d34a;
+$text-strong: #e6e8f0; // Closer to main app --text-color #e2e2e2
+$text-normal: #cbd1dc;
+$text-dim: #9aa3b2;
+
+// Typography
+$ff-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter,
+  Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+$ff-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+  "Liberation Mono", "Courier New", monospace;
+
+// Font Sizes (adapted scale)
+$h1: 56px;
+$h2: 44px;
+$h3: 32px;
+$h4: 24px;
+$body-lg: 18px;
+$body: 16px;
+$body-sm: 14px;
+
+// Line Heights
+$lh-tight: 1.15;
+$lh-normal: 1.5;
+
+// Border Radii
+$radius-sm: 10px;
+$radius-md: 14px;
+$radius-lg: 20px;
+$radius-xl: 24px;
+
+// Spacing Scale
+$space-0: 0;
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-6: 24px;
+$space-8: 32px;
+$space-12: 48px;
+$space-16: 64px;
+
+// Shadows
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+$shadow-md: 0 6px 20px rgba(0, 0, 0, 0.35);
+$shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.45);
+
+// Elevations/Z-Index
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;
+
+// Transitions
+$transition-fast: 0.1s ease;
+$transition-normal: 0.2s ease;
+$transition-slow: 0.3s ease;
+$transition-bounce: transform 0.06s ease;

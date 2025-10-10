@@ -1,9 +1,9 @@
+@import "../../styles/mixins";
+
 .prose {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #0f172a;
+  @include body;
   display: grid;
-  gap: 1rem;
+  gap: $space-3;
 }
 
 .prose h1,
@@ -11,97 +11,129 @@
 .prose h3,
 .prose h4,
 .prose h5 {
-  color: #111827;
+  color: $text-strong;
   margin: 0;
 }
 
 .prose h1 {
-  font-size: 2.25rem;
-  line-height: 1.2;
+  @include heading($h1);
+  margin-top: $space-8;
 }
 
 .prose h2 {
-  font-size: 1.5rem;
-  margin-top: 2rem;
+  @include heading($h2);
+  margin-top: $space-6;
 }
 
 .prose h3 {
-  font-size: 1.2rem;
-  margin-top: 1.5rem;
+  @include heading($h3);
+  margin-top: $space-4;
+}
+
+.prose h4 {
+  @include heading($h4);
+  margin-top: $space-4;
+}
+
+.prose h5 {
+  @include heading($body-lg, 600);
+  margin-top: $space-4;
 }
 
 .prose p {
+  @include body;
   margin: 0;
 }
 
 .prose ul,
 .prose ol {
-  padding-left: 1.25rem;
+  @include body;
+  padding-left: $space-6;
   margin: 0;
 }
 
 .prose blockquote {
-  border-left: 4px solid #6366f1;
-  margin: 0;
-  padding-left: 1rem;
-  color: #4338ca;
+  border-left: 4px solid $color-primary;
+  margin: $space-4 0;
+  padding-left: $space-4;
+  color: $text-dim;
   font-style: italic;
+  background: rgba($color-primary, 0.05);
+  padding: $space-2 $space-4;
+  border-left: 4px solid $color-primary;
+  @include body;
 }
 
 .prose table {
   width: 100%;
   border-collapse: collapse;
+  margin: $space-4 0;
+  @include card;
 }
 
 .prose th,
 .prose td {
-  border: 1px solid #e5e7eb;
-  padding: 10px;
+  border: 1px solid $color-border;
+  padding: $space-3;
   text-align: left;
+  @include body($body-sm);
+}
+
+.prose th {
+  background: $color-surface;
+  font-weight: 600;
+  color: $text-strong;
 }
 
 .codeBlock {
   position: relative;
-  border-radius: 12px;
+  border-radius: $radius-md;
   overflow: hidden;
-  background: #0b1020;
+  background: #0b1020; // Keep dark for syntax highlighting contrast
+  margin: $space-4 0;
 }
 
 .copyButton {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 0.75rem;
-  padding: 4px 10px;
+  top: $space-2;
+  right: $space-2;
+  @include code-text($body-sm);
+  padding: $space-1 $space-3;
   cursor: pointer;
-  border-radius: 8px;
-  border: 1px solid #374151;
-  background: #111827;
-  color: #e5e7eb;
+  border-radius: $radius-sm;
+  border: 1px solid $color-border;
+  background: $color-bg;
+  color: $text-dim;
+  transition: $transition-normal;
+}
+
+.copyButton:hover {
+  background: $color-surface;
+  color: $text-normal;
 }
 
 .copyButton:focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid $color-primary;
   outline-offset: 2px;
 }
 
 .codeBlock :global(.prism-code) {
   background: transparent !important;
   margin: 0 !important;
-  font-size: 0.95rem;
+  font-size: $body-sm;
 }
 
 .codeBlock :global(pre) {
   margin: 0;
-  padding: 16px;
+  padding: $space-4;
 }
 
 @media (max-width: 768px) {
   .prose h1 {
-    font-size: 1.8rem;
+    font-size: calc($h1 * 0.8);
   }
 
   .prose h2 {
-    font-size: 1.35rem;
+    font-size: calc($h2 * 0.9);
   }
 }

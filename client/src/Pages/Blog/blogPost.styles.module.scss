@@ -1,69 +1,67 @@
+@import "../../styles/mixins";
+
 .page {
   min-height: 100vh;
-  background: #ffffff;
-  color: #0f172a;
+  background: $color-bg;
+  color: $text-normal;
 }
 
 .layout {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 32px 16px 80px;
+  @include container(760px);
+  padding: $space-8 $space-4 $space-16;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: $space-8;
 }
 
 .article {
   display: grid;
-  gap: 32px;
+  gap: $space-8;
 }
 
 .header {
   display: grid;
-  gap: 12px;
+  gap: $space-3;
 }
 
 .eyebrow {
+  @include code-text($body-sm);
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  font-size: 0.75rem;
   font-weight: 600;
-  color: #6366f1;
+  color: $color-secondary;
   margin: 0;
 }
 
 .header h1 {
-  font-size: 2.5rem;
+  @include heading(44px); // h2 size
   margin: 0;
 }
 
 .meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  color: #64748b;
-  font-size: 0.95rem;
+  gap: $space-3;
+  color: $text-dim;
+  font-size: $body-sm;
 }
 
 .tagList {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: $space-2;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .tag {
-  background: #eef2ff;
-  color: #4338ca;
-  border-radius: 999px;
-  padding: 4px 10px;
-  font-size: 0.8rem;
+  @include tag;
 }
 
 .backLink {
-  color: #6366f1;
+  @include body($body-sm);
+  color: $color-secondary;
   text-decoration: none;
   font-weight: 600;
   width: fit-content;
@@ -74,28 +72,29 @@
 }
 
 .emptyState {
-  padding: 96px 0;
+  padding: $space-16 0;
   display: grid;
-  gap: 16px;
+  gap: $space-4;
   text-align: center;
 }
 
 .emptyState h1 {
+  @include heading(32px); // h3 size
   margin: 0;
-  font-size: 2rem;
 }
 
 .emptyState p {
+  @include body;
   margin: 0;
-  color: #475569;
+  color: $text-dim;
 }
 
 @media (max-width: 640px) {
   .layout {
-    padding: 24px 16px 64px;
+    padding: $space-6 $space-4 $space-12;
   }
 
   .header h1 {
-    font-size: 2.1rem;
+    font-size: calc($h2 * 0.9);
   }
 }

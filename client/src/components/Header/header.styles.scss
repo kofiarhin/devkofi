@@ -1,11 +1,13 @@
+@import "../../styles/mixins";
+
 .header {
-  position: sticky; // keeps it at the top while scrolling
+  position: sticky;
   top: 0;
-  z-index: 1000;
-  background-color: rgba(15, 15, 15, 0.9); // slightly transparent for blur
-  backdrop-filter: blur(8px); // frosted-glass effect
-  -webkit-backdrop-filter: blur(8px); // Safari support
-  padding: 0rem 0rem;
+  z-index: $z-sticky;
+  background: rgba($color-bg, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0;
 
   .container {
     display: flex;
@@ -23,13 +25,8 @@
       }
 
       button {
-        padding: 0.8rem 1rem;
-        background-color: var(--primary-color);
-        color: white;
+        @include button-primary;
         font-weight: 800;
-        border-radius: 50px;
-        cursor: pointer;
-        border: none;
       }
     }
 
@@ -44,15 +41,15 @@
       img {
         width: 50px;
         border-radius: 50px;
-        border: 2px solid var(--primary-color);
+        border: 2px solid $color-primary;
         cursor: pointer;
       }
 
       a {
         display: inline-block;
-        color: white;
+        color: $text-strong;
         margin-left: 0.8rem;
-        font-size: 0.8rem;
+        font-size: $body-sm;
         text-decoration: none;
       }
     }
@@ -70,18 +67,14 @@
         display: block;
 
         a {
-          color: white;
+          color: $text-strong;
           text-decoration: none;
           display: inline-block;
           margin-left: 1rem;
         }
 
         button {
-          padding: 0.8rem 3rem;
-          background-color: var(--bg-background);
-          color: white;
-          cursor: pointer;
-          border-radius: 50px;
+          @include button-secondary;
           margin-left: 2rem;
         }
       }
@@ -119,9 +112,9 @@
         height: 40px;
         font-size: 1.1rem;
         margin-left: 0;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(255, 255, 255, 0.05);
+        border-radius: $radius-md;
+        border: 1px solid rgba($text-strong, 0.14);
+        background: rgba($text-strong, 0.05);
       }
     }
 

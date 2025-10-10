@@ -1,73 +1,68 @@
+@import "../../styles/mixins";
+
 .nav {
   position: sticky;
   top: 0;
-  z-index: 50;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  z-index: $z-sticky;
+  background: $color-bg;
+  border-bottom: 1px solid $color-border;
 }
 
 .inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 12px 16px;
+  @include container(960px);
+  padding: $space-3 $space-4;
+  @include flex-between;
 }
 
 .brand {
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #0f172a;
+  color: $text-strong;
   text-decoration: none;
+  @include heading($h4, 800);
 }
 
 .desktopLinks {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  @include flex-center;
+  gap: $space-4;
 }
 
 .link {
-  color: #0f172a;
+  color: $text-normal;
   text-decoration: none;
-  padding: 8px 10px;
-  border-radius: 10px;
-  transition: background 0.2s ease;
+  padding: $space-2 $space-3;
+  border-radius: $radius-md;
+  transition: background $transition-normal;
+  @include body;
 }
 
 .link:hover {
-  background: #f8fafc;
+  background: $color-surface;
 }
 
 .active {
-  background: #eef2ff;
+  background: rgba($color-primary, 0.1);
+  color: $color-primary;
 }
 
 .cta {
-  background: #111827;
-  color: #ffffff;
-  padding: 8px 12px;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 600;
+  @include button-primary;
+  background: $color-primary;
+  color: $text-strong;
 }
 
 .mobileButton {
   display: none;
+  @include button-secondary;
+  color: $text-normal;
   background: transparent;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 8px 10px;
-  align-items: center;
-  gap: 8px;
-  color: #0f172a;
+  border: 1px solid $color-border;
 }
 
 .mobilePanel {
   display: none;
-  border-top: 1px solid #e5e7eb;
-  background: #ffffff;
+  border-top: 1px solid $color-border;
+  background: $color-bg;
 }
 
 .mobilePanelOpen {
@@ -77,10 +72,10 @@
 .mobileList {
   list-style: none;
   margin: 0;
-  padding: 8px;
+  padding: $space-2;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: $space-1;
 }
 
 .mobileItem {
@@ -89,20 +84,22 @@
 
 .mobileLink {
   display: block;
-  padding: 10px 12px;
+  padding: $space-3 $space-4;
   text-decoration: none;
-  color: #0f172a;
-  border-radius: 10px;
-  transition: background 0.2s ease;
+  color: $text-normal;
+  border-radius: $radius-md;
+  transition: background $transition-normal;
+  @include body;
 }
 
 .mobileLink:hover {
-  background: #f8fafc;
+  background: $color-surface;
 }
 
 .mobileActive {
   @extend .mobileLink;
-  background: #eef2ff;
+  background: rgba($color-primary, 0.1);
+  color: $color-primary;
 }
 
 @media (max-width: 768px) {
@@ -111,6 +108,6 @@
   }
 
   .mobileButton {
-    display: inline-flex;
+    display: flex;
   }
 }
