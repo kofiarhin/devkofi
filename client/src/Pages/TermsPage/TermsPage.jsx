@@ -3,7 +3,7 @@ import TermsOfUse from "../../components/TermsOfUse";
 
 const TermsPage = () => {
   return (
-    <div>
+    <div className="container">
       <TermsOfUse />
     </div>
   );
