@@ -26,6 +26,7 @@ import Messages from "./Pages/Messages/Messages";
 import Chat from "./Pages/Chat/Chat";
 import Blog from "./Pages/Blog/Blog";
 import BlogPost from "./Pages/Blog/BlogPost";
+import TermsPage from "./Pages/TermsPage/TermsPage";
 
 const AppContent = () => {
   const location = useLocation();
@@ -65,6 +66,7 @@ const AppContent = () => {
         <Route path="/chat" element={<Chat />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/terms" element={<TermsPage />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/templates" element={<Templates />} />
           <Route path="/portal" element={<Portal />} />
