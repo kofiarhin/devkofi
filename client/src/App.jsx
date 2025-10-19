@@ -27,6 +27,7 @@ import Chat from "./Pages/Chat/Chat";
 import Blog from "./Pages/Blog/Blog";
 import BlogPost from "./Pages/Blog/BlogPost";
 import TermsPage from "./Pages/TermsPage/TermsPage";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
 
 const AppContent = () => {
   const location = useLocation();
@@ -67,6 +68,7 @@ const AppContent = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/templates" element={<Templates />} />
           <Route path="/portal" element={<Portal />} />

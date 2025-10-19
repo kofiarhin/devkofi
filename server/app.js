@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const createCors = require("./middleware/cors");
 
 // Middlewares
@@ -58,6 +59,19 @@ app.use("/api/pricing", pricingRoutes);
 app.use("/api/ask-mentor", askMentorRoutes);
 app.use("/api/chat", chatRoutes);
 app.use(["/health", "/api/health"], healthRoute);
+
+if (process.env.NODE_ENV === "production") {
+  const clientDist = path.join(__dirname, "..", "client", "dist");
+
+  app.use(express.static(clientDist));
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api")) {
+      return next();
+    }
+
+    return res.sendFile(path.join(clientDist, "index.html"));
+  });
+}
 
 app.use(notFound);
 app.use(errorHandler);

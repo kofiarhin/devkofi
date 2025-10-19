@@ -53,6 +53,7 @@ const Header = () => {
             <Link to="/chat">Chat</Link>
             <Link to="about-me">About</Link>
             {/* <Link to="/templates">Templates</Link> */}
+            <Link to="/privacy">Privacy</Link>
             <Link to="/contact">Contact</Link>
             {isDevEnvironment ? <Link to="/playground">Playground</Link> : null}
             {user ? (
