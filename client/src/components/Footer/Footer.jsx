@@ -22,25 +22,24 @@ const sections = [
   {
     title: "The Basics",
     links: [
-      { label: "About DevKofi", href: "/about" },
+      { label: "About DevKofi", href: "/about-me" },
       { label: "Contact Us", href: "/contact" },
-      { label: "Support", href: "/support" },
+      { label: "Support", href: "/chat" },
     ],
   },
   {
     title: "Get Involved",
     links: [
-      { label: "Contribute", href: "/contribute" },
-      { label: "Add New Course", href: "/courses/new" },
-      { label: "Add New Tool", href: "/tools/new" },
+      { label: "Contribute", href: "/contact" },
+      { label: "Add New Course", href: "/contact" },
+      { label: "Add New Tool", href: "/contact" },
     ],
   },
   {
     title: "Community",
     links: [
-      { label: "Guidelines", href: "/guidelines" },
-      { label: "Discussions", href: "/discussions" },
-      { label: "Leaderboard", href: "/leaderboard" },
+      { label: "Guidelines", href: "/chat" },
+      { label: "Discussions", href: "/chat" },
     ],
   },
   {

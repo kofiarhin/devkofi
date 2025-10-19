@@ -27,6 +27,7 @@ import Chat from "./Pages/Chat/Chat";
 import Blog from "./Pages/Blog/Blog";
 import BlogPost from "./Pages/Blog/BlogPost";
 import TermsPage from "./Pages/TermsPage/TermsPage";
+import Privacy from "./Pages/Privacy/Privacy";
 
 const AppContent = () => {
   const location = useLocation();
@@ -61,12 +62,16 @@ const AppContent = () => {
         <Route path="/mentorship" element={<JoinMentorship />} />
         <Route path="/course-outline" element={<CourseOutline />} />
         <Route path="/login" element={<Login />} />
+
         <Route path="/register" element={<Register />} />
         <Route path="about-me" element={<AboutMe />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/terms" element={<TermsPage />} />
+
+        <Route path="/privacy" element={<Privacy />} />
+        {/* private routes */}
         <Route element={<PrivateRoutes />}>
           <Route path="/templates" element={<Templates />} />
           <Route path="/portal" element={<Portal />} />

@@ -1,0 +1,26 @@
+.privacy-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #f1f1f1;
+  background: #0f0f0f;
+  line-height: 1.6;
+
+  h1,
+  h2 {
+    color: #4caf50;
+  }
+
+  a {
+    color: #2196f3;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+}
