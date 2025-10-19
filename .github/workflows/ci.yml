@@ -31,7 +31,7 @@ jobs:
         working-directory: client
         run: |
           npm ci
-          npm run build   # outputs client/dist
+          npm run build
 
       - name: Upload dist to Namecheap (root public_html)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -54,7 +54,6 @@ jobs:
     needs: [deploy_client]
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -109,8 +108,8 @@ jobs:
         if: failure()
         run: heroku logs -n 300 -a devkofi || true
 
-  # ---------- Post-deploy Browser Login Test ----------
-  e2e_login_test:
+  # ---------- Post-deploy Browser E2E Tests ----------
+  e2e_login_chat_test:
     runs-on: ubuntu-latest
     needs: [deploy_client, deploy_heroku]
     steps:
@@ -133,16 +132,16 @@ jobs:
         with:
           node-version: 20
 
-      - name: Setup Playwright environment
+      - name: Setup Playwright
         run: |
           npm init -y
           npm install @playwright/test
           npx playwright install --with-deps
 
-      - name: Create Playwright login test
+      - name: Create Playwright test for login + chat
         run: |
           mkdir -p tests
-          cat << 'EOF' > tests/login.spec.js
+          cat << 'EOF' > tests/login-chat.spec.js
           const { test, expect } = require('@playwright/test');
 
           const fillEmail = async (page, value) => {
@@ -158,18 +157,31 @@ jobs:
             await btn.first().click();
           };
 
-          test('Navigate to login and perform login', async ({ page }) => {
+          test('Login and test chat interaction', async ({ page }) => {
+            // Navigate to login
             await page.goto('https://devkofi.com/login', { waitUntil: 'domcontentloaded' });
             await fillEmail(page, 'test@gmail.com');
             await fillPassword(page, 'password');
             await clickSubmit(page);
-            await Promise.race([
-              page.waitForURL(/^(?!.*\/login\b).*$/, { timeout: 8000 }),
-              page.waitForSelector('text=/dashboard|portal|welcome|logout/i', { timeout: 8000 }).catch(() => null)
-            ]);
-            expect(page.url()).not.toMatch(/\/login\b/);
+
+            // Wait for redirect after login
+            await page.waitForURL(/^(?!.*\/login\b).*$/, { timeout: 10000 });
+
+            // Go to chat page
+            await page.goto('https://devkofi.com/chat', { waitUntil: 'domcontentloaded' });
+
+            // Wait for send button
+            const sendButton = page.locator('button:has-text("Send"), [role="button"]:has-text("Send")');
+            await sendButton.first().waitFor({ state: 'visible', timeout: 8000 });
+
+            // Click send button
+            await sendButton.first().click();
+
+            // Wait for chat response to appear
+            const responseLocator = page.locator('.chat-response, .message-bot, .response, text=/response|reply|bot|message/i');
+            await expect(responseLocator.first()).toBeVisible({ timeout: 10000 });
           });
           EOF
 
       - name: Run Playwright test
-        run: npx playwright test tests/login.spec.js --reporter=line
+        run: npx playwright test tests/login-chat.spec.js --reporter=line
