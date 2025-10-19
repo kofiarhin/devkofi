@@ -110,3 +110,21 @@ jobs:
       - name: Print recent Heroku logs on failure
         if: failure()
         run: heroku logs -n 300 -a devkofi || true
+
+  # ---------- Post-deploy Smoke Test ----------
+  smoke_test:
+    runs-on: ubuntu-latest
+    needs: [deploy_client, deploy_heroku]
+    steps:
+      - name: Check homepage status (https://devkofi.com)
+        shell: bash
+        run: |
+          echo "Checking https://devkofi.com/ ..."
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" https://devkofi.com/)
+          echo "HTTP status: $CODE"
+          if [ "$CODE" -eq 200 ]; then
+            echo "✅ Homepage is live"
+          else
+            echo "❌ Homepage returned $CODE"
+            exit 1
+          fi
