@@ -111,12 +111,14 @@ jobs:
         if: failure()
         run: heroku logs -n 300 -a devkofi || true
 
-  # ---------- Post-deploy Smoke Test ----------
-  smoke_test:
+  # ---------- Post-deploy Smoke + Login (browser) ----------
+  e2e_login_test:
     runs-on: ubuntu-latest
     needs: [deploy_client, deploy_heroku]
     steps:
-      - name: Check homepage status (https://devkofi.com)
+      - uses: actions/checkout@v4
+
+      - name: Quick homepage status
         shell: bash
         run: |
           echo "Checking https://devkofi.com/ ..."
@@ -128,3 +130,59 @@ jobs:
             echo "❌ Homepage returned $CODE"
             exit 1
           fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm i @playwright/test
+          npx playwright install --with-deps
+
+      - name: Create Playwright login test
+        run: |
+          mkdir -p tests
+          cat << 'EOF' > tests/login.spec.js
+          const { test, expect } = require('@playwright/test');
+
+          // robust helpers to match common field patterns
+          const fillEmail = async (page, value) => {
+            const email = page.locator('input[name="email"], input[type="email"], [placeholder*="email" i]');
+            await email.first().fill(value);
+          };
+          const fillPassword = async (page, value) => {
+            const pass = page.locator('input[name="password"], input[type="password"], [placeholder*="password" i]');
+            await pass.first().fill(value);
+          };
+          const clickSubmit = async (page) => {
+            const btn = page.locator('button[type="submit"], button:has-text("Sign in"), button:has-text("Login"), [role="button"]:has-text("Login")');
+            await btn.first().click();
+          };
+
+          test('navigate to /login and authenticate', async ({ page }) => {
+            // 1) go to login
+            await page.goto('https://devkofi.com/login', { waitUntil: 'domcontentloaded' });
+
+            // 2) fill credentials
+            await fillEmail(page, 'test@gmail.com');
+            await fillPassword(page, 'password');
+
+            // 3) submit
+            await clickSubmit(page);
+
+            // 4) wait for either a redirect or a known post-login UI
+            await Promise.race([
+              page.waitForURL(/^(?!.*\/login\b).*$/, { timeout: 8000 }),            // URL no longer includes /login
+              page.waitForSelector('text=/dashboard|portal|welcome|logout/i', { timeout: 8000 }).catch(() => null)
+            ]);
+
+            // 5) assert not stuck on login
+            expect(page.url()).not.toMatch(/\/login\b/);
+          });
+          EOF
+
+      - name: Run Playwright test
+        run: npx playwright test tests/login.spec.js --reporter=line
