@@ -11,7 +11,7 @@ const Projects = () => {
   }
   return (
     <div>
-      <h1 className="heading center">Projects</h1>
+     
       {data && data?.projects?.length > 0 && (
         <ProjectList data={data?.projects} />
       )}
