@@ -1,7 +1,11 @@
 import React from "react";
-
+import Upload from "../../components/Upload/Upload";
 const Playground = () => {
-  return <div>Playground</div>;
+  return (
+    <div>
+      <Upload />
+    </div>
+  );
 };
 
 export default Playground;

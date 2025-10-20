@@ -1,0 +1,31 @@
+#projects {
+  img {
+    width: 300px;
+    .container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (min-width: 800px) {
+  #projects {
+    padding-bottom: 4rem;
+    .container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+
+      .project-unit {
+        text-decoration: none;
+        img {
+          width: 100%;
+        }
+        color: white;
+        h2 {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+}

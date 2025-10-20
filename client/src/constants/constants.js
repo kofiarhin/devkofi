@@ -26,3 +26,6 @@ export const aboutMeImage =
 
 export const profileSmall =
   "https://res.cloudinary.com/dlsiabgiw/image/upload/v1754978051/devkofi/pj7bwbv4di9bznwv3qxp.jpg";
+
+export const defaultImage =
+  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760929519/devkofi/h2vx5qbjmtbg0mf8goxr.jpg";

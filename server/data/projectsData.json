@@ -1,0 +1,34 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "PregChat App",
+      "description": "A pregnancy companion app that provides daily updates based on the user's pregnancy day, detailing both baby growth and mother's health.",
+      "features": [
+        "Prompt user for pregnancy day input",
+        "Daily updates for baby growth and mother's health",
+        "User authentication and data storage",
+        "Modern UI built with React and SCSS",
+        "Express + MongoDB backend with RESTful API"
+      ],
+      "status": "Active",
+      "demoUrl": "https://pregchat-tan.vercel.app/chat",
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760930663/devkofi/pdfij4zqjkosttlcezp2.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Blade & Bourbon",
+      "description": "A premium barbershop website offering classic grooming services with a modern digital booking experience.",
+      "features": [
+        "Service showcase and pricing section",
+        "Online booking system with calendar integration",
+        "Responsive modern UI with dark luxury theme",
+        "Gallery and testimonial sections",
+        "Admin dashboard for managing appointments"
+      ],
+      "status": "Ongoing",
+      "demoUrl": "https://bourbon-and-blade.vercel.app/",
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760930812/devkofi/fmofdhe8odbua8mtdglg.jpg"
+    }
+  ]
+}

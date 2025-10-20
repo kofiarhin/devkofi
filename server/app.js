@@ -23,6 +23,7 @@ const pricingRoutes = require("./routes/pricingRoutes");
 const healthRoute = require("./health.route");
 const askMentorRoutes = require("./routes/askMentorRoutes");
 const chatRoutes = require("./routes/chat.routes");
+const projectRoutes = require("./routes/projectRoutes");
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.get("/", (req, res) => {
 app.get("/api/templates", (req, res) => {
   res.json([]);
 });
+app.use("/api/projects", projectRoutes);
 
 // API Routes
 app.use("/api/messages", messagesRoute);

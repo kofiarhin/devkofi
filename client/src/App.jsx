@@ -28,7 +28,7 @@ import Blog from "./Pages/Blog/Blog";
 import BlogPost from "./Pages/Blog/BlogPost";
 import TermsPage from "./Pages/TermsPage/TermsPage";
 import Privacy from "./Pages/Privacy/Privacy";
-
+import Projects from "./Pages/Projects/Projects";
 const AppContent = () => {
   const location = useLocation();
 
@@ -69,6 +69,7 @@ const AppContent = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/terms" element={<TermsPage />} />
+        <Route path="/projects" element={<Projects />} />
 
         <Route path="/privacy" element={<Privacy />} />
         {/* private routes */}
