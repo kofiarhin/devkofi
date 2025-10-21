@@ -125,3 +125,15 @@
       "name": "Quiz App",
       "description": "An interactive movie quiz application powered by the Groq and TMDB APIs for AI-driven question generation.",
       "features": [
+        "Dynamic question generation using Groq API",
+        "Movie data from TMDB API",
+        "React + Node full-stack architecture",
+        "Real-time score tracking and feedback",
+        "Deployed on Vercel and Render"
+      ],
+      "status": "Active",
+      "demoUrl": "https://quizapp-devkofi.vercel.app/",
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760931400/devkofi/quiz-app.jpg"
+    }
+  ]
+}
