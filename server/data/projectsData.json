@@ -43,7 +43,7 @@
       ],
       "status": "Active",
       "demoUrl": "https://hotelapp-devkofi.onrender.com",
-      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760931001/devkofi/hotel-booking-app.jpg"
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012092/devkofi/w9mbjm60hctyslzuf6bz.jpg"
     },
     {
       "id": 4,
@@ -58,7 +58,7 @@
       ],
       "status": "Active",
       "demoUrl": "https://kfchatapp.onrender.com",
-      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760931064/devkofi/kf-chat-app.jpg"
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012190/devkofi/pcgqrggvevim1sfsgb7j.jpg"
     },
     {
       "id": 5,
@@ -73,7 +73,7 @@
       ],
       "status": "Active",
       "demoUrl": "https://escowear.onrender.com",
-      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760931150/devkofi/escowear.jpg"
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012384/devkofi/dldvk5hz3iefsxviexxj.jpg"
     },
     {
       "id": 6,
@@ -87,8 +87,8 @@
         "Civic transparency and public data focus"
       ],
       "status": "Active",
-      "demoUrl": "https://knowyourmps.vercel.app/",
-      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760931218/devkofi/know-your-mps.jpg"
+      "demoUrl": "",
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012854/devkofi/ppp85skwdyyarjfxavti.jpg"
     },
     {
       "id": 7,
@@ -103,7 +103,7 @@
       ],
       "status": "Ongoing",
       "demoUrl": "https://doctorondemand.vercel.app/",
-      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760931289/devkofi/doctor-on-demand.jpg"
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012561/devkofi/myc7zjr9fium2vqn4mbn.jpg"
     },
     {
       "id": 8,
@@ -118,7 +118,7 @@
       ],
       "status": "Active",
       "demoUrl": "https://movieapp-kofi.vercel.app/",
-      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760931345/devkofi/movie-app.jpg"
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012649/devkofi/tryrn00b92mzutwsle5u.jpg"
     },
     {
       "id": 9,
@@ -133,7 +133,7 @@
       ],
       "status": "Active",
       "demoUrl": "https://quizapp-devkofi.vercel.app/",
-      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760931400/devkofi/quiz-app.jpg"
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012978/devkofi/uairiwjpxuuej5mrpwr3.jpg"
     }
   ]
 }
