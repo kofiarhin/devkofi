@@ -52,7 +52,7 @@ const AppContent = () => {
 
   return (
     <>
-      {!isBlogRoute && <Header />}
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
@@ -67,7 +67,6 @@ const AppContent = () => {
         <Route path="about-me" element={<AboutMe />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/projects" element={<Projects />} />
 
