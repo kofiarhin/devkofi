@@ -134,6 +134,21 @@
       "status": "Active",
       "demoUrl": "https://quizapp-devkofi.vercel.app/",
       "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012978/devkofi/uairiwjpxuuej5mrpwr3.jpg"
+    },
+    {
+      "id": 10,
+      "name": "Luxe & Aura",
+      "description": "A luxury salon website offering personalized consultations and high-end hair and beauty services, built with a refined emerald and gold theme.",
+      "features": [
+        "Service catalog and booking system",
+        "Dynamic pricing model based on UK averages",
+        "Personalized consultation booking",
+        "Responsive React frontend with SCSS styling",
+        "Deployed via Vercel with optimized performance"
+      ],
+      "status": "Active",
+      "demoUrl": "https://vercel.com/kofi-arhins-projects/luxe-and-aura",
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012978/devkofi/uairiwjpxuuej5mrpwr3.jpg"
     }
   ]
 }
