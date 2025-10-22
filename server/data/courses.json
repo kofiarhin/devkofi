@@ -1,6 +1,119 @@
 {
   "courses": [
     {
+      "id": 4,
+      "name": "DevKofi Mentorship",
+      "title": "DevKofi Mentorship",
+      "tagline": "A hands-on mentorship program for developers ready to level up their career and thinking.",
+      "category": "Mentorship",
+      "level": "All Levels",
+      "durationWeeks": 10,
+      "status": "Active",
+      "price": { "amount": 499, "currency": "GBP" },
+      "instructor": {
+        "name": "Kofi Mensah",
+        "title": "Founder & Mentor",
+        "bio": "Founder of DevKofi, guiding developers to build production-grade apps and think like engineers, not just coders."
+      },
+      "tags": ["Mentorship", "Career Growth", "Full Stack", "Systems Thinking"],
+      "media": {
+        "thumbnailUrl": "https://images.unsplash.com/photo-1632910121591-29e2484c0259?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1031",
+        "heroUrl": "/images/courses/devkofi-mentorship-hero.jpg"
+      },
+      "requirements": [
+        "Basic JavaScript and web development knowledge",
+        "Commitment to learning and building consistently",
+        "A growth mindset and willingness to be challenged"
+      ],
+      "outcomes": [
+        "Gain real-world experience through guided projects",
+        "Understand the architecture of modern full-stack apps",
+        "Learn to think strategically and ship fast with precision"
+      ],
+      "modules": [
+        {
+          "id": 401,
+          "order": 1,
+          "title": "Mindset of a Modern Developer",
+          "durationWeeks": 1,
+          "learn": [
+            "Principles of mastery and focus",
+            "Mental models for deep learning",
+            "How to think like an engineer"
+          ],
+          "lessons": [
+            {
+              "id": 4011,
+              "title": "Deep Work & Focus",
+              "type": "video",
+              "durationMin": 10
+            },
+            {
+              "id": 4012,
+              "title": "Systems Thinking for Developers",
+              "type": "article",
+              "durationMin": 8
+            }
+          ]
+        },
+        {
+          "id": 402,
+          "order": 2,
+          "title": "Building Real Projects",
+          "durationWeeks": 5,
+          "learn": [
+            "MERN stack mastery",
+            "Practical GitHub workflow",
+            "Testing, CI/CD, and deployment"
+          ],
+          "lessons": [
+            {
+              "id": 4021,
+              "title": "MERN Stack Deep Dive",
+              "type": "video",
+              "durationMin": 20
+            },
+            {
+              "id": 4022,
+              "title": "Build & Deploy Your App",
+              "type": "project",
+              "durationMin": 60
+            }
+          ]
+        },
+        {
+          "id": 403,
+          "order": 3,
+          "title": "Career Systems & Strategy",
+          "durationWeeks": 2,
+          "learn": [
+            "Portfolio positioning",
+            "Personal branding for engineers",
+            "Automation and leverage"
+          ],
+          "lessons": [
+            {
+              "id": 4031,
+              "title": "Portfolio Strategy",
+              "type": "lab",
+              "durationMin": 25
+            },
+            {
+              "id": 4032,
+              "title": "Building a Developer OS",
+              "type": "reading",
+              "durationMin": 15
+            }
+          ]
+        }
+      ],
+      "links": {
+        "enroll": "/enroll/devkofi-mentorship",
+        "syllabus": "/syllabus/devkofi-mentorship",
+        "landing": "/courses/devkofi-mentorship"
+      }
+    },
+    {
       "id": 1,
       "name": "AI Powered Engineer",
       "title": "AI Powered Engineer",
@@ -333,119 +446,6 @@
         "enroll": "/enroll/code-quest",
         "syllabus": "/syllabus/code-quest",
         "landing": "/courses/code-quest"
-      }
-    },
-    {
-      "id": 4,
-      "name": "DevKofi Mentorship",
-      "title": "DevKofi Mentorship",
-      "tagline": "A hands-on mentorship program for developers ready to level up their career and thinking.",
-      "category": "Mentorship",
-      "level": "All Levels",
-      "durationWeeks": 10,
-      "status": "Active",
-      "price": { "amount": 499, "currency": "GBP" },
-      "instructor": {
-        "name": "Kofi Mensah",
-        "title": "Founder & Mentor",
-        "bio": "Founder of DevKofi, guiding developers to build production-grade apps and think like engineers, not just coders."
-      },
-      "tags": ["Mentorship", "Career Growth", "Full Stack", "Systems Thinking"],
-      "media": {
-        "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761110901/devkofi/vqkrjyu9lce0y3jml2hf.jpg",
-        "heroUrl": "/images/courses/devkofi-mentorship-hero.jpg"
-      },
-      "requirements": [
-        "Basic JavaScript and web development knowledge",
-        "Commitment to learning and building consistently",
-        "A growth mindset and willingness to be challenged"
-      ],
-      "outcomes": [
-        "Gain real-world experience through guided projects",
-        "Understand the architecture of modern full-stack apps",
-        "Learn to think strategically and ship fast with precision"
-      ],
-      "modules": [
-        {
-          "id": 401,
-          "order": 1,
-          "title": "Mindset of a Modern Developer",
-          "durationWeeks": 1,
-          "learn": [
-            "Principles of mastery and focus",
-            "Mental models for deep learning",
-            "How to think like an engineer"
-          ],
-          "lessons": [
-            {
-              "id": 4011,
-              "title": "Deep Work & Focus",
-              "type": "video",
-              "durationMin": 10
-            },
-            {
-              "id": 4012,
-              "title": "Systems Thinking for Developers",
-              "type": "article",
-              "durationMin": 8
-            }
-          ]
-        },
-        {
-          "id": 402,
-          "order": 2,
-          "title": "Building Real Projects",
-          "durationWeeks": 5,
-          "learn": [
-            "MERN stack mastery",
-            "Practical GitHub workflow",
-            "Testing, CI/CD, and deployment"
-          ],
-          "lessons": [
-            {
-              "id": 4021,
-              "title": "MERN Stack Deep Dive",
-              "type": "video",
-              "durationMin": 20
-            },
-            {
-              "id": 4022,
-              "title": "Build & Deploy Your App",
-              "type": "project",
-              "durationMin": 60
-            }
-          ]
-        },
-        {
-          "id": 403,
-          "order": 3,
-          "title": "Career Systems & Strategy",
-          "durationWeeks": 2,
-          "learn": [
-            "Portfolio positioning",
-            "Personal branding for engineers",
-            "Automation and leverage"
-          ],
-          "lessons": [
-            {
-              "id": 4031,
-              "title": "Portfolio Strategy",
-              "type": "lab",
-              "durationMin": 25
-            },
-            {
-              "id": 4032,
-              "title": "Building a Developer OS",
-              "type": "reading",
-              "durationMin": 15
-            }
-          ]
-        }
-      ],
-      "links": {
-        "enroll": "/enroll/devkofi-mentorship",
-        "syllabus": "/syllabus/devkofi-mentorship",
-        "landing": "/courses/devkofi-mentorship"
       }
     }
   ]
