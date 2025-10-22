@@ -227,6 +227,120 @@
       }
     },
     {
+      "id": 5,
+      "name": "Beginner Web Dev: HTML, CSS & JavaScript",
+      "title": "Beginner Web Dev: HTML, CSS & JavaScript",
+      "tagline": "Start from zero and build responsive, interactive websites.",
+      "category": "Web Development",
+      "level": "Beginner",
+      "durationWeeks": 8,
+      "status": "Active",
+      "price": { "amount": 299, "currency": "GBP" },
+      "instructor": {
+        "name": "Kofi Mensah",
+        "title": "Full Stack Developer",
+        "bio": "Passionate about blending creativity with code, helping learners master modern web technologies."
+      },
+      "tags": ["HTML", "CSS", "JavaScript", "Frontend", "Beginner"],
+      "media": {
+        "thumbnailUrl": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1469",
+        "heroUrl": "/images/courses/beginner-web-dev-hero.jpg"
+      },
+      "requirements": [
+        "No prior coding experience required",
+        "A computer with internet access",
+        "Willingness to practice consistently"
+      ],
+      "outcomes": [
+        "Build semantic HTML pages",
+        "Style responsive layouts with CSS",
+        "Add interactivity with modern JavaScript",
+        "Deploy a live portfolio site"
+      ],
+      "modules": [
+        {
+          "id": 501,
+          "order": 1,
+          "title": "HTML Foundations",
+          "durationWeeks": 2,
+          "learn": [
+            "Semantic elements",
+            "Forms and accessibility basics",
+            "Project structure"
+          ],
+          "lessons": [
+            {
+              "id": 5011,
+              "title": "Semantic HTML & Structure",
+              "type": "video",
+              "durationMin": 14
+            },
+            {
+              "id": 5012,
+              "title": "Build a Portfolio Homepage",
+              "type": "project",
+              "durationMin": 40
+            }
+          ]
+        },
+        {
+          "id": 502,
+          "order": 2,
+          "title": "CSS Essentials",
+          "durationWeeks": 3,
+          "learn": [
+            "Flexbox & Grid",
+            "Responsive design",
+            "Reusable utility classes"
+          ],
+          "lessons": [
+            {
+              "id": 5021,
+              "title": "Flexbox & Grid Crash Course",
+              "type": "video",
+              "durationMin": 18
+            },
+            {
+              "id": 5022,
+              "title": "Responsive Landing Page",
+              "type": "lab",
+              "durationMin": 45
+            }
+          ]
+        },
+        {
+          "id": 503,
+          "order": 3,
+          "title": "JavaScript Basics",
+          "durationWeeks": 3,
+          "learn": [
+            "Variables, functions, and events",
+            "DOM manipulation",
+            "Fetching data"
+          ],
+          "lessons": [
+            {
+              "id": 5031,
+              "title": "Modern JS Fundamentals",
+              "type": "video",
+              "durationMin": 16
+            },
+            {
+              "id": 5032,
+              "title": "Interactive Todo App",
+              "type": "project",
+              "durationMin": 50
+            }
+          ]
+        }
+      ],
+      "links": {
+        "enroll": "/enroll/beginner-web-dev",
+        "syllabus": "/syllabus/beginner-web-dev",
+        "landing": "/courses/beginner-web-dev"
+      }
+    },
+    {
       "id": 2,
       "name": "Vibe Coding",
       "title": "Vibe Coding",
