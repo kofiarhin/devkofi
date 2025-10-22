@@ -1,0 +1,170 @@
+#courses {
+  /* ---------------- Base Layout ---------------- */
+  padding-top: 3rem;
+  .grid {
+    display: grid;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  /* ---------------- Card ---------------- */
+  .card {
+    display: grid;
+    background: #0c0c0c;
+    border: 1px solid #191919;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, background 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      background: #101010;
+    }
+  }
+
+  /* ---------------- Media ---------------- */
+  .media {
+    display: block;
+    line-height: 0;
+  }
+
+  .thumb {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    background: #111;
+  }
+
+  /* ---------------- Body ---------------- */
+  .body {
+    display: grid;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  /* ---------------- Header ---------------- */
+  .header {
+    display: grid;
+    gap: 6px;
+  }
+
+  .title {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.25;
+    font-weight: 600;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #f1f1f1;
+      }
+    }
+  }
+
+  .tagline {
+    margin: 0;
+    font-size: 14px;
+    color: #a3a3a3;
+  }
+
+  /* ---------------- Meta ---------------- */
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #141414;
+    border: 1px solid #232323;
+    color: #e6e6e6;
+  }
+
+  /* ---------------- Tags ---------------- */
+  .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 999px;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    color: #d9d9d9;
+  }
+
+  /* ---------------- Actions ---------------- */
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .cta,
+  .ghost {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: transform 120ms ease, background 0.2s ease;
+  }
+
+  .cta {
+    background: #111;
+    color: #fff;
+    border: 1px solid #222;
+
+    &:hover {
+      background: #181818;
+      transform: translateY(-1px);
+    }
+  }
+
+  .ghost {
+    background: transparent;
+    color: #e0e0e0;
+    border: 1px solid #2a2a2a;
+
+    &:hover {
+      transform: translateY(-1px);
+      background: #151515;
+    }
+  }
+
+  /* ---------------- Responsive ---------------- */
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .thumb {
+      height: 200px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .thumb {
+      height: 220px;
+    }
+  }
+}

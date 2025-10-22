@@ -1,0 +1,339 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "name": "AI Powered Engineer",
+      "title": "AI Powered Engineer",
+      "tagline": "Master the skills to build intelligent applications and autonomous systems.",
+      "category": "Artificial Intelligence",
+      "level": "Advanced",
+      "durationWeeks": 12,
+      "status": "Active",
+      "price": { "amount": 599, "currency": "GBP" },
+      "instructor": {
+        "name": "Kofi Mensah",
+        "title": "Lead AI Engineer",
+        "bio": "AI developer and mentor with 10+ years of experience building full-stack intelligent systems."
+      },
+      "tags": ["AI", "Full Stack", "Machine Learning", "Automation"],
+      "media": {
+        "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761110513/devkofi/gkroqatehjq9fwxxf8jj.jpg",
+        "heroUrl": "/images/courses/ai-powered-engineer-hero.jpg"
+      },
+      "requirements": [
+        "Basic understanding of JavaScript and Node.js",
+        "Familiarity with APIs and web development",
+        "Interest in AI and automation tools"
+      ],
+      "outcomes": [
+        "Build and deploy AI-driven applications",
+        "Integrate large language models into real projects",
+        "Develop full-stack intelligent systems using modern frameworks"
+      ],
+      "modules": [
+        {
+          "id": 101,
+          "order": 1,
+          "title": "Introduction to AI Engineering",
+          "durationWeeks": 1,
+          "learn": [
+            "Understanding the AI landscape",
+            "Core concepts of artificial intelligence",
+            "The mindset of an AI engineer"
+          ],
+          "lessons": [
+            {
+              "id": 1011,
+              "title": "What is AI?",
+              "type": "video",
+              "durationMin": 12
+            },
+            {
+              "id": 1012,
+              "title": "AI in Real Life",
+              "type": "article",
+              "durationMin": 8
+            }
+          ]
+        },
+        {
+          "id": 102,
+          "order": 2,
+          "title": "Building AI Agents",
+          "durationWeeks": 3,
+          "learn": [
+            "Designing intelligent agents",
+            "Integrating APIs with LLMs",
+            "Building conversational systems"
+          ],
+          "lessons": [
+            {
+              "id": 1021,
+              "title": "Intro to Agents",
+              "type": "video",
+              "durationMin": 15
+            },
+            {
+              "id": 1022,
+              "title": "Connecting APIs",
+              "type": "lab",
+              "durationMin": 25
+            }
+          ]
+        },
+        {
+          "id": 103,
+          "order": 3,
+          "title": "Automation and Deployment",
+          "durationWeeks": 2,
+          "learn": [
+            "Creating automation pipelines",
+            "Deploying AI systems to the cloud",
+            "Monitoring and optimizing performance"
+          ],
+          "lessons": [
+            {
+              "id": 1031,
+              "title": "Deploying to Render",
+              "type": "video",
+              "durationMin": 18
+            },
+            {
+              "id": 1032,
+              "title": "Monitoring Metrics",
+              "type": "reading",
+              "durationMin": 10
+            }
+          ]
+        }
+      ],
+      "links": {
+        "enroll": "/enroll/ai-powered-engineer",
+        "syllabus": "/syllabus/ai-powered-engineer",
+        "landing": "/courses/ai-powered-engineer"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Vibe Coding",
+      "title": "Vibe Coding",
+      "tagline": "Learn modern web development through rhythm, flow, and creativity.",
+      "category": "Web Development",
+      "level": "Intermediate",
+      "durationWeeks": 10,
+      "status": "Active",
+      "price": { "amount": 399, "currency": "GBP" },
+      "instructor": {
+        "name": "Kofi Mensah",
+        "title": "Full Stack Developer",
+        "bio": "Passionate about blending creativity with code, helping learners master modern web technologies."
+      },
+      "tags": ["JavaScript", "React", "Node.js", "Express", "Creativity"],
+      "media": {
+        "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761110658/devkofi/xsiwa0u6vu8ka1pdocte.jpg",
+        "heroUrl": "/images/courses/vibe-coding-hero.jpg"
+      },
+      "requirements": [
+        "Basic knowledge of HTML and CSS",
+        "Willingness to learn JavaScript deeply",
+        "Curiosity and creativity"
+      ],
+      "outcomes": [
+        "Build dynamic websites using React and Node.js",
+        "Understand the creative side of coding",
+        "Develop and deploy real-world projects"
+      ],
+      "modules": [
+        {
+          "id": 201,
+          "order": 1,
+          "title": "The Vibe of JavaScript",
+          "durationWeeks": 2,
+          "learn": [
+            "Core JS concepts",
+            "Modern ES6 syntax",
+            "DOM manipulation"
+          ],
+          "lessons": [
+            {
+              "id": 2011,
+              "title": "Variables & Scope",
+              "type": "video",
+              "durationMin": 10
+            },
+            {
+              "id": 2012,
+              "title": "ES6 Magic",
+              "type": "quiz",
+              "durationMin": 5
+            }
+          ]
+        },
+        {
+          "id": 202,
+          "order": 2,
+          "title": "React Flow",
+          "durationWeeks": 3,
+          "learn": ["Components & props", "Hooks", "State management"],
+          "lessons": [
+            {
+              "id": 2021,
+              "title": "Intro to React",
+              "type": "video",
+              "durationMin": 12
+            },
+            {
+              "id": 2022,
+              "title": "React Hooks Deep Dive",
+              "type": "lab",
+              "durationMin": 30
+            }
+          ]
+        },
+        {
+          "id": 203,
+          "order": 3,
+          "title": "Express Yourself",
+          "durationWeeks": 2,
+          "learn": [
+            "Node.js fundamentals",
+            "Building REST APIs",
+            "Connecting to MongoDB"
+          ],
+          "lessons": [
+            {
+              "id": 2031,
+              "title": "Server Basics",
+              "type": "video",
+              "durationMin": 14
+            },
+            {
+              "id": 2032,
+              "title": "CRUD API",
+              "type": "project",
+              "durationMin": 45
+            }
+          ]
+        }
+      ],
+      "links": {
+        "enroll": "/enroll/vibe-coding",
+        "syllabus": "/syllabus/vibe-coding",
+        "landing": "/courses/vibe-coding"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Code Quest: Adventures in Programming",
+      "title": "Code Quest: Adventures in Programming",
+      "tagline": "An exciting journey that makes coding fun for kids aged 9–13.",
+      "category": "Kids Coding",
+      "level": "Beginner",
+      "durationWeeks": 8,
+      "status": "Active",
+      "price": { "amount": 249, "currency": "GBP" },
+      "instructor": {
+        "name": "Kofi Mensah",
+        "title": "Coding Mentor",
+        "bio": "Dedicated to helping young learners build a foundation in logical thinking and creative problem solving."
+      },
+      "tags": ["Kids", "Coding", "Games", "Logic", "Fun"],
+      "media": {
+        "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761110809/devkofi/xt8lcpd6ea2twj8epmd6.jpg",
+        "heroUrl": "/images/courses/code-quest-hero.jpg"
+      },
+      "requirements": [
+        "No prior coding experience needed",
+        "A laptop or tablet with internet access",
+        "An eagerness to learn and explore"
+      ],
+      "outcomes": [
+        "Understand programming fundamentals",
+        "Build small interactive games",
+        "Develop problem-solving skills"
+      ],
+      "modules": [
+        {
+          "id": 301,
+          "order": 1,
+          "title": "Starting the Quest",
+          "durationWeeks": 1,
+          "learn": [
+            "What is coding?",
+            "How computers think",
+            "Fun with logic and sequences"
+          ],
+          "lessons": [
+            {
+              "id": 3011,
+              "title": "What is a Program?",
+              "type": "video",
+              "durationMin": 8
+            },
+            {
+              "id": 3012,
+              "title": "Logic Games",
+              "type": "activity",
+              "durationMin": 15
+            }
+          ]
+        },
+        {
+          "id": 302,
+          "order": 2,
+          "title": "Adventures in Scratch",
+          "durationWeeks": 3,
+          "learn": [
+            "Creating animations",
+            "Building your first game",
+            "Understanding loops and conditions"
+          ],
+          "lessons": [
+            {
+              "id": 3021,
+              "title": "Create Your First Sprite",
+              "type": "lab",
+              "durationMin": 20
+            },
+            {
+              "id": 3022,
+              "title": "Building a Bouncing Ball Game",
+              "type": "video",
+              "durationMin": 25
+            }
+          ]
+        },
+        {
+          "id": 303,
+          "order": 3,
+          "title": "Level Up with JavaScript",
+          "durationWeeks": 2,
+          "learn": [
+            "Basic syntax",
+            "Interactive challenges",
+            "Mini projects with visuals"
+          ],
+          "lessons": [
+            {
+              "id": 3031,
+              "title": "Intro to JS",
+              "type": "video",
+              "durationMin": 12
+            },
+            {
+              "id": 3032,
+              "title": "Game Logic Challenge",
+              "type": "project",
+              "durationMin": 35
+            }
+          ]
+        }
+      ],
+      "links": {
+        "enroll": "/enroll/code-quest",
+        "syllabus": "/syllabus/code-quest",
+        "landing": "/courses/code-quest"
+      }
+    }
+  ]
+}

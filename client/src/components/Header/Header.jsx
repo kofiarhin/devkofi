@@ -49,7 +49,7 @@ const Header = () => {
           <nav>
             <Link to="/">Home</Link>
             <Link to="/blog">Blog</Link>
-            <Link to="/course-outline">Course Outline</Link>
+            <Link to="/courses">Courses</Link>
             <Link to="/projects">Projects</Link>
             <Link to="/chat">Chat</Link>
             <Link to="about-me">About</Link>
