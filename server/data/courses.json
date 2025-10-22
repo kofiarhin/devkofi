@@ -42,18 +42,8 @@
             "How to think like an engineer"
           ],
           "lessons": [
-            {
-              "id": 4011,
-              "title": "Deep Work & Focus",
-              "type": "video",
-              "durationMin": 10
-            },
-            {
-              "id": 4012,
-              "title": "Systems Thinking for Developers",
-              "type": "article",
-              "durationMin": 8
-            }
+            { "id": 4011, "title": "Deep Work & Focus", "type": "video", "durationMin": 10 },
+            { "id": 4012, "title": "Systems Thinking for Developers", "type": "article", "durationMin": 8 }
           ]
         },
         {
@@ -61,24 +51,10 @@
           "order": 2,
           "title": "Building Real Projects",
           "durationWeeks": 5,
-          "learn": [
-            "MERN stack mastery",
-            "Practical GitHub workflow",
-            "Testing, CI/CD, and deployment"
-          ],
+          "learn": ["MERN stack mastery", "Practical GitHub workflow", "Testing, CI/CD, and deployment"],
           "lessons": [
-            {
-              "id": 4021,
-              "title": "MERN Stack Deep Dive",
-              "type": "video",
-              "durationMin": 20
-            },
-            {
-              "id": 4022,
-              "title": "Build & Deploy Your App",
-              "type": "project",
-              "durationMin": 60
-            }
+            { "id": 4021, "title": "MERN Stack Deep Dive", "type": "video", "durationMin": 20 },
+            { "id": 4022, "title": "Build & Deploy Your App", "type": "project", "durationMin": 60 }
           ]
         },
         {
@@ -86,24 +62,10 @@
           "order": 3,
           "title": "Career Systems & Strategy",
           "durationWeeks": 2,
-          "learn": [
-            "Portfolio positioning",
-            "Personal branding for engineers",
-            "Automation and leverage"
-          ],
+          "learn": ["Portfolio positioning", "Personal branding for engineers", "Automation and leverage"],
           "lessons": [
-            {
-              "id": 4031,
-              "title": "Portfolio Strategy",
-              "type": "lab",
-              "durationMin": 25
-            },
-            {
-              "id": 4032,
-              "title": "Building a Developer OS",
-              "type": "reading",
-              "durationMin": 15
-            }
+            { "id": 4031, "title": "Portfolio Strategy", "type": "lab", "durationMin": 25 },
+            { "id": 4032, "title": "Building a Developer OS", "type": "reading", "durationMin": 15 }
           ]
         }
       ],
@@ -155,18 +117,8 @@
             "The mindset of an AI engineer"
           ],
           "lessons": [
-            {
-              "id": 1011,
-              "title": "What is AI?",
-              "type": "video",
-              "durationMin": 12
-            },
-            {
-              "id": 1012,
-              "title": "AI in Real Life",
-              "type": "article",
-              "durationMin": 8
-            }
+            { "id": 1011, "title": "What is AI?", "type": "video", "durationMin": 12 },
+            { "id": 1012, "title": "AI in Real Life", "type": "article", "durationMin": 8 }
           ]
         },
         {
@@ -174,24 +126,10 @@
           "order": 2,
           "title": "Building AI Agents",
           "durationWeeks": 3,
-          "learn": [
-            "Designing intelligent agents",
-            "Integrating APIs with LLMs",
-            "Building conversational systems"
-          ],
+          "learn": ["Designing intelligent agents", "Integrating APIs with LLMs", "Building conversational systems"],
           "lessons": [
-            {
-              "id": 1021,
-              "title": "Intro to Agents",
-              "type": "video",
-              "durationMin": 15
-            },
-            {
-              "id": 1022,
-              "title": "Connecting APIs",
-              "type": "lab",
-              "durationMin": 25
-            }
+            { "id": 1021, "title": "Intro to Agents", "type": "video", "durationMin": 15 },
+            { "id": 1022, "title": "Connecting APIs", "type": "lab", "durationMin": 25 }
           ]
         },
         {
@@ -199,24 +137,10 @@
           "order": 3,
           "title": "Automation and Deployment",
           "durationWeeks": 2,
-          "learn": [
-            "Creating automation pipelines",
-            "Deploying AI systems to the cloud",
-            "Monitoring and optimizing performance"
-          ],
+          "learn": ["Creating automation pipelines", "Deploying AI systems to the cloud", "Monitoring and optimizing performance"],
           "lessons": [
-            {
-              "id": 1031,
-              "title": "Deploying to Render",
-              "type": "video",
-              "durationMin": 18
-            },
-            {
-              "id": 1032,
-              "title": "Monitoring Metrics",
-              "type": "reading",
-              "durationMin": 10
-            }
+            { "id": 1031, "title": "Deploying to Render", "type": "video", "durationMin": 18 },
+            { "id": 1032, "title": "Monitoring Metrics", "type": "reading", "durationMin": 10 }
           ]
         }
       ],
@@ -263,24 +187,10 @@
           "order": 1,
           "title": "HTML Foundations",
           "durationWeeks": 2,
-          "learn": [
-            "Semantic elements",
-            "Forms and accessibility basics",
-            "Project structure"
-          ],
+          "learn": ["Semantic elements", "Forms and accessibility basics", "Project structure"],
           "lessons": [
-            {
-              "id": 5011,
-              "title": "Semantic HTML & Structure",
-              "type": "video",
-              "durationMin": 14
-            },
-            {
-              "id": 5012,
-              "title": "Build a Portfolio Homepage",
-              "type": "project",
-              "durationMin": 40
-            }
+            { "id": 5011, "title": "Semantic HTML & Structure", "type": "video", "durationMin": 14 },
+            { "id": 5012, "title": "Build a Portfolio Homepage", "type": "project", "durationMin": 40 }
           ]
         },
         {
@@ -288,24 +198,10 @@
           "order": 2,
           "title": "CSS Essentials",
           "durationWeeks": 3,
-          "learn": [
-            "Flexbox & Grid",
-            "Responsive design",
-            "Reusable utility classes"
-          ],
+          "learn": ["Flexbox & Grid", "Responsive design", "Reusable utility classes"],
           "lessons": [
-            {
-              "id": 5021,
-              "title": "Flexbox & Grid Crash Course",
-              "type": "video",
-              "durationMin": 18
-            },
-            {
-              "id": 5022,
-              "title": "Responsive Landing Page",
-              "type": "lab",
-              "durationMin": 45
-            }
+            { "id": 5021, "title": "Flexbox & Grid Crash Course", "type": "video", "durationMin": 18 },
+            { "id": 5022, "title": "Responsive Landing Page", "type": "lab", "durationMin": 45 }
           ]
         },
         {
@@ -313,24 +209,10 @@
           "order": 3,
           "title": "JavaScript Basics",
           "durationWeeks": 3,
-          "learn": [
-            "Variables, functions, and events",
-            "DOM manipulation",
-            "Fetching data"
-          ],
+          "learn": ["Variables, functions, and events", "DOM manipulation", "Fetching data"],
           "lessons": [
-            {
-              "id": 5031,
-              "title": "Modern JS Fundamentals",
-              "type": "video",
-              "durationMin": 16
-            },
-            {
-              "id": 5032,
-              "title": "Interactive Todo App",
-              "type": "project",
-              "durationMin": 50
-            }
+            { "id": 5031, "title": "Modern JS Fundamentals", "type": "video", "durationMin": 16 },
+            { "id": 5032, "title": "Interactive Todo App", "type": "project", "durationMin": 50 }
           ]
         }
       ],
@@ -341,225 +223,90 @@
       }
     },
     {
-      "id": 2,
-      "name": "Vibe Coding",
-      "title": "Vibe Coding",
-      "tagline": "Learn modern web development through rhythm, flow, and creativity.",
-      "category": "Web Development",
-      "level": "Intermediate",
-      "durationWeeks": 10,
-      "status": "Active",
-      "price": { "amount": 399, "currency": "GBP" },
-      "instructor": {
-        "name": "Kofi Mensah",
-        "title": "Full Stack Developer",
-        "bio": "Passionate about blending creativity with code, helping learners master modern web technologies."
-      },
-      "tags": ["JavaScript", "React", "Node.js", "Express", "Creativity"],
-      "media": {
-        "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761110658/devkofi/xsiwa0u6vu8ka1pdocte.jpg",
-        "heroUrl": "/images/courses/vibe-coding-hero.jpg"
-      },
-      "requirements": [
-        "Basic knowledge of HTML and CSS",
-        "Willingness to learn JavaScript deeply",
-        "Curiosity and creativity"
-      ],
-      "outcomes": [
-        "Build dynamic websites using React and Node.js",
-        "Understand the creative side of coding",
-        "Develop and deploy real-world projects"
-      ],
-      "modules": [
-        {
-          "id": 201,
-          "order": 1,
-          "title": "The Vibe of JavaScript",
-          "durationWeeks": 2,
-          "learn": [
-            "Core JS concepts",
-            "Modern ES6 syntax",
-            "DOM manipulation"
-          ],
-          "lessons": [
-            {
-              "id": 2011,
-              "title": "Variables & Scope",
-              "type": "video",
-              "durationMin": 10
-            },
-            {
-              "id": 2012,
-              "title": "ES6 Magic",
-              "type": "quiz",
-              "durationMin": 5
-            }
-          ]
-        },
-        {
-          "id": 202,
-          "order": 2,
-          "title": "React Flow",
-          "durationWeeks": 3,
-          "learn": ["Components & props", "Hooks", "State management"],
-          "lessons": [
-            {
-              "id": 2021,
-              "title": "Intro to React",
-              "type": "video",
-              "durationMin": 12
-            },
-            {
-              "id": 2022,
-              "title": "React Hooks Deep Dive",
-              "type": "lab",
-              "durationMin": 30
-            }
-          ]
-        },
-        {
-          "id": 203,
-          "order": 3,
-          "title": "Express Yourself",
-          "durationWeeks": 2,
-          "learn": [
-            "Node.js fundamentals",
-            "Building REST APIs",
-            "Connecting to MongoDB"
-          ],
-          "lessons": [
-            {
-              "id": 2031,
-              "title": "Server Basics",
-              "type": "video",
-              "durationMin": 14
-            },
-            {
-              "id": 2032,
-              "title": "CRUD API",
-              "type": "project",
-              "durationMin": 45
-            }
-          ]
-        }
-      ],
-      "links": {
-        "enroll": "/enroll/vibe-coding",
-        "syllabus": "/syllabus/vibe-coding",
-        "landing": "/courses/vibe-coding"
-      }
-    },
-    {
-      "id": 3,
-      "name": "Code Quest: Adventures in Programming",
-      "title": "Code Quest: Adventures in Programming",
-      "tagline": "An exciting journey that makes coding fun for kids aged 9–13.",
-      "category": "Kids Coding",
-      "level": "Beginner",
+      "id": 6,
+      "name": "Automation Engineering with Node.js",
+      "title": "Automation Engineering with Node.js",
+      "tagline": "Automate workflows, APIs, and systems to scale your productivity.",
+      "category": "Backend / DevOps",
+      "level": "Advanced",
       "durationWeeks": 8,
       "status": "Active",
-      "price": { "amount": 249, "currency": "GBP" },
+      "price": { "amount": 499, "currency": "GBP" },
       "instructor": {
         "name": "Kofi Mensah",
-        "title": "Coding Mentor",
-        "bio": "Dedicated to helping young learners build a foundation in logical thinking and creative problem solving."
+        "title": "Backend & Automation Engineer",
+        "bio": "Full-stack engineer specializing in building automated systems, APIs, and deployment pipelines."
       },
-      "tags": ["Kids", "Coding", "Games", "Logic", "Fun"],
+      "tags": ["Node.js", "Automation", "APIs", "Scraping", "DevOps"],
       "media": {
-        "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761110809/devkofi/xt8lcpd6ea2twj8epmd6.jpg",
-        "heroUrl": "/images/courses/code-quest-hero.jpg"
+        "thumbnailUrl": "https://images.unsplash.com/photo-1649451844931-57e22fc82de3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870",
+        "heroUrl": "/images/courses/automation-engineering-nodejs-hero.jpg"
       },
       "requirements": [
-        "No prior coding experience needed",
-        "A laptop or tablet with internet access",
-        "An eagerness to learn and explore"
+        "Solid understanding of JavaScript and Node.js",
+        "Basic familiarity with REST APIs and CLI tools",
+        "Comfortable with Git and GitHub"
       ],
       "outcomes": [
-        "Understand programming fundamentals",
-        "Build small interactive games",
-        "Develop problem-solving skills"
+        "Design reliable cron jobs and scheduled tasks",
+        "Automate APIs and integrate third-party services",
+        "Build scraping pipelines with robust error handling",
+        "Deploy and monitor bots in production"
       ],
       "modules": [
         {
-          "id": 301,
+          "id": 601,
           "order": 1,
-          "title": "Starting the Quest",
-          "durationWeeks": 1,
-          "learn": [
-            "What is coding?",
-            "How computers think",
-            "Fun with logic and sequences"
-          ],
-          "lessons": [
-            {
-              "id": 3011,
-              "title": "What is a Program?",
-              "type": "video",
-              "durationMin": 8
-            },
-            {
-              "id": 3012,
-              "title": "Logic Games",
-              "type": "activity",
-              "durationMin": 15
-            }
-          ]
-        },
-        {
-          "id": 302,
-          "order": 2,
-          "title": "Adventures in Scratch",
-          "durationWeeks": 3,
-          "learn": [
-            "Creating animations",
-            "Building your first game",
-            "Understanding loops and conditions"
-          ],
-          "lessons": [
-            {
-              "id": 3021,
-              "title": "Create Your First Sprite",
-              "type": "lab",
-              "durationMin": 20
-            },
-            {
-              "id": 3022,
-              "title": "Building a Bouncing Ball Game",
-              "type": "video",
-              "durationMin": 25
-            }
-          ]
-        },
-        {
-          "id": 303,
-          "order": 3,
-          "title": "Level Up with JavaScript",
+          "title": "Cron Jobs & Scheduling",
           "durationWeeks": 2,
           "learn": [
-            "Basic syntax",
-            "Interactive challenges",
-            "Mini projects with visuals"
+            "node-cron and system schedulers",
+            "Retries, idempotency, and alerts",
+            "Heroku/Render scheduling strategies"
           ],
           "lessons": [
-            {
-              "id": 3031,
-              "title": "Intro to JS",
-              "type": "video",
-              "durationMin": 12
-            },
-            {
-              "id": 3032,
-              "title": "Game Logic Challenge",
-              "type": "project",
-              "durationMin": 35
-            }
+            { "id": 6011, "title": "Scheduling Fundamentals", "type": "video", "durationMin": 15 },
+            { "id": 6012, "title": "Build a Price Tracker Cron", "type": "lab", "durationMin": 40 }
+          ]
+        },
+        {
+          "id": 602,
+          "order": 2,
+          "title": "API Automation",
+          "durationWeeks": 2,
+          "learn": ["REST & webhook orchestration", "Rate limits and backoff", "Secrets & environment management"],
+          "lessons": [
+            { "id": 6021, "title": "Service Orchestration with Express", "type": "video", "durationMin": 18 },
+            { "id": 6022, "title": "Automated Report Generator", "type": "project", "durationMin": 50 }
+          ]
+        },
+        {
+          "id": 603,
+          "order": 3,
+          "title": "Web Scraping & Data Pipelines",
+          "durationWeeks": 2,
+          "learn": ["Puppeteer/Cheerio techniques", "Queueing with BullMQ", "Persisting data to MongoDB"],
+          "lessons": [
+            { "id": 6031, "title": "Ethical Scraping & Anti-bot Basics", "type": "reading", "durationMin": 12 },
+            { "id": 6032, "title": "Build a Scrape → Queue → Store Flow", "type": "lab", "durationMin": 55 }
+          ]
+        },
+        {
+          "id": 604,
+          "order": 4,
+          "title": "Deploying Automated Bots",
+          "durationWeeks": 2,
+          "learn": ["Procfiles, workers, and scaling", "Health checks & logging", "Monitoring and incident response"],
+          "lessons": [
+            { "id": 6041, "title": "Render/Heroku Worker Deploys", "type": "video", "durationMin": 16 },
+            { "id": 6042, "title": "Production Bot with Alerts", "type": "project", "durationMin": 60 }
           ]
         }
       ],
       "links": {
-        "enroll": "/enroll/code-quest",
-        "syllabus": "/syllabus/code-quest",
-        "landing": "/courses/code-quest"
+        "enroll": "/enroll/automation-engineering-nodejs",
+        "syllabus": "/syllabus/automation-engineering-nodejs",
+        "landing": "/courses/automation-engineering-nodejs"
       }
     }
   ]
