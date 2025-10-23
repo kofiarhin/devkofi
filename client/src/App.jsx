@@ -7,9 +7,9 @@ import {
 } from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import Templates from "./Pages/Templates/Templates";
-import Header from "./components/Header/Header";
+import PrimaryHeader from "./components/PrimaryHeader.jsx";
 import Contact from "./Pages/contact/contact";
-import Footer from "./components/Footer/Footer";
+import PrimaryFooter from "./components/PrimaryFooter.jsx";
 import Success from "./Pages/Success/Success";
 import Error from "./Pages/Error/Error";
 import Playground from "./Pages/Playground/Playground";
@@ -30,6 +30,8 @@ import TermsPage from "./Pages/TermsPage/TermsPage";
 import Privacy from "./Pages/Privacy/Privacy";
 import Projects from "./Pages/Projects/Projects";
 import Courses from "./Pages/Courses/Courses";
+import Onboarding from "./Pages/Onboarding/Onboarding";
+import FeedbackWidget from "./components/FeedbackWidget.jsx";
 const AppContent = () => {
   const location = useLocation();
 
@@ -53,9 +55,13 @@ const AppContent = () => {
 
   return (
     <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
+      <PrimaryHeader />
+      <main id="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/success" element={<Success />} />
         <Route path="/error" element={<Error />} />
@@ -70,6 +76,7 @@ const AppContent = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/onboarding" element={<Onboarding />} />
 
         <Route path="/privacy" element={<Privacy />} />
         {/* private routes */}
@@ -79,10 +86,10 @@ const AppContent = () => {
           <Route path="/users" element={<Users />} />
           <Route path="/messages" element={<Messages />} />
         </Route>
-      </Routes>
-
-      {/* Hide footer on /chat */}
-      {location.pathname !== "/chat" && <Footer />}
+        </Routes>
+      </main>
+      {location.pathname !== "/chat" ? <PrimaryFooter /> : null}
+      <FeedbackWidget />
     </>
   );
 };

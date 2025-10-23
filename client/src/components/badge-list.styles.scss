@@ -1,0 +1,41 @@
+@import '../styles/tokens.scss';
+
+.badge-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-md);
+}
+
+.badge-list-item {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: var(--space-sm);
+  align-items: center;
+  padding: var(--space-sm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.badge-icon {
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: rgba(76, 175, 80, 0.12);
+  color: var(--accent);
+}
+
+.badge-title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.badge-description {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--small);
+}

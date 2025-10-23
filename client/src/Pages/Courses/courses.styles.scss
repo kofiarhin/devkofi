@@ -1,0 +1,68 @@
+@import '../../styles/tokens.scss';
+
+.courses {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxl);
+  padding: var(--space-xl) 0 var(--space-xxl);
+}
+
+.courses-progress {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.courses-progress-header {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.courses-progress-title {
+  margin: 0;
+}
+
+.courses-progress-subtitle {
+  margin: 0;
+  color: var(--muted);
+}
+
+.courses-progress-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.courses-badges {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.courses-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.courses-card {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.courses-card-title {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .courses-progress-actions {
+    flex-direction: row;
+  }
+
+  .courses-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .courses-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

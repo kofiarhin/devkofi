@@ -18,4 +18,11 @@ export default defineConfig({
     port: 4173,
     strictPort: true,
   },
+  test: {
+    environment: "jsdom",
+    setupFiles: "./vitest.setup.js",
+    coverage: {
+      provider: "v8",
+    },
+  },
 });

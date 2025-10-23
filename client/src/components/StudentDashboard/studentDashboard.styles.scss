@@ -1,35 +1,59 @@
-#student-dashboard {
-  min-height: 100vh;
-  padding-top: 2rem;
-  max-width: 80%;
-  margin: 0 auto;
-  p {
-    margin: 0;
-    padding: 0;
-  }
-  .dashboard-wrapper {
-    margin: 0 auto;
-    .dashboard-unit {
-      margin-bottom: 2rem;
-      text-align: center;
-      h3 {
-        margin-bottom: 1rem;
-        font-size: 1.4rem;
-      }
-      .icon {
-        font-size: 4rem;
-        fill: var(--primary-color);
-      }
-    }
-  }
+@import '../../styles/tokens.scss';
+
+.student-dashboard {
+  display: grid;
+  gap: var(--space-xl);
+  padding: var(--space-xl) 0;
 }
 
-@media (min-width: 800px) {
-  #student-dashboard {
-    .dashboard-wrapper {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
+.student-dashboard-header {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.student-dashboard-title {
+  margin: 0;
+}
+
+.student-dashboard-subtitle {
+  color: var(--muted);
+  max-width: 65ch;
+}
+
+.student-dashboard-progress {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.student-dashboard-progress-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.student-dashboard-progress-title {
+  margin: 0;
+}
+
+.student-dashboard-progress-copy {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--small);
+}
+
+.student-dashboard-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.student-dashboard-badges {
+  display: grid;
+  gap: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .student-dashboard-actions {
+    flex-direction: row;
   }
 }

@@ -1,0 +1,39 @@
+@import '../styles/tokens.scss';
+
+.progress-steps {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.progress-steps-track {
+  width: 100%;
+  height: 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.progress-steps-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 8px;
+  border-radius: var(--radius-sm);
+  width: var(--progress-value);
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.progress-steps-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--small);
+  color: var(--muted);
+}
+
+.progress-steps-percent {
+  font-weight: 600;
+  color: var(--text);
+}
