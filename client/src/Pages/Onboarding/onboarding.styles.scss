@@ -1,0 +1,83 @@
+@import '../../styles/tokens.scss';
+
+.onboarding {
+  padding: var(--space-xl) 0 var(--space-xxl);
+}
+
+.onboarding-inner {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.onboarding-form {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.onboarding-grid {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.onboarding-field {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.onboarding-label {
+  font-size: var(--small);
+  color: var(--muted);
+}
+
+.onboarding-field input,
+.onboarding-field textarea,
+.onboarding-field select {
+  width: 100%;
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  padding: var(--space-sm);
+  font-size: var(--body);
+}
+
+.onboarding-field input:focus {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.onboarding-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.onboarding-summary {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.onboarding-summary-item {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-md);
+}
+
+.onboarding-summary-label {
+  font-size: var(--small);
+  color: var(--muted);
+}
+
+.onboarding-summary-value {
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .onboarding-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

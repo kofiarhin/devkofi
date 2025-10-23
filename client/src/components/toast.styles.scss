@@ -1,0 +1,26 @@
+@import '../styles/tokens.scss';
+
+.toast {
+  position: fixed;
+  bottom: var(--space-lg);
+  right: var(--space-lg);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  min-width: 220px;
+}
+
+.toast--success {
+  border-color: var(--accent);
+}
+
+.toast--error {
+  border-color: var(--danger);
+}
+
+.toast--info {
+  border-color: var(--primary);
+}

@@ -1,42 +1,30 @@
-import { screen } from "@testing-library/react";
-import Home from "../Pages/Home/Home";
-import { renderWithProviders } from "../tests/utils/renderWithProviders";
-import { pricingData } from "../components/Pricing/pricingData";
+import { screen } from '@testing-library/react';
+import Home from '../Pages/Home/Home';
+import { renderWithProviders } from '../tests/utils/renderWithProviders';
 
-describe("Home page", () => {
-  it("renders landing hero copy from the data source", () => {
+describe('Home page', () => {
+  it('renders the hero with CTAs and trust indicators', () => {
     renderWithProviders(<Home />);
 
-    expect(
-      screen.getByRole("link", { name: /get started!/i })
-    ).toBeInTheDocument();
-    expect(screen.getByAltText(/profile/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /mentorship that ships real products/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /start devkofi onboarding/i })).toHaveAttribute('href', '/onboarding?step=1');
+    expect(screen.getByRole('link', { name: /browse devkofi courses/i })).toHaveAttribute('href', '/courses');
+    expect(screen.getByText(/2,400\+ builders/i)).toBeInTheDocument();
   });
 
-  it("displays every pricing tier with its call to action", () => {
+  it('lists key outcomes in the feature grid', () => {
     renderWithProviders(<Home />);
 
-    for (const plan of pricingData) {
-      expect(screen.getByRole("heading", { name: plan.title })).toBeInTheDocument();
-    }
-
-    expect(
-      screen.getByRole("heading", {
-        name: /get free developer tips & tools every week/i,
-      })
-    ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /subscribe/i })).toBeEnabled();
+    expect(screen.getByText(/Production launch playbooks/i)).toBeInTheDocument();
+    expect(screen.getByText(/1:1 mentorship/i)).toBeInTheDocument();
+    expect(screen.getByText(/Progress analytics dashboard/i)).toBeInTheDocument();
   });
 
-  it("encourages visitors to join the mentorship program", () => {
+  it('offers a follow-up call to action section', () => {
     renderWithProviders(<Home />);
 
-    expect(
-      screen.getByRole("heading", { name: /write, test, deploy/i })
-    ).toBeInTheDocument();
-
-    const joinLinks = screen.getAllByRole("link", { name: /join/i });
-    expect(joinLinks.length).toBeGreaterThan(0);
-    expect(joinLinks[0]).toHaveAttribute("href", "/register");
+    expect(screen.getByRole('heading', { name: /ready to launch/i })).toBeInTheDocument();
+    const onboardingCta = screen.getByRole('link', { name: /start onboarding/i });
+    expect(onboardingCta).toHaveAttribute('href', '/onboarding?step=1');
   });
 });
