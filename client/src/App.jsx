@@ -31,6 +31,7 @@ import Privacy from "./Pages/Privacy/Privacy";
 import Projects from "./Pages/Projects/Projects";
 import Courses from "./Pages/Courses/Courses";
 import Course from "./Pages/Course/Course";
+import Enroll from "./Pages/Enroll/Enroll";
 
 const AppContent = () => {
   const location = useLocation();
@@ -73,6 +74,7 @@ const AppContent = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/enroll/:id" element={<Enroll />} />
 
         <Route path="/privacy" element={<Privacy />} />
         {/* private routes */}
