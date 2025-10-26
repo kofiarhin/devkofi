@@ -30,6 +30,8 @@ import TermsPage from "./Pages/TermsPage/TermsPage";
 import Privacy from "./Pages/Privacy/Privacy";
 import Projects from "./Pages/Projects/Projects";
 import Courses from "./Pages/Courses/Courses";
+import Course from "./Pages/Course/Course";
+
 const AppContent = () => {
   const location = useLocation();
 
@@ -62,6 +64,7 @@ const AppContent = () => {
         <Route path="/playground" element={<Playground />} />
         <Route path="/mentorship" element={<JoinMentorship />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/courses/:id" element={<Course />} />
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />

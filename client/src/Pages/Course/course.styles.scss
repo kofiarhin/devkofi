@@ -1,0 +1,181 @@
+#course {
+  color: #f1f1f1;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: auto;
+
+  .hero {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0a0a0a;
+    margin-bottom: 2rem;
+
+    .hero-img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      filter: brightness(0.6);
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      max-width: 600px;
+
+      .course-title {
+        font-size: 2rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .tagline {
+        color: #ccc;
+        margin-bottom: 1rem;
+      }
+
+      .meta {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 1rem;
+      }
+
+      .badge {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 13px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+
+        .cta,
+        .ghost {
+          padding: 10px 16px;
+          border-radius: 8px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .cta {
+          background: #111;
+          border: 1px solid #222;
+          color: #fff;
+          &:hover {
+            background: #181818;
+            transform: translateY(-1px);
+          }
+        }
+
+        .ghost {
+          border: 1px solid #333;
+          color: #ccc;
+          &:hover {
+            background: #151515;
+            transform: translateY(-1px);
+          }
+        }
+      }
+    }
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    margin: 2rem 0 1rem;
+  }
+
+  .instructor {
+    background: #0c0c0c;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #191919;
+    margin-bottom: 1.5rem;
+
+    .name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .title {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .bio {
+      color: #ccc;
+      margin-top: 8px;
+    }
+  }
+
+  .requirements,
+  .outcomes {
+    background: #0c0c0c;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #191919;
+    margin-bottom: 1.5rem;
+
+    ul {
+      list-style: disc;
+      margin-left: 1.5rem;
+      color: #ccc;
+    }
+  }
+
+  .modules {
+    .module-list {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .module-card {
+      background: #0c0c0c;
+      border: 1px solid #191919;
+      border-radius: 8px;
+      padding: 1rem;
+
+      h3 {
+        margin-bottom: 0.5rem;
+      }
+
+      .duration {
+        color: #aaa;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+
+      ul {
+        list-style: disc;
+        margin-left: 1.5rem;
+      }
+    }
+  }
+
+  .tags {
+    margin-top: 2rem;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    .tag {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 13px;
+      color: #e6e6e6;
+    }
+  }
+
+  .loading,
+  .error {
+    text-align: center;
+    margin-top: 3rem;
+    color: #aaa;
+  }
+}
