@@ -2,12 +2,16 @@
   /* ---------------- Base Layout ---------------- */
   padding-top: 3rem;
   padding-inline: 16px;
-  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip; /* ✅ prevents right cutoff */
 
   .grid {
-    display: block; /* ✅ mobile: stacked layout */
+    display: block; /* ✅ stacked on mobile */
     margin-inline: auto;
     max-width: 1280px;
+    width: 100%; /* ✅ ensures grid fits viewport */
+    box-sizing: border-box;
   }
 
   /* ---------------- Card ---------------- */
@@ -19,6 +23,10 @@
     margin-bottom: 16px;
     transition: transform 0.2s ease, background 0.2s ease;
 
+    display: flex;
+    flex-direction: column; /* ✅ equal height cards */
+    min-height: 100%;
+
     &:hover {
       transform: translateY(-2px);
       background: #101010;
@@ -29,18 +37,22 @@
   .media {
     display: block;
     line-height: 0;
+    aspect-ratio: 16 / 9; /* ✅ consistent height */
+    overflow: hidden;
   }
 
   .thumb {
     width: 100%;
-    height: 180px;
+    height: 100%;
     object-fit: cover;
     background: #111;
+    transform: translateZ(0);
   }
 
   /* ---------------- Body ---------------- */
   .body {
-    display: grid;
+    display: flex;
+    flex-direction: column; /* ✅ keeps layout consistent */
     gap: 12px;
     padding: 16px;
   }
@@ -61,6 +73,10 @@
       color: inherit;
       text-decoration: none;
       transition: color 0.2s ease;
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* ✅ prevent overflow */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
 
       &:hover {
         color: #f1f1f1;
@@ -72,6 +88,10 @@
     margin: 0;
     font-size: 14px;
     color: #a3a3a3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* ✅ clamp long text */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   /* ---------------- Meta ---------------- */
@@ -88,6 +108,9 @@
     background: #141414;
     border: 1px solid #232323;
     color: #e6e6e6;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   /* ---------------- Tags ---------------- */
@@ -107,13 +130,16 @@
     background: #1a1a1a;
     border: 1px solid #2a2a2a;
     color: #d9d9d9;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   /* ---------------- Actions ---------------- */
   .actions {
     display: flex;
     gap: 10px;
-    margin-top: 4px;
+    margin-top: auto; /* ✅ pins buttons to bottom */
   }
 
   .cta,
@@ -125,6 +151,11 @@
     border-radius: 8px;
     text-decoration: none;
     transition: transform 120ms ease, background 0.2s ease;
+    outline: none;
+
+    &:focus-visible {
+      box-shadow: 0 0 0 2px #333, 0 0 0 4px #555;
+    }
   }
 
   .cta {
@@ -152,27 +183,25 @@
   /* ---------------- Responsive ---------------- */
   @media (min-width: 768px) {
     .grid {
-      display: grid; /* switch to grid layout */
-      grid-template-columns: repeat(2, minmax(0, 1fr)); /* ✅ 2fr for medium */
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr)); /* ✅ 2 columns */
       gap: 16px;
     }
 
     .card {
       margin-bottom: 0;
     }
-
-    .thumb {
-      height: 200px;
-    }
   }
 
   @media (min-width: 1024px) {
     .grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr)); /* ✅ 3fr for large */
-    }
-
-    .thumb {
-      height: 220px;
+      grid-template-columns: repeat(3, minmax(0, 1fr)); /* ✅ 3 columns */
     }
   }
+}
+
+/* ---------------- Global Safety ---------------- */
+html,
+body {
+  overflow-x: hidden; /* ✅ final fallback */
 }

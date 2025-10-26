@@ -19,17 +19,6 @@
       "project": "Set up version control for all course projects using Git and GitHub."
     },
     {
-      "module": "HTML & CSS Fundamentals",
-      "duration": "1 month",
-      "content": [
-        "HTML structure and semantic elements",
-        "CSS styling and layout techniques",
-        "Responsive design using media queries",
-        "CSS Flexbox and Grid"
-      ],
-      "project": "Create a responsive single-page website for a local business."
-    },
-    {
       "module": "JavaScript Fundamentals",
       "duration": "1 month",
       "content": [
@@ -114,6 +103,17 @@
         "Managing environment variables and secrets"
       ],
       "project": "Deploy the full-stack application with CI/CD and production-ready configurations."
+    },
+    {
+      "module": "HTML & CSS Fundamentals",
+      "duration": "1 month",
+      "content": [
+        "HTML structure and semantic elements",
+        "CSS styling and layout techniques",
+        "Responsive design using media queries",
+        "CSS Flexbox and Grid"
+      ],
+      "project": "Create a responsive single-page website for a local business."
     }
   ]
 }
