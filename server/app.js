@@ -25,6 +25,7 @@ const askMentorRoutes = require("./routes/askMentorRoutes");
 const chatRoutes = require("./routes/chat.routes");
 const projectRoutes = require("./routes/projectRoutes");
 const courseRoutes = require("./routes/courseRoutes");
+const youtubeRoutes = require("./routes/youtubeRoutes");
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.use("/api/pricing", pricingRoutes);
 app.use("/api/ask-mentor", askMentorRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api/youtube", youtubeRoutes);
 app.use(["/health", "/api/health"], healthRoute);
 
 app.use(notFound);

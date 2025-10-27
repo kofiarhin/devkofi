@@ -10,7 +10,8 @@
     "build": "cd client && npm run build",
     "start": "node server/index.js",
     "test": "jest --watch server",
-    "heroku-postbuild": "cd server && npm install"
+    "heroku-postbuild": "cd server && npm install",
+    "playground": "nodemon playground.js"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -31,6 +32,7 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.1.0",

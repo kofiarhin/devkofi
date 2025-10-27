@@ -32,6 +32,7 @@ import Projects from "./Pages/Projects/Projects";
 import Courses from "./Pages/Courses/Courses";
 import Course from "./Pages/Course/Course";
 import Enroll from "./Pages/Enroll/Enroll";
+import Youtube from "./Pages/Youtube/Youtube";
 
 const AppContent = () => {
   const location = useLocation();
@@ -75,8 +76,9 @@ const AppContent = () => {
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/enroll/:id" element={<Enroll />} />
-
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/youtube" element={<Youtube />} />
+
         {/* private routes */}
         <Route element={<PrivateRoutes />}>
           <Route path="/templates" element={<Templates />} />

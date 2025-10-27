@@ -152,6 +152,10 @@ const createUser = async (userData) => {
   return { ...r };
 };
 
+const fetchYoutubeVideos = async () => {
+  console.log("fetch youtube videos");
+};
+
 module.exports = {
   createUser,
   createNewsletterUser,
@@ -159,4 +163,5 @@ module.exports = {
   generateToken,
   fetchGitHubContributions,
   fetchDailyGitHubContributions,
+  fetchYoutubeVideos,
 };
