@@ -7,20 +7,22 @@ import SideNav from "../SideNav/SideNav";
 import { profileImage } from "../../constants/constants";
 import { logoutUser } from "../../redux/auth/authSlice";
 
-// header
+// header
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const isDevEnvironment = import.meta.env.MODE !== "production";
+
   const handleToggleNav = () => {
     dispatch(toggleNav());
   };
+
   const handleLogout = () => {
     localStorage.removeItem("user");
-
     dispatch(logoutUser());
   };
+
   return (
     <>
       <SideNav />
@@ -48,7 +50,6 @@ const Header = () => {
           </div>
           <nav>
             <Link to="/">Home</Link>
-            <Link to="/blog">Blog</Link>
             <Link to="/courses">Courses</Link>
             <Link to="/projects">Projects</Link>
             <Link to="/chat">Chat</Link>

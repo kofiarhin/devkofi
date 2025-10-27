@@ -6,6 +6,7 @@ const Courses = () => {
 
   return (
     <div>
+      <h1 className="heading center">Course Library</h1>
       {data && data?.courses && data?.courses.length > 0 && (
         <CourseList courses={data?.courses} />
       )}

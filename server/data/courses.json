@@ -11,13 +11,13 @@
       "status": "Active",
       "price": { "amount": 499, "currency": "GBP" },
       "instructor": {
-        "name": "Kofi Mensah",
+        "name": "Kofi Arhin",
         "title": "Founder & Mentor",
         "bio": "Founder of DevKofi, guiding developers to build production-grade apps and think like engineers, not just coders."
       },
       "tags": ["Mentorship", "Career Growth", "Full Stack", "Systems Thinking"],
       "media": {
-        "thumbnailUrl": "https://images.unsplash.com/photo-1632910121591-29e2484c0259?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1031",
+        "thumbnailUrl": "https://images.unsplash.com/photo-1632910121591-29e2484c0259?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1031](https://images.unsplash.com/photo-1632910121591-29e2484c0259?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1031",
         "heroUrl": "/images/courses/devkofi-mentorship-hero.jpg"
       },
       "requirements": [
@@ -124,13 +124,13 @@
       "status": "Active",
       "price": { "amount": 599, "currency": "GBP" },
       "instructor": {
-        "name": "Kofi Mensah",
+        "name": "Kofi Arhin",
         "title": "Lead AI Engineer",
         "bio": "AI developer and mentor with 10+ years of experience building full-stack intelligent systems."
       },
       "tags": ["AI", "Full Stack", "Machine Learning", "Automation"],
       "media": {
-        "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761110513/devkofi/gkroqatehjq9fwxxf8jj.jpg",
+        "thumbnailUrl": "https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870",
         "heroUrl": "/images/courses/ai-powered-engineer-hero.jpg"
       },
       "requirements": [
@@ -237,13 +237,13 @@
       "status": "Active",
       "price": { "amount": 499, "currency": "GBP" },
       "instructor": {
-        "name": "Kofi Mensah",
+        "name": "Kofi Arhin",
         "title": "Backend & Automation Engineer",
         "bio": "Full-stack engineer specializing in building automated systems, APIs, and deployment pipelines."
       },
       "tags": ["Node.js", "Automation", "APIs", "Scraping", "DevOps"],
       "media": {
-        "thumbnailUrl": "https://images.unsplash.com/photo-1649451844931-57e22fc82de3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870",
+        "thumbnailUrl": "https://images.unsplash.com/photo-1649451844931-57e22fc82de3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870](https://images.unsplash.com/photo-1649451844931-57e22fc82de3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870",
         "heroUrl": "/images/courses/automation-engineering-nodejs-hero.jpg"
       },
       "requirements": [
@@ -376,13 +376,13 @@
       "status": "Active",
       "price": { "amount": 299, "currency": "GBP" },
       "instructor": {
-        "name": "Kofi Mensah",
+        "name": "Kofi Arhin",
         "title": "Full Stack Developer",
         "bio": "Passionate about blending creativity with code, helping learners master modern web technologies."
       },
       "tags": ["HTML", "CSS", "JavaScript", "Frontend", "Beginner"],
       "media": {
-        "thumbnailUrl": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1469",
+        "thumbnailUrl": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1469](https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1469",
         "heroUrl": "/images/courses/beginner-web-dev-hero.jpg"
       },
       "requirements": [
