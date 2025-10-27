@@ -8,6 +8,10 @@ const {
   welcomeEmail,
   generateNewSubscriptionEmail,
 } = require("./templates.js");
+const axios = require("axios");
+require("dotenv").config();
+
+const API_KEY = process.env.YOUTUBE_API_KEY;
 
 const createNewsletterUser = async (data) => {
   try {
@@ -153,7 +157,70 @@ const createUser = async (userData) => {
 };
 
 const fetchYoutubeVideos = async () => {
-  console.log("fetch youtube videos");
+  try {
+    // Step 1: Get channel ID for "devkofi"
+    const channelRes = await axios.get(
+      "https://www.googleapis.com/youtube/v3/search",
+      {
+        params: {
+          part: "snippet",
+          q: "devkofi",
+          type: "channel",
+          key: API_KEY,
+        },
+      }
+    );
+    const channelId = channelRes.data.items[0].id.channelId;
+
+    // Step 2: Get uploads playlist ID
+    const channelDetails = await axios.get(
+      "https://www.googleapis.com/youtube/v3/channels",
+      {
+        params: {
+          part: "contentDetails",
+          id: channelId,
+          key: API_KEY,
+        },
+      }
+    );
+    const uploadsId =
+      channelDetails.data.items[0].contentDetails.relatedPlaylists.uploads;
+
+    // Step 3: Fetch all videos from the uploads playlist
+    let videos = [];
+    let nextPageToken = null;
+
+    do {
+      const playlistRes = await axios.get(
+        "https://www.googleapis.com/youtube/v3/playlistItems",
+        {
+          params: {
+            part: "snippet,contentDetails",
+            playlistId: uploadsId,
+            maxResults: 50,
+            pageToken: nextPageToken,
+            key: API_KEY,
+          },
+        }
+      );
+
+      const batch = playlistRes.data.items.map((item) => ({
+        id: item.contentDetails.videoId,
+        title: item.snippet.title,
+        description: item.snippet.description,
+        publishedAt: item.contentDetails.videoPublishedAt,
+        thumbnail: item.snippet.thumbnails?.high?.url,
+      }));
+
+      videos = videos.concat(batch);
+      nextPageToken = playlistRes.data.nextPageToken;
+    } while (nextPageToken);
+
+    return videos;
+  } catch (err) {
+    console.error("Error fetching YouTube videos:", err.message);
+    return [];
+  }
 };
 
 module.exports = {
