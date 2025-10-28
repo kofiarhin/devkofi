@@ -10,7 +10,6 @@
     "build": "cd client && npm run build",
     "start": "node server/server.js",
     "test": "jest --watch server",
-    "heroku-postbuild": "cd server && npm install",
     "playground": "nodemon playground.js"
   },
   "jest": {
@@ -21,6 +20,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
+  },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.2.4",
     "concurrently": "^9.2.0",
