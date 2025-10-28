@@ -11,7 +11,7 @@ const startServer = async () => {
 
     const server = app.listen(port, () => {
       if (nodeEnv !== "test") {
-        console.log(`Server started on port: ${port}`);
+        console.log(`Server started on port: ${port}!!!!`);
       }
     });
 
