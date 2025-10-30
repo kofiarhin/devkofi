@@ -2,6 +2,7 @@ const express = require("express");
 const app = require("./app");
 const connectDB = require("./config/db");
 const { loadEnv } = require("./config/env");
+console.log("server started");
 
 const config = loadEnv();
 const { mongoUri } = config;
