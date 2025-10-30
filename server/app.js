@@ -1,5 +1,6 @@
 const express = require("express");
 const createCors = require("./middleware/cors");
+const cors = require("cors");
 
 // Middlewares
 const cleaner = require("./middlewares/cleaner");
@@ -31,7 +32,8 @@ const app = express();
 
 // Middleware setup
 app.disable("x-powered-by");
-app.use(createCors());
+// app.use(createCors());
+app.use(cors("*"));
 app.use(express.json());
 app.use(cleaner); //remove this code later
 
