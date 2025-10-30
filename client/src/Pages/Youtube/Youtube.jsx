@@ -12,7 +12,7 @@ const Youtube = () => {
   }
   return (
     <div className="container">
-      <h1 className="heading center">Youtube</h1>
+      <h1 className="heading center">Youtube Library </h1>
       {data && <YoutubeList data={data} />}
     </div>
   );
