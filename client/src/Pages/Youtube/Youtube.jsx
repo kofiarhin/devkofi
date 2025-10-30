@@ -2,18 +2,18 @@ import { useEffect } from "react";
 import { baseUrl } from "../../constants/constants";
 import useYoutubeQuery from "../../hooks/useYoutubeQuery";
 import Spinner from "../../components/Spinner/Spinner";
+import YoutubeList from "../../components/YoutubeList/YoutubeList";
 
 const Youtube = () => {
   const { data, isLoading } = useYoutubeQuery();
-
-  console.log({ data });
 
   if (isLoading) {
     return <Spinner />;
   }
   return (
-    <div>
+    <div className="container">
       <h1 className="heading center">Youtube</h1>
+      {data && <YoutubeList data={data} />}
     </div>
   );
 };
