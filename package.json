@@ -8,9 +8,10 @@
     "dev:client": "cd client && npm run dev",
     "dev:server": "cd server && nodemon server.js",
     "build": "cd client && npm run build",
-    "start": "node server/index.js",
+    "start": "node server/server.js",
     "test": "jest --watch server",
-    "playground": "nodemon playground.js"
+    "playground": "nodemon playground.js",
+    "start:server": "node server/server.js"
   },
   "jest": {
     "setupFilesAfterEnv": [
