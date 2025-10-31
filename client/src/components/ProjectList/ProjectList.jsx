@@ -1,7 +1,7 @@
 // ProjectList.jsx (add animations)
 import React, { useEffect } from "react";
 import "./project_list.styles.scss";
-import { defaultImage } from "../../constants/constants";
+import { defaultImage, codingImage } from "../../constants/constants";
 
 const ProjectList = ({ data = [] }) => {
   useEffect(() => {
@@ -34,7 +34,7 @@ const ProjectList = ({ data = [] }) => {
       {/* HERO with Ken Burns + parallax light */}
       {hero && (
         <div className="projects-hero" onMouseMove={handleParallax}>
-          <img className="hero-img" src={defaultImage} alt={hero.name} />
+          <img className="hero-img" src={codingImage} alt={hero.name} />
           <div className="hero-glow" />
           <h1 className="page-title reveal">{`Projects`}</h1>
         </div>
