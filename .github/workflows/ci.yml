@@ -39,8 +39,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }} # e.g. 21
-          protocol: ${{ secrets.FTP_PROTOCOL }} # e.g. ftps
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ${{ secrets.FTP_PROTOCOL }}
           local-dir: client/dist/
           server-dir: /
           exclude: |
@@ -104,9 +104,15 @@ jobs:
           # Ensure entry exists relative to subtree root
           test -f server/server.js || (echo '❌ server/server.js not found' && exit 1)
 
-          # Temp commit of synthesized files (does NOT touch your main branch)
-          git add -f server/Procfile server/package.json
-          git commit -m "ci: synthesize minimal heroku files (temp)"
+      - name: Generate matching lockfile for server/ (fix npm ci mismatch)
+        run: |
+          # Create a lockfile that matches server/package.json without installing modules
+          npm --prefix server install --package-lock-only
+          test -f server/package-lock.json || (echo '❌ failed to create server/package-lock.json' && exit 1)
+
+          # Commit ONLY synthesized files on the temp branch
+          git add -f server/Procfile server/package.json server/package-lock.json
+          git commit -m "ci: synthesize heroku files + lock (temp)"
 
       - name: Compute server subtree SHA
         id: subtree
@@ -120,7 +126,8 @@ jobs:
           git archive --format=tar ${{ steps.subtree.outputs.sha }} | tar -tv > tree.txt
           grep -q " Procfile$" tree.txt || (echo "❌ Procfile missing in subtree root" && exit 1)
           grep -q " package.json$" tree.txt || (echo "❌ package.json missing in subtree root" && exit 1)
-          echo "✅ subtree contains Procfile and package.json"
+          grep -q " package-lock.json$" tree.txt || (echo "❌ package-lock.json missing in subtree root" && exit 1)
+          echo "✅ subtree contains Procfile, package.json, package-lock.json"
 
       - name: Set Heroku stack & Node buildpack (idempotent)
         run: |
