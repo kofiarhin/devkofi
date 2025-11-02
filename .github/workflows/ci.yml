@@ -39,8 +39,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          protocol: ${{ secrets.FTP_PROTOCOL }}
+          port: ${{ secrets.FTP_PORT }} # e.g. 21
+          protocol: ${{ secrets.FTP_PROTOCOL }} # e.g. ftps
           local-dir: client/dist/
           server-dir: /
           exclude: |
@@ -60,7 +60,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # needed for subtree split
+          fetch-depth: 0 # required for subtree split
 
       - uses: actions/setup-node@v4
         with:
@@ -74,28 +74,40 @@ jobs:
           heroku auth:whoami || (echo "❌ Invalid HEROKU_API_KEY" && exit 1)
           heroku apps:info -a "$HEROKU_APP" || (echo "❌ App $HEROKU_APP not found" && exit 1)
 
-      # --- CI-only temp branch so your repo stays unchanged ---
+      - name: Configure git identity (for temp commit)
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name  "GitHub Action"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
       - name: Create temp branch for Heroku packaging
         run: git checkout -b heroku-deploy-temp
 
-      # --- Synthesize Procfile + package.json at server/ (not committed to main) ---
-      - name: Synthesize server/Procfile and server/package.json (CI-only)
+      - name: Synthesize server/Procfile and minimal server/package.json (CI-only)
         run: |
-          # 1) Procfile -> use npm start when subtree is deployed
-          echo "web: npm start" > server/Procfile
+          # Procfile -> dyno entry from subtree root
+          echo "web: node server.js" > server/Procfile
 
-          # 2) Build server/package.json from root package.json so server deps exist on Heroku
-          cp package.json server/package.json
-          node -e "const fs=require('fs');const p=require('./server/package.json');p.private=true;p.scripts=p.scripts||{};p.scripts.start=(p.scripts.start||'node server/server.js').replace('server/server.js','server.js');p.engines={node: '>=20.x'};fs.writeFileSync('./server/package.json',JSON.stringify(p,null,2));"
+          # Minimal package.json (dependencies copied from root; clean scripts)
+          node -e "const fs=require('fs');
+          const root=JSON.parse(fs.readFileSync('package.json','utf8'));
+          const out={
+            name: (root.name? root.name+'-server' : 'devkofi-server'),
+            private:true,
+            engines:{ node: '>=20.x' },
+            main:'server.js',
+            scripts:{ start:'node server.js' },
+            dependencies: root.dependencies || {}
+          };
+          fs.writeFileSync('server/package.json', JSON.stringify(out,null,2));"
 
-          # 3) Ensure entry file exists relative to subtree root
+          # Ensure entry exists relative to subtree root
           test -f server/server.js || (echo '❌ server/server.js not found' && exit 1)
 
-          # 4) Commit ONLY these CI-generated files on the temp branch
+          # Temp commit of synthesized files (does NOT touch your main branch)
           git add -f server/Procfile server/package.json
-          git commit -m "ci: synthesize heroku files (temp)"
+          git commit -m "ci: synthesize minimal heroku files (temp)"
 
-      # --- Compute subtree from the temp commit that includes synthesized files ---
       - name: Compute server subtree SHA
         id: subtree
         run: |
@@ -103,13 +115,12 @@ jobs:
           echo "sha=$SUBTREE_SHA" >> $GITHUB_OUTPUT
           echo "Subtree SHA: $SUBTREE_SHA"
 
-      # --- Verify subtree has what Heroku needs at its root ---
       - name: Verify subtree contents
         run: |
           git archive --format=tar ${{ steps.subtree.outputs.sha }} | tar -tv > tree.txt
-          cat tree.txt
           grep -q " Procfile$" tree.txt || (echo "❌ Procfile missing in subtree root" && exit 1)
           grep -q " package.json$" tree.txt || (echo "❌ package.json missing in subtree root" && exit 1)
+          echo "✅ subtree contains Procfile and package.json"
 
       - name: Set Heroku stack & Node buildpack (idempotent)
         run: |
@@ -119,10 +130,7 @@ jobs:
           heroku buildpacks -a "$HEROKU_APP"
 
       - name: Push server subtree → Heroku main
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name  "GitHub Action"
-          git push --force "$HEROKU_GIT" ${{ steps.subtree.outputs.sha }}:main
+        run: git push --force "$HEROKU_GIT" ${{ steps.subtree.outputs.sha }}:main
 
       - name: Release config
         run: |
@@ -140,6 +148,14 @@ jobs:
             sleep 10
           done
           echo "Health check failed"; exit 1
+
+      - name: Print Heroku build output on failure
+        if: failure()
+        run: |
+          BUILD_ID=$(heroku builds -a "$HEROKU_APP" --json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{const a=JSON.parse(d);console.log(a[0]?.id||'');}catch(e){console.log('');}})")
+          if [ -n "$BUILD_ID" ]; then
+            heroku builds:output -a "$HEROKU_APP" -b "$BUILD_ID" || true
+          fi
 
       - name: Print recent Heroku logs on failure
         if: failure()
@@ -160,7 +176,7 @@ jobs:
           echo "Checking https://devkofi.com/ ..."
           CODE=$(curl -s -o /dev/null -w "%{http_code}" https://devkofi.com/)
           echo "HTTP status: $CODE"
-          if [ "$CODE" -eq 200 ]; then
+          if [ "$CODE" -eq 200 ] ; then
             echo "✅ Homepage is live"
           else
             echo "❌ Homepage returned $CODE"
