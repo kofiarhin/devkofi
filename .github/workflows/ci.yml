@@ -39,10 +39,10 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }} # e.g. 21
-          protocol: ${{ secrets.FTP_PROTOCOL }} # e.g. ftps
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ${{ secrets.FTP_PROTOCOL }}
           local-dir: client/dist/
-          server-dir: / # home == public_html on Namecheap
+          server-dir: /
           exclude: |
             **/.git*
             **/.github/**
@@ -51,65 +51,71 @@ jobs:
   # ---------- Backend -> Heroku ----------
   deploy_heroku:
     runs-on: ubuntu-latest
-    needs: [deploy_client] # remove if you want parallel jobs
+    needs: [deploy_client]
+    env:
+      HEROKU_APP: devkofi-api
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      HEROKU_GIT: https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/devkofi-api.git
+      HEALTH_URL: https://devkofi-api-82532bf8b693.herokuapp.com/health
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: Install Heroku CLI
-        run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
-          heroku --version
+        run: curl https://cli-assets.heroku.com/install.sh | sh
 
-      - name: Reset Heroku buildpacks to Node (once per run; idempotent)
+      - name: Verify Heroku auth & app
         run: |
-          heroku buildpacks:clear -a devkofi || true
-          heroku buildpacks:set heroku/nodejs -a devkofi
-          heroku buildpacks -a devkofi
+          heroku auth:whoami || (echo "❌ Invalid HEROKU_API_KEY" && exit 1)
+          heroku apps:info -a "$HEROKU_APP" || (echo "❌ App $HEROKU_APP not found" && exit 1)
 
       - name: Ensure Procfile exists in server/
         run: |
           echo "web: node server.js" > server/Procfile
-          cat server/Procfile
+          tail -n +1 server/Procfile
 
-      - name: Force-push server/ subtree to Heroku main
-        env:
-          HEROKU_GIT: https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/devkofi.git
+      - name: Set Heroku stack & buildpack
+        run: |
+          heroku stack:set heroku-22 -a "$HEROKU_APP" || true
+          heroku buildpacks:clear -a "$HEROKU_APP" || true
+          heroku buildpacks:add -a "$HEROKU_APP" heroku/nodejs || true
+          heroku buildpacks -a "$HEROKU_APP"
+
+      - name: Push server subtree to Heroku main
         run: |
           git config --global user.email "action@github.com"
-          git config --global user.name  "GitHub Action"
-          # Create a commit consisting only of server/ and force update Heroku main
+          git config --global user.name "GitHub Action"
           SUBTREE_SHA=$(git subtree split --prefix server HEAD)
           echo "Subtree SHA: $SUBTREE_SHA"
           git push --force "$HEROKU_GIT" "$SUBTREE_SHA:main"
 
-      - name: Health check (retry until 200)
+      - name: Release config
+        run: |
+          heroku config:set NODE_ENV=production NPM_CONFIG_PRODUCTION=true -a "$HEROKU_APP"
+          heroku labs:enable runtime-dyno-metadata -a "$HEROKU_APP" || true
+
+      - name: Health check
         shell: bash
-        env:
-          HEROKU_URL: https://devkofi-883f1d7b0ba0.herokuapp.com
-          HEALTH_PATH: /health
         run: |
           set -e
-          ATTEMPTS=20
-          SLEEP=10
-          for ((i=1;i<=ATTEMPTS;i++)); do
-            CODE=$(curl -s -o /dev/null -w "%{http_code}" "$HEROKU_URL$HEALTH_PATH")
-            echo "Attempt $i/$ATTEMPTS → HTTP $CODE"
-            if [ "$CODE" -eq 200 ]; then
-              echo "Health check passed ✅"
-              exit 0
-            fi
-            sleep $SLEEP
+          for i in {1..20}; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" "$HEALTH_URL")
+            echo "Attempt $i → HTTP $CODE"
+            [ "$CODE" -eq 200 ] && exit 0
+            sleep 10
           done
-          echo "Health check failed ❌ after $ATTEMPTS attempts"
-          exit 1
+          echo "Health check failed"; exit 1
 
       - name: Print recent Heroku logs on failure
         if: failure()
-        run: heroku logs -n 300 -a devkofi || true
+        run: |
+          heroku releases -n 5 -a "$HEROKU_APP" || true
+          heroku logs -n 300 -a "$HEROKU_APP" || true
 
   # ---------- Post-deploy Browser E2E: Login + Chat ----------
   e2e_login_chat_test:
@@ -146,11 +152,9 @@ jobs:
           mkdir -p tests
           cat << 'EOF' > tests/login-chat.spec.js
           const { test, expect } = require('@playwright/test');
-
           const findMessageInput = async (page) => {
             const byPlaceholder = page.getByPlaceholder(/message|type.*message|ask|prompt/i);
             if (await byPlaceholder.first().count()) return byPlaceholder.first();
-
             const generic = page.locator([
               'textarea[name="message"]',
               'textarea[id*="message" i]',
@@ -161,13 +165,10 @@ jobs:
               'input[type="search"]'
             ].join(', '));
             if (await generic.first().count()) return generic.first();
-
             const editable = page.locator('[contenteditable="true"], [role="textbox"]');
             if (await editable.first().count()) return editable.first();
-
             throw new Error('Message input not found');
           };
-
           const clickSendIfPresent = async (page) => {
             const send = page.locator([
               'button[type="submit"]',
@@ -184,46 +185,28 @@ jobs:
             }
             return false;
           };
-
           test('Login then send a chat message and receive a response', async ({ page }) => {
-            // --- Login ---
             await page.goto('https://devkofi.com/login', { waitUntil: 'domcontentloaded' });
-
             const email = page.locator('input[name="email"], input[type="email"], [placeholder*="email" i]');
             await email.first().fill('test@gmail.com');
-
             const password = page.locator('input[name="password"], input[type="password"], [placeholder*="password" i]');
             await password.first().fill('password');
-
             const loginBtn = page.locator('button[type="submit"], button:has-text("Login"), button:has-text("Sign in"), [role="button"]:has-text("Login")');
             await loginBtn.first().click();
-
             await page.waitForURL(/^(?!.*\/login\b).*$/, { timeout: 15000 });
-
-            // --- Chat page ---
             await page.goto('https://devkofi.com/chat', { waitUntil: 'domcontentloaded' });
             await page.waitForLoadState('networkidle', { timeout: 10000 });
-
-            // Baseline message count
             const messages = page.locator([
               '.message', '.chat-message', '.assistant', '.bot', '.user',
               '[data-message]', '[data-role="message"]', '[role="listitem"]',
               '.chat-response', '.message-bot', '.response'
             ].join(', '));
             const beforeCount = await messages.count();
-
-            // Type prompt
             const input = await findMessageInput(page);
             await input.click();
             await input.fill('Hello! This is an automated post-deploy check. Please respond.');
-
-            // Send (button or Enter)
             const clicked = await clickSendIfPresent(page);
-            if (!clicked) {
-              await page.keyboard.press('Enter');
-            }
-
-            // Wait for a new message to appear
+            if (!clicked) await page.keyboard.press('Enter');
             await expect
               .poll(async () => await messages.count(), {
                 message: 'Waiting for a new chat message to appear',
@@ -231,8 +214,6 @@ jobs:
                 timeout: 20000
               })
               .toBeGreaterThan(beforeCount);
-
-            // Best-effort: verify assistant-like element visible (optional)
             const assistantLike = page.locator('.assistant, .message-bot, .chat-response, [data-role="assistant"]');
             if (await assistantLike.count()) {
               await expect(assistantLike.first()).toBeVisible();
