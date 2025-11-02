@@ -48,7 +48,7 @@ jobs:
             **/.github/**
             **/node_modules/**
 
-  # ---------- Backend -> Heroku ----------
+  # ---------- Backend -> Heroku (subtree push, repo unchanged) ----------
   deploy_heroku:
     runs-on: ubuntu-latest
     needs: [deploy_client]
@@ -60,7 +60,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # needed for subtree split
 
       - uses: actions/setup-node@v4
         with:
@@ -74,32 +74,62 @@ jobs:
           heroku auth:whoami || (echo "❌ Invalid HEROKU_API_KEY" && exit 1)
           heroku apps:info -a "$HEROKU_APP" || (echo "❌ App $HEROKU_APP not found" && exit 1)
 
-      - name: Ensure Procfile exists in server/
-        run: |
-          echo "web: node server.js" > server/Procfile
-          tail -n +1 server/Procfile
+      # --- CI-only temp branch so your repo stays unchanged ---
+      - name: Create temp branch for Heroku packaging
+        run: git checkout -b heroku-deploy-temp
 
-      - name: Set Heroku stack & buildpack
+      # --- Synthesize Procfile + package.json at server/ (not committed to main) ---
+      - name: Synthesize server/Procfile and server/package.json (CI-only)
+        run: |
+          # 1) Procfile -> use npm start when subtree is deployed
+          echo "web: npm start" > server/Procfile
+
+          # 2) Build server/package.json from root package.json so server deps exist on Heroku
+          cp package.json server/package.json
+          node -e "const fs=require('fs');const p=require('./server/package.json');p.private=true;p.scripts=p.scripts||{};p.scripts.start=(p.scripts.start||'node server/server.js').replace('server/server.js','server.js');p.engines={node: '>=20.x'};fs.writeFileSync('./server/package.json',JSON.stringify(p,null,2));"
+
+          # 3) Ensure entry file exists relative to subtree root
+          test -f server/server.js || (echo '❌ server/server.js not found' && exit 1)
+
+          # 4) Commit ONLY these CI-generated files on the temp branch
+          git add -f server/Procfile server/package.json
+          git commit -m "ci: synthesize heroku files (temp)"
+
+      # --- Compute subtree from the temp commit that includes synthesized files ---
+      - name: Compute server subtree SHA
+        id: subtree
+        run: |
+          SUBTREE_SHA=$(git subtree split --prefix server heroku-deploy-temp)
+          echo "sha=$SUBTREE_SHA" >> $GITHUB_OUTPUT
+          echo "Subtree SHA: $SUBTREE_SHA"
+
+      # --- Verify subtree has what Heroku needs at its root ---
+      - name: Verify subtree contents
+        run: |
+          git archive --format=tar ${{ steps.subtree.outputs.sha }} | tar -tv > tree.txt
+          cat tree.txt
+          grep -q " Procfile$" tree.txt || (echo "❌ Procfile missing in subtree root" && exit 1)
+          grep -q " package.json$" tree.txt || (echo "❌ package.json missing in subtree root" && exit 1)
+
+      - name: Set Heroku stack & Node buildpack (idempotent)
         run: |
           heroku stack:set heroku-22 -a "$HEROKU_APP" || true
           heroku buildpacks:clear -a "$HEROKU_APP" || true
           heroku buildpacks:add -a "$HEROKU_APP" heroku/nodejs || true
           heroku buildpacks -a "$HEROKU_APP"
 
-      - name: Push server subtree to Heroku main
+      - name: Push server subtree → Heroku main
         run: |
           git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          SUBTREE_SHA=$(git subtree split --prefix server HEAD)
-          echo "Subtree SHA: $SUBTREE_SHA"
-          git push --force "$HEROKU_GIT" "$SUBTREE_SHA:main"
+          git config --global user.name  "GitHub Action"
+          git push --force "$HEROKU_GIT" ${{ steps.subtree.outputs.sha }}:main
 
       - name: Release config
         run: |
           heroku config:set NODE_ENV=production NPM_CONFIG_PRODUCTION=true -a "$HEROKU_APP"
           heroku labs:enable runtime-dyno-metadata -a "$HEROKU_APP" || true
 
-      - name: Health check
+      - name: Health check (retry until 200)
         shell: bash
         run: |
           set -e
@@ -152,9 +182,11 @@ jobs:
           mkdir -p tests
           cat << 'EOF' > tests/login-chat.spec.js
           const { test, expect } = require('@playwright/test');
+
           const findMessageInput = async (page) => {
             const byPlaceholder = page.getByPlaceholder(/message|type.*message|ask|prompt/i);
             if (await byPlaceholder.first().count()) return byPlaceholder.first();
+
             const generic = page.locator([
               'textarea[name="message"]',
               'textarea[id*="message" i]',
@@ -165,10 +197,13 @@ jobs:
               'input[type="search"]'
             ].join(', '));
             if (await generic.first().count()) return generic.first();
+
             const editable = page.locator('[contenteditable="true"], [role="textbox"]');
             if (await editable.first().count()) return editable.first();
+
             throw new Error('Message input not found');
           };
+
           const clickSendIfPresent = async (page) => {
             const send = page.locator([
               'button[type="submit"]',
@@ -185,28 +220,38 @@ jobs:
             }
             return false;
           };
+
           test('Login then send a chat message and receive a response', async ({ page }) => {
             await page.goto('https://devkofi.com/login', { waitUntil: 'domcontentloaded' });
+
             const email = page.locator('input[name="email"], input[type="email"], [placeholder*="email" i]');
             await email.first().fill('test@gmail.com');
+
             const password = page.locator('input[name="password"], input[type="password"], [placeholder*="password" i]');
             await password.first().fill('password');
+
             const loginBtn = page.locator('button[type="submit"], button:has-text("Login"), button:has-text("Sign in"), [role="button"]:has-text("Login")');
             await loginBtn.first().click();
+
             await page.waitForURL(/^(?!.*\/login\b).*$/, { timeout: 15000 });
+
             await page.goto('https://devkofi.com/chat', { waitUntil: 'domcontentloaded' });
             await page.waitForLoadState('networkidle', { timeout: 10000 });
+
             const messages = page.locator([
               '.message', '.chat-message', '.assistant', '.bot', '.user',
               '[data-message]', '[data-role="message"]', '[role="listitem"]',
               '.chat-response', '.message-bot', '.response'
             ].join(', '));
             const beforeCount = await messages.count();
+
             const input = await findMessageInput(page);
             await input.click();
             await input.fill('Hello! This is an automated post-deploy check. Please respond.');
+
             const clicked = await clickSendIfPresent(page);
             if (!clicked) await page.keyboard.press('Enter');
+
             await expect
               .poll(async () => await messages.count(), {
                 message: 'Waiting for a new chat message to appear',
@@ -214,6 +259,7 @@ jobs:
                 timeout: 20000
               })
               .toBeGreaterThan(beforeCount);
+
             const assistantLike = page.locator('.assistant, .message-bot, .chat-response, [data-role="assistant"]');
             if (await assistantLike.count()) {
               await expect(assistantLike.first()).toBeVisible();
