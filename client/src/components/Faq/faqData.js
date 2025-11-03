@@ -1,62 +1,89 @@
+// src/components/faqData.js
+// Pricing-specific FAQs (aligned to your Pricing + Bootcamp tiers)
+
 export const faqData = [
   {
-    question: "What makes DevKofi’s mentorship different?",
+    question:
+      "What’s the difference between buying a single course and joining Pro/VIP?",
     answer:
-      "We focus on transforming beginners into builders. You’ll learn by building 10+ real-world projects, get live mentorship, join a private developer community, and leave with a portfolio that makes hiring managers take notice. No theory-only fluff—just skills that ship.",
+      "Single course is a one-time purchase you own forever. Pro (monthly) and VIP (yearly) are memberships that unlock access to all active courses while your subscription is active.",
   },
   {
-    question: "What’s included in the Full-Stack Bootcamp: Standard?",
+    question: "Do I keep access to courses after canceling my membership?",
     answer:
-      "The Standard package includes a 6-month full-stack web development bootcamp, weekly live sessions, lifetime access to all recordings, 10+ portfolio-grade projects, a private student community, and an end-of-course certificate. Plus, there’s a 100% refund guarantee within the first 14 days.",
+      "Access via membership ends at the end of your billing period. Any single courses you bought separately remain yours for life.",
   },
   {
-    question: "What extra benefits does the Pro package offer?",
+    question: "Is there a refund guarantee?",
     answer:
-      "The Pro package gives you everything in Standard, plus bi-weekly 1:1 mentorship sessions, personalized portfolio and career guidance, detailed code reviews on your projects, and priority support via Slack or Discord. Perfect if you want accountability and rapid growth.",
+      "Yes. All single-course purchases and memberships include a 15-day, no-questions-asked refund window.",
   },
   {
-    question: "What’s included in the Team/Enterprise package?",
+    question: "How does the VIP discount code work?",
     answer:
-      "The Team package provides access for up to 5 members, custom scheduling, team-focused projects, a dedicated instructor, post-course team audit and recommendations, and a private Slack channel for your team. Includes a 100% refund guarantee in the first 14 days.",
+      "Apply the VIP code at checkout to get a reduced first-year price on the yearly plan. After the first year, it renews at the standard yearly rate unless you cancel beforehand.",
   },
   {
-    question: "Do I need prior coding experience?",
+    question: "Can I switch between Pro (monthly) and VIP (yearly)?",
     answer:
-      "No prior experience is required. We start with the basics and progress to advanced topics, ensuring beginners and self-taught developers alike gain the skills to confidently build and deploy full-stack applications.",
+      "Yes. You can upgrade or downgrade anytime. Upgrades apply immediately with a prorated charge; downgrades take effect at your next renewal.",
   },
   {
-    question: "Which tech stack will I learn?",
+    question:
+      "What’s included in the Full-Stack Bootcamp: Standard (£1,200 one-time)?",
     answer:
-      "You'll master the MERN stack (MongoDB, Express, React, Node.js) along with Git, Docker, modern deployment workflows, and DevOps fundamentals. These are the same tools used by top tech companies.",
+      "6-month full-stack bootcamp, weekly live sessions with lifetime access to recordings, 10+ real projects, private community, certificate, and a 100% refund guarantee within 14 days.",
   },
   {
-    question: "Is this program remote-friendly?",
+    question:
+      "What extra benefits does the Full-Stack Bootcamp: Pro (£1,800 one-time) add?",
     answer:
-      "Yes, DevKofi’s bootcamp is fully remote. You can join from anywhere in the world and participate in live sessions, discussions, and mentorship calls online.",
+      "Everything in Standard plus bi-weekly 1-on-1 mentorship, code reviews, personalized portfolio and career guidance, priority support, and the same 14-day refund guarantee.",
   },
   {
-    question: "How does the refund policy work?",
+    question:
+      "What’s included in the Team/Enterprise package (£5,000 for up to 5)?",
     answer:
-      "You’re covered by a 100% refund guarantee in the first 14 days. If you decide the program isn’t right for you, we’ll issue a full refund—no questions asked.",
+      "Access for up to 5 team members, custom scheduling and team-focused projects, dedicated instructor support, post-course team audit and recommendations, private Slack channel, and a 14-day refund guarantee.",
   },
   {
-    question: "What if I can’t attend a live session?",
+    question: "Do you offer installment plans or financing?",
     answer:
-      "All sessions are recorded and made available to you for lifetime access. You’ll never miss out and can learn at your own pace.",
+      "Yes for select programs. If you don’t see an installment option at checkout, contact us and we’ll share the current financing options available.",
   },
   {
-    question: "Will I receive a certificate?",
+    question: "Are taxes/VAT included in the listed prices?",
     answer:
-      "Yes. Upon successful completion of the bootcamp, you’ll earn a DevKofi end-of-course certificate to showcase your new skills.",
+      "Prices are shown in GBP. Any applicable taxes (like VAT) are calculated at checkout based on your location.",
   },
   {
-    question: "What support will I get during the program?",
+    question: "Do members get access to new courses and updates?",
     answer:
-      "All packages include access to a private student community for peer support. Pro and Team members also receive priority chat support and dedicated mentorship.",
+      "Active Pro/VIP members get new membership-eligible courses and updates as they’re released, at no extra cost.",
   },
   {
-    question: "What’s the next step to join?",
+    question: "Do I get a certificate of completion?",
     answer:
-      "Click the button for your chosen package—Standard, Pro, or Team—to book your spot. Or reach out via the contact page for a free consultation to see if the program is right for you.",
+      "Yes. Certificates are issued for each course or bootcamp once you complete the required modules and projects.",
+  },
+  {
+    question: "Can I pause my membership?",
+    answer:
+      "You can cancel anytime and rejoin later. Cancellation stops future billing and access at the end of the current period; your progress is saved to your account.",
+  },
+  {
+    question: "What support channels are available?",
+    answer:
+      "All plans include community access and standard support. Pro/VIP and Bootcamp Pro receive priority support; Team plans include a private Slack channel and dedicated instructor touchpoints.",
+  },
+  {
+    question: "Can I transfer my seat to someone else?",
+    answer:
+      "Single seats are non-transferable after course access has started. Team seats can be reassigned before a cohort begins—contact support for help.",
+  },
+  {
+    question: "What if a course is updated or replaced?",
+    answer:
+      "We keep content current. Updates appear in your dashboard automatically. If a course is replaced, members receive access to the new version while their membership is active.",
   },
 ];

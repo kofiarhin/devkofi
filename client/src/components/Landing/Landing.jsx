@@ -1,27 +1,44 @@
 import "./landing.styles.scss";
 import { Link } from "react-router-dom";
 import { profileImage } from "../../constants/constants";
-import Typewriter from "../TypeWriter/TypeWrite";
-import { text, title, subTitle } from "./landingData";
+import { title, subTitle, text } from "./landingData";
 
 const Landing = () => {
   return (
-    <div id="landing">
+    <section id="landing" aria-labelledby="landing-title">
+      {/* Ambient background orbs */}
+
       <div className="landing-wrapper">
-        {/* Text Section */}
+        {/* TEXT */}
         <div className="text-wrapper">
-          <Typewriter title={title} subtitle={subTitle} text={text} />
-          <Link to="/register" className="cta">
-            Get Started!
-          </Link>
+          <h1 className="heading" id="landing-title">
+            {title}
+          </h1>
+          <h2 className="subtitle">{subTitle}</h2>
+          <p className="body">{text}</p>
+
+          <span className="accent-underline" aria-hidden="true" />
+
+          <div className="cta-wrapper">
+            <Link to="/courses">Browse Courses</Link>
+          </div>
         </div>
 
-        {/* Image Section */}
+        {/* IMAGE */}
         <div className="image-wrapper">
-          <img src={profileImage} alt="Profile" />
+          <div className="image-frame">
+            <img
+              src={profileImage}
+              alt="Kofi portrait"
+              loading="lazy"
+              decoding="async"
+              sizes="(max-width: 980px) 100vw, 520px"
+            />
+            <div className="image-glow" aria-hidden="true" />
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

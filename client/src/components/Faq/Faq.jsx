@@ -1,12 +1,11 @@
-// src/components/Faq.jsx
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./faq.styles.scss";
 import { faqData } from "./faqData";
 
-// Variants for FAQ container and items
+// Animation Variants
 const containerVariant = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 40 },
   show: {
     opacity: 1,
     y: 0,
@@ -19,7 +18,7 @@ const itemVariant = {
   show: (index) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: index * 0.15, duration: 0.4 },
+    transition: { delay: index * 0.1, duration: 0.4, ease: "easeOut" },
   }),
 };
 
@@ -33,7 +32,7 @@ const answerVariant = {
   exit: {
     opacity: 0,
     height: 0,
-    transition: { duration: 0.2, ease: "easeInOut" },
+    transition: { duration: 0.25, ease: "easeInOut" },
   },
 };
 
@@ -46,16 +45,21 @@ const Faq = () => {
 
   return (
     <section className="faq">
-      {/* Animated Heading */}
-      <motion.h1
-        className="heading"
+      <motion.div
+        className="faq-header"
         variants={containerVariant}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.3 }}
       >
-        Frequently Asked <br /> Questions
-      </motion.h1>
+        <h2 className="faq-heading">
+          Frequently Asked <br /> Questions
+        </h2>
+        <p className="faq-subtitle">
+          Everything you need to know about DevKofi’s bootcamps, pricing, and
+          memberships.
+        </p>
+      </motion.div>
 
       <div className="faq-list">
         {faqData.map((item, index) => (
@@ -69,10 +73,12 @@ const Faq = () => {
             viewport={{ once: true, amount: 0.2 }}
           >
             <button
-              className="faq-question"
+              className={`faq-question ${
+                activeIndex === index ? "active" : ""
+              }`}
               onClick={() => toggleAnswer(index)}
             >
-              {item.question}
+              <span>{item.question}</span>
               <span
                 className={`faq-toggle ${activeIndex === index ? "open" : ""}`}
               >
@@ -80,18 +86,17 @@ const Faq = () => {
               </span>
             </button>
 
-            {/* Animated Answer */}
             <AnimatePresence>
               {activeIndex === index && (
-                <motion.p
+                <motion.div
                   className="faq-answer"
                   variants={answerVariant}
                   initial="hidden"
                   animate="show"
                   exit="exit"
                 >
-                  {item.answer}
-                </motion.p>
+                  <p>{item.answer}</p>
+                </motion.div>
               )}
             </AnimatePresence>
           </motion.div>

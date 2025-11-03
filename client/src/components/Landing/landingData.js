@@ -1,5 +1,10 @@
-export const text =
-  "Start Your Tech Career in 6 Months. Master the MERN Stack, gain hands-on experience with AI tools, and accelerate your journey with expert mentorship to become fully job-ready in today’s high-demand tech industry.";
+export const title = "Practical Web Development Courses";
 
-export const title = "MERN STACK MENTORSHIP PROGRAMME 2025";
-export const subTitle = "MERN STACK MENTORSHIP PROGRAMME 2025";
+export const subTitle = "Learn By Building. Grow With Guidance.";
+
+export const text = `
+Hands-on, project-based courses designed to make you a real-world developer — fast.
+Whether you’re starting from scratch or levelling up your full-stack skills, DevKofi
+courses cut the fluff and focus on what truly matters: building, shipping, and mastering
+the craft with modern tools and AI-powered mentorship.
+`;

@@ -1,86 +1,85 @@
+import React from "react";
+import pricingData from "./pricingData";
 import "./pricing.styles.scss";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { pricingData } from "./pricingData";
 
-// Card animation variant
-const cardVariant = {
-  hidden: { opacity: 0, y: 50, scale: 0.9 },
-  show: (index) => ({
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 80,
-      damping: 12,
-      delay: index * 0.2,
-    },
-  }),
-};
-
-// Section heading animation
-const headingVariant = {
-  hidden: { opacity: 0, y: -20 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
+const formatPrice = (amount, currency) =>
+  new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(
+    amount
+  );
 
 const Pricing = () => {
+  const { pricing_strategy, single_course_offers } = pricingData;
+  const { single_course, memberships } = pricing_strategy;
+
   return (
     <section className="pricing">
-      {/* Animated Heading */}
-      <motion.h1
-        className="heading center"
-        variants={headingVariant}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        Pricing
-      </motion.h1>
+      <header className="pricing-header">
+        <h2>DevKofi Pricing</h2>
+        <p>
+          Choose a course to own forever or unlock all content with{" "}
+          <strong>Pro</strong> or <strong>VIP</strong> membership.
+        </p>
+      </header>
 
-      {/* Pricing Cards Container */}
-      <div className="pricing-container">
-        {pricingData.map((plan, index) => (
-          <motion.div
-            className="pricing-card"
-            key={index}
-            custom={index}
-            variants={cardVariant}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.3 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <h2>{plan.title}</h2>
-            <p className="price">
-              {plan.price}
-              {plan.priceSuffix && <span>{plan.priceSuffix}</span>}
-            </p>
-            <ul>
-              {plan.details.map((detail, i) => (
-                <li key={i}>{detail}</li>
+      <div className="plan-list">
+        {/* One-Time Course Plans */}
+        {single_course_offers.map((course) => (
+          <article key={course.id} className="plan-card one-time">
+            <h3 className="plan-name">{course.name}</h3>
+
+            <div className="plan-price-wrap">
+              <span className="plan-price">
+                {formatPrice(course.price.amount, course.price.currency)}
+              </span>
+              <span className="plan-cycle">(one-time)</span>
+            </div>
+
+            <ul className="plan-features">
+              {single_course.features.map((f, i) => (
+                <li key={i}>{f}</li>
               ))}
             </ul>
-            {plan.button.external ? (
-              <a
-                href={plan.button.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="pricing-button"
-              >
-                {plan.button.text}
-              </a>
-            ) : (
-              <Link to="/register" className="pricing-button">
-                {plan.button.text}
-              </Link>
+
+            <a href={course.links.buy} className="cta">
+              Join{" "}
+              {course.name.includes("Mentorship") ? "Mentorship" : "Course"}
+            </a>
+          </article>
+        ))}
+
+        {/* Membership Plans */}
+        {memberships.map((plan, index) => (
+          <article key={index} className={`plan-card ${plan.billing_cycle}`}>
+            <h3 className="plan-name">{plan.name}</h3>
+
+            <div className="plan-price-wrap">
+              <span className="plan-price">
+                {formatPrice(plan.price, plan.currency)}
+              </span>
+              <span className="plan-cycle">
+                ({plan.billing_cycle === "monthly" ? "per month" : "per year"})
+              </span>
+            </div>
+
+            {plan.discount && (
+              <div className="badge">
+                {plan.discount.code}: First year{" "}
+                {formatPrice(plan.discount.first_year_price, plan.currency)}
+              </div>
             )}
-          </motion.div>
+
+            <ul className="plan-features">
+              {plan.features.map((f, i) => (
+                <li key={i}>{f}</li>
+              ))}
+            </ul>
+
+            {plan.notes && <p className="plan-notes">{plan.notes}</p>}
+
+            <button className="cta">
+              {plan.billing_cycle === "monthly" ? "Go Pro" : "Go VIP"}
+            </button>
+          </article>
         ))}
       </div>
     </section>
