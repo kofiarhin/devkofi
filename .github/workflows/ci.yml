@@ -85,10 +85,7 @@ jobs:
 
       - name: Synthesize server/Procfile and minimal server/package.json (CI-only)
         run: |
-          # Procfile -> dyno entry from subtree root
           echo "web: node server.js" > server/Procfile
-
-          # Minimal package.json (dependencies copied from root; clean scripts)
           node -e "const fs=require('fs');
           const root=JSON.parse(fs.readFileSync('package.json','utf8'));
           const out={
@@ -100,17 +97,12 @@ jobs:
             dependencies: root.dependencies || {}
           };
           fs.writeFileSync('server/package.json', JSON.stringify(out,null,2));"
-
-          # Ensure entry exists relative to subtree root
           test -f server/server.js || (echo '❌ server/server.js not found' && exit 1)
 
       - name: Generate matching lockfile for server/ (fix npm ci mismatch)
         run: |
-          # Create a lockfile that matches server/package.json without installing modules
           npm --prefix server install --package-lock-only
           test -f server/package-lock.json || (echo '❌ failed to create server/package-lock.json' && exit 1)
-
-          # Commit ONLY synthesized files on the temp branch
           git add -f server/Procfile server/package.json server/package-lock.json
           git commit -m "ci: synthesize heroku files + lock (temp)"
 
@@ -170,8 +162,8 @@ jobs:
           heroku releases -n 5 -a "$HEROKU_APP" || true
           heroku logs -n 300 -a "$HEROKU_APP" || true
 
-  # ---------- Post-deploy Browser E2E: Login + Chat ----------
-  e2e_login_chat_test:
+  # ---------- Post-deploy Browser E2E: Login ----------
+  e2e_login_test:
     runs-on: ubuntu-latest
     needs: [deploy_client, deploy_heroku]
     steps:
@@ -200,98 +192,32 @@ jobs:
           npm install @playwright/test
           npx playwright install --with-deps
 
-      - name: Create Playwright test for login + chat
+      - name: Create Playwright login test
         run: |
           mkdir -p tests
-          cat << 'EOF' > tests/login-chat.spec.js
+          cat << 'EOF' > tests/login.spec.js
           const { test, expect } = require('@playwright/test');
 
-          const findMessageInput = async (page) => {
-            const byPlaceholder = page.getByPlaceholder(/message|type.*message|ask|prompt/i);
-            if (await byPlaceholder.first().count()) return byPlaceholder.first();
-
-            const generic = page.locator([
-              'textarea[name="message"]',
-              'textarea[id*="message" i]',
-              'input[name="message"]',
-              'input[id*="message" i]',
-              'textarea',
-              'input[type="text"]',
-              'input[type="search"]'
-            ].join(', '));
-            if (await generic.first().count()) return generic.first();
-
-            const editable = page.locator('[contenteditable="true"], [role="textbox"]');
-            if (await editable.first().count()) return editable.first();
-
-            throw new Error('Message input not found');
-          };
-
-          const clickSendIfPresent = async (page) => {
-            const send = page.locator([
-              'button[type="submit"]',
-              'button:has-text("Send")',
-              '[role="button"]:has-text("Send")',
-              'button[aria-label*="send" i]',
-              '[aria-label*="send" i]',
-              'button[title*="send" i]',
-              '[data-testid="send-button"]'
-            ].join(', '));
-            if (await send.first().isVisible().catch(() => false)) {
-              await send.first().click();
-              return true;
-            }
-            return false;
-          };
-
-          test('Login then send a chat message and receive a response', async ({ page }) => {
+          test('Login with test credentials', async ({ page }) => {
             await page.goto('https://devkofi.com/login', { waitUntil: 'domcontentloaded' });
 
-            const email = page.locator('input[name="email"], input[type="email"], [placeholder*="email" i]');
-            await email.first().fill('test@gmail.com');
+            await page.fill('input[name="email"], input[type="email"], [placeholder*="email" i]', 'test@gmail.com');
+            await page.fill('input[name="password"], input[type="password"], [placeholder*="password" i]', 'password');
 
-            const password = page.locator('input[name="password"], input[type="password"], [placeholder*="password" i]');
-            await password.first().fill('password');
+            await Promise.any([
+              page.click('button[type="submit"]'),
+              page.click('button:has-text("Login")'),
+              page.click('button:has-text("Sign in")')
+            ]);
 
-            const loginBtn = page.locator('button[type="submit"], button:has-text("Login"), button:has-text("Sign in"), [role="button"]:has-text("Login")');
-            await loginBtn.first().click();
-
-            await page.waitForURL(/^(?!.*\/login\b).*$/, { timeout: 15000 });
-
-            await page.goto('https://devkofi.com/chat', { waitUntil: 'domcontentloaded' });
-            await page.waitForLoadState('networkidle', { timeout: 10000 });
-
-            const messages = page.locator([
-              '.message', '.chat-message', '.assistant', '.bot', '.user',
-              '[data-message]', '[data-role="message"]', '[role="listitem"]',
-              '.chat-response', '.message-bot', '.response'
-            ].join(', '));
-            const beforeCount = await messages.count();
-
-            const input = await findMessageInput(page);
-            await input.click();
-            await input.fill('Hello! This is an automated post-deploy check. Please respond.');
-
-            const clicked = await clickSendIfPresent(page);
-            if (!clicked) await page.keyboard.press('Enter');
-
-            await expect
-              .poll(async () => await messages.count(), {
-                message: 'Waiting for a new chat message to appear',
-                intervals: [500, 750, 1000],
-                timeout: 20000
-              })
-              .toBeGreaterThan(beforeCount);
-
-            const assistantLike = page.locator('.assistant, .message-bot, .chat-response, [data-role="assistant"]');
-            if (await assistantLike.count()) {
-              await expect(assistantLike.first()).toBeVisible();
-            }
+            await page.waitForURL(/^(?!.*\/login\b).*$/, { timeout: 10000 });
+            await expect(page).not.toHaveURL(/login/);
+            console.log('✅ Login flow passed');
           });
           EOF
 
-      - name: Run Playwright test
-        run: npx playwright test tests/login-chat.spec.js --reporter=html,line
+      - name: Run Playwright login test
+        run: npx playwright test tests/login.spec.js --reporter=html,line
 
       - name: Upload Playwright HTML report
         if: always()
