@@ -1,37 +1,115 @@
-#courses {
-  padding-bottom: 3rem;
+/* course-list.styles.scss */
+/* Scoped styles to #course-list only */
+
+#course-list {
+  padding: 24px 0 64px;
+  width: 100%;
+
   .container {
+    width: min(1200px, 92%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    will-change: transform, opacity;
+  }
+
+  .course-item {
+    background: #0f141b;
+    border: 1px solid #1e2633;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+    padding: 0 0 16px;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .course-item:hover {
+    border-color: #2a3447;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  .course-img {
     display: block;
-    .course-item {
-      margin-bottom: 1rem;
-      cursor: pointer;
-      .price {
-        font-size: 1.2rem;
-      }
-      a {
-        color: white;
-        font-size: 1.2rem;
-      }
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    filter: brightness(0.96);
+    backface-visibility: hidden;
+    will-change: transform, filter;
+  }
+
+  .course-title {
+    font-size: 20px;
+    line-height: 1.25;
+    color: #e9eef7;
+    margin: 14px 16px 10px;
+  }
+
+  .course-divider {
+    height: 2px;
+    margin: 0 16px 12px;
+    background: #253043;
+    border-radius: 2px;
+  }
+
+  .price {
+    margin: 0 16px 16px;
+    color: #7fb4ff;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .course-btn {
+    display: block;
+    margin: 0 16px;
+    text-align: center;
+    background: #2563eb;
+    color: #f6f9ff;
+    font-weight: 800;
+    padding: 12px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 160ms ease;
+  }
+
+  .course-btn:hover {
+    background: #1e4fd3;
+  }
+
+  .course-btn:active {
+    transform: translateY(1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .course-img,
+    .course-item,
+    .course-btn,
+    .container {
+      transition: none !important;
+      animation: none !important;
     }
   }
-}
 
-@media (min-width: 600px) {
-  #courses {
+  @media (min-width: 640px) {
     .container {
-      display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
     }
   }
-}
 
-@media (min-width: 960px) {
-  #courses {
+  @media (min-width: 1024px) {
     .container {
-      display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+    }
+    .course-title {
+      font-size: 22px;
+    }
+    .course-btn {
+      padding: 14px 18px;
     }
   }
 }

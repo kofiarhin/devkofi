@@ -1,22 +1,31 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./landing.styles.scss";
 import { title, text, subTitle } from "./landingData";
-import { Link } from "react-router-dom";
 
 const Landing = () => {
   return (
-    <div id="landing">
-      {/* landing-wrapper */}
-      <div className="landing-wrapper">
-        <h1 className="heading center"> {title} </h1>
-        <h2> {subTitle} </h2>
-        <p> {text} </p>
-        <Link to="/courses" className="cta">
-          Browse courses
-        </Link>
+    <section id="landing">
+      <div className="hero">
+        <div className="hero-card">
+          <h1 className="hero-title">{title}</h1>
+          <p className="hero-subtitle">{subTitle}</p>
+          <p className="hero-text">{text}</p>
+          <div className="hero-actions">
+            <Link to="/courses" className="cta-primary">
+              Browse courses
+            </Link>
+          </div>
+        </div>
+
+        <div
+          className="hero-visual"
+          aria-hidden="true"
+          /* set a custom image via CSS var in :root or #landing
+             e.g. --hero-image-url: url('/images/learner.png'); */
+        />
       </div>
-      {/* end landing-wrapper */}
-    </div>
+    </section>
   );
 };
 

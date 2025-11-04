@@ -47,18 +47,18 @@
     },
     {
       "id": 4,
-      "name": "KF Chat App",
-      "description": "A real-time chat application powered by Socket.io and MongoDB, supporting user authentication and private messaging rooms.",
+      "name": "Luxe & Aura",
+      "description": "A luxury salon website offering personalized consultations and high-end hair and beauty services, built with a refined emerald and gold theme.",
       "features": [
-        "Real-time messaging with Socket.io",
-        "JWT-based authentication system",
-        "MongoDB for persistent message storage",
-        "Express backend and modular architecture",
-        "Scalable WebSocket event structure"
+        "Service catalog and booking system",
+        "Dynamic pricing model based on UK averages",
+        "Personalized consultation booking",
+        "Responsive React frontend with SCSS styling",
+        "Deployed via Vercel with optimized performance"
       ],
       "status": "Active",
-      "demoUrl": "https://kfchatapp.onrender.com",
-      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012190/devkofi/pcgqrggvevim1sfsgb7j.jpg"
+      "demoUrl": "https://vercel.com/kofi-arhins-projects/luxe-and-aura",
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1762243209/devkofi/js0k46mgl06m1vkhvl5k.jpg"
     },
     {
       "id": 5,
@@ -77,6 +77,21 @@
     },
     {
       "id": 6,
+      "name": "KF Chat App",
+      "description": "A real-time chat application powered by Socket.io and MongoDB, supporting user authentication and private messaging rooms.",
+      "features": [
+        "Real-time messaging with Socket.io",
+        "JWT-based authentication system",
+        "MongoDB for persistent message storage",
+        "Express backend and modular architecture",
+        "Scalable WebSocket event structure"
+      ],
+      "status": "Active",
+      "demoUrl": "https://kfchatapp.onrender.com",
+      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012190/devkofi/pcgqrggvevim1sfsgb7j.jpg"
+    },
+    {
+      "id": 7,
       "name": "Know Your MPs",
       "description": "A civic data explorer built with React, allowing users to search and view detailed profiles of members of parliament.",
       "features": [
@@ -91,7 +106,7 @@
       "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012854/devkofi/ppp85skwdyyarjfxavti.jpg"
     },
     {
-      "id": 7,
+      "id": 8,
       "name": "JS Doctor-on-Demand",
       "description": "A telehealth app that enables users to schedule doctor appointments with real-time availability tracking and booking management.",
       "features": [
@@ -106,7 +121,7 @@
       "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012561/devkofi/myc7zjr9fium2vqn4mbn.jpg"
     },
     {
-      "id": 8,
+      "id": 9,
       "name": "Movie App",
       "description": "A React-based cinematic explorer using the TMDB API to browse, search, and view movie details in real time.",
       "features": [
@@ -121,7 +136,7 @@
       "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012649/devkofi/tryrn00b92mzutwsle5u.jpg"
     },
     {
-      "id": 9,
+      "id": 10,
       "name": "Quiz App",
       "description": "An interactive movie quiz application powered by the Groq and TMDB APIs for AI-driven question generation.",
       "features": [
@@ -133,21 +148,6 @@
       ],
       "status": "Active",
       "demoUrl": "https://quizapp-devkofi.vercel.app/",
-      "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012978/devkofi/uairiwjpxuuej5mrpwr3.jpg"
-    },
-    {
-      "id": 10,
-      "name": "Luxe & Aura",
-      "description": "A luxury salon website offering personalized consultations and high-end hair and beauty services, built with a refined emerald and gold theme.",
-      "features": [
-        "Service catalog and booking system",
-        "Dynamic pricing model based on UK averages",
-        "Personalized consultation booking",
-        "Responsive React frontend with SCSS styling",
-        "Deployed via Vercel with optimized performance"
-      ],
-      "status": "Active",
-      "demoUrl": "https://vercel.com/kofi-arhins-projects/luxe-and-aura",
       "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761012978/devkofi/uairiwjpxuuej5mrpwr3.jpg"
     }
   ]
