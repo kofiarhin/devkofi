@@ -5,6 +5,13 @@
     .course-item {
       margin-bottom: 1rem;
       cursor: pointer;
+      .price {
+        font-size: 1.2rem;
+      }
+      a {
+        color: white;
+        font-size: 1.2rem;
+      }
     }
   }
 }
