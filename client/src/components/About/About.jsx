@@ -1,5 +1,6 @@
 import "./about.styles.scss";
 import { motion } from "framer-motion";
+import { deskSetupImage } from "../../constants/constants";
 
 const textVariant = {
   hidden: { opacity: 0, x: -50 },
@@ -44,20 +45,21 @@ const About = () => {
 
         {/* Video Section */}
         <motion.div
-          className="video-wrapper"
+          className="image-wrapper"
           variants={videoVariant}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
         >
           <div className="video-container">
-            <iframe
+            {/* <iframe
               src="https://www.youtube.com/embed/b5wDQTlpeFI?modestbranding=1&rel=0&playsinline=1"
               title="Learn Test-Driven Development (TDD)"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
-            ></iframe>
+            ></iframe> */}
+            <img src={deskSetupImage} alt="" />
           </div>
         </motion.div>
       </div>

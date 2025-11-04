@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Typewriter from "../TypeWriter/TypeWrite";
 import { text } from "./overviewData";
+import { deskSetupImage, profileImage } from "../../constants/constants";
 
 // Text animation variant
 const textVariant = {
@@ -49,10 +50,7 @@ const Overview = () => {
           viewport={{ once: true, amount: 0.3 }}
           whileHover={{ scale: 1.05, rotate: -2 }}
         >
-          <img
-            src="https://res.cloudinary.com/dlsiabgiw/image/upload/v1753669719/devkofi/tri8gqr0qksux018d1bj.png"
-            alt="Overview"
-          />
+          <img src={profileImage} alt="Overview" />
         </motion.div>
 
         {/* Text Section with Animation */}

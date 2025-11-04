@@ -32,3 +32,6 @@ export const defaultImage =
 
 export const codingImage =
   "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761939315/devkofi/tbie9yktdcrbxgyeei3x.jpg";
+
+export const deskSetupImage =
+  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1753669719/devkofi/tri8gqr0qksux018d1bj.png";
