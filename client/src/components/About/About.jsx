@@ -37,6 +37,9 @@ const About = () => {
             A proven rhythm for building and shipping fast. Write with intent.
             Test with rigor. Deploy with confidence.
           </p>
+          <a href="/courses" className="cta">
+            Browse Courses
+          </a>
         </motion.div>
 
         {/* Video Section */}

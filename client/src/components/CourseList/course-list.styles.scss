@@ -5,13 +5,6 @@
     .course-item {
       margin-bottom: 1rem;
       cursor: pointer;
-      transition: all ease-in-out 300ms;
-      &:hover {
-        border: 1px solid white;
-        padding: 0.5rem;
-        border-radius: 5px;
-        transform: scale(1.02);
-      }
     }
   }
 }

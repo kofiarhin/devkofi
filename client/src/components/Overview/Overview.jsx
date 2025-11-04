@@ -63,10 +63,8 @@ const Overview = () => {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <h1 className="heading">
-            Your Mentorship....<span>Your way.... </span>
-          </h1>
-          <Typewriter text={text} />
+          <h1 className="heading">New to Web Dev?...</h1>
+          <p> {text} </p>
           <Link to="/register" className="cta">
             Join Now
           </Link>

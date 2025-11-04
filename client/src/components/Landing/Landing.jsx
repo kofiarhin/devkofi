@@ -1,44 +1,22 @@
+import React from "react";
 import "./landing.styles.scss";
+import { title, text, subTitle } from "./landingData";
 import { Link } from "react-router-dom";
-import { profileImage } from "../../constants/constants";
-import { title, subTitle, text } from "./landingData";
 
 const Landing = () => {
   return (
-    <section id="landing" aria-labelledby="landing-title">
-      {/* Ambient background orbs */}
-
+    <div id="landing">
+      {/* landing-wrapper */}
       <div className="landing-wrapper">
-        {/* TEXT */}
-        <div className="text-wrapper">
-          <h1 className="heading" id="landing-title">
-            {title}
-          </h1>
-          <h2 className="subtitle">{subTitle}</h2>
-          <p className="body">{text}</p>
-
-          <span className="accent-underline" aria-hidden="true" />
-
-          <div className="cta-wrapper">
-            <Link to="/courses">Browse Courses</Link>
-          </div>
-        </div>
-
-        {/* IMAGE */}
-        <div className="image-wrapper">
-          <div className="image-frame">
-            <img
-              src={profileImage}
-              alt="Kofi portrait"
-              loading="lazy"
-              decoding="async"
-              sizes="(max-width: 980px) 100vw, 520px"
-            />
-            <div className="image-glow" aria-hidden="true" />
-          </div>
-        </div>
+        <h1 className="heading center"> {title} </h1>
+        <h2> {subTitle} </h2>
+        <p> {text} </p>
+        <Link to="/courses" className="cta">
+          Browse courses
+        </Link>
       </div>
-    </section>
+      {/* end landing-wrapper */}
+    </div>
   );
 };
 

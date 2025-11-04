@@ -1,46 +1,29 @@
 #landing {
   margin-bottom: 3rem;
-  .text-wrapper {
-    margin-bottom: 2rem;
-    text-align: center;
+  text-align: center;
+  .landing-wrapper {
+    max-width: 700px;
+    margin: 3rem auto;
+    min-height: 60vh;
+
     h2 {
       margin-bottom: 1rem;
     }
     p {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
     }
-    a {
-      margin-bottom: 1rem;
-      display: inline-block;
-      background: orange;
-      padding: 0.8rem 2rem;
-      cursor: pointer;
-      color: white;
-    }
-  }
 
-  a {
-    color: white;
-    text-decoration: none;
+    a {
+      color: white;
+      text-decoration: none;
+    }
   }
 }
 
 @media (min-width: 800px) {
   #landing {
     .landing-wrapper {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      align-items: center;
-      .heading {
-        font-size: 2rem;
-      }
-      .text-wrapper {
-        text-align: left;
-        p {
-          font-size: 1.2rem;
-        }
-      }
+      max-width: 800px;
     }
   }
 }
