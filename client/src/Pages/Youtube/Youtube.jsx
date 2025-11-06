@@ -10,12 +10,7 @@ const Youtube = () => {
   if (isLoading) {
     return <Spinner />;
   }
-  return (
-    <div className="container">
-      <h1 className="heading center">Youtube Library </h1>
-      {data && <YoutubeList data={data} />}
-    </div>
-  );
+  return <div className="container">{data && <YoutubeList data={data} />}</div>;
 };
 
 export default Youtube;

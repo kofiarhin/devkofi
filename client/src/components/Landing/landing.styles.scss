@@ -16,13 +16,12 @@
     flex-direction: column-reverse;
     gap: 16px;
     align-items: center;
-    background-color: blue;
   }
 
   .hero-card {
     background: var(--card);
     color: var(--text);
-    padding: 18px;
+    padding: 2rem 1rem;
     border-radius: 10px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     border: 1px solid #222226;
@@ -36,11 +35,13 @@
     margin: 0 0 6px;
   }
 
-  .hero-subtitle {
-    font-size: 14px;
-    font-weight: 700;
-    color: #d6d6db;
-    margin: 0 0 6px;
+  .sub-heading {
+    margin-bottom: 1rem;
+  }
+
+  .text {
+    text-align: left;
+    margin-bottom: 1rem;
   }
 
   .hero-text {

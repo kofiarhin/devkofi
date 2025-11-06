@@ -84,7 +84,7 @@ const ProjectList = ({ data = [] }) => {
                     href={demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-cta shimmer"
+                    className="btn-cta shimmer cta"
                   >
                     Live demo
                   </a>

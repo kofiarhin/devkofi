@@ -1,9 +1,13 @@
 import { useEffect } from "react";
 import useCourseQuery from "../../hooks/useCourseQuery";
 import CourseList from "../../components/CourseList/CourseList";
+import Spinner from "../../components/Spinner/Spinner";
 const Courses = () => {
-  const { data } = useCourseQuery();
+  const { data, isLoading } = useCourseQuery();
 
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <div>
       <h1 className="heading center">Course Library</h1>

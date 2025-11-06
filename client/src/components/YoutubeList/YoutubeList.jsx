@@ -20,7 +20,7 @@ const YoutubeList = ({ data }) => {
               href={`https://www.youtube.com/watch?v=${id}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="youtube-link"
+              className="cta"
             >
               Watch on YouTube
             </a>

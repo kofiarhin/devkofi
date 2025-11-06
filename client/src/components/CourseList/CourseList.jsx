@@ -73,7 +73,7 @@ const CourseList = ({ courses = [] }) => {
               </p>
 
               <motion.div whileHover={{ scale: 1.01 }}>
-                <Link className="course-btn" to={`/courses/${course.id}`}>
+                <Link className="cta" to={`/courses/${course.id}`}>
                   view More
                 </Link>
               </motion.div>
