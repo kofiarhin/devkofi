@@ -8,9 +8,9 @@ const Landing = () => {
     <section id="landing">
       <div className="hero">
         <div className="hero-card">
-          <h1 className="hero-title">{title}</h1>
-          <p className="hero-subtitle">{subTitle}</p>
-          <p className="hero-text">{text}</p>
+          <h1 className="heading">{title}</h1>
+          <h2 className="sub-heading">{subTitle}</h2>
+          <p className="text">{text}</p>
           <div className="hero-actions">
             <Link to="/courses" className="cta-primary">
               Browse courses
