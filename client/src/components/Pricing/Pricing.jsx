@@ -14,11 +14,7 @@ const Pricing = () => {
   return (
     <section className="pricing">
       <header className="pricing-header">
-        <h2>DevKofi Pricing</h2>
-        <p>
-          Choose a course to own forever or unlock all content with{" "}
-          <strong>Pro</strong> or <strong>VIP</strong> membership.
-        </p>
+        <h1 className="heading center">Pricing</h1>
       </header>
 
       <div className="plan-list">
