@@ -1,24 +1,9 @@
-import { useState } from "react";
-import "./playground.styles.scss";
-import Upload from "../../components/Upload/Upload";
-const Playground = () => {
-  const [trapEmpty, setTrapEmpty] = useState(false);
-  console.log(trapEmpty);
+import React from "react";
 
+const Playground = () => {
   return (
     <div>
-      <div
-        id="playground"
-        onMouseEnter={() => setTrapEmpty(false)}
-        onMouseLeave={() => setTrapEmpty(true)}
-        className={trapEmpty ? "empty" : ""}
-      >
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore saepe
-          veritatis omnis nesciunt fugiat reiciendis tempore in commodi libero
-          facere.
-        </p>
-      </div>
+      <h1 className="heading center">Playground</h1>
     </div>
   );
 };
