@@ -29,7 +29,19 @@ test.describe("Courses Page", () => {
     // get list of courses
     const courseItems = page.locator("#course-list .course-item");
 
+    console.log({ courseItems });
+
     await expect(courseItems).toHaveCount(4);
-    await page.waitForTimeout(5000);
+  });
+});
+
+test.describe("About Page", () => {
+  test("about page displaying properly", async ({ page }) => {
+    await page.goto(`${BASE}/about`);
+
+    // get about heading
+    const heading = await page.locator(".heading .center");
+
+    await expect(heading).toBeVisible();
   });
 });
