@@ -16,8 +16,8 @@ const Home = () => {
     <div id="home" className="container">
       <Landing />
       <Overview />
-      <About />
       <Scale />
+      <About />
       <IntegrateAI />
       <Pricing />
       <Faq />

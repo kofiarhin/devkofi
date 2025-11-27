@@ -1,9 +1,10 @@
 import React from "react";
+import Upload from "../../components/Upload/Upload";
 
 const Playground = () => {
   return (
     <div>
-      <h1 className="heading center">Playground!!</h1>
+      <Upload />
     </div>
   );
 };

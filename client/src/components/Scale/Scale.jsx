@@ -1,38 +1,29 @@
+import { codeBugImage } from "../../constants/constants";
 import "./scale.styles.scss";
-import { codeSnippetImage } from "../../constants/constants";
-import { Link } from "react-router-dom";
-// import { textVariant, imageVariant } from "../../animations/animationVariants";
-import { textVariant, imageVariant } from "../Animations/animationVariants";
-// import AnimatedSection from "../AnimatedSection";
-import AnimatedSection from "../Animations/AnimatedSection";
-
 const Scale = () => {
   return (
-    <div id="scale">
-      <div className="scale-wrapper">
-        <AnimatedSection variant={textVariant} className="text-wrapper">
-          <h1 className="heading">
-            Code Meant to <br /> Scale...
-          </h1>
+    <section id="scale">
+      <div className="container">
+        {/* text-wrapper */}
+        <div className="text-wrapper">
+          <h1 className="heading">Write code that scales</h1>
           <p>
-            A deliberate, disciplined mindset for building systems that
-            last—design with foresight, architect with clarity, refactor with
-            purpose, and ship solutions that grow without breaking.
+            A personalized approach to guidance that adapts to your pace, your
+            goals, and your style of learning. Whether you seek direction,
+            accountability, or breakthrough strategies, this mentorship is built
+            around you—flexible, focused, and designed to unlock your next
+            level.
           </p>
-          <Link to="/register" className="cta">
-            Join Now
-          </Link>
-        </AnimatedSection>
+          <button className="cta">Join Now</button>
+        </div>
+        {/* end text-wrapper */}
 
-        <AnimatedSection
-          variant={imageVariant}
-          className="image-wrapper"
-          hoverEffect={{ scale: 1.05, rotate: -2 }}
-        >
-          <img src={codeSnippetImage} alt="Code Snippet" />
-        </AnimatedSection>
+        {/* image-wrapper */}
+        <div className="image-wrapper">
+          <img src={codeBugImage} alt="" />
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
