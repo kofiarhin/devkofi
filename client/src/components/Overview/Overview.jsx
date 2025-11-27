@@ -50,7 +50,7 @@ const Overview = () => {
           viewport={{ once: true, amount: 0.3 }}
           whileHover={{ scale: 1.05, rotate: -2 }}
         >
-          <img src={profileImage} alt="Overview" />
+          <img src={deskSetupImage} alt="Overview" />
         </motion.div>
 
         {/* Text Section with Animation */}
@@ -61,7 +61,7 @@ const Overview = () => {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <h1 className="heading">New to Web Dev?...</h1>
+          <h1 className="heading">Your mentorship your way...</h1>
           <p> {text} </p>
           <Link to="/register" className="cta">
             Join Now

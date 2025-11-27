@@ -1,29 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { profileImage } from "../../constants/constants";
 import "./landing.styles.scss";
-import { title, text, subTitle } from "./landingData";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   return (
     <section id="landing">
-      <div className="hero">
-        <div className="hero-card">
-          <h1 className="heading">{title}</h1>
-          <h2 className="sub-heading">{subTitle}</h2>
-          <p className="text">{text}</p>
-          <div className="hero-actions">
-            <Link to="/courses" className="cta-primary">
-              Browse courses
-            </Link>
-          </div>
+      <div className="container">
+        {/* text-wrapper */}
+        <div className="text-wrapper">
+          <h1 className="heading">Mern stack 2025</h1>
+          <h2 className="sub-heading">
+            LAND A NEW CAREER WITH NEXT-LEVEL MENTORSHIP
+          </h2>
+          <p className="slug">
+            Yes, you can. Start your journey to a tech car eer in high-demand
+            fields like software engineering or data. With expert mentorship and
+            hands-on MERN stack training, you can be job-ready in just 6 months.
+          </p>
+          <Link to="/register" className="cta">
+            Register Now!
+          </Link>
         </div>
-
-        <div
-          className="hero-visual"
-          aria-hidden="true"
-          /* set a custom image via CSS var in :root or #landing
-             e.g. --hero-image-url: url('/images/learner.png'); */
-        />
+        {/* end text-wrapper */}
+        <div className="img-wrapper">
+          <img src={profileImage} alt="" />
+        </div>
+        {/* end img-wrapper */}
       </div>
     </section>
   );
