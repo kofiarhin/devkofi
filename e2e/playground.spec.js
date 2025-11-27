@@ -29,8 +29,6 @@ test.describe("Courses Page", () => {
     // get list of courses
     const courseItems = page.locator("#course-list .course-item");
 
-    console.log({ courseItems });
-
     await expect(courseItems).toHaveCount(4);
   });
 });
