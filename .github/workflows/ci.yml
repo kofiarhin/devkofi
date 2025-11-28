@@ -178,8 +178,24 @@ jobs:
           npm install -D @playwright/test
           npx playwright install --with-deps chromium
 
-      - name: Create production Playwright test
+      - name: Create Playwright Config & Test
         run: |
+          # 1. Generate Config (Required for --project=chromium)
+          cat > playwright.config.js <<'EOF'
+          import { defineConfig, devices } from '@playwright/test';
+          export default defineConfig({
+            testDir: '.',
+            use: { trace: 'on-first-retry' },
+            projects: [
+              {
+                name: 'chromium',
+                use: { ...devices['Desktop Chrome'] },
+              },
+            ],
+          });
+          EOF
+
+          # 2. Generate Spec
           cat > production.spec.js <<'EOF'
           import { test, expect } from '@playwright/test';
           test('devkofi.com returns 200', async ({ page }) => {
