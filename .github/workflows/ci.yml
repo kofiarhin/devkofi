@@ -161,3 +161,34 @@ jobs:
         run: |
           heroku releases -n 5 -a "$HEROKU_APP" || true
           heroku logs -n 300 -a "$HEROKU_APP" || true
+
+  # ---------- Verify Live Deployment (Playwright) ----------
+  verify_live:
+    runs-on: ubuntu-latest
+    needs: [deploy_client, deploy_heroku]
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright & Chromium
+        run: |
+          npm init -y
+          npm install -D @playwright/test
+          npx playwright install --with-deps chromium
+
+      - name: Create production Playwright test
+        run: |
+          cat > production.spec.js <<'EOF'
+          import { test, expect } from '@playwright/test';
+          test('devkofi.com returns 200', async ({ page }) => {
+            const response = await page.goto('https://devkofi.com', { waitUntil: 'domcontentloaded', timeout: 30000 });
+            console.log('Status Code:', response?.status());
+            expect(response?.status()).toBe(200);
+          });
+          EOF
+
+      - name: Run Playwright smoke test
+        run: |
+          npx playwright test production.spec.js --project=chromium --reporter=list
