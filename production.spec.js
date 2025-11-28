@@ -16,4 +16,9 @@ test.describe("Production Smoke Test", () => {
 
     // check for visible UI element (edit based on your app)
   });
+
+  test("server response correctly", async ({ request }) => {
+    const result = await request.get(`${SERVER_URL}/api/health`);
+    expect(result.status()).toBe(200);
+  });
 });
