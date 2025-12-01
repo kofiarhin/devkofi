@@ -1,5 +1,6 @@
 import { codeBugImage } from "../../constants/constants";
 import "./scale.styles.scss";
+import { Link } from "react-router-dom";
 const Scale = () => {
   return (
     <section id="scale">
@@ -14,7 +15,8 @@ const Scale = () => {
             around you—flexible, focused, and designed to unlock your next
             level.
           </p>
-          <button className="cta">Join Now</button>
+          {/* <button className="cta">Join Now</button> */}
+          <Link className="cta">Join Now</Link>
         </div>
         {/* end text-wrapper */}
 
