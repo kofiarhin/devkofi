@@ -1,136 +1,164 @@
-@use "../../styles/mixins" as *;
+/* Define local fallback or expect global variable */
+:root {
+  --header-bg: rgba(10, 10, 10, 0.9);
+  --text-main: #ffffff;
+  --text-muted: #a3a3a3;
+  --border-color: rgba(255, 255, 255, 0.1);
+}
 
 .header {
   position: sticky;
   top: 0;
-  z-index: $z-sticky;
-  background: rgba($color-bg, 0.9);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 1rem 0rem;
+  z-index: 1000;
+  background: var(--header-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  padding: 0.8rem 0;
 
   .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    .center-nav {
-      display: flex;
-      align-items: center;
-
-      .menu {
-        margin-left: 1rem;
-        font-size: 1.5rem;
-        cursor: pointer;
-      }
-
-      button {
-        @include button-primary;
-        font-weight: 800;
-      }
-    }
-
-    nav {
-      display: none;
-    }
-
+    /* --- LOGO AREA --- */
     .logo-wrapper {
       display: flex;
       align-items: center;
+      gap: 0.8rem;
+      text-decoration: none;
 
       img {
-        width: 50px;
-        border-radius: 50px;
-        border: 2px solid $color-primary;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--primary-color);
+      }
+
+      .logo {
+        text-decoration: none;
+
+        h2 {
+          font-size: 1.25rem;
+          color: var(--text-main);
+          font-weight: 700;
+          margin: 0;
+
+          span {
+            color: var(--primary-color);
+          }
+        }
+      }
+    }
+
+    /* --- MOBILE CONTROLS (Hamburger + Mobile CTA) --- */
+    .center-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      button {
+        background: var(--primary-color);
+        color: #000;
+        font-weight: 700;
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
         cursor: pointer;
       }
 
-      a {
-        display: inline-block;
-        color: $text-strong;
-        margin-left: 0.8rem;
-        font-size: $body-sm;
-        text-decoration: none;
+      .menu {
+        font-size: 1.5rem;
+        color: var(--text-main);
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+          color: var(--primary-color);
+        }
       }
+    }
+
+    /* --- DESKTOP NAV (Hidden on Mobile) --- */
+    nav {
+      display: none;
     }
   }
 }
 
+/* =========================================
+   DESKTOP BREAKPOINT (min-width: 800px)
+   ========================================= */
 @media (min-width: 800px) {
   .header {
+    padding: 1rem 0;
+
     .container {
+      /* Hide Mobile Controls */
       .center-nav {
         display: none;
       }
 
+      /* Show Desktop Nav */
       nav {
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
 
         a {
-          color: $text-strong;
           text-decoration: none;
-          display: inline-block;
-          margin-left: 1rem;
+          color: var(--text-muted);
+          font-size: 0.95rem;
+          font-weight: 500;
+          transition: color 0.2s ease;
+
+          &:hover,
+          &.active {
+            color: var(--primary-color);
+          }
         }
 
-        button {
-          @include button-secondary;
-          margin-left: 2rem;
+        /* Primary Call to Action */
+        .join {
+          background-color: var(--primary-color);
+          color: #000; // Black text on Gold/Primary
+          font-weight: 700;
+          padding: 0.7rem 1.8rem;
+          border-radius: 6px;
+          border: none;
+          cursor: pointer;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25); // Adjust glow color if needed
+            color: #000;
+          }
         }
-      }
-    }
-  }
-}
 
-/* ===== Tablet Fix (800px–1024px) ===== */
-@media (min-width: 800px) and (max-width: 1024px) {
-  .header .container {
-    padding: 0.6rem 1rem;
+        /* Secondary Button (Logout) */
+        .btn-logout {
+          background: transparent;
+          color: var(--text-main);
+          font-weight: 600;
+          padding: 0.6rem 1.5rem;
+          border: 1px solid var(--border-color);
+          border-radius: 6px;
+          cursor: pointer;
+          transition: all 0.2s ease;
 
-    .logo-wrapper img {
-      width: 40px;
-      height: 40px;
-    }
-
-    .logo-wrapper a {
-      font-size: 1rem;
-    }
-
-    .center-nav {
-      display: flex !important;
-      gap: 0.5rem;
-
-      button {
-        display: none; // hide mobile CTA
-      }
-
-      .menu {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        font-size: 1.1rem;
-        margin-left: 0;
-        border-radius: $radius-md;
-        border: 1px solid rgba($text-strong, 0.14);
-        background: rgba($text-strong, 0.05);
-      }
-    }
-
-    nav {
-      display: flex !important;
-      align-items: center;
-      gap: 0.7rem;
-
-      a {
-        font-size: 0.95rem;
-        margin-left: 2rem;
-      }
-
-      .join {
-        padding: 0.5rem 1.1rem;
-        font-size: 0.95rem;
+          &:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.03);
+          }
+        }
       }
     }
   }
