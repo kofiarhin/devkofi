@@ -7,16 +7,14 @@ import SideNav from "../SideNav/SideNav";
 import { profileImage } from "../../constants/constants";
 import { logoutUser } from "../../redux/auth/authSlice";
 
-// header
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  // Only show playground in dev, but strictly restrict nav items
   const isDevEnvironment = import.meta.env.MODE !== "production";
 
-  const handleToggleNav = () => {
-    dispatch(toggleNav());
-  };
+  const handleToggleNav = () => dispatch(toggleNav());
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -30,38 +28,38 @@ const Header = () => {
         <div className="container">
           <div className="logo-wrapper">
             <Link to="/">
-              <img src={profileImage} alt="" />
+              <img src={profileImage} alt="DevKofi Profile" />
             </Link>
             <Link to="/" className="logo">
               <h2>
-                Dev<span>Kofi</span>{" "}
+                Dev<span>Kofi</span>
               </h2>
             </Link>
           </div>
 
+          {/* Mobile Actions */}
           <div className="center-nav">
-            {user ? (
-              <button onClick={handleLogout}> Logout</button>
-            ) : (
-              <button onClick={() => navigate("/register")}> Join Now!</button>
+            {!user && (
+              <button onClick={() => navigate("/register")}>Join Now</button>
             )}
-
             <FaBars onClick={handleToggleNav} className="menu" />
           </div>
+
+          {/* Desktop Nav - CLEANED UP */}
           <nav>
             <Link to="/">Home</Link>
             <Link to="/courses">Courses</Link>
             <Link to="/projects">Projects</Link>
-            <Link to="/youtube"> Youtube</Link>
-            <Link to="/chat">Chat</Link>
-            <Link to="about-me">About</Link>
-            {/* <Link to="/templates">Templates</Link> */}
-            <Link to="/contact">Contact</Link>
-            {isDevEnvironment ? <Link to="/playground">Playground</Link> : null}
+            {/* Moved Youtube/Chat/About/Contact to Footer or SideNav to reduce noise */}
+
+            {isDevEnvironment && <Link to="/playground">Playground</Link>}
+
             {user ? (
               <>
                 <Link to="/portal">Portal</Link>
-                <button onClick={handleLogout}> Logout</button>
+                <button onClick={handleLogout} className="btn-logout">
+                  Logout
+                </button>
               </>
             ) : (
               <>
