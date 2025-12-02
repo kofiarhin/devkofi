@@ -9,22 +9,24 @@ const Landing = () => {
       <div className="container">
         {/* text-wrapper */}
         <div className="text-wrapper">
-          <h1 className="heading">Mern stack 2025</h1>
+          <h1 className="heading">
+            MERN Stack <span className="highlight">2025</span>
+          </h1>
           <h2 className="sub-heading">
             LAND A NEW CAREER WITH NEXT-LEVEL MENTORSHIP
           </h2>
           <p className="slug">
-            Yes, you can. Start your journey to a tech car eer in high-demand
+            Yes, you can. Start your journey to a tech career in high-demand
             fields like software engineering or data. With expert mentorship and
             hands-on MERN stack training, you can be job-ready in just 6 months.
           </p>
           <Link to="/register" className="cta">
-            Register Now!
+            Register Now
           </Link>
         </div>
         {/* end text-wrapper */}
         <div className="img-wrapper">
-          <img src={profileImage} alt="" />
+          <img src={profileImage} alt="DevKofi Mentor" />
         </div>
         {/* end img-wrapper */}
       </div>
