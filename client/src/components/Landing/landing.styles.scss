@@ -1,31 +1,101 @@
+/* landing.styles.scss */
+
+// 1. Define Animations (Top of file)
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+// 2. Main Styling
 #landing {
   .container {
+    // Mobile Layout (Default)
     .text-wrapper {
       margin-bottom: 2rem;
+
       .heading {
         font-size: 3rem;
         text-transform: capitalize;
         margin-bottom: 1rem !important;
+
+        // Animation: Slide up immediately
+        animation: fadeInUp 0.8s ease-out both;
       }
+
       .sub-heading {
         margin-bottom: 1rem;
+
+        // Animation: Slide up with 0.1s delay
+        animation: fadeInUp 0.8s ease-out 0.1s both;
       }
+
       .slug {
         margin-bottom: 1rem;
+
+        // Animation: Slide up with 0.2s delay
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+      }
+
+      // If you have specific button styles, they go here.
+      // We target the class 'cta' to animate it.
+      .cta {
+        display: inline-block; // Ensure it respects transform
+
+        // Animation: Slide up with 0.3s delay
+        animation: fadeInUp 0.8s ease-out 0.3s both;
+      }
+    }
+
+    // Target the image wrapper for the float effect
+    .img-wrapper {
+      img {
+        max-width: 100%; // Ensure responsive
+        height: auto;
+
+        // Animation: Continuous float
+        animation: float 6s ease-in-out infinite;
       }
     }
   }
 }
 
+// 3. Desktop Layout (Your existing Media Query)
 @media (min-width: 800px) {
   #landing {
     .container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
+
       .text-wrapper {
         display: grid;
         place-content: center;
+        // Reset margin for grid layout if needed, or keep existing
+      }
+
+      // Ensure image aligns correctly in grid
+      .img-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
