@@ -1,204 +1,202 @@
-/* pricing.styles.scss */
-/* DevKofi Dark Theme — Clean, Modern, Premium Look */
-/* Compatible with your existing JSX component */
-/* No nesting beyond one level, fully responsive */
+#pricing {
+  // 1. Local Scoped Variables (Won't leak to other files)
+  $brand-yellow: #f4d03f;
+  $brand-black: #0a0a0a;
+  $brand-dark-gray: #1a1a1a;
+  $text-light: #f5f5f5;
+  $text-dim: #cccccc;
 
-:root {
-  --bg: #0b0d12;
-  --panel: #151923;
-  --panel-2: #1a2030;
-  --text: #eef1f7;
-  --muted: #9aa3b2;
-  --border: #2a3242;
-  --accent: #ffd34d; /* gold accent */
-  --success: #33d399; /* green checkmarks */
-  --shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
-}
-
-/* ====== SECTION WRAPPER ====== */
-.pricing {
-  background: var(--bg);
-  color: var(--text);
-  padding: 60px 16px 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-/* ====== HEADER ====== */
-.pricing-header {
-  max-width: 900px;
-  margin-bottom: 40px;
-}
-.pricing-header h2 {
-  font-size: 42px;
-  font-weight: 800;
-  margin-bottom: 10px;
-}
-.pricing-header p {
-  color: var(--muted);
-  font-size: 17px;
-  line-height: 1.5;
-}
-
-/* ====== GRID LAYOUT ====== */
-.plan-list {
-  max-width: 1200px;
+  // 2. Component Styles
+  background-color: $brand-black;
+  color: $text-light;
+  padding: 4rem 1.5rem;
   width: 100%;
-  display: grid;
-  gap: 24px;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 768px) {
-  .plan-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .plan-list {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* ====== PLAN CARD ====== */
-.plan-card {
-  background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  padding: 32px 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  min-height: 520px;
-}
-
-.plan-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
-}
-
-/* Highlight Yearly/VIP */
-.plan-card.yearly {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
-}
-.plan-card.monthly {
-  outline: 1px solid var(--border);
-}
-
-/* ====== TITLE ====== */
-.plan-name {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-/* ====== PRICE SECTION ====== */
-.plan-price-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.plan-price {
-  font-size: 46px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-
-.plan-cycle {
-  color: var(--muted);
-  font-size: 14px;
-}
-
-/* ====== DISCOUNT BADGE ====== */
-.badge {
-  align-self: center;
-  margin: 8px 0 14px;
-  font-size: 13px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px dashed var(--accent);
-  color: var(--accent);
-  background: rgba(255, 211, 77, 0.05);
-}
-
-/* ====== FEATURES LIST ====== */
-.plan-features {
-  list-style: none;
-  padding: 0;
-  margin: 12px 0 18px;
-  text-align: left;
-}
-
-.plan-features li {
   position: relative;
-  padding-left: 28px;
-  margin: 12px 0;
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--text);
-}
+  box-sizing: border-box;
 
-.plan-features li::before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: var(--success);
-  font-weight: 700;
-  font-size: 16px;
-}
+  // Reset basic elements strictly within this component to prevent global conflicts
+  * {
+    box-sizing: border-box;
+  }
 
-/* ====== NOTES ====== */
-.plan-notes {
-  color: var(--muted);
-  font-size: 13px;
-  text-align: center;
-  margin-top: 8px;
-  line-height: 1.4;
-}
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
 
-/* ====== CTA BUTTON ====== */
-.cta {
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-  border: 2px solid var(--accent);
-  color: var(--accent);
-  background: transparent;
-  border-radius: 999px;
-  padding: 12px 16px;
-  font-weight: 800;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  margin-top: auto;
-}
+  .header-wrapper {
+    text-align: center;
+    margin-bottom: 3rem;
 
-.cta:hover {
-  background: var(--accent);
-  color: #0b0d12;
-  opacity: 0.98;
-  box-shadow: 0 6px 18px rgba(255, 211, 77, 0.25);
-}
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: $brand-yellow;
+      line-height: 1.2;
+    }
 
-.cta:active {
-  transform: translateY(1px);
-}
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: $text-dim;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+  }
 
-/* ====== ONE-TIME CARD (SINGLE COURSE) ====== */
-.plan-card.one-time {
-  background: linear-gradient(180deg, #141820 0%, #191f2a 100%);
-}
-.plan-card.one-time:hover {
-  outline: 1px solid var(--accent);
+  .pricing-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr; // Mobile first default
+  }
+
+  .pricing-card {
+    background-color: $brand-dark-gray;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      border-color: $brand-yellow;
+    }
+
+    // "Popular" card styling
+    &.popular {
+      border: 2px solid $brand-yellow;
+      background-color: lighten($brand-dark-gray, 2%);
+
+      .badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: $brand-yellow;
+        color: $brand-black;
+        font-weight: 700;
+        padding: 0.25rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+    }
+
+    .card-header {
+      border-bottom: 1px solid #333;
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
+
+      .plan-title {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        color: $text-light;
+      }
+
+      .price-wrapper {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+
+        .amount {
+          font-size: 2.5rem;
+          font-weight: 700;
+          color: #fff;
+        }
+
+        .frequency {
+          color: $text-dim;
+          font-size: 0.9rem;
+        }
+      }
+
+      .description {
+        color: $text-dim;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 0;
+      }
+    }
+
+    .features-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem 0;
+      flex-grow: 1;
+
+      .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        color: #ddd;
+        line-height: 1.4;
+
+        .check-icon {
+          color: $brand-yellow;
+          flex-shrink: 0;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .card-footer {
+      .cta-button {
+        display: block;
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: background 0.2s ease, color 0.2s ease;
+
+        // Button Default (Outline)
+        border: 1px solid $brand-yellow;
+        color: $brand-yellow;
+        background: transparent;
+
+        &:hover {
+          background: rgba(244, 208, 63, 0.1);
+        }
+      }
+    }
+
+    // Override button for Popular card
+    &.popular {
+      .card-footer .cta-button {
+        background: $brand-yellow;
+        color: $brand-black;
+
+        &:hover {
+          background: darken($brand-yellow, 10%);
+        }
+      }
+    }
+  }
+
+  // 3. Desktop Media Query (Nested inside #pricing)
+  @media (min-width: 900px) {
+    .pricing-grid {
+      grid-template-columns: repeat(3, 1fr);
+      align-items: start;
+    }
+
+    .pricing-card.popular {
+      transform: scale(1.05);
+      z-index: 2;
+
+      &:hover {
+        transform: scale(1.08);
+      }
+    }
+  }
 }

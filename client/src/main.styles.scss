@@ -10,18 +10,24 @@
   --color-bg: #0f0f0f;
   --color-text: #eaeaea;
 
-  --primary-color: #90870d; /* Bright Green */
-  --primary-color-dark: #388e3c;
+  --primary-color: #a3e635;
+  /* Vibrant Lime Green */
+  --primary-color-dark: #4d7c0f;
+  --primary-color-neon: #ccff00;
+  /* Neon interaction color */
 
-  --color-blue: #2196f3; /* Vibrant Blue */
-  --color-yellow: #ffeb3b; /* Sunny Yellow */
+  --color-blue: #3b82f6;
+  /* Modern Blue */
+  --color-yellow: #ffeb3b;
+  /* Sunny Yellow */
 
   --color-card-bg: #1e1e1e;
   --color-input-bg: #2a2a2a;
   --color-border: #333;
 
   --scroll-track: #121212;
-  --scroll-thumb: #4caf50; /* dynamic */
+  --scroll-thumb: #4caf50;
+  /* dynamic */
 }
 
 /* ---------------------------------------
@@ -50,9 +56,11 @@ body {
   &::-webkit-scrollbar {
     width: 8px;
   }
+
   &::-webkit-scrollbar-track {
     background-color: var(--scroll-track);
   }
+
   &::-webkit-scrollbar-thumb {
     background-color: var(--scroll-thumb);
     border-radius: 4px;
@@ -89,6 +97,7 @@ img {
   font-size: 2rem;
   margin-bottom: 1rem;
   color: var(--primary-color);
+  line-height: 1;
 
   &.center {
     text-align: center;
@@ -146,6 +155,14 @@ img {
     font-size: 1rem;
     line-height: 1.5;
   }
+}
+
+.cta {
+  color: var(--primary-color);
+  text-decoration: none;
+  padding: 1rem 3rem;
+  border: 2px solid var(--primary-color);
+  text-align: center;
 }
 
 /* ---------------------------------------
@@ -291,5 +308,128 @@ img {
   .actions .secondary-btn {
     font-size: 1.1rem;
     padding: 0.9rem 2.2rem;
+  }
+}
+
+/* ---------------------------------------
+   GLOBAL ANIMATIONS & UTILITIES
+---------------------------------------- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-color-neon) 50%, #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 5s linear infinite;
+  display: inline-block;
+}
+
+.glass-card {
+  position: relative;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  // Default shadow
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: -1;
+  opacity: 0.4;
+  animation: glowPulse 10s infinite ease-in-out;
+  pointer-events: none;
+}
+
+// BUTTONS
+.cta {
+  display: inline-block;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: none; // Reset if button element
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+
+  &.primary-cta {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+    color: #000;
+    box-shadow: 0 4px 15px rgba(163, 230, 53, 0.4);
+
+    &:hover {
+      box-shadow: 0 6px 20px rgba(163, 230, 53, 0.6);
+    }
+  }
+
+  &.secondary-cta {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    backdrop-filter: blur(10px);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #fff;
+    }
   }
 }

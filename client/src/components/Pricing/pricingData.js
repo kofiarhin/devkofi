@@ -1,91 +1,57 @@
-// data/pricing.data.js
-// DevKofi unified pricing strategy
-
-const pricingData = {
-  pricing_strategy: {
-    single_course: {
-      description: "Buy once, keep forever",
-      features: [
-        "Lifetime access to purchased course",
-        "Full-HD video and high-quality audio (where applicable)",
-        "Project files / attachments",
-        "Certificate of completion (optional)",
-        "Access to community/Discord",
-        "15-day refund period",
-      ],
-      refund_policy_days: 15,
-      cancel_any_time: false,
-    },
-    memberships: [
-      {
-        name: "Monthly Membership (Pro)",
-        price: 49,
-        currency: "GBP",
-        billing_cycle: "monthly",
-        features: [
-          "Access to all active courses",
-          "Priority support",
-          "Community access",
-          "New modules as added",
-          "15-day refund period",
-        ],
-        cancel_any_time: true,
-        notes: "Best to try everything before committing annually",
-      },
-      {
-        name: "Yearly Membership (VIP)",
-        price: 399,
-        currency: "GBP",
-        billing_cycle: "yearly",
-        features: [
-          "Access to all active courses",
-          "Exclusive content and bonuses",
-          "Priority support",
-          "Community access",
-          "New modules as added",
-          "15-day refund period",
-        ],
-        discount: {
-          code: "VIP",
-          first_year_price: 199,
-          description:
-            "Use code VIP to get the first year for £199 (save vs monthly).",
-        },
-        cancel_any_time: true,
-        notes: "Best value for learners planning to take multiple courses",
-      },
+export const pricingPlans = [
+  {
+    id: "standard",
+    title: "Full-Stack Bootcamp: Standard",
+    price: "£1,200",
+    frequency: "one-time",
+    description: "Perfect for self-starters who want structure and community.",
+    features: [
+      "6-month full-stack web development bootcamp",
+      "Weekly live sessions & lifetime recordings",
+      "10+ real-world portfolio projects",
+      "Private student community",
+      "End-of-course certificate",
+      "14-day refund guarantee",
     ],
+    ctaText: "Join Standard",
+    ctaLink: "/contact",
+    isPopular: false,
   },
-  single_course_offers: [
-    {
-      id: 1,
-      name: "DevKofi Mentorship",
-      price: { amount: 499, currency: "GBP" },
-      links: { buy: "/enroll/1" },
-      billing_cycle: "one_time",
-    },
-    {
-      id: 2,
-      name: "AI Powered Engineer",
-      price: { amount: 599, currency: "GBP" },
-      links: { buy: "/enroll/2" },
-      billing_cycle: "one_time",
-    },
-    {
-      id: 3,
-      name: "Automation Engineering with Node.js",
-      price: { amount: 499, currency: "GBP" },
-      links: { buy: "/enroll/3" },
-      billing_cycle: "one_time",
-    },
-    {
-      id: 4,
-      name: "Beginner Web Dev: HTML, CSS & JavaScript",
-      price: { amount: 299, currency: "GBP" },
-      links: { buy: "/enroll/4" },
-      billing_cycle: "one_time",
-    },
-  ],
-};
-
-export default pricingData;
+  {
+    id: "pro",
+    title: "Full-Stack Bootcamp: Pro",
+    price: "£1,800",
+    frequency: "one-time",
+    description:
+      "For those who want hands-on accountability and faster growth.",
+    features: [
+      "All Standard features included",
+      "Bi-weekly 1:1 mentorship sessions",
+      "Detailed code reviews & feedback",
+      "Personalized portfolio & career guidance",
+      "Priority Slack/Discord support",
+      "14-day refund guarantee",
+    ],
+    ctaText: "Go Pro",
+    ctaLink: "/contact",
+    isPopular: true, // Highlights this card
+  },
+  {
+    id: "team",
+    title: "Team / Enterprise",
+    price: "£5,000",
+    frequency: "up to 5 members",
+    description: "Upskill your small team with dedicated support.",
+    features: [
+      "Team access & custom scheduling",
+      "Team-focused real-world projects",
+      "Dedicated instructor support",
+      "Post-course team audit & recommendations",
+      "Private Slack channel for your team",
+      "14-day refund guarantee",
+    ],
+    ctaText: "Request Access",
+    ctaLink: "/contact",
+    isPopular: false,
+  },
+];

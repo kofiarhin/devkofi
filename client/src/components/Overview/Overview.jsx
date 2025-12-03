@@ -40,7 +40,10 @@ const imageVariant = {
 const Overview = () => {
   return (
     <div id="overview">
-      <div className="overview-wrapper">
+      {/* Background Elements */}
+      <div className="bg-glow one"></div>
+
+      <div className="container overview-wrapper">
         {/* Image Section with Animation */}
         <motion.div
           className="image-wrapper"
@@ -50,7 +53,9 @@ const Overview = () => {
           viewport={{ once: true, amount: 0.3 }}
           whileHover={{ scale: 1.05, rotate: -2 }}
         >
-          <img src={deskSetupImage} alt="Overview" />
+          <div className="glass-card">
+            <img src={deskSetupImage} alt="Overview" />
+          </div>
         </motion.div>
 
         {/* Text Section with Animation */}
@@ -61,9 +66,12 @@ const Overview = () => {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <h1 className="heading">Your mentorship your way...</h1>
+          <h1 className="heading">
+            Your mentorship <br />
+            <span className="text-gradient">your way...</span>
+          </h1>
           <p> {text} </p>
-          <Link to="/register" className="cta">
+          <Link to="/register" className="cta primary-cta">
             Join Now
           </Link>
         </motion.div>

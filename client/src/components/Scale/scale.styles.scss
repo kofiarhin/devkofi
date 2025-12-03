@@ -1,23 +1,45 @@
 #scale {
-  .container {
-    .text-wrapper {
-      margin-bottom: 3rem;
-      p {
-        margin-bottom: 1.5rem;
-      }
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 1rem;
+  margin-bottom: 3rem;
+
+  .bg-glow.two {
+    right: -10%;
+    bottom: -20%;
+    width: 500px;
+    height: 500px;
+  }
+
+  .text-wrapper {
+    h1 {
+      font-size: 2.5rem;
+      color: #fff;
+    }
+  }
+
+  .image-wrapper {
+    margin-top: 2rem;
+
+    img {
+      border-radius: 15px; // Matches glass card inner
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
   }
 }
 
-@media (min-width: 800px) {
+@media (min-width: 900px) {
   #scale {
+    padding: 6rem 1rem;
+
     .container {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+
       .text-wrapper {
-        display: grid;
-        place-content: center;
+        // Default
       }
     }
   }

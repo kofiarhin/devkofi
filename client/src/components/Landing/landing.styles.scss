@@ -1,101 +1,230 @@
 /* landing.styles.scss */
 
-// 1. Define Animations (Top of file)
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
+// 1. Define Animations
+// Animations (fadeInUp, float, glowPulse, gradientFlow) are now global in main.styles.scss
 
 // 2. Main Styling
 #landing {
+  position: relative;
+  overflow: hidden; // Contain the glow blobs
+  padding: 4rem 0;
+  min-height: 85vh; // Close to full height but showing a bit of next section is fine
+  display: flex;
+  align-items: center;
+
+  // Background Glow Blobs
+  .bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1;
+    opacity: 0.4;
+    animation: glowPulse 10s infinite ease-in-out;
+
+    &.one {
+      top: -10%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+    }
+
+    &.two {
+      bottom: -10%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--color-blue) 0%, transparent 70%);
+      animation-delay: 5s;
+    }
+  }
+
   .container {
-    // Mobile Layout (Default)
+    // Mobile Layout
+    display: flex;
+    flex-direction: column-reverse; // Image on top for mobile usually looks better, but design requested text first? Let's stick to standard flow then tweak.
+    // Actually, usually Hero images are top or middle. Let's keep existing flow: Text then Image, but column-reverse makes image top on mobile.
+    // Let's stick to column for mobile (Text top) as per previous code unless specifically asked.
+    // Previous code: text then image.
+
     .text-wrapper {
-      margin-bottom: 2rem;
+      margin-bottom: 3rem;
+      text-align: center; // Center on mobile
+      z-index: 1;
 
       .heading {
-        font-size: 3rem;
-        text-transform: capitalize;
-        margin-bottom: 1rem !important;
-
-        // Animation: Slide up immediately
+        font-size: 2.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem !important;
         animation: fadeInUp 0.8s ease-out both;
+        color: #fff;
+
+        .highlight-gradient {
+          background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-color-neon) 50%, #fff 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradientFlow 5s linear infinite;
+        }
       }
 
       .sub-heading {
-        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #ccc;
+        margin-bottom: 1.5rem;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
 
-        // Animation: Slide up with 0.1s delay
-        animation: fadeInUp 0.8s ease-out 0.1s both;
+        .text-highlight {
+          color: var(--color-blue);
+        }
       }
 
       .slug {
-        margin-bottom: 1rem;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #bbb;
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeInUp 0.8s ease-out 0.4s both;
 
-        // Animation: Slide up with 0.2s delay
-        animation: fadeInUp 0.8s ease-out 0.2s both;
+        .fw-bold {
+          color: #fff;
+          font-weight: 700;
+        }
       }
 
-      // If you have specific button styles, they go here.
-      // We target the class 'cta' to animate it.
-      .cta {
-        display: inline-block; // Ensure it respects transform
+      .cta-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        justify-content: center;
+        animation: fadeInUp 0.8s ease-out 0.6s both;
 
-        // Animation: Slide up with 0.3s delay
-        animation: fadeInUp 0.8s ease-out 0.3s both;
+        .cta {
+          display: inline-block;
+          font-weight: 600;
+          padding: 1rem 2rem;
+          border-radius: 50px;
+          text-decoration: none;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+          &:hover {
+            transform: translateY(-3px);
+          }
+
+          &.primary-cta {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+            color: #000; // Contrast against bright green
+            box-shadow: 0 4px 15px rgba(163, 230, 53, 0.4);
+
+            &:hover {
+              box-shadow: 0 6px 20px rgba(163, 230, 53, 0.6);
+            }
+          }
+
+          &.secondary-cta {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            backdrop-filter: blur(10px);
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.1);
+              border-color: #fff;
+            }
+          }
+        }
       }
     }
 
-    // Target the image wrapper for the float effect
     .img-wrapper {
-      img {
-        max-width: 100%; // Ensure responsive
-        height: auto;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
 
-        // Animation: Continuous float
+      .glass-card {
+        position: relative;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        backdrop-filter: blur(5px);
         animation: float 6s ease-in-out infinite;
+
+        img {
+          width: 100%;
+          max-width: 400px;
+          border-radius: 15px;
+          display: block;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .badge-experience {
+          position: absolute;
+          bottom: -20px;
+          right: -20px;
+          background: var(--color-card-bg);
+          border: 1px solid var(--color-border);
+          padding: 0.8rem 1.5rem;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-weight: 700;
+          color: #fff;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+          animation: float 5s ease-in-out infinite reverse; // Floating opposite to main image
+        }
       }
     }
   }
 }
 
-// 3. Desktop Layout (Your existing Media Query)
-@media (min-width: 800px) {
+// 3. Desktop Layout
+@media (min-width: 900px) {
   #landing {
+    padding: 6rem 0;
+
     .container {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      grid-template-columns: 1.1fr 0.9fr; // Text takes slightly more space
+      gap: 4rem;
+      align-items: center;
 
       .text-wrapper {
-        display: grid;
-        place-content: center;
-        // Reset margin for grid layout if needed, or keep existing
+        text-align: left;
+        margin-bottom: 0;
+
+        .heading {
+          font-size: 3.5rem;
+        }
+
+        .sub-heading {
+          font-size: 1.25rem;
+        }
+
+        .slug {
+          margin-left: 0;
+          font-size: 1.1rem;
+        }
+
+        .cta-wrapper {
+          flex-direction: row;
+          justify-content: flex-start;
+          gap: 1.5rem;
+        }
       }
 
-      // Ensure image aligns correctly in grid
       .img-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        justify-content: flex-end;
       }
     }
   }

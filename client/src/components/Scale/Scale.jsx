@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 const Scale = () => {
   return (
     <section id="scale">
+      <div className="bg-glow two"></div>
       <div className="container">
         {/* text-wrapper */}
         <div className="text-wrapper">
-          <h1 className="heading">Write code that scales</h1>
+          <h1 className="heading">Write code <span className="text-gradient">that scales</span></h1>
           <p>
             A personalized approach to guidance that adapts to your pace, your
             goals, and your style of learning. Whether you seek direction,
@@ -15,14 +16,16 @@ const Scale = () => {
             around you—flexible, focused, and designed to unlock your next
             level.
           </p>
-          {/* <button className="cta">Join Now</button> */}
-          <Link className="cta">Join Now</Link>
+          {/* <button className="cta">JoinPmPPPPPPPPPPPPPP~` Now</button> */}
+          <Link className="cta primary-cta">Join Now</Link>
         </div>
         {/* end text-wrapper */}
 
         {/* image-wrapper */}
         <div className="image-wrapper">
-          <img src={codeBugImage} alt="" />
+          <div className="glass-card">
+            <img src={codeBugImage} alt="" />
+          </div>
         </div>
       </div>
     </section>
