@@ -21,19 +21,11 @@ const ProjectList = ({ data = [] }) => {
 
   const hero = data[0];
 
-  const handleParallax = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    e.currentTarget.style.setProperty("--parx", px);
-    e.currentTarget.style.setProperty("--pary", py);
-  };
-
   return (
     <section id="projects">
-      {/* HERO with Ken Burns + parallax light */}
+      {/* HERO */}
       {hero && (
-        <div className="projects-hero" onMouseMove={handleParallax}>
+        <div className="projects-hero">
           <img className="hero-img" src={codingImage} alt={hero.name} />
           <div className="hero-glow" />
           <h1 className="page-title reveal">{`Projects`}</h1>
