@@ -126,7 +126,7 @@ const CourseOutline = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
       >
-        <a href="/mentorship" className="cta-button">
+        <a href="/register" className="cta-button">
           Join Mentorship Program
         </a>
       </motion.div>
