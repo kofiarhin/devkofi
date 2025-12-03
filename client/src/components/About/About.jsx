@@ -1,6 +1,7 @@
 import "./about.styles.scss";
 import { motion } from "framer-motion";
 import { deskSetupImage } from "../../constants/constants";
+import { Link } from "react-router-dom";
 
 const textVariant = {
   hidden: { opacity: 0, x: -50 },
@@ -38,9 +39,9 @@ const About = () => {
             A proven rhythm for building and shipping fast. Write with intent.
             Test with rigor. Deploy with confidence.
           </p>
-          <a href="/courses" className="cta">
-            Browse Courses
-          </a>
+          <Link to="/course-outline" className="cta primary-cta">
+            Browse Course OUtline
+          </Link>
         </motion.div>
 
         {/* Video Section */}

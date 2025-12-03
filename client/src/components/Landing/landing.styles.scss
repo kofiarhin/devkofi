@@ -106,40 +106,7 @@
         justify-content: center;
         animation: fadeInUp 0.8s ease-out 0.6s both;
 
-        .cta {
-          display: inline-block;
-          font-weight: 600;
-          padding: 1rem 2rem;
-          border-radius: 50px;
-          text-decoration: none;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-          &:hover {
-            transform: translateY(-3px);
-          }
-
-          &.primary-cta {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
-            color: #000; // Contrast against bright green
-            box-shadow: 0 4px 15px rgba(163, 230, 53, 0.4);
-
-            &:hover {
-              box-shadow: 0 6px 20px rgba(163, 230, 53, 0.6);
-            }
-          }
-
-          &.secondary-cta {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            backdrop-filter: blur(10px);
-
-            &:hover {
-              background: rgba(255, 255, 255, 0.1);
-              border-color: #fff;
-            }
-          }
-        }
       }
     }
 

@@ -18,7 +18,7 @@ const IntegrateAI = () => {
             real-time insights, build smarter, faster, and more adaptive
             experiences—tailored to your vision.
           </p>
-          <Link to="/register" className="cta">
+          <Link to="/register" className="cta primary-cta">
             Join Now
           </Link>
         </AnimatedSection>
