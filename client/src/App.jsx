@@ -78,6 +78,7 @@ const AppContent = () => {
         <Route path="/enroll/:id" element={<Enroll />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/youtube" element={<Youtube />} />
+        <Route path="/course-outline" element={<CourseOutline />} />
 
         {/* private routes */}
         <Route element={<PrivateRoutes />}>

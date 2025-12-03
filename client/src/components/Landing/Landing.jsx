@@ -18,21 +18,23 @@ const Landing = () => {
             <span className="highlight-gradient">Development 2025</span>
           </h1>
           <h2 className="sub-heading">
-            Land a <span className="text-highlight">High-Paying</span> Career with <br />
+            Land a <span className="text-highlight">High-Paying</span> Career
+            with <br />
             Next-Level Mentorship
           </h2>
           <p className="slug">
-            Stop learning in isolation. Start your journey to a tech career in high-demand
-            fields like software engineering. With expert mentorship and
-            hands-on MERN stack training, you can be job-ready in just <span className="fw-bold">6 months</span>.
+            Stop learning in isolation. Start your journey to a tech career in
+            high-demand fields like software engineering. With expert mentorship
+            and hands-on MERN stack training, you can be job-ready in just{" "}
+            <span className="fw-bold">6 months</span>.
           </p>
           <div className="cta-wrapper">
             <Link to="/register" className="cta primary-cta">
               Start Your Journey
             </Link>
-            <a href="#courses" className="cta secondary-cta">
+            <Link to="/course-outline" className="cta secondary-cta">
               View Curriculum
-            </a>
+            </Link>
           </div>
         </div>
         {/* end text-wrapper */}
