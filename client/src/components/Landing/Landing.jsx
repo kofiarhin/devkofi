@@ -15,7 +15,7 @@ const Landing = () => {
         <div className="text-wrapper">
           <h1 className="heading">
             MERN Stack <br />
-            <span className="highlight-gradient">Development 2025</span>
+            <span className="highlight-gradient">Development 2026</span>
           </h1>
           <h2 className="sub-heading">
             Land a <span className="text-highlight">High-Paying</span> Career
