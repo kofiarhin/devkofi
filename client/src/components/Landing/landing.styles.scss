@@ -26,7 +26,11 @@
       left: -10%;
       width: 500px;
       height: 500px;
-      background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+      background: radial-gradient(
+        circle,
+        var(--primary-color) 0%,
+        transparent 70%
+      );
     }
 
     &.two {
@@ -34,7 +38,11 @@
       right: -10%;
       width: 600px;
       height: 600px;
-      background: radial-gradient(circle, var(--color-blue) 0%, transparent 70%);
+      background: radial-gradient(
+        circle,
+        var(--color-blue) 0%,
+        transparent 70%
+      );
       animation-delay: 5s;
     }
   }
@@ -50,11 +58,11 @@
 
     .text-wrapper {
       margin-bottom: 3rem;
-      text-align: center; // Center on mobile
+      // text-align: center; // Center on mobile
       z-index: 1;
 
       .heading {
-        font-size: 2rem; // Reduced from 2.5rem for better mobile fit
+        font-size: 3rem; // Reduced from 2.5rem for better mobile fit
         font-weight: 800;
         line-height: 1.1;
         margin-bottom: 1.5rem !important;
@@ -62,7 +70,12 @@
         color: #fff;
 
         .highlight-gradient {
-          background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-color-neon) 50%, #fff 100%);
+          background: linear-gradient(
+            90deg,
+            var(--primary-color) 0%,
+            var(--primary-color-neon) 50%,
+            #fff 100%
+          );
           background-size: 200% auto;
           -webkit-background-clip: text;
           background-clip: text;
@@ -107,8 +120,6 @@
         gap: 1rem;
         justify-content: center;
         animation: fadeInUp 0.8s ease-out 0.6s both;
-
-
       }
     }
 
