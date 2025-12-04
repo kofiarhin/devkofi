@@ -54,14 +54,15 @@
     // Actually, usually Hero images are top or middle. Let's keep existing flow: Text then Image, but column-reverse makes image top on mobile.
     // Let's stick to column for mobile (Text top) as per previous code unless specifically asked.
     // Previous code: text then image.
+    padding: 0 1.5rem; // Add padding for mobile to prevent content touching edges
 
     .text-wrapper {
       margin-bottom: 3rem;
-      text-align: center; // Center on mobile
+      // text-align: center; // Center on mobile
       z-index: 1;
 
       .heading {
-        font-size: 2.5rem;
+        font-size: 3rem; // Reduced from 2.5rem for better mobile fit
         font-weight: 800;
         line-height: 1.1;
         margin-bottom: 1.5rem !important;
@@ -77,6 +78,7 @@
           );
           background-size: 200% auto;
           -webkit-background-clip: text;
+          background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: gradientFlow 5s linear infinite;
         }
