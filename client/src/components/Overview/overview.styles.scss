@@ -1,6 +1,6 @@
 #overview {
   position: relative;
-  padding: 4rem 1.5rem; // Added horizontal padding for mobile
+  padding: 4rem 0; // Standardized vertical, 0 horizontal
   margin-bottom: 0; // seamless flow
   overflow: hidden;
 
@@ -28,7 +28,7 @@
 
   .text-wrapper {
     h1 {
-      font-size: 2.5rem;
+      font-size: 3rem; // Standardized to 3rem
       line-height: 1.2;
       margin-bottom: 1.5rem;
       color: #fff;
@@ -36,26 +36,16 @@
 
     p {
       margin-bottom: 2rem;
-      font-size: 1.1rem;
+      font-size: 1.2rem; // Standardized to 1.2rem
       color: #ccc;
       line-height: 1.6;
     }
-
-    // .cta class styles are inherited from global/landing logic if we matched them? 
-    // Actually .primary-cta logic is in landing.styles.scss or main? 
-    // I put it in landing.styles.scss! I need to move .cta styles to main.styles.scss if I want reuse.
-    // WAIT. I only put animations and utilities in main.styles.scss.
-    // I need to double check main.styles.scss content.
-    // I added .text-gradient, .glass-card, etc. NOT .cta buttons.
-    // I should probably move .cta button styles to main.styles.scss too then.
-    // For now, let's just make sure the button looks okay or copy styles.
-    // I will refactor button button styles to main.styles.scss in next step.
   }
 }
 
 @media (min-width: 900px) {
   #overview {
-    padding: 6rem 1rem;
+    padding: 6rem 0; // Standardized desktop
 
     .overview-wrapper {
       display: grid;

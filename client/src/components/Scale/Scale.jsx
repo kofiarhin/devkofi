@@ -5,7 +5,7 @@ const Scale = () => {
   return (
     <section id="scale">
       <div className="bg-glow two"></div>
-      <div className="container">
+      <div className="scale-wrapper">
         {/* text-wrapper */}
         <div className="text-wrapper">
           <h1 className="heading">Write code <span className="text-gradient">that scales</span></h1>

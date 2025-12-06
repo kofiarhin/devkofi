@@ -1,7 +1,7 @@
 #scale {
   position: relative;
   overflow: hidden;
-  padding: 4rem 1rem;
+  padding: 4rem 0; // Mobile: 4rem vertical, 0 horizontal
   margin-bottom: 3rem;
 
   .bg-glow.two {
@@ -13,10 +13,12 @@
 
   .text-wrapper {
     h1 {
-      font-size: 2.5rem;
+      font-size: 3rem; // Standardized to 3rem
       color: #fff;
     }
+
     p {
+      font-size: 1.2rem; // Standardized to 1.2rem
       margin-bottom: 2rem;
     }
   }
@@ -33,17 +35,13 @@
 
 @media (min-width: 900px) {
   #scale {
-    padding: 6rem 1rem;
+    padding: 6rem 0; // Desktop: 6rem vertical, 0 horizontal
 
-    .container {
+    .scale-wrapper {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 4rem;
       align-items: center;
-
-      .text-wrapper {
-        // Default
-      }
     }
   }
 }
