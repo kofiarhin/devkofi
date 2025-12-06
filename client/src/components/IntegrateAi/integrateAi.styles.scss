@@ -1,16 +1,20 @@
 #integrate-ai {
-  margin-bottom: 3rem;
+  padding: 4rem 0; // Standardized vertical padding
+
   .image-wrapper {
     margin-bottom: 2rem;
   }
+
   .text-wrapper {
     margin-bottom: 2rem;
+
     h1 {
       color: var(--primary-color);
-      font-size: 3rem;
+      font-size: 3rem; // Maintained
     }
+
     p {
-      font-size: 1.2rem;
+      font-size: 1.2rem; // Maintained
       margin-bottom: 2rem;
     }
 
@@ -26,6 +30,8 @@
 
 @media (min-width: 800px) {
   #integrate-ai {
+    padding: 6rem 0; // Standardized desktop padding
+
     .integrate-wrapper {
       display: grid;
       grid-template-columns: repeat(2, 1fr);

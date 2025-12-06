@@ -43,7 +43,7 @@ const Overview = () => {
       {/* Background Elements */}
       <div className="bg-glow one"></div>
 
-      <div className="container overview-wrapper">
+      <div className="overview-wrapper">
         {/* Image Section with Animation */}
         <motion.div
           className="image-wrapper"
