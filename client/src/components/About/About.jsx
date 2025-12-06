@@ -36,8 +36,9 @@ const About = () => {
         >
           <h1 className="heading">Write, Test, Deploy...</h1>
           <p>
-            A proven rhythm for building and shipping fast. Write with intent.
-            Test with rigor. Deploy with confidence.
+            I'm not a guru. I'm a developer who has built 13+ apps from scratch.
+            I teach you the reality of software engineering—how to debug, how to
+            ship, and how to get paid for your skills.
           </p>
           <Link to="/course-outline" className="cta primary-cta">
             Browse Course OUtline

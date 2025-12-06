@@ -10,11 +10,9 @@ const Scale = () => {
         <div className="text-wrapper">
           <h1 className="heading">Write code <span className="text-gradient">that scales</span></h1>
           <p>
-            A personalized approach to guidance that adapts to your pace, your
-            goals, and your style of learning. Whether you seek direction,
-            accountability, or breakthrough strategies, this mentorship is built
-            around you—flexible, focused, and designed to unlock your next
-            level.
+            Don't just write code that works—write code that scales. Learn
+            enterprise-level patterns, test-driven development (TDD), and cloud
+            deployment strategies that top tech companies demand.
           </p>
           {/* <button className="cta">JoinPmPPPPPPPPPPPPPP~` Now</button> */}
           <Link className="cta primary-cta">Join Now</Link>
@@ -28,7 +26,7 @@ const Scale = () => {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 };
 
