@@ -4,29 +4,24 @@
 export const faqData = [
   {
     question:
-      "What’s the difference between buying a single course and joining Pro/VIP?",
+      "What’s the difference between Standard and Pro?",
     answer:
-      "Single course is a one-time purchase you own forever. Pro (monthly) and VIP (yearly) are memberships that unlock access to all active courses while your subscription is active.",
+      "Standard is perfect for self-starters who want access to the curriculum, community, and live sessions. Pro includes everything in Standard plus bi-weekly 1-on-1 mentorship, code reviews, and personalized career guidance.",
   },
   {
-    question: "Do I keep access to courses after canceling my membership?",
+    question: "Do I have lifetime access to the course content?",
     answer:
-      "Access via membership ends at the end of your billing period. Any single courses you bought separately remain yours for life.",
+      "Yes! Once you enroll, you have lifetime access to the course materials, including all future updates to the curriculum.",
   },
   {
     question: "Is there a refund guarantee?",
     answer:
-      "Yes. All single-course purchases and memberships include a 15-day, no-questions-asked refund window.",
+      "Yes. We offer a 14-day money-back guarantee. If you're not satisfied within the first two weeks, just let us know and we'll refund your full payment.",
   },
   {
-    question: "How does the VIP discount code work?",
+    question: "Can I upgrade from Standard to Pro?",
     answer:
-      "Apply the VIP code at checkout to get a reduced first-year price on the yearly plan. After the first year, it renews at the standard yearly rate unless you cancel beforehand.",
-  },
-  {
-    question: "Can I switch between Pro (monthly) and VIP (yearly)?",
-    answer:
-      "Yes. You can upgrade or downgrade anytime. Upgrades apply immediately with a prorated charge; downgrades take effect at your next renewal.",
+      "Yes. You can upgrade anytime by paying the difference. Contact support to process the upgrade.",
   },
   {
     question:
@@ -57,9 +52,9 @@ export const faqData = [
       "Prices are shown in GBP. Any applicable taxes (like VAT) are calculated at checkout based on your location.",
   },
   {
-    question: "Do members get access to new courses and updates?",
+    question: "Do I get access to updates?",
     answer:
-      "Active Pro/VIP members get new membership-eligible courses and updates as they’re released, at no extra cost.",
+      "Yes. You receive lifetime access to the course, including all future updates and improvements to the curriculum at no extra cost.",
   },
   {
     question: "Do I get a certificate of completion?",
@@ -67,23 +62,33 @@ export const faqData = [
       "Yes. Certificates are issued for each course or bootcamp once you complete the required modules and projects.",
   },
   {
-    question: "Can I pause my membership?",
+    question: "Do I need prior coding experience?",
     answer:
-      "You can cancel anytime and rejoin later. Cancellation stops future billing and access at the end of the current period; your progress is saved to your account.",
+      "No. The bootcamp is designed to take you from zero to job-ready. We start with the basics.",
+  },
+  {
+    question: "What is the time commitment?",
+    answer:
+      "We recommend dedicating 15-20 hours per week to complete the bootcamp in 6 months. However, you have lifetime access so you can go at your own pace.",
+  },
+  {
+    question: "Are the live sessions mandatory?",
+    answer:
+      "No, they are recorded and uploaded to your portal. You can watch them whenever it suits your schedule.",
+  },
+  {
+    question: "What technologies will I learn?",
+    answer:
+      "You will master the MERN stack (MongoDB, Express, React, Node.js) along with modern tools like Redux, TypeScript, and TailwindCSS.",
   },
   {
     question: "What support channels are available?",
     answer:
-      "All plans include community access and standard support. Pro/VIP and Bootcamp Pro receive priority support; Team plans include a private Slack channel and dedicated instructor touchpoints.",
+      "All students get access to the private community and weekly live Q&A sessions. Pro students also get priority support and 1-on-1 mentorship.",
   },
   {
-    question: "Can I transfer my seat to someone else?",
+    question: "Can I transfer my enrollment to someone else?",
     answer:
-      "Single seats are non-transferable after course access has started. Team seats can be reassigned before a cohort begins—contact support for help.",
-  },
-  {
-    question: "What if a course is updated or replaced?",
-    answer:
-      "We keep content current. Updates appear in your dashboard automatically. If a course is replaced, members receive access to the new version while their membership is active.",
+      "Enrollments are non-transferable once you have started the course. Team seats can be reassigned before a cohort begins—contact support for help.",
   },
 ];
