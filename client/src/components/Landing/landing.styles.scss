@@ -7,7 +7,7 @@
 #landing {
   position: relative;
   overflow: hidden; // Contain the glow blobs
-  padding: 4rem 0;
+  padding: 1rem 0;
   min-height: 85vh; // Close to full height but showing a bit of next section is fine
   display: flex;
   align-items: center;
@@ -26,11 +26,9 @@
       left: -10%;
       width: 500px;
       height: 500px;
-      background: radial-gradient(
-        circle,
-        var(--primary-color) 0%,
-        transparent 70%
-      );
+      background: radial-gradient(circle,
+          var(--primary-color) 0%,
+          transparent 70%);
     }
 
     &.two {
@@ -38,11 +36,9 @@
       right: -10%;
       width: 600px;
       height: 600px;
-      background: radial-gradient(
-        circle,
-        var(--color-blue) 0%,
-        transparent 70%
-      );
+      background: radial-gradient(circle,
+          var(--color-blue) 0%,
+          transparent 70%);
       animation-delay: 5s;
     }
   }
@@ -54,10 +50,10 @@
     // Actually, usually Hero images are top or middle. Let's keep existing flow: Text then Image, but column-reverse makes image top on mobile.
     // Let's stick to column for mobile (Text top) as per previous code unless specifically asked.
     // Previous code: text then image.
-    padding: 0 1.5rem; // Add padding for mobile to prevent content touching edges
+    padding: 0 1rem; // Add padding for mobile to prevent content touching edges
 
     .text-wrapper {
-      margin-bottom: 3rem;
+      margin-bottom: 1.5rem;
       // text-align: center; // Center on mobile
       z-index: 1;
 
@@ -65,17 +61,15 @@
         font-size: 3rem; // Reduced from 2.5rem for better mobile fit
         font-weight: 800;
         line-height: 1.1;
-        margin-bottom: 1.5rem !important;
+        margin-bottom: 1rem !important;
         animation: fadeInUp 0.8s ease-out both;
         color: #fff;
 
         .highlight-gradient {
-          background: linear-gradient(
-            90deg,
-            var(--primary-color) 0%,
-            var(--primary-color-neon) 50%,
-            #fff 100%
-          );
+          background: linear-gradient(90deg,
+              var(--primary-color) 0%,
+              var(--primary-color-neon) 50%,
+              #fff 100%);
           background-size: 200% auto;
           -webkit-background-clip: text;
           background-clip: text;
@@ -129,8 +123,8 @@
       justify-content: center;
       align-items: center;
       z-index: 1;
-      width: 80%;
-      margin: 0 auto 2rem;
+      width: 100%;
+      margin: 0 auto 1rem;
 
       .glass-card {
         position: relative;
@@ -173,7 +167,7 @@
 // 3. Desktop Layout
 @media (min-width: 900px) {
   #landing {
-    padding: 6rem 0;
+    padding: 3rem 0;
 
     .container {
       display: grid;
