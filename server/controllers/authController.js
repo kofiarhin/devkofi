@@ -11,7 +11,7 @@ const loginUser = async (req, res, next) => {
       res.status(400);
       throw new Error("please fill out all fields");
     }
-    const foundUser = await User.findOne({ email });
+    const foundUser = await User.findOne({ email }).select("+password");
     if (!foundUser) {
       res.status(404);
       throw new Error("user not found");
