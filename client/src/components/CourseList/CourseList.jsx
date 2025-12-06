@@ -1,87 +1,97 @@
 // CourseList.jsx
+import React, { useEffect } from "react";
 import "./course-list.styles.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSterlingSign } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { codingImage } from "../../constants/constants";
 
 const PLACEHOLDER =
   "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.05 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.98 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { type: "spring", stiffness: 420, damping: 30 },
-  },
-};
-
 const CourseList = ({ courses = [] }) => {
-  if (courses.length === 0) {
-    return <p> no courses found!</p>;
-  }
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) =>
+          e.target.classList.toggle("in-view", e.isIntersecting)
+        ),
+      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
-  const onImgError = (e) => {
-    if (e?.target?.src !== PLACEHOLDER) e.target.src = PLACEHOLDER;
-  };
+  if (!courses?.length) return <p className="no-courses">No courses found</p>;
+
+  // Use the first course or a default image for the hero background if needed,
+  // but following ProjectList pattern, we might just use a static hero image for the section.
 
   return (
-    <motion.div
-      id="course-list"
-      initial="hidden"
-      animate="show"
-      variants={containerVariants}
-    >
-      <motion.div className="container" variants={containerVariants}>
-        {courses?.map((course, index) => {
+    <section id="courses">
+      {/* HERO */}
+      <div className="courses-hero">
+        <img className="hero-img" src={codingImage} alt="Courses Hero" />
+        <div className="hero-glow" />
+        <h1 className="page-title reveal">Course Library</h1>
+      </div>
+
+      {/* GRID */}
+      <div className="courses-container">
+        {courses.map((course, i) => {
           const imgSrc = course?.media?.thumbnailUrl || PLACEHOLDER;
           return (
-            <motion.div
-              key={index}
-              className="course-item"
-              variants={cardVariants}
-              whileHover={{ y: -4 }}
-              whileTap={{ scale: 0.996 }}
+            <article
+              key={course.id || i}
+              className={`course-card reveal delay-${(i % 6) + 1}`}
             >
-              <motion.img
-                className="course-img"
-                src={imgSrc}
-                alt={course?.title || course?.name}
-                loading="lazy"
-                onError={onImgError}
-                whileHover={{ scale: 1.03, filter: "brightness(1)" }}
-                transition={{ type: "spring", stiffness: 300, damping: 24 }}
-              />
+              <div className="thumb">
+                <img
+                  src={imgSrc}
+                  alt={course.name}
+                  loading="lazy"
+                  onError={(e) => {
+                    if (e.target.src !== PLACEHOLDER) e.target.src = PLACEHOLDER;
+                  }}
+                />
+              </div>
 
-              <h2 className="course-title">{course.name}</h2>
+              <div className="course-body">
+                <h2 className="course-title">{course.name}</h2>
 
-              <div className="course-divider" />
+                {/* Optional: Add a short description if available in data, otherwise just title/price */}
+                {/* Truncated Description */}
+                <p className="course-desc">
+                  {course.description
+                    ? course.description.length > 120
+                      ? course.description.substring(0, 120) + "..."
+                      : course.description
+                    : "No description available."}
+                </p>
 
-              <p className="price">
-                <FontAwesomeIcon icon={faSterlingSign} />
-                {Number(course?.price?.amount || 0).toFixed(2)}
-              </p>
+                <div className="course-meta">
+                  <p className="price">
+                    £ {Number(course?.price?.amount || 0).toFixed(2)}
+                  </p>
+                </div>
 
-              <motion.div whileHover={{ scale: 1.01 }}>
-                <Link className="cta" to={`/courses/${course.id}`}>
+                <Link
+                  className="cta primary-cta"
+                  to={`/courses/${course.id}`}
+                  style={{
+                    width: "100%",
+                    borderRadius: "50px",
+                    textAlign: "center",
+                    display: "block",
+                  }}
+                >
                   view More
                 </Link>
-              </motion.div>
-            </motion.div>
+              </div>
+            </article>
           );
         })}
-      </motion.div>
-    </motion.div>
+      </div>
+    </section>
   );
 };
 

@@ -76,12 +76,30 @@ const ProjectList = ({ data = [] }) => {
                     href={demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-cta shimmer cta"
+                    className="cta primary-cta"
+                    style={{
+                      width: "100%",
+                      borderRadius: "50px",
+                      textAlign: "center",
+                      justifyContent: "center",
+                      display: "flex",
+                    }}
                   >
                     Live demo
                   </a>
                 ) : (
-                  <span className="btn-cta disabled">Demo unavailable</span>
+                  <span
+                    className="cta disabled"
+                    style={{
+                      width: "100%",
+                      borderRadius: "50px",
+                      textAlign: "center",
+                      border: "1px solid #333",
+                      color: "#666",
+                    }}
+                  >
+                    Demo unavailable
+                  </span>
                 )}
               </div>
             </article>
