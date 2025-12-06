@@ -35,17 +35,18 @@ const loginUser = async (req, res, next) => {
 // register user
 const registerUser = async (req, res, next) => {
   try {
-    const { fullName, email, password, pricingId, role } = req.body;
-    if (!fullName || !email || !password || !pricingId) {
+    const { firstName, lastName, email, password, plan } = req.body;
+    if (!firstName || !lastName || !email || !password || !plan) {
       res.status(400);
       throw new Error("please fill out all fields");
     }
     const user = await createUser({
-      fullName,
+      firstName,
+      lastName,
       email,
       password,
-      pricingId,
-      role,
+      plan,
+      // role defaults to student if not provided
     });
     res.status(201);
     return res.json(user);

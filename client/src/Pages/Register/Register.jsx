@@ -43,12 +43,12 @@ const Register = () => {
   const { mutate, isPending, data } = useRegisterMutation();
 
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     password: "",
-    packageName: "",
-    pricingId: 1,
+    pricingId: 1, // Default to Standard
   });
 
   const handleChange = (e) => {
@@ -58,22 +58,28 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(formData, {
+
+    const planMapping = {
+      1: "standard",
+      2: "pro",
+      3: "enterprise"
+    }
+
+    const payload = {
+      ...formData,
+      plan: planMapping[formData.pricingId]
+    }
+
+    // remove pricingId from payload as backend expects 'plan'
+    delete payload.pricingId;
+
+    mutate(payload, {
       onSuccess: (res) => {
         console.log({ res });
         console.log("registration successful");
         navigate("/login");
-        // if (res && res.success) {
-        //   navigate("/success?type=mentorship");
-        // }
       },
     });
-    // setFormData({
-    //   fullName: "",
-    //   email: "",
-    //   phone: "",
-    //   packageName: "",
-    // });
   };
 
   if (isPending) return <Spinner />;
@@ -97,13 +103,25 @@ const Register = () => {
 
         {/* Form */}
         <motion.form className="form" onSubmit={handleSubmit}>
-          {/* Full Name */}
+          {/* First Name */}
           <motion.div className="form-group" variants={fieldVariant}>
-            <label htmlFor="fullName">Full Name*</label>
+            <label htmlFor="firstName">First Name*</label>
             <input
-              id="fullName"
-              placeholder="e.g. Jane Doe"
-              value={formData.fullName}
+              id="firstName"
+              placeholder="e.g. Jane"
+              value={formData.firstName}
+              onChange={handleChange}
+              required
+            />
+          </motion.div>
+
+          {/* Last Name */}
+          <motion.div className="form-group" variants={fieldVariant}>
+            <label htmlFor="lastName">Last Name*</label>
+            <input
+              id="lastName"
+              placeholder="e.g. Doe"
+              value={formData.lastName}
               onChange={handleChange}
               required
             />
@@ -150,7 +168,7 @@ const Register = () => {
 
           {/* Pricing */}
           <motion.div className="form-group" variants={fieldVariant}>
-            <label htmlFor="pricing">Select Pricing Package*</label>
+            <label htmlFor="pricingId">Select Pricing Package*</label>
             <select
               id="pricingId"
               value={formData.pricingId}
