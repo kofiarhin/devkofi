@@ -1,5 +1,5 @@
 const DEV_API_URL = "http://localhost:5000";
-const PROD_API_URL = "https://devkofi-api-82532bf8b693.herokuapp.com";
+const PROD_API_URL = "https://devkofi-883f1d7b0ba0.herokuapp.com";
 
 const normalizeUrl = (url) => {
   if (typeof url !== "string") {
@@ -9,10 +9,7 @@ const normalizeUrl = (url) => {
   return url.replace(/\/$/, "");
 };
 
-export const baseUrl = normalizeUrl(
-  import.meta.env.VITE_API_BASE_URL ||
-    (import.meta.env.DEV ? DEV_API_URL : PROD_API_URL)
-);
+export const baseUrl = import.meta.env.VITE_BASE_URL;
 export const profileImage =
   "https://res.cloudinary.com/dlsiabgiw/image/upload/v1753586196/devkofi/bnxcwfcq2mrrv3qio0uf.jpg";
 export const codeSnippetImage =
@@ -29,12 +26,3 @@ export const profileSmall =
 
 export const defaultImage =
   "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760929519/devkofi/h2vx5qbjmtbg0mf8goxr.jpg";
-
-export const codingImage =
-  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1761939315/devkofi/tbie9yktdcrbxgyeei3x.jpg";
-
-export const deskSetupImage =
-  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1753669719/devkofi/tri8gqr0qksux018d1bj.png";
-
-export const codeBugImage =
-  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1764239345/devkofi/ligsylfxv9knxxnwnyxk.jpg";

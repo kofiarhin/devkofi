@@ -4,13 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
-    "dev:client": "cd client && npm run dev",
-    "dev:server": "cd server && nodemon server.js",
-    "start": "node server/server.js",
-    "test": "jest --watch server",
-    "playground": "nodemon playground.js",
-    "start:server": "node server/server.js"
+    "dev": "concurrently \"npm run server\" \"npm run client \"",
+    "server": "nodemon server/server.js",
+    "client": "npm run dev --prefix client"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -40,13 +36,13 @@
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
-    "dotenv": "^17.1.0",
-    "express": "^5.1.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
     "express-useragent": "^1.0.15",
     "geoip-lite": "^1.4.10",
     "groq-sdk": "^0.33.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.16.1",
+    "mongoose": "^8.20.2",
     "nodemailer": "^7.0.5"
   }
 }
