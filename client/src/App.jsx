@@ -8,6 +8,7 @@ import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import NotFound from "./Pages/NotFound/NotFound";
 import Footer from "./Pages/Footer/Footer";
+import Dashboard from "./Pages/Dashboard/Dashboard";
 
 const App = () => {
   const { data } = useHealth();
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Footer />
     </Router>

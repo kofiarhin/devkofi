@@ -1,12 +1,18 @@
 const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
+const cleaner = require("./middleware/cleaner");
+const connectDB = require("./config/db");
 
 const app = express();
+
+// connect database
+connectDB();
 
 // setup middleware
 app.use(cors());
 app.use(express.json());
+app.use(cleaner);
 
 app.get("/", async (req, res, next) => {
   return res.json({

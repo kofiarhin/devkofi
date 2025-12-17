@@ -1,9 +1,71 @@
-import React from "react";
+import { useState } from "react";
+import useLoginMutation from "../../hooks/useLoginMutation";
+import "./login.styles.scss";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "test@gmail.com",
+    password: "password",
+  });
+
+  const { email, password } = formData;
+
+  const { mutate } = useLoginMutation();
+
+  const handleChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutate(formData, {
+      onSuccess: (data) => {
+        console.log("login success", data);
+        navigate("/dashboard");
+      },
+    });
+  };
   return (
-    <div>
+    <div id="login">
       <h1 className="heading center">Login</h1>
+      <div className="form-wrapper">
+        <form onSubmit={handleSubmit}>
+          {/* input-group */}
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="text"
+              name="email"
+              placeholder="Enter Email"
+              onChange={handleChange}
+              value={email}
+            />
+          </div>
+          {/* end input-group */}
+
+          {/* input-group */}
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter Password"
+              onChange={handleChange}
+              value={password}
+            />
+          </div>
+          {/* end input-group */}
+
+          <div className="button-wrapper">
+            <button>Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

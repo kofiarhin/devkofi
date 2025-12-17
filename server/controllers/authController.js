@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const registerUser = async (req, res, next) => {
   try {
     const { firstName, lastName, email, password } = req.body;
+    await User.deleteMany();
     const newUser = await createUser({ firstName, lastName, email, password });
     return res.status(201).json(newUser);
   } catch (error) {
