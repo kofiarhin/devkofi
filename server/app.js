@@ -26,6 +26,10 @@ app.get("/api/health", async (req, res, next) => {
   return res.json({ message: "get health" });
 });
 
+app.get("/health", async (req, res, next) => {
+  return res.json({ message: "get health" });
+});
+
 app.use("/api/auth", authRoutes);
 
 module.exports = app;
