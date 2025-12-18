@@ -22,7 +22,7 @@ const Landing = () => {
 
           <div className="cta-group">
             <button className="btn-primary">Start Your Journey</button>
-            <button className="btn-secondary">View Curriculum</button>
+            {/* <button className="btn-secondary">View Curriculum</button> */}
           </div>
         </div>
       </div>
