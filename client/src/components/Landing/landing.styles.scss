@@ -1,120 +1,175 @@
 // Brand Colors
 $primary: #a3e635;
 $bg-dark: #0a0a0a;
-$surface: #1a1a1a;
-$text-sub: #cbd5e1;
+$surface: #141414;
+$text-sub: #94a3b8;
+$glass: rgba(20, 20, 20, 0.7);
 
 #landing {
   display: flex;
-  flex-direction: column; // Mobile-first
-  gap: 3rem;
-  padding: 4rem 1.5rem;
-  background-color: $bg-dark;
-  min-height: 80vh;
+  flex-direction: column;
+  gap: 4rem;
+  padding: 5rem 1.5rem;
+  background: radial-gradient(
+      circle at top right,
+      rgba($primary, 0.05),
+      transparent
+    ),
+    $bg-dark;
+  min-height: 100vh;
   align-items: center;
+  overflow: hidden;
 
   .landing-content {
+    z-index: 2;
+
     .hero-title {
-      font-size: 2.8rem;
-      line-height: 1.1;
+      font-size: clamp(2.5rem, 8vw, 4.5rem); // Fluid typography
+      font-weight: 800;
+      line-height: 1;
       color: #fff;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
 
       .accent {
         color: $primary;
-        text-decoration: underline;
+        display: block; // Stack for impact
+        text-shadow: 0 0 20px rgba($primary, 0.3);
       }
     }
 
     .hero-subtitle {
-      font-size: 1rem;
-      letter-spacing: 1px;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
       color: $primary;
-      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
     }
 
-    .hero-description {
-      color: $text-sub;
-      max-width: 500px;
-      line-height: 1.6;
-      margin-bottom: 2rem;
+    .glass-card {
+      background: $glass;
+      backdrop-filter: blur(12px);
+      padding: 2rem;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 800px;
+
+      .hero-description {
+        color: $text-sub;
+        line-height: 1.7;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+      }
     }
 
     .cta-group {
       display: flex;
-      gap: 1rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
 
       button {
-        padding: 0.8rem 1.5rem;
-        border-radius: 50px;
+        padding: 1.2rem 2.5rem;
+        border-radius: 12px;
         font-weight: 700;
+        font-size: 1rem;
         cursor: pointer;
-        transition: 0.3s;
+        transition: transform 0.2s, box-shadow 0.2s;
       }
 
       .btn-primary {
         background-color: $primary;
         border: none;
         color: #000;
+        box-shadow: 0 10px 30px rgba($primary, 0.3);
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 15px 40px rgba($primary, 0.4);
+        }
       }
 
       .btn-secondary {
         background: transparent;
-        border: 1px solid #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         color: #fff;
 
         &:hover {
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.05);
+          border-color: #fff;
         }
       }
     }
   }
 
   .landing-image {
-    .image-card {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .image-wrapper {
       position: relative;
-      background-color: $surface;
-      padding: 1rem;
-      border-radius: 12px;
-      border: 1px solid rgba($primary, 0.2);
+      padding: 15px;
+      border: 2px solid $primary;
+      border-radius: 40px; // Modern rounded look
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: -10px;
+        border: 1px solid rgba($primary, 0.2);
+        border-radius: 50px;
+        z-index: -1;
+      }
 
       img {
         width: 100%;
-        max-width: 400px;
-        border-radius: 8px;
+        max-width: 550px; // Increased size
+        border-radius: 30px;
         display: block;
+        object-fit: cover;
       }
 
-      .experience-tag {
+      .experience-badge {
         position: absolute;
-        bottom: 20px;
-        right: 20px;
-        background: rgba(0, 0, 0, 0.7);
-        color: #fff;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        backdrop-filter: blur(4px);
+        bottom: -20px;
+        right: 40px;
+        background: $primary;
+        color: #000;
+        padding: 1.5rem;
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 1.2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 4px solid $bg-dark;
+
+        span {
+          font-size: 0.7rem;
+          text-transform: uppercase;
+        }
       }
     }
   }
 }
 
-// Tablet and Desktop
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   #landing {
     flex-direction: row;
-    justify-content: space-between;
-    padding: 6rem 10%;
+    justify-content: center;
+    padding: 0 10%;
+    gap: 10%;
 
     .landing-content {
-      flex: 1;
+      flex: 1.2;
+      text-align: left;
     }
 
     .landing-image {
       flex: 1;
-      display: flex;
-      justify-content: flex-end;
     }
   }
 }

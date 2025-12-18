@@ -1,7 +1,7 @@
+import "./header.styles.scss";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import "./header.styles.scss";
 import { logoutUser } from "../../redux/auth/authSlice";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { toggleSideNav } from "../../redux/navigation/navigationSlice";
@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <header className="main-header">
       <div className="container">
-        <Link>
+        <Link to="/">
           <h1 className="logo">DevKofi</h1>
         </Link>
 

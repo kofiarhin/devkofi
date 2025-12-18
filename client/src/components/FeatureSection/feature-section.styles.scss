@@ -1,0 +1,86 @@
+.feature-section {
+  padding: 4rem 1.5rem;
+  background-color: #0a0a0a; // DevKofi dark base
+  color: #ffffff;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column; // Mobile first
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .image-container {
+    width: 100%;
+
+    .feature-image {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  .text-container {
+    width: 100%;
+    text-align: left;
+
+    .title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+
+      .highlight {
+        color: #94ff2b; // Your signature green
+      }
+    }
+
+    .description {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #cccccc;
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+
+    .primary-btn {
+      background-color: #94ff2b;
+      color: #000;
+      border: none;
+      padding: 0.8rem 2rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  // Desktop layout & Reversal logic
+  @media (min-width: 992px) {
+    .content-wrapper {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .image-container,
+    .text-container {
+      flex: 1;
+    }
+
+    &.reversed {
+      .content-wrapper {
+        flex-direction: row-reverse;
+      }
+    }
+  }
+}
