@@ -4,11 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import "./header.styles.scss";
 import { logoutUser } from "../../redux/auth/authSlice";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { toggleSideNav } from "../../redux/navigation/navigationSlice";
 
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
 
-  console.log({ user });
   const dispath = useDispatch();
 
   const handleLogout = () => {
@@ -23,7 +23,7 @@ const Header = () => {
         </Link>
 
         <nav>
-          <FaBars className="menu" />
+          <FaBars className="menu" onClick={() => dispath(toggleSideNav())} />
           <Link to="/">Home</Link>
           {user ? (
             <>

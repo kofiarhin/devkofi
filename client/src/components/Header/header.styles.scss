@@ -19,6 +19,15 @@
     display: none;
   }
 
+  nav button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    margin-left: 1rem;
+    font-size: 1rem;
+    display: none;
+  }
+
   nav .menu {
     font-size: 1.2rem;
     cursor: pointer;
@@ -33,6 +42,10 @@
 
     nav .menu {
       display: none;
+    }
+
+    nav button {
+      display: inline-block;
     }
   }
 }

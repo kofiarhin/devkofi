@@ -1,0 +1,39 @@
+#sideNav {
+  background-color: black;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: grid;
+  place-content: center;
+  .close {
+    cursor: pointer;
+    font-size: 2rem;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: red;
+  }
+
+  .content-wrapper {
+    ul li {
+      display: block;
+      color: white;
+      margin-bottom: 1rem;
+      a {
+        color: white;
+        text-decoration: none;
+      }
+      button {
+        border: none;
+        background-color: transparent;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+    }
+  }
+}
