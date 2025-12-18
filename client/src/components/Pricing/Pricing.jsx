@@ -4,41 +4,51 @@ import "./pricing.styles.scss";
 const Pricing = () => {
   const plans = [
     {
-      title: "Foundational Coder",
-      price: "£99",
-      desc: "Build essential skills",
+      title: "Full-Stack Bootcamp: Standard",
+      price: "£1,200",
+      duration: "/ one-time",
+      desc: "Perfect for self-starters who want structure and community.",
       features: [
-        "Access to core courses",
-        "Weekly live streams",
-        "Community forum access",
+        "6-month full-stack web development bootcamp",
+        "Weekly live sessions & lifetime recordings",
+        "10+ real-world portfolio projects",
+        "Private student community",
+        "End-of-course certificate",
+        "14-day refund guarantee",
       ],
-      buttonText: "Start Free Trial",
+      buttonText: "Join Standard",
       isPopular: false,
     },
     {
-      title: "Pro Developer",
-      price: "£199",
-      desc: "Accelerate your career growth",
+      title: "Full-Stack Bootcamp: Pro",
+      price: "£1,800",
+      duration: "/ one-time",
+      desc: "For those who want hands-on accountability and faster growth.",
       features: [
-        "ALL Foundational features",
-        "Personalized mentorship",
-        "Project feedback",
-        "Priority support",
+        "All Standard features included",
+        "Bi-weekly 1:1 mentorship sessions",
+        "Detailed code reviews & feedback",
+        "Personalized portfolio & career guidance",
+        "Priority Slack/Discord support",
+        "14-day refund guarantee",
       ],
-      buttonText: "Upgrade to Pro",
+      buttonText: "Go Pro",
       isPopular: true,
     },
     {
-      title: "Enterprise Team",
-      price: "£499",
-      desc: "For teams up to 10 members",
+      title: "Team / Enterprise",
+      price: "£5,000",
+      duration: "/ up to 5 members",
+      desc: "Upskill your small team with dedicated support.",
       features: [
-        "ALL Pro features",
-        "Dedicated team account",
-        "Custom curriculum support",
-        "Success manager",
+        "Team access & custom scheduling",
+        "Team-focused real-world projects",
+        "Dedicated instructor support",
+        "Post-course team audit & recommendations",
+        "Private Slack channel for your team",
+        "14-day refund guarantee",
       ],
-      buttonText: "Request Demo",
+      buttonText: "Request Access",
       isPopular: false,
     },
   ];
@@ -46,8 +56,10 @@ const Pricing = () => {
   return (
     <section className="pricing-section">
       <div className="pricing-header">
-        <h2 className="pricing-title">Unlock Your Potential</h2>
-        <p className="pricing-subtitle">Choose plan that fits your ambition.</p>
+        <h2 className="pricing-main-title">Pricing</h2>
+        <p className="pricing-subtitle">
+          Invest in skills that pay off. No hidden fees, just real results.
+        </p>
       </div>
 
       <div className="pricing-grid">
@@ -60,12 +72,13 @@ const Pricing = () => {
               <span className="popular-badge">MOST POPULAR</span>
             )}
 
-            <h3 className="card-title">{plan.title}</h3>
-            <div className="card-price">
-              {plan.price}
-              <span>/month</span>
+            <div className="card-top">
+              <h3 className="card-title">{plan.title}</h3>
+              <div className="card-price">
+                {plan.price} <span className="duration">{plan.duration}</span>
+              </div>
+              <p className="card-description">{plan.desc}</p>
             </div>
-            <p className="card-description">{plan.desc}</p>
 
             <ul className="card-features">
               {plan.features.map((feature, i) => (
@@ -74,7 +87,9 @@ const Pricing = () => {
             </ul>
 
             <button
-              className={`card-button ${plan.isPopular ? "btn-primary" : ""}`}
+              className={`card-button ${
+                plan.isPopular ? "btn-highlight" : "btn-outline"
+              }`}
             >
               {plan.buttonText}
             </button>

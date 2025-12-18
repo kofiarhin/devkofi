@@ -29,3 +29,14 @@ export const profileSmall =
 
 export const defaultImage =
   "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760929519/devkofi/h2vx5qbjmtbg0mf8goxr.jpg";
+
+export const workStation =
+  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1753669719/devkofi/tri8gqr0qksux018d1bj.png";
+export const personCoding =
+  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1753666892/devkofi/qam76btza4l1avr6vmic.png";
+
+export const AiImage =
+  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1754713919/devkofi/nkhpiuk3ez4jv5jtgxl0.png";
+
+export const codeImage =
+  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1753763160/devkofi/f2bycwqmitsvfzzfyptp.png";

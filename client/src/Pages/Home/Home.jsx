@@ -3,7 +3,13 @@ import "./home.styles.scss";
 import Landing from "../../components/Landing/Landing";
 import Pricing from "../../components/Pricing/Pricing";
 import FeatureSection from "../../components/FeatureSection/FeatureSection";
-import { profileImage } from "../../constants/constants";
+import {
+  profileImage,
+  workStation,
+  personCoding,
+  aiImage,
+  codeImage,
+} from "../../constants/constants";
 
 const Home = () => {
   const handleJoinClick = () => {};
@@ -17,7 +23,7 @@ const Home = () => {
           description="Skip the tutorial hell. Get direct access to a senior developer who guides you through building complex, production-ready applications. From 'Hello World' to Hired."
           buttonText="Join Now"
           onButtonClick={handleJoinClick}
-          imageSrc={profileImage}
+          imageSrc={workStation}
           reversed={false}
         />
 
@@ -27,7 +33,7 @@ const Home = () => {
           description="Skip the tutorial hell. Get direct access to a senior developer who guides you through building complex, production-ready applications. From 'Hello World' to Hired."
           buttonText="Join Now"
           onButtonClick={handleJoinClick}
-          imageSrc={profileImage}
+          imageSrc={personCoding}
           reversed={true}
         />
 
@@ -37,7 +43,7 @@ const Home = () => {
           description="Skip the tutorial hell. Get direct access to a senior developer who guides you through building complex, production-ready applications. From 'Hello World' to Hired."
           buttonText="Join Now"
           onButtonClick={handleJoinClick}
-          imageSrc={profileImage}
+          imageSrc={aiImage}
           reversed={false}
         />
 
@@ -47,7 +53,7 @@ const Home = () => {
           description="Skip the tutorial hell. Get direct access to a senior developer who guides you through building complex, production-ready applications. From 'Hello World' to Hired."
           buttonText="Join Now"
           onButtonClick={handleJoinClick}
-          imageSrc={profileImage}
+          imageSrc={codeImage}
           reversed={true}
         />
 
