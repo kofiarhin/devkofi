@@ -9,7 +9,10 @@ const normalizeUrl = (url) => {
   return url.replace(/\/$/, "");
 };
 
-export const baseUrl = import.meta.env.VITE_BASE_URL;
+export const baseUrl = import.meta.env.DEV
+  ? import.meta.env.VITE_BASE_URL
+  : "https://devkofi-api-82532bf8b693.herokuapp.com";
+
 export const profileImage =
   "https://res.cloudinary.com/dlsiabgiw/image/upload/v1753586196/devkofi/bnxcwfcq2mrrv3qio0uf.jpg";
 export const codeSnippetImage =

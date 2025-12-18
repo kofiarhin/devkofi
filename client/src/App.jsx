@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 const App = () => {
   const { data } = useHealth();
   const { isOpen } = useSelector((state) => state.navigation);
+  console.log({ isOpen });
   return (
     <Router>
       <Header />
