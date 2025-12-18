@@ -2,9 +2,12 @@ import { useState } from "react";
 import useLoginMutation from "../../hooks/useLoginMutation";
 import "./login.styles.scss";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/auth/authSlice";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "test@gmail.com",
     password: "password",
@@ -25,7 +28,8 @@ const Login = () => {
     e.preventDefault();
     mutate(formData, {
       onSuccess: (data) => {
-        console.log("login success", data);
+        localStorage.setItem("user", JSON.stringify(data));
+        dispatch(setUser(data));
         navigate("/dashboard");
       },
     });

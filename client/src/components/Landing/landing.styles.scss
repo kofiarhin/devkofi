@@ -1,0 +1,120 @@
+// Brand Colors
+$primary: #a3e635;
+$bg-dark: #0a0a0a;
+$surface: #1a1a1a;
+$text-sub: #cbd5e1;
+
+#landing {
+  display: flex;
+  flex-direction: column; // Mobile-first
+  gap: 3rem;
+  padding: 4rem 1.5rem;
+  background-color: $bg-dark;
+  min-height: 80vh;
+  align-items: center;
+
+  .landing-content {
+    .hero-title {
+      font-size: 2.8rem;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 1rem;
+
+      .accent {
+        color: $primary;
+        text-decoration: underline;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      letter-spacing: 1px;
+      color: $primary;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-description {
+      color: $text-sub;
+      max-width: 500px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 1rem;
+
+      button {
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .btn-primary {
+        background-color: $primary;
+        border: none;
+        color: #000;
+      }
+
+      .btn-secondary {
+        background: transparent;
+        border: 1px solid #fff;
+        color: #fff;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+  }
+
+  .landing-image {
+    .image-card {
+      position: relative;
+      background-color: $surface;
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba($primary, 0.2);
+
+      img {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 8px;
+        display: block;
+      }
+
+      .experience-tag {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        backdrop-filter: blur(4px);
+      }
+    }
+  }
+}
+
+// Tablet and Desktop
+@media (min-width: 768px) {
+  #landing {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 6rem 10%;
+
+    .landing-content {
+      flex: 1;
+    }
+
+    .landing-image {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

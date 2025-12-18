@@ -16,5 +16,14 @@
       display: inline-block;
       margin-left: 1rem;
     }
+    nav button {
+      margin-left: 1rem;
+      background-color: transparent;
+      color: white;
+      border: None;
+      outline: None;
+      font-size: 1rem;
+      cursor: pointer;
+    }
   }
 }

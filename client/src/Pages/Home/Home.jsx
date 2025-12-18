@@ -1,9 +1,13 @@
 import React from "react";
+import "./home.styles.scss";
+import Landing from "../../components/Landing/Landing";
 
 const Home = () => {
   return (
-    <div>
-      <h1 className="heading center">Home</h1>
+    <div id="home">
+      <div className="container">
+        <Landing />
+      </div>
     </div>
   );
 };

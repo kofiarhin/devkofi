@@ -9,6 +9,7 @@ import Register from "./Pages/Register/Register";
 import NotFound from "./Pages/NotFound/NotFound";
 import Footer from "./Pages/Footer/Footer";
 import Dashboard from "./Pages/Dashboard/Dashboard";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
 const App = () => {
   const { data } = useHealth();
@@ -21,7 +22,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       </Routes>
       <Footer />
     </Router>
