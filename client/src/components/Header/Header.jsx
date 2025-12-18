@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./header.styles.scss";
 import { logoutUser } from "../../redux/auth/authSlice";
+import { FaBars, FaTimes } from "react-icons/fa";
+
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
 
@@ -17,10 +19,11 @@ const Header = () => {
     <header className="main-header">
       <div className="container">
         <Link>
-          <h1>DevKofi</h1>
+          <h1 className="logo">DevKofi</h1>
         </Link>
 
         <nav>
+          <FaBars className="menu" />
           <Link to="/">Home</Link>
           {user ? (
             <>

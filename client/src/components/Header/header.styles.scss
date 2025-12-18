@@ -1,29 +1,38 @@
-.main-header {
+.main-header .container {
+  background-color: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 2rem 0rem;
   a {
     text-decoration: none;
     color: white;
   }
 
-  .container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    h1 {
-      font-size: 1.2rem;
-    }
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  nav a {
+    margin-left: 1rem;
+    display: none;
+  }
+
+  nav .menu {
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 800px) {
+  .main-header .container {
     nav a {
       display: inline-block;
-      margin-left: 1rem;
     }
-    nav button {
-      margin-left: 1rem;
-      background-color: transparent;
-      color: white;
-      border: None;
-      outline: None;
-      font-size: 1rem;
-      cursor: pointer;
+
+    nav .menu {
+      display: none;
     }
   }
 }
