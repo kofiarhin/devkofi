@@ -1,8 +1,9 @@
 .feature-section {
-  padding: 4rem 1.5rem;
+  // Reduced mobile padding for more vertical space
+  padding: 2.5rem 1.25rem;
   background-color: #0a0a0a;
   color: #ffffff;
-  overflow-x: hidden; // Safety net for mobile horizontal scroll
+  overflow-x: hidden;
 
   .container {
     max-width: 1200px;
@@ -15,22 +16,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3rem;
+    // Increased gap slightly for breathing room between sections
+    gap: 2.5rem;
     width: 100%;
   }
 
   .image-container {
     width: 100%;
-    max-width: 100%; // Ensures it never exceeds the container width
     display: flex;
     justify-content: center;
 
     .feature-image {
-      max-width: 100%; // Fixes the overflow
+      width: 100%; // Ensures it fills the width on mobile
       height: auto;
-      display: block; // Removes bottom whitespace
+      display: block;
       border-radius: 12px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     }
   }
 
@@ -40,10 +41,12 @@
     text-align: left;
 
     .title {
-      font-size: clamp(1.8rem, 5vw, 2.5rem); // Responsive text size
+      // Adjusted clamp for better mobile scaling
+      font-size: clamp(2rem, 8vw, 2.8rem);
       font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 1.5rem;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.02em; // Tighter tracking for cleaner look
 
       .highlight {
         color: #94ff2b;
@@ -51,22 +54,24 @@
     }
 
     .description {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #cccccc;
-      margin-bottom: 2rem;
-      max-width: 500px;
+      font-size: 1.15rem; // Slightly larger for readability
+      line-height: 1.7; // More leading for breathability
+      color: #b3b3b3;
+      margin-bottom: 2.5rem;
+      max-width: 100%; // Let it fill space on mobile
     }
 
     .primary-btn {
       background-color: #94ff2b;
       color: #000;
       border: none;
-      padding: 0.8rem 2rem;
+      padding: 1rem 2.5rem; // Larger tap target
+      font-size: 1rem;
       font-weight: 700;
       border-radius: 50px;
       cursor: pointer;
       transition: transform 0.2s ease;
+      width: fit-content;
 
       &:hover {
         transform: scale(1.05);
@@ -74,15 +79,25 @@
     }
   }
 
+  // Desktop adjustments (min-width: 992px)
   @media (min-width: 992px) {
+    padding: 6rem 2rem; // More breathing room on desktop
+
     .content-wrapper {
       flex-direction: row;
       justify-content: space-between;
+      gap: 5rem;
     }
 
     .image-container,
     .text-container {
       flex: 1;
+    }
+
+    .text-container {
+      .description {
+        max-width: 500px;
+      }
     }
 
     &.reversed {
