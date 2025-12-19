@@ -1,6 +1,7 @@
 import React from "react";
 import { profileImage } from "../../constants/constants";
 import "./landing.styles.scss";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   return (
@@ -21,7 +22,9 @@ const Landing = () => {
           </p>
 
           <div className="cta-group">
-            <button className="btn-primary">Start Your Journey</button>
+            <Link to="/register" className="btn-primary">
+              Start Your Journey
+            </Link>
             {/* <button className="btn-secondary">View Curriculum</button> */}
           </div>
         </div>
