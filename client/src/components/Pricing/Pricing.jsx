@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Added Link
 import "./pricing.styles.scss";
 
 const Pricing = () => {
@@ -86,13 +87,15 @@ const Pricing = () => {
               ))}
             </ul>
 
-            <button
+            {/* Replaced button with Link */}
+            <Link
+              to="/register"
               className={`card-button ${
                 plan.isPopular ? "btn-highlight" : "btn-outline"
               }`}
             >
               {plan.buttonText}
-            </button>
+            </Link>
           </div>
         ))}
       </div>
