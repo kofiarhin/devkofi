@@ -1,51 +1,99 @@
-.main-header .container {
-  background-color: black;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 2rem 0rem;
-  a {
-    text-decoration: none;
-    color: white;
+// Variables for consistency
+$primary-neon: #adff2f; // Matches your submit button
+$bg-dark: #0a0a0a;
+$glass-bg: rgba(10, 10, 10, 0.8);
+
+.main-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: $glass-bg;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    height: 70px;
   }
 
   .logo {
-    font-size: 1.2rem;
-  }
-
-  nav a {
-    margin-left: 1rem;
-    display: none;
-  }
-
-  nav button {
-    background-color: transparent;
-    color: white;
-    border: none;
-    margin-left: 1rem;
-    font-size: 1rem;
-    display: none;
-  }
-
-  nav .menu {
     font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin: 0;
+
+    span {
+      color: $primary-neon;
+    }
+  }
+
+  .nav-links {
+    display: none; // Mobile first: hidden
+  }
+
+  .menu-icon {
+    font-size: 1.5rem;
+    color: white;
     cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:active {
+      transform: scale(0.9);
+    }
   }
 }
 
+// Tablet & Desktop
 @media (min-width: 800px) {
-  .main-header .container {
-    nav a {
-      display: inline-block;
+  .main-header {
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
     }
 
-    nav .menu {
+    .nav-item {
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $primary-neon;
+      }
+    }
+
+    .btn-cta {
+      background: $primary-neon;
+      color: black;
+      padding: 0.6rem 1.2rem;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
+    .btn-logout {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+
+      &:hover {
+        border-color: #ff4d4d;
+        color: #ff4d4d;
+      }
+    }
+
+    .mobile-actions {
       display: none;
-    }
-
-    nav button {
-      display: inline-block;
     }
   }
 }
