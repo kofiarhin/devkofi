@@ -1,6 +1,29 @@
 /* Google Font */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
+:root {
+  /* Brand */
+  --primary-color: #4caf50;
+  --primary-accent: #7cff00;
+
+  /* Backgrounds */
+  --bg-main: #000000;
+  --bg-surface: #111111;
+  --bg-card: #1a1a1a;
+
+  /* Text */
+  --text-main: #ffffff;
+  --text-muted: #9ca3af;
+
+  /* UI */
+  --border-color: #2a2a2a;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+
+  /* Effects */
+  --glow-primary: 0 0 20px rgba(76, 175, 80, 0.4);
+}
+
 /* Global styling */
 * {
   margin: 0;
