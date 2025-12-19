@@ -2,52 +2,80 @@ import { FaTimes } from "react-icons/fa";
 import { toggleSideNav } from "../../redux/navigation/navigationSlice";
 import { logoutUser } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import "./sideNav.styles.scss";
-import { Link } from "react-router-dom";
 
 const SideNav = () => {
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+
+  const closeNav = () => dispatch(toggleSideNav());
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    closeNav();
+  };
+
   return (
     <div id="sideNav">
-      <FaTimes onClick={() => dispath(toggleSideNav())} className="close" />
+      <FaTimes onClick={closeNav} className="close-icon" />
 
-      <div className="content-wrapper">
-        <ul>
-          <li onClick={() => dispath(toggleSideNav())}>
-            <Link to="/"> Home </Link>
+      <div className="nav-content">
+        <ul className="nav-list">
+          <li className="nav-item">
+            <NavLink
+              to="/"
+              onClick={closeNav}
+              className={({ isActive }) =>
+                isActive ? "active-link" : "nav-link"
+              }
+            >
+              Home
+            </NavLink>
           </li>
+
           {user ? (
             <>
-              <li>
-                <Link to="/dashboard" onClick={() => dispath(toggleSideNav())}>
-                  Dashboard
-                </Link>
-              </li>
-
-              <li>
-                <button
-                  onClick={() => {
-                    dispath(logoutUser());
-                    dispath(toggleSideNav());
-                  }}
+              <li className="nav-item">
+                <NavLink
+                  to="/dashboard"
+                  onClick={closeNav}
+                  className={({ isActive }) =>
+                    isActive ? "active-link" : "nav-link"
+                  }
                 >
+                  Dashboard
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <button className="logout-btn" onClick={handleLogout}>
                   Logout
                 </button>
               </li>
             </>
           ) : (
             <>
-              <li>
-                <Link to="/login" onClick={() => dispath(toggleSideNav())}>
+              <li className="nav-item">
+                <NavLink
+                  to="/login"
+                  onClick={closeNav}
+                  className={({ isActive }) =>
+                    isActive ? "active-link" : "nav-link"
+                  }
+                >
                   Login
-                </Link>
+                </NavLink>
               </li>
-              <li>
-                <Link to="/register" onClick={() => dispath(toggleSideNav())}>
-                  {" "}
-                  Register{" "}
-                </Link>
+              <li className="nav-item">
+                <NavLink
+                  to="/register"
+                  onClick={closeNav}
+                  className={({ isActive }) =>
+                    isActive ? "active-link" : "nav-link"
+                  }
+                >
+                  Register
+                </NavLink>
               </li>
             </>
           )}

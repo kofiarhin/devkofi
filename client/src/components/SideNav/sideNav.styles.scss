@@ -1,37 +1,83 @@
 #sideNav {
-  background-color: black;
-  color: white;
+  background-color: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(12px); // Modern frosted glass effect
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 1000;
   display: grid;
   place-content: center;
-  .close {
+  transition: all 0.3s ease-in-out;
+
+  .close-icon {
     cursor: pointer;
     font-size: 2rem;
+    color: white;
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 25px;
+    right: 25px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: rotate(90deg);
+    }
   }
 
-  .content-wrapper {
-    ul li {
-      display: block;
-      color: white;
-      margin-bottom: 1rem;
-      a {
-        color: white;
-        text-decoration: none;
+  .nav-content {
+    text-align: center;
+
+    .nav-list {
+      list-style: none;
+      padding: 0;
+
+      .nav-item {
+        margin-bottom: 2.5rem;
+
+        .nav-link,
+        .logout-btn {
+          color: white;
+          text-decoration: none;
+          font-size: 1.5rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 3px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          opacity: 0.7;
+          display: inline-block;
+
+          &:hover {
+            opacity: 1;
+            letter-spacing: 5px;
+            transform: scale(1.05);
+          }
+        }
+
+        // Active state style
+        .active-link {
+          opacity: 1;
+          color: #fff;
+          border-bottom: 2px solid white;
+          padding-bottom: 5px;
+          letter-spacing: 5px;
+        }
       }
-      button {
-        border: none;
-        background-color: transparent;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
+    }
+  }
+}
+
+// Tablet/Desktop adjustment
+@media (min-width: 768px) {
+  #sideNav {
+    .nav-content {
+      .nav-list {
+        .nav-item {
+          .nav-link,
+          .logout-btn {
+            font-size: 2.5rem;
+          }
+        }
       }
     }
   }
