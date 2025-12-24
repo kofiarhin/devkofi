@@ -23,6 +23,7 @@ const Home = () => {
           highlightText="that actually ships"
           description="You work directly with a senior MERN engineer, not a teaching assistant or community moderator. Sessions focus on real blockers — architecture, backend logic, frontend state, or deployment. Every session is designed to move your codebase forward."
           buttonText="Join Now"
+          url={`/register`}
           onButtonClick={handleJoinClick}
           imageSrc={workStation}
           reversed={false}
@@ -33,6 +34,7 @@ const Home = () => {
           highlightText="not toy apps"
           description="Build production-grade applications that reflect real-world systems. You’ll implement authentication, protected routes, APIs, database schemas, error handling, and clean architecture — the exact things hiring managers look for."
           buttonText="View Projects"
+          url="/projects"
           onButtonClick={handleJoinClick}
           imageSrc={personCoding}
           reversed={true}

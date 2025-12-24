@@ -1,5 +1,6 @@
 import React from "react";
 import "./feature-section.styles.scss";
+import { Link } from "react-router-dom";
 
 const FeatureSection = ({
   title,
@@ -9,6 +10,7 @@ const FeatureSection = ({
   onButtonClick,
   imageSrc,
   reversed = false,
+  url = "/register",
 }) => {
   return (
     <section className={`feature-section ${reversed ? "reversed" : ""}`}>
@@ -24,9 +26,9 @@ const FeatureSection = ({
               <span className="highlight">{highlightText}</span>
             </h2>
             <p className="description">{description}</p>
-            <button className="primary-btn" onClick={onButtonClick}>
+            <Link className="primary-btn" to={url}>
               {buttonText}
-            </button>
+            </Link>
           </div>
         </div>
       </div>
