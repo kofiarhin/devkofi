@@ -1,0 +1,218 @@
+[
+  {
+    "id": 1,
+    "title": "Hotel Booking System",
+    "slug": "hotel-booking",
+    "description": "Comprehensive MERN application featuring room availability logic, user reservations, and an administrative dashboard.",
+    "tech": ["Node.js", "Express", "MongoDB", "React"],
+    "category": "Fullstack",
+    "repo": "https://github.com/kofiarhin/hotel_booking",
+    "highlights": [
+      "Strict MVC Architecture",
+      "JWT Authentication",
+      "Date-range logic"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Escowear E-commerce",
+    "slug": "escowear",
+    "description": "Production-ready retail platform with product cataloging, cart persistence, and mobile-first SCSS design.",
+    "tech": ["React", "Vite", "Node.js", "SCSS"],
+    "category": "E-commerce",
+    "repo": "https://github.com/kofiarhin/escowear-fullstack-app",
+    "highlights": ["Mobile-first design", "State management", "RESTful API"]
+  },
+  {
+    "id": 3,
+    "title": "KF Chat Application",
+    "slug": "kf-chat",
+    "description": "Real-time messaging platform utilizing WebSockets for instant communication and presence tracking.",
+    "tech": ["Socket.io", "Node.js", "React", "JavaScript"],
+    "category": "Real-time",
+    "repo": "https://github.com/kofiarhin/kf-chat-app",
+    "highlights": [
+      "Bi-directional data flow",
+      "Real-time UI updates",
+      "Socket events"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "KF RT Movie App",
+    "slug": "kf-movies",
+    "description": "Dynamic media discovery tool integrating with external APIs to provide real-time movie data and search functionality.",
+    "tech": ["React", "React Query", "SCSS", "Vite"],
+    "category": "Frontend",
+    "repo": "https://github.com/kofiarhin/kf-rt-movie-app",
+    "highlights": ["API Caching", "Debounced Search", "Infinite Scrolling"]
+  },
+  {
+    "id": 5,
+    "title": "YT Booking System",
+    "slug": "yt-booking",
+    "description": "Advanced booking engine optimized for tutorial-driven content, showcasing clean code and strict folder structures.",
+    "tech": ["MongoDB", "Express", "React", "Node.js"],
+    "category": "Fullstack",
+    "repo": "https://github.com/kofiarhin/yt-booking-app",
+    "highlights": ["CommonJS Backend", "React Query", "Modular SCSS"]
+  },
+  {
+    "id": 6,
+    "title": "RT Sneaker Shop",
+    "slug": "sneaker-shop",
+    "description": "A high-fidelity storefront focusing on premium UI/UX, smooth transitions, and a clean product viewing experience.",
+    "tech": ["JavaScript", "React", "Vite", "SCSS"],
+    "category": "Frontend",
+    "repo": "https://github.com/kofiarhin/rt-sneaker-shop",
+    "highlights": ["High-fidelity UI", "Custom SCSS Grid", "Interactive UX"]
+  },
+  {
+    "id": 7,
+    "title": "MERN Auth Boilerplate",
+    "slug": "mern-auth",
+    "description": "A secure authentication system implementing JWT, HTTP-only cookies, and robust error handling.",
+    "tech": ["Node.js", "JWT", "Express", "MongoDB"],
+    "category": "Backend",
+    "repo": "https://github.com/kofiarhin/mern-auth-app",
+    "highlights": [
+      "Security Best Practices",
+      "Cookie-based Auth",
+      "MVC Pattern"
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Social Media API",
+    "slug": "social-api",
+    "description": "Scalable backend for a social platform supporting user interactions, post feeds, and relationship mapping.",
+    "tech": ["Node.js", "MongoDB", "Express", "CommonJS"],
+    "category": "Backend",
+    "repo": "https://github.com/kofiarhin/social-media-api",
+    "highlights": [
+      "Mongoose Aggregations",
+      "Scalable Schema",
+      "CRUD Operations"
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Weather Real-Time",
+    "slug": "weather-rt",
+    "description": "A localized weather dashboard that fetches and caches environmental data with high precision.",
+    "tech": ["React", "React Query", "OpenWeather API", "SCSS"],
+    "category": "Frontend",
+    "repo": "https://github.com/kofiarhin/weather-app-rt",
+    "highlights": ["Data Persistence", "Dynamic Styling", "API Integration"]
+  },
+  {
+    "id": 10,
+    "title": "Doctor on Demand",
+    "slug": "doctor-demand",
+    "description": "Healthcare scheduling app integrated with Firebase for real-time appointment management and user data.",
+    "tech": ["JavaScript", "Firebase", "React", "Node.js"],
+    "category": "Fullstack",
+    "repo": "https://github.com/kofiarhin/js-doctor-on-demand",
+    "highlights": ["Firebase Auth", "Real-time DB", "Mobile-first"]
+  },
+  {
+    "id": 11,
+    "title": "URL Shortener Service",
+    "slug": "url-shortener",
+    "description": "Fullstack tool for transforming long URLs into analytical links with hit tracking and redirection logic.",
+    "tech": ["Node.js", "Express", "MongoDB", "JavaScript"],
+    "category": "Fullstack",
+    "repo": "https://github.com/kofiarhin/url-shortener",
+    "highlights": ["Redirection Logic", "Click Analytics", "Regex Validation"]
+  },
+  {
+    "id": 12,
+    "title": "Admin Dashboard UI",
+    "slug": "admin-ui",
+    "description": "Modular administrative dashboard with reusable components and data visualization layouts.",
+    "tech": ["React", "Vite", "SCSS", "JavaScript"],
+    "category": "Frontend",
+    "repo": "https://github.com/kofiarhin/admin-dashboard",
+    "highlights": ["Component Library", "Modular SCSS", "Responsive Layouts"]
+  },
+  {
+    "id": 13,
+    "title": "Task Manager API",
+    "slug": "task-api",
+    "description": "Core RESTful API following strict MVC principles to manage user productivity and task lifecycles.",
+    "tech": ["Node.js", "Express", "CommonJS", "MongoDB"],
+    "category": "Backend",
+    "repo": "https://github.com/kofiarhin/task-manager-api",
+    "highlights": ["Clean Code", "Error Middleware", "JWT Protection"]
+  },
+  {
+    "id": 14,
+    "title": "Real-Time Polling App",
+    "slug": "rt-polling",
+    "description": "Interactive voting system that updates global results instantly using WebSocket connections.",
+    "tech": ["Socket.io", "React", "Node.js", "Express"],
+    "category": "Real-time",
+    "repo": "https://github.com/kofiarhin/rt-polling-app",
+    "highlights": ["Instant Sync", "State Management", "Event Handling"]
+  },
+  {
+    "id": 15,
+    "title": "Crypto Price Tracker",
+    "slug": "crypto-tracker",
+    "description": "Financial dashboard providing live updates on cryptocurrency market caps and price fluctuations.",
+    "tech": ["React", "React Query", "CoinGecko API", "SCSS"],
+    "category": "Frontend",
+    "repo": "https://github.com/kofiarhin/crypto-tracker",
+    "highlights": ["Polling Strategies", "Financial Data", "Chart Integration"]
+  },
+  {
+    "id": 16,
+    "title": "Markdown Preview Engine",
+    "slug": "markdown-preview",
+    "description": "Developer utility for real-time markdown-to-HTML rendering with custom styling support.",
+    "tech": ["React", "JavaScript", "Vite", "SCSS"],
+    "category": "Frontend",
+    "repo": "https://github.com/kofiarhin/markdown-previewer",
+    "highlights": ["Text Parsing", "Live Preview", "Stateful UI"]
+  },
+  {
+    "id": 17,
+    "title": "Portfolio Version 2",
+    "slug": "portfolio-v2",
+    "description": "The previous iteration of my brand identity, showcasing SCSS animations and mobile-first responsiveness.",
+    "tech": ["React", "Vite", "SCSS", "JavaScript"],
+    "category": "Frontend",
+    "repo": "https://github.com/kofiarhin/portfolio-v2",
+    "highlights": ["Brand Storytelling", "Custom Animations", "Fast Loading"]
+  },
+  {
+    "id": 18,
+    "title": "Expense Tracker",
+    "slug": "expense-tracker",
+    "description": "A financial management tool designed to categorize spending and provide analytical insights into personal budget.",
+    "tech": ["React", "Context API", "JavaScript", "SCSS"],
+    "category": "Frontend",
+    "repo": "https://github.com/kofiarhin/expense-tracker",
+    "highlights": ["Calculation Logic", "Persistent Storage", "Clean UI"]
+  },
+  {
+    "id": 19,
+    "title": "Fitness Progress Log",
+    "slug": "fitness-tracker",
+    "description": "A user-centric platform for tracking workouts, monitoring goals, and visualizing fitness data over time.",
+    "tech": ["Node.js", "MongoDB", "React", "Express"],
+    "category": "Fullstack",
+    "repo": "https://github.com/kofiarhin/fitness-tracker",
+    "highlights": ["Data Aggregation", "User Auth", "Progress Tracking"]
+  },
+  {
+    "id": 20,
+    "title": "E-Learning Platform",
+    "slug": "elearning",
+    "description": "Prototype for a course-based platform, including module navigation and student progress persistence.",
+    "tech": ["MongoDB", "Express", "React", "Node.js"],
+    "category": "MERN Stack",
+    "repo": "https://github.com/kofiarhin/elearning-platform",
+    "highlights": ["Course Logic", "Content Delivery", "Scalable Schema"]
+  }
+]
