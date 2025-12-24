@@ -1,6 +1,6 @@
 import "./dashboard.styles.scss";
 import { useSelector } from "react-redux";
-import StudentDashboard from "./StudentDashboard/STudentDashboard";
+import StudentDashboard from "./StudentDashboard/StudentDashboard";
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.auth);
