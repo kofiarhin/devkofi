@@ -1,4 +1,40 @@
 import React from "react";
+import "./StudentDashboard.styles.scss";
+
+const gridMapping = [
+  {
+    id: "messages",
+    title: "Messages",
+    icon: "✉️",
+    badge: "12",
+    desktop_span: 3,
+    description: "View latest updates and task status from mentors.",
+  },
+  {
+    id: "progress",
+    title: "Progress",
+    icon: "⚡",
+    badge: "85%",
+    desktop_span: 1,
+    description: "Course completion status.",
+  },
+  {
+    id: "assignments",
+    title: "Assignments",
+    icon: "📚",
+    badge: "3",
+    desktop_span: 2,
+    description: "Upcoming deadlines for MERN modules.",
+  },
+  {
+    id: "support",
+    title: "Support",
+    icon: "🛡️",
+    badge: "Online",
+    desktop_span: 2,
+    description: "Instant help from the community.",
+  },
+];
 
 const StudentDashboard = () => {
   return (
@@ -12,45 +48,21 @@ const StudentDashboard = () => {
         </header>
 
         <main className="bento-grid">
-          {/* Main unit - Spans 3 columns on desktop */}
-          <section className="card feature-card">
-            <div className="card-header">
-              <span className="icon">✉️</span>
-              <span className="badge">12</span>
-            </div>
-            <h2>Messages</h2>
-            <p>View your latest updates and task status from mentors.</p>
-          </section>
-
-          {/* Progress unit - Spans 1 column */}
-          <section className="card stat-card">
-            <div className="card-header">
-              <span className="icon">⚡</span>
-              <span className="badge">85%</span>
-            </div>
-            <h2>Progress</h2>
-            <p>Course completion</p>
-          </section>
-
-          {/* Assignments unit - Spans 2 columns */}
-          <section className="card mid-card">
-            <div className="card-header">
-              <span className="icon">📚</span>
-              <span className="badge">3</span>
-            </div>
-            <h2>Assignments</h2>
-            <p>Upcoming deadlines for your MERN modules.</p>
-          </section>
-
-          {/* Support unit - Spans 2 columns */}
-          <section className="card mid-card">
-            <div className="card-header">
-              <span className="icon">🛡️</span>
-              <span className="badge">Online</span>
-            </div>
-            <h2>Support</h2>
-            <p>Get instant help from the DevKofi community.</p>
-          </section>
+          {gridMapping.map((item) => (
+            <section
+              key={item.id}
+              className={`card ${item.id}-card span-${item.desktop_span}`}
+            >
+              <div className="card-header">
+                <span className="icon">{item.icon}</span>
+                <span className="badge">{item.badge}</span>
+              </div>
+              <div className="card-content">
+                <h2>{item.title}</h2>
+                <p>{item.description}</p>
+              </div>
+            </section>
+          ))}
         </main>
       </div>
     </div>

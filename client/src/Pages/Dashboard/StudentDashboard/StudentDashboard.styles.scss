@@ -1,0 +1,128 @@
+:root {
+    --bg-main: #f0f2f5;
+    --bg-card: #ffffff;
+    --primary-accent: #007bff;
+    --glow-primary: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard {
+    background-color: var(--bg-main);
+    min-height: 100vh;
+    padding: 1.5rem;
+    font-family: 'Inter', sans-serif; // Assuming Inter is available or fallback
+}
+
+.header-section {
+    margin-bottom: 2rem;
+
+    h1 {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+
+        span {
+            display: block; // Or inline depending on preference, sticking to block for now to match potential mobile view
+            color: var(--primary-accent);
+        }
+    }
+
+    p {
+        color: #666;
+    }
+}
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: 1fr; // Mobile first: 1 column
+    gap: 1.5rem;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.message-card,
+.progress-card,
+.assignment-card,
+.support-card {
+    // Using specific classes or generic grid-item
+    background-color: var(--bg-card);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: var(--glow-primary);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+
+    &:active {
+        transform: scale(0.96);
+    }
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .icon {
+        font-size: 1.5rem;
+    }
+
+    .badge {
+        background-color: #e6f0ff;
+        color: var(--primary-accent);
+        padding: 0.25rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+}
+
+.card-content {
+    h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    p {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+}
+
+// Tablet+
+@media (min-width: 768px) {
+    .header-section h1 span {
+        display: inline;
+    }
+}
+
+// Desktop (1024px+)
+@media (min-width: 1024px) {
+    .bento-grid {
+        grid-template-columns: repeat(4, 1fr); // 4 columns
+        grid-template-rows: repeat(2, minmax(200px, auto)); // Defined rows
+    }
+
+    // Span utility classes - matching the logic we'll use in JSX
+    .span-1 {
+        grid-column: span 1;
+    }
+
+    .span-2 {
+        grid-column: span 2;
+    }
+
+    .span-3 {
+        grid-column: span 3;
+    }
+
+    .span-4 {
+        grid-column: span 4;
+    }
+
+    // Specific card positioning if needed, but spans should handle it based on mapping
+}
