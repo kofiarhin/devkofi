@@ -7,10 +7,10 @@ const Register = () => {
   const navigate = useNavigate();
   const { mutate } = useRegisterMutation();
   const [formData, setFormData] = useState({
-    firstName: "test",
-    lastName: "test",
-    email: "test@gmail.com",
-    password: "password",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
   });
 
   const { firstName, lastName, email, password } = formData;
