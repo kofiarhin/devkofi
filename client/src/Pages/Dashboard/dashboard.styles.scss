@@ -1,3 +1,89 @@
-#dashboard {
-  min-height: 80vh;
+// StudentDashboard.styles.scss
+
+.dashboard {
+  background-color: var(--bg-main);
+  min-height: 100vh;
+  padding: 4rem 2rem;
+
+  .dashboard-wrapper {
+    max-width: 1300px; // Wider for desktop
+    margin: 0 auto;
+
+    .header-section {
+      margin-bottom: 3rem;
+      h1 {
+        font-size: 3rem;
+        span {
+          color: var(--main-color);
+          text-shadow: var(--glow-primary);
+        }
+      }
+      p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+.bento-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr; // Mobile default
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr); // 4-column layout for desktop
+
+    .feature-card {
+      grid-column: span 3;
+    } // Main card takes 75% width
+    .stat-card {
+      grid-column: span 1;
+    } // Small card takes 25% width
+    .mid-card {
+      grid-column: span 2;
+    } // Bottom cards take 50% each
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      border-color: var(--primary-accent);
+      box-shadow: var(--glow-primary);
+      transform: translateY(-5px);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+
+      .icon {
+        font-size: 1.5rem;
+      }
+      .badge {
+        background: var(--bg-surface);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        border: 1px solid var(--border-color);
+        color: var(--main-color);
+      }
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+  }
 }
