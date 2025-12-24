@@ -3,6 +3,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const cleaner = require("./middleware/cleaner");
 const connectDB = require("./config/db");
+const projectRoutes = require("./routes/projectRoutes");
 
 const app = express();
 
@@ -29,6 +30,8 @@ app.get("/api/health", async (req, res, next) => {
 app.get("/health", async (req, res, next) => {
   return res.json({ message: "get health" });
 });
+
+app.use("/api/projects", projectRoutes);
 
 app.use("/api/auth", authRoutes);
 

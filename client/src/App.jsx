@@ -12,11 +12,11 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import SideNav from "./components/SideNav/SideNav";
 import { useSelector } from "react-redux";
+import Projects from "./Pages/Projects/Projects";
 
 const App = () => {
   const { data } = useHealth();
   const { isOpen } = useSelector((state) => state.navigation);
-  console.log({ isOpen });
   return (
     <Router>
       <Header />
@@ -26,6 +26,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/projects" element={<Projects />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

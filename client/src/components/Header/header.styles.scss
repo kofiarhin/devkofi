@@ -24,9 +24,10 @@ $glass-bg: rgba(10, 10, 10, 0.8);
     font-weight: 800;
     letter-spacing: -1px;
     margin: 0;
+    color: var(--main-color);
 
     span {
-      color: $primary-neon;
+      color: white;
     }
   }
 
