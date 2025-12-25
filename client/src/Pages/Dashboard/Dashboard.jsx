@@ -8,7 +8,7 @@ const Dashboard = () => {
     <div id="dashboard">
       <h1 className="heading center">Welcome {user?.firstName} </h1>
       <div className="container">
-        {user && user?.role === "student" && <StudentDashboard />}
+        {user && user?.role === "student" && <StudentDashboard user={user} />}
       </div>
     </div>
   );

@@ -36,13 +36,13 @@ const gridMapping = [
   },
 ];
 
-const StudentDashboard = () => {
+const StudentDashboard = ({ user }) => {
   return (
     <div className="dashboard">
       <div className="dashboard-wrapper">
         <header className="header-section">
           <h1>
-            Welcome back, <span>Kofi</span>
+            Welcome back, <span>{user.firstName}</span>
           </h1>
           <p>You have 3 assignments due this week.</p>
         </header>
