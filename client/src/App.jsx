@@ -13,6 +13,7 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import SideNav from "./components/SideNav/SideNav";
 import { useSelector } from "react-redux";
 import Projects from "./Pages/Projects/Projects";
+import Playground from "./Pages/Playground/Playground";
 
 const App = () => {
   const { data } = useHealth();
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/playground" element={<Playground />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

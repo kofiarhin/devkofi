@@ -16,6 +16,7 @@
         span {
           color: var(--main-color);
           text-shadow: var(--glow-primary);
+          text-transform: capitalize;
         }
       }
       p {
