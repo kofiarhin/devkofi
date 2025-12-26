@@ -3,6 +3,7 @@ import AdminDashboard from "../Dashboard/ADminDashboard/AdminDashboard";
 
 const user = {
   firstName: "kofi",
+  lastName: "Arhin",
   email: "kofi@gmail.com",
   role: "admin",
 };
