@@ -1,0 +1,55 @@
+:root {
+  --main-color: #94ff2b;
+  --bg-dark: #000000;
+  --bg-spotlight: #121212; // Slightly lifted black for the center
+}
+
+.spinner-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  // Use vh to ensure it fills the viewport or parent container
+  min-height: 60vh;
+
+  // Dark radial gradient for depth
+  background: radial-gradient(
+    circle at center,
+    var(--bg-spotlight) 0%,
+    var(--bg-dark) 100%
+  );
+}
+
+.spinner-ring {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  // Using your brand color for the conic trail
+  background: conic-gradient(from 0deg, transparent 20%, var(--main-color));
+
+  // Masking creates the actual "ring" thickness
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 6px),
+    #000 0
+  );
+  mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 0);
+
+  // Smooth, organic rotation
+  animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+// Mobile-first adjustment
+@media (min-width: 768px) {
+  .spinner-ring {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { dataTagErrorSymbol, useQuery } from "@tanstack/react-query";
 import { baseUrl } from "../../constants/constants";
 import ProjectsList from "../../components/ProjectList/ProjectList";
+import Spinner from "../../components/Spinner/Spinner";
 
 const Projects = () => {
   const getProjects = async () => {
@@ -19,10 +20,14 @@ const Projects = () => {
     }
   };
 
-  const { data } = useQuery({
+  const { data, isPending, isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
   });
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="container">{data && <ProjectsList projects={data} />}</div>

@@ -1,16 +1,10 @@
 import React from "react";
-import AdminDashboard from "../Dashboard/ADminDashboard/AdminDashboard";
+import Spinner from "../../components/Spinner/Spinner";
 
-const user = {
-  firstName: "kofi",
-  lastName: "Arhin",
-  email: "kofi@gmail.com",
-  role: "admin",
-};
 const Playground = () => {
   return (
     <div>
-      <AdminDashboard user={user} />
+      <Spinner />
     </div>
   );
 };
