@@ -11,7 +11,21 @@ const app = express();
 connectDB();
 
 // setup middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://127.0.0.1:5173",
+      // add production domains here later:
+      // "https://devkofi.com",
+      // "https://www.devkofi.com",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+
 app.use(express.json());
 app.use(cleaner);
 
@@ -32,7 +46,6 @@ app.get("/health", async (req, res, next) => {
 });
 
 app.use("/api/projects", projectRoutes);
-
 app.use("/api/auth", authRoutes);
 
 module.exports = app;
