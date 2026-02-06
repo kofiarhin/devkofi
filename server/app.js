@@ -17,8 +17,8 @@ app.use(
       "http://localhost:5173",
       "http://127.0.0.1:5173",
       // add production domains here later:
-      // "https://devkofi.com",
-      // "https://www.devkofi.com",
+      "https://devkofi.com",
+      "https://www.devkofi.com",
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
