@@ -1,44 +1,36 @@
-// client/src/hooks/useProjects.js
 import { useQuery } from "@tanstack/react-query";
 import { baseUrl } from "../constants/constants";
 
-const fetchProjects = async () => {
+const getProjects = async () => {
   const res = await fetch(`${baseUrl}/api/projects`, {
     method: "GET",
-    headers: { "Content-Type": "application/json" },
     credentials: "include",
+    headers: { "Content-Type": "application/json" },
   });
 
-  let payload = null;
-  try {
-    payload = await res.json();
-  } catch (e) {
-    payload = null;
-  }
-
   if (!res.ok) {
-    const msg =
-      (payload && (payload.message || payload.error)) ||
-      `Request failed (${res.status})`;
-    throw new Error(msg);
+    const text = await res.text().catch(() => "");
+    throw new Error(text || `Failed to fetch projects (${res.status})`);
   }
 
-  // Normalize to a consistent shape:
-  // { projects: [...] }
-  if (Array.isArray(payload)) return { projects: payload };
-  if (payload && Array.isArray(payload.projects))
-    return { projects: payload.projects };
-  if (payload && Array.isArray(payload.data)) return { projects: payload.data };
-  return { projects: [] };
+  return res.json();
 };
 
 const useProjects = () => {
   return useQuery({
     queryKey: ["projects"],
-    queryFn: fetchProjects,
-    staleTime: 1000 * 60 * 5,
-    retry: 1,
+    queryFn: getProjects,
+
+    // ✅ fixes “loads only after refresh” when first request fails/cold-starts
+    retry: 3,
+    retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 8000),
+
+    // ✅ ensures it fetches when you navigate to /projects
+    refetchOnMount: "always",
+
+    // optional
     refetchOnWindowFocus: false,
+    staleTime: 30_000,
   });
 };
 
