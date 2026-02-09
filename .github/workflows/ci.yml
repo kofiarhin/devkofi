@@ -27,8 +27,14 @@ jobs:
           cache: npm
           cache-dependency-path: client/package-lock.json
 
+      # (optional) one-run debug — remove after confirmed
+      # - name: Debug VITE_API_URL
+      #   run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}"
+
       - name: Build client
         working-directory: client
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           npm ci
           npm run build   # outputs client/dist
@@ -180,7 +186,6 @@ jobs:
 
       - name: Create Playwright Config & Test
         run: |
-          # 1. Generate Config (Required for --project=chromium)
           cat > playwright.config.js <<'EOF'
           import { defineConfig, devices } from '@playwright/test';
           export default defineConfig({
@@ -195,7 +200,6 @@ jobs:
           });
           EOF
 
-          # 2. Generate Spec
           cat > production.spec.js <<'EOF'
           import { test, expect } from '@playwright/test';
           test('devkofi.com returns 200', async ({ page }) => {
