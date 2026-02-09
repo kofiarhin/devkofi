@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import "./projects.styles.scss";
 
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ||
-  "http://localhost:5000";
+  import.meta.env.VITE_API_URL?.replace(/\/$/, "") || "http://localhost:5000";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -30,7 +29,6 @@ const Projects = () => {
         const data = await res.json();
 
         if (!ignore) {
-          // expect array
           setProjects(Array.isArray(data) ? data : []);
           setStatus("success");
         }
