@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { baseUrl } from "../constants/constants";
 
 const getProjects = async () => {
-  const res = await fetch(`${baseUrl}/api/projects`, {
+  const base = import.meta.env.VITE_API_URL || "";
+  const res = await fetch(`${base}/api/projects`, {
     method: "GET",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -21,16 +21,18 @@ const useProjects = () => {
     queryKey: ["projects"],
     queryFn: getProjects,
 
-    // ✅ fixes “loads only after refresh” when first request fails/cold-starts
+    // always fresh
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: "always",
+    refetchOnReconnect: "always",
+
+    // keep retry for cold start
     retry: 3,
     retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 8000),
 
-    // ✅ ensures it fetches when you navigate to /projects
-    refetchOnMount: "always",
-
-    // optional
-    refetchOnWindowFocus: false,
-    staleTime: 30_000,
+    // optional: hard refresh every X seconds
+    // refetchInterval: 10_000,
   });
 };
 
