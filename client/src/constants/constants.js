@@ -10,7 +10,7 @@ const normalizeUrl = (url) => {
 };
 
 export const baseUrl = import.meta.env.DEV
-  ? import.meta.env.VITE_BASE_URL
+  ? import.meta.env.VITE_API_URL
   : "https://devkofi-api-82532bf8b693.herokuapp.com";
 
 export const profileImage =
