@@ -1,10 +1,7 @@
 import React from "react";
 
-const 
- = () => {
-  return <div>
-  <h1 className="heading">Projects</h1>   
-  </div>;
+const Projects = () => {
+  return <div>Projects</div>;
 };
 
-export default Pr
+export default Projects;
