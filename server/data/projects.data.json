@@ -26,5 +26,19 @@
     "demoUrl": "https://agendaboys.com",
     "repoUrl": "https://github.com/kofiarhin/agenda-boys",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1770431956/agenda-boys_x1fs7l.png"
+  },
+  {
+    "id": 13,
+    "name": "PregChat",
+    "description": "AI pregnancy companion chat app for daily baby + mother updates.",
+    "features": [
+      "Daily pregnancy updates",
+      "Chat experience UI",
+      "Fast, mobile-first UX"
+    ],
+    "status": "Active",
+    "demoUrl": "https://pregchat-tan.vercel.app/chat",
+    "repoUrl": "https://github.com/kofiarhin/pregchat",
+    "thumbnailUrl": ""
   }
 ]
