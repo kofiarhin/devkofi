@@ -30,10 +30,16 @@ const Header = () => {
           <Link to="/" className="nav-item">
             Home
           </Link>
+
+          <Link to="/about" className="nav-item">
+            About
+          </Link>
+
           <Link to="/projects" className="nav-item">
             Projects
           </Link>
-          {import.meta.env.DEV ? <Link to="/playground"> Playground</Link> : ""}
+
+          {import.meta.env.DEV ? <Link to="/playground">Playground</Link> : ""}
 
           {user ? (
             <>

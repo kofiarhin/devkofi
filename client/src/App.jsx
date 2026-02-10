@@ -15,6 +15,7 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import SideNav from "./components/SideNav/SideNav";
 import Projects from "./Pages/Projects/Projects";
 import Playground from "./Pages/Playground/Playground";
+import About from "./Pages/About/About";
 
 const App = () => {
   useHealth(); // keep if you need it for app warmup/health ping
@@ -30,6 +31,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/playground" element={<Playground />} />
