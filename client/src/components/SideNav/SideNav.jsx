@@ -36,6 +36,18 @@ const SideNav = () => {
 
           <li className="nav-item">
             <NavLink
+              to="/about"
+              onClick={closeNav}
+              className={({ isActive }) =>
+                isActive ? "active-link" : "nav-link"
+              }
+            >
+              About
+            </NavLink>
+          </li>
+
+          <li className="nav-item">
+            <NavLink
               to="/projects"
               onClick={closeNav}
               className={({ isActive }) =>
