@@ -4,6 +4,7 @@ const authRoutes = require("./routes/authRoutes");
 const cleaner = require("./middleware/cleaner");
 const connectDB = require("./config/db");
 const projectRoutes = require("./routes/projectRoutes");
+const pricingRoute = require("./routes/pricingRoutes");
 
 const app = express();
 
@@ -36,6 +37,8 @@ app.get("/", async (req, res, next) => {
     message: "welcome to dev kofi",
   });
 });
+
+app.use("/api/pricing", pricingRoute);
 
 app.get("/api/health", async (req, res, next) => {
   return res.json({ message: "get health" });

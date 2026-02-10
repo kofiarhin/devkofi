@@ -1,0 +1,187 @@
+{
+  "version": "v1",
+  "currency": "GBP",
+  "billing": {
+    "type": "one_time",
+    "note": "One-time payment for the full 6-month mentorship program. (Payment not enabled yet — onboarding only.)"
+  },
+  "program": {
+    "name": "DevKofi Mentorship",
+    "durationMonths": 6,
+    "durationWeeks": 24,
+    "promise": "Move from tutorial hell to shipping production-ready applications.",
+    "subtitle": "Same roadmap. Different levels of pressure.",
+    "guarantee": {
+      "title": "14-day refund guarantee",
+      "details": "If you’re not satisfied in the first 14 days, request a refund."
+    }
+  },
+  "ui": {
+    "defaultFeaturedPlanSlug": "pro",
+    "planOrder": ["standard", "pro", "team"],
+    "showGuarantee": true,
+    "showWhoItsFor": true,
+    "showOutcomes": true
+  },
+  "plans": [
+    {
+      "id": "plan_standard",
+      "slug": "standard",
+      "title": "Full-Stack Bootcamp: Standard",
+      "tagline": "Structure + roadmap + community momentum.",
+      "badge": null,
+      "pricing": {
+        "amount": 1200,
+        "label": "£1,200",
+        "cadence": "one_time",
+        "cadenceLabel": "one-time"
+      },
+      "cta": {
+        "label": "Join Standard",
+        "type": "enroll",
+        "route": "/join/standard"
+      },
+      "summary": "Perfect for self-starters who want structure and community.",
+      "whoItsFor": [
+        "You want a clear 6-month roadmap to follow",
+        "You can self-manage but need direction",
+        "You want community pressure to stay consistent"
+      ],
+      "outcomes": [
+        "Ship multiple deployable full-stack apps",
+        "Build production habits and workflows",
+        "Create a portfolio that proves you can deliver"
+      ],
+      "includes": [
+        "6-month full-stack web development mentorship",
+        "Weekly live sessions + lifetime recordings",
+        "10+ real-world portfolio projects",
+        "Private student community",
+        "End-of-program certificate",
+        "14-day refund guarantee"
+      ],
+      "accountability": {
+        "level": "guided",
+        "weeklyCheckIns": true,
+        "submissionRequiredToProgress": false,
+        "reviewSlaHours": null,
+        "support": {
+          "community": true,
+          "priorityChat": false,
+          "oneToOne": false
+        }
+      },
+      "availability": {
+        "isActive": true,
+        "seatsLimited": false,
+        "note": null
+      }
+    },
+    {
+      "id": "plan_pro",
+      "slug": "pro",
+      "title": "Full-Stack Bootcamp: Pro",
+      "tagline": "Accountability + reviews + faster progress.",
+      "badge": "Most Popular",
+      "pricing": {
+        "amount": 1800,
+        "label": "£1,800",
+        "cadence": "one_time",
+        "cadenceLabel": "one-time"
+      },
+      "cta": {
+        "label": "Go Pro",
+        "type": "enroll",
+        "route": "/join/pro"
+      },
+      "summary": "For those who want hands-on accountability and faster growth.",
+      "whoItsFor": [
+        "You want strong accountability to stay consistent",
+        "You want real code reviews on what you build",
+        "You want to move faster with feedback loops"
+      ],
+      "outcomes": [
+        "Ship production-ready apps with review-driven iteration",
+        "Build an interview-ready portfolio",
+        "Develop professional shipping discipline"
+      ],
+      "includes": [
+        "All Standard features included",
+        "Bi-weekly 1:1 mentorship sessions",
+        "Detailed code reviews & feedback",
+        "Personalized portfolio & career guidance",
+        "Priority Slack/Discord support",
+        "14-day refund guarantee"
+      ],
+      "accountability": {
+        "level": "accountability",
+        "weeklyCheckIns": true,
+        "submissionRequiredToProgress": true,
+        "reviewSlaHours": 48,
+        "support": {
+          "community": true,
+          "priorityChat": true,
+          "oneToOne": true
+        }
+      },
+      "availability": {
+        "isActive": true,
+        "seatsLimited": true,
+        "note": "Limited seats available."
+      }
+    },
+    {
+      "id": "plan_team",
+      "slug": "team",
+      "title": "Team / Enterprise",
+      "tagline": "Dedicated support for teams shipping real products.",
+      "badge": null,
+      "pricing": {
+        "amount": 5000,
+        "label": "£5,000",
+        "cadence": "up_to_members",
+        "cadenceLabel": "up to 5 members"
+      },
+      "cta": {
+        "label": "Request Access",
+        "type": "request",
+        "route": "/enterprise"
+      },
+      "summary": "Upskill your small team with dedicated support.",
+      "whoItsFor": [
+        "You want your team shipping faster with fewer blockers",
+        "You want a structured program tailored to your stack",
+        "You want a process uplift — not just training"
+      ],
+      "outcomes": [
+        "Team-wide improvement in delivery velocity",
+        "Stronger engineering practices and standards",
+        "Clear roadmap for ongoing shipping"
+      ],
+      "includes": [
+        "Team access & custom scheduling",
+        "Team-focused real-world projects",
+        "Dedicated instructor support",
+        "Post-program team audit & recommendations",
+        "Private Slack channel for your team",
+        "14-day refund guarantee"
+      ],
+      "accountability": {
+        "level": "enterprise",
+        "weeklyCheckIns": true,
+        "submissionRequiredToProgress": true,
+        "reviewSlaHours": 24,
+        "support": {
+          "community": false,
+          "priorityChat": true,
+          "oneToOne": true
+        }
+      },
+      "availability": {
+        "isActive": true,
+        "seatsLimited": true,
+        "note": "Requires a short discovery call."
+      }
+    }
+  ]
+}
