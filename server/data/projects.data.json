@@ -40,5 +40,19 @@
     "demoUrl": "https://agendaboys.com",
     "repoUrl": "https://github.com/kofiarhin/agenda-boys",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1770431956/agenda-boys_x1fs7l.png"
+  },
+  {
+    "id": 14,
+    "name": "Luna Ninjas",
+    "description": "Fast-paced math practice app with streaks, levels, and ninja-style quizzes.",
+    "features": [
+      "Timed math rounds",
+      "Streak + level progression",
+      "Clean mobile-first UI"
+    ],
+    "status": "Building",
+    "demoUrl": "https://lunaninjas.com/home",
+    "repoUrl": "https://github.com/kofiarhin/luna-ninjas",
+    "thumbnailUrl": ""
   }
 ]
