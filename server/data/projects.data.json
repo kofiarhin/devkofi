@@ -53,7 +53,7 @@
     "status": "Building",
     "demoUrl": "https://lunaninjas.com/home",
     "repoUrl": "https://github.com/kofiarhin/luna-ninjas",
-    "thumbnailUrl": ""
+    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1770852399/luna-ninjas_mwlrlc.png"
   },
   {
     "id": 15,
@@ -67,6 +67,6 @@
     "status": "Building",
     "demoUrl": "https://rizz-app-topaz.vercel.app/",
     "repoUrl": "https://github.com/kofiarhin/rizz-app",
-    "thumbnailUrl": ""
+    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1770852885/riz-god_qupm7p.png"
   }
 ]
