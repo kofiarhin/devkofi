@@ -16,9 +16,13 @@ import SideNav from "./components/SideNav/SideNav";
 import Projects from "./Pages/Projects/Projects";
 import Playground from "./Pages/Playground/Playground";
 import About from "./Pages/About/About";
+import PricingPage from "./Pages/Pricing/Pricing";
+
+import Join from "./Pages/Join/Join";
+import Enterprise from "./Pages/Enterprise/Enterprise";
 
 const App = () => {
-  useHealth(); // keep if you need it for app warmup/health ping
+  useHealth();
   const { isOpen } = useSelector((state) => state.navigation);
 
   return (
@@ -32,12 +36,15 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
+        <Route path="/pricing" element={<PricingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/playground" element={<Playground />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/join/:planSlug" element={<Join />} />
+          <Route path="/enterprise" element={<Enterprise />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

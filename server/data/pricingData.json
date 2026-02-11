@@ -1,9 +1,9 @@
 {
-  "version": "v1",
+  "version": "v1.1",
   "currency": "GBP",
   "billing": {
-    "type": "one_time",
-    "note": "One-time payment for the full 6-month mentorship program. (Payment not enabled yet — onboarding only.)"
+    "type": "manual_activation",
+    "note": "Payments are not enabled yet. Selecting a package creates an enrollment request. An admin manually activates access."
   },
   "program": {
     "name": "DevKofi Mentorship",
@@ -21,7 +21,25 @@
     "planOrder": ["standard", "pro", "team"],
     "showGuarantee": true,
     "showWhoItsFor": true,
-    "showOutcomes": true
+    "showOutcomes": true,
+    "enrollmentStatusMessaging": {
+      "none": {
+        "title": "Choose your package",
+        "subtitle": "Pick a package to start onboarding. Payments are handled manually for now."
+      },
+      "pending": {
+        "title": "Enrollment Pending",
+        "subtitle": "We’ve received your request. Complete onboarding or wait for activation."
+      },
+      "active": {
+        "title": "Enrollment Active",
+        "subtitle": "You have full access to your program."
+      },
+      "request": {
+        "title": "Request Submitted",
+        "subtitle": "A discovery call is required. We’ll contact you to schedule it."
+      }
+    }
   },
   "plans": [
     {
@@ -36,8 +54,14 @@
         "cadence": "one_time",
         "cadenceLabel": "one-time"
       },
+      "enrollment": {
+        "mode": "manual_activation",
+        "initialStatus": "pending",
+        "activation": "admin",
+        "requiresPayment": false
+      },
       "cta": {
-        "label": "Join Standard",
+        "label": "Request Standard",
         "type": "enroll",
         "route": "/join/standard"
       },
@@ -74,7 +98,7 @@
       "availability": {
         "isActive": true,
         "seatsLimited": false,
-        "note": null
+        "note": "Manual activation required."
       }
     },
     {
@@ -89,8 +113,14 @@
         "cadence": "one_time",
         "cadenceLabel": "one-time"
       },
+      "enrollment": {
+        "mode": "manual_activation",
+        "initialStatus": "pending",
+        "activation": "admin",
+        "requiresPayment": false
+      },
       "cta": {
-        "label": "Go Pro",
+        "label": "Request Pro",
         "type": "enroll",
         "route": "/join/pro"
       },
@@ -127,7 +157,7 @@
       "availability": {
         "isActive": true,
         "seatsLimited": true,
-        "note": "Limited seats available."
+        "note": "Limited seats available. Manual activation required."
       }
     },
     {
@@ -141,6 +171,12 @@
         "label": "£5,000",
         "cadence": "up_to_members",
         "cadenceLabel": "up to 5 members"
+      },
+      "enrollment": {
+        "mode": "discovery_call",
+        "initialStatus": "request",
+        "activation": "admin",
+        "requiresPayment": false
       },
       "cta": {
         "label": "Request Access",

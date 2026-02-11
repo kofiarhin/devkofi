@@ -1,0 +1,10 @@
+#pricing-page {
+  min-height: 100vh;
+  background: var(--bg-main);
+  padding: 3rem 0 2rem;
+}
+
+.pricing-page__container {
+  width: min(1200px, 92%);
+  margin: 0 auto;
+}

@@ -2,26 +2,31 @@ import { useMutation } from "@tanstack/react-query";
 import { baseUrl } from "../constants/constants";
 
 const registerUser = async (userData) => {
-  try {
-    const res = await fetch(`${baseUrl}/api/auth/register`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(userData),
-    });
+  const res = await fetch(`${baseUrl}/api/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
 
-    console.log(res.ok);
-    return { userData };
-  } catch (error) {
-    console.log(error.message);
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    throw new Error(data?.error || "something went wrong. try again");
   }
+
+  if (data?.success === false) {
+    throw new Error(data?.error || "something went wrong. try again");
+  }
+
+  return data;
 };
 
 const useRegisterMutation = () => {
   return useMutation({
-    mutationFn: (data) => registerUser(data),
     mutationKey: ["register"],
+    mutationFn: (payload) => registerUser(payload),
   });
 };
 

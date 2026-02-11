@@ -1,0 +1,102 @@
+.enrollment-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.enrollment-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.enrollment-card__kicker {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+}
+
+.enrollment-card__plan {
+  margin: 6px 0 0;
+  color: #fff;
+  font-size: 22px;
+}
+
+.enrollment-card__badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+}
+
+.enrollment-card__badge.is-active {
+  border-color: rgba(46, 204, 113, 0.45);
+  background: rgba(46, 204, 113, 0.12);
+}
+
+.enrollment-card__badge.is-pending {
+  border-color: rgba(241, 196, 15, 0.45);
+  background: rgba(241, 196, 15, 0.12);
+}
+
+.enrollment-card__badge.is-request {
+  border-color: rgba(52, 152, 219, 0.45);
+  background: rgba(52, 152, 219, 0.12);
+}
+
+.enrollment-card__badge.is-none {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.enrollment-card__meta {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.enrollment-card__error {
+  margin: 10px 0 0;
+  color: #ff6b6b;
+}
+
+.enrollment-card__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.enrollment-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  background: #1b6fff;
+  color: #fff;
+  font-weight: 700;
+}
+
+.enrollment-card__btn.is-ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (min-width: 768px) {
+  .enrollment-card {
+    padding: 20px;
+  }
+
+  .enrollment-card__plan {
+    font-size: 24px;
+  }
+}

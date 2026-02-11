@@ -1,4 +1,3 @@
-import React from "react";
 import "./home.styles.scss";
 import Landing from "../../components/Landing/Landing";
 import Pricing from "../../components/Pricing/Pricing";
@@ -23,7 +22,7 @@ const Home = () => {
           highlightText="that actually ships"
           description="You work directly with a senior MERN engineer, not a teaching assistant or community moderator. Sessions focus on real blockers — architecture, backend logic, frontend state, or deployment. Every session is designed to move your codebase forward."
           buttonText="Join Now"
-          url={`/register`}
+          url="/#pricing"
           onButtonClick={handleJoinClick}
           imageSrc={workStation}
           reversed={false}
@@ -37,7 +36,7 @@ const Home = () => {
           url="/projects"
           onButtonClick={handleJoinClick}
           imageSrc={personCoding}
-          reversed={true}
+          reversed
         />
 
         <FeatureSection
@@ -47,7 +46,6 @@ const Home = () => {
           buttonText="See How"
           onButtonClick={handleJoinClick}
           imageSrc={aiImage}
-          reversed={false}
         />
 
         <FeatureSection
@@ -57,18 +55,17 @@ const Home = () => {
           buttonText="Get Started"
           onButtonClick={handleJoinClick}
           imageSrc={codeImage}
-          reversed={true}
+          reversed
         />
 
-        {/* 🔥 Team / Enterprise Feature */}
         <FeatureSection
           title="Built for Teams"
           highlightText="that need to move fast"
           description="This isn’t a course — it’s hands-on technical upskilling for teams. Your developers get direct access to a senior engineer, tailored sessions around your actual codebase, and real-world projects aligned with your business goals. Ideal for startups and small teams that need better code quality, faster delivery, and stronger technical decision-making."
           buttonText="Request Team Access"
+          url="/enterprise"
           onButtonClick={handleJoinClick}
           imageSrc={workStation}
-          reversed={false}
         />
 
         <Pricing />

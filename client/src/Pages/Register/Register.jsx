@@ -5,7 +5,8 @@ import useRegisterMutation from "../../hooks/useRegisterMuation";
 
 const Register = () => {
   const navigate = useNavigate();
-  const { mutate } = useRegisterMutation();
+  const { mutate, isPending, error } = useRegisterMutation();
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -17,23 +18,18 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(formData, {
-      onSuccess: (data) => {
-        console.log("success: ", data);
-        navigate("/login");
-      },
-    });
 
-    console.log({ formData });
+    mutate(
+      { firstName, lastName, email, password },
+      {
+        onSuccess: () => navigate("/login"),
+      },
+    );
   };
 
   return (
@@ -42,7 +38,6 @@ const Register = () => {
 
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
-          {/* input-group */}
           <div className="input-group">
             <label htmlFor="firstName">First Name</label>
             <input
@@ -52,11 +47,10 @@ const Register = () => {
               name="firstName"
               value={firstName}
               onChange={handleChange}
+              autoComplete="given-name"
             />
           </div>
-          {/* end input-group */}
 
-          {/* input-group */}
           <div className="input-group">
             <label htmlFor="lastName">Last Name</label>
             <input
@@ -66,11 +60,10 @@ const Register = () => {
               name="lastName"
               value={lastName}
               onChange={handleChange}
+              autoComplete="family-name"
             />
           </div>
-          {/* end input-group */}
 
-          {/* input-group */}
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <input
@@ -80,11 +73,10 @@ const Register = () => {
               name="email"
               value={email}
               onChange={handleChange}
+              autoComplete="email"
             />
           </div>
-          {/* end input-group */}
 
-          {/* input-group */}
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
@@ -94,12 +86,20 @@ const Register = () => {
               name="password"
               value={password}
               onChange={handleChange}
+              autoComplete="new-password"
             />
           </div>
-          {/* end input-group */}
+
+          {error && (
+            <p style={{ color: "#ff6b6b", marginTop: 10 }}>
+              {error.message || "Registration failed."}
+            </p>
+          )}
 
           <div className="button-wrapper">
-            <button>Submit</button>
+            <button type="submit" disabled={isPending}>
+              {isPending ? "Creating..." : "Submit"}
+            </button>
           </div>
         </form>
       </div>

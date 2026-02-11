@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "./pricing.styles.scss";
 import { baseUrl } from "../../constants/constants";
@@ -14,7 +14,7 @@ const Pricing = () => {
       try {
         setStatus({ loading: true, error: "" });
         const API_URL = `${baseUrl}/api/pricing`;
-        console.log(API_URL);
+
         const res = await fetch(API_URL, {
           headers: { "Content-Type": "application/json" },
         });
@@ -56,7 +56,6 @@ const Pricing = () => {
 
     const list = [...pricing.plans];
 
-    // stable sort based on server-provided order
     if (order.length) {
       list.sort((a, b) => {
         const ai = order.indexOf(a.slug);
@@ -76,13 +75,13 @@ const Pricing = () => {
     }));
   }, [pricing]);
 
-  const headerTitle = pricing?.program?.name ? "Pricing" : "Pricing";
+  const headerTitle = "Pricing";
   const headerSubtitle =
     pricing?.program?.subtitle ||
     "Pick your accountability level. Ship production-ready apps in 6 months.";
 
   return (
-    <section className="pricing-section">
+    <section id="pricing" className="pricing-section">
       <div className="pricing-header">
         <h2 className="pricing-main-title">{headerTitle}</h2>
         <p className="pricing-subtitle">{headerSubtitle}</p>
@@ -130,7 +129,10 @@ const Pricing = () => {
               ? `/ ${plan.pricing.cadenceLabel}`
               : "";
             const features = Array.isArray(plan?.includes) ? plan.includes : [];
-            const ctaRoute = plan?.cta?.route || "/join";
+
+            const ctaType = plan?.cta?.type || "enroll";
+            const ctaRoute =
+              ctaType === "request" ? "/enterprise" : `/join/${plan.slug}`;
             const ctaLabel = plan?.cta?.label || "Get Started";
 
             const cardClass = [
