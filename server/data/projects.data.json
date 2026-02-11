@@ -8,7 +8,7 @@
       "Chat experience UI",
       "Fast, mobile-first UX"
     ],
-    "status": "Active",
+    "status": "Building",
     "demoUrl": "https://pregchat-tan.vercel.app/chat",
     "repoUrl": "https://github.com/kofiarhin/pregchat",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760930663/devkofi/pdfij4zqjkosttlcezp2.jpg"
@@ -53,6 +53,20 @@
     "status": "Building",
     "demoUrl": "https://lunaninjas.com/home",
     "repoUrl": "https://github.com/kofiarhin/luna-ninjas",
+    "thumbnailUrl": ""
+  },
+  {
+    "id": 15,
+    "name": "Rizz God",
+    "description": "AI-powered compliments + conversation starters app using image analysis.",
+    "features": [
+      "Image upload + AI compliment",
+      "Conversation starter generator",
+      "React/Vite + Node/Express backend"
+    ],
+    "status": "Building",
+    "demoUrl": "https://rizz-app-topaz.vercel.app/",
+    "repoUrl": "https://github.com/kofiarhin/rizz-app",
     "thumbnailUrl": ""
   }
 ]
