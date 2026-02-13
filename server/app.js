@@ -1,24 +1,29 @@
 const express = require("express");
 const cors = require("cors");
+
 const authRoutes = require("./routes/authRoutes");
 const cleaner = require("./middleware/cleaner");
 const connectDB = require("./config/db");
+
 const projectRoutes = require("./routes/projectRoutes");
 const pricingRoute = require("./routes/pricingRoutes");
 
-// ✅ add these
 const enrollmentRoutes = require("./routes/enrollmentRoutes");
 const accessRequestRoutes = require("./routes/accessRequestRoutes");
-
-// ✅ add this
 const dashboardRoutes = require("./routes/dashboardRoutes");
+
+const teamRoutes = require("./routes/teamRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+
+// ✅ ADD THIS
+const adminUsersRoutes = require("./routes/adminUsersRoutes");
 
 const app = express();
 
 // connect database
 connectDB();
 
-// setup middleware
+// middleware
 app.use(
   cors({
     origin: [
@@ -36,6 +41,7 @@ app.use(
 app.use(express.json());
 app.use(cleaner);
 
+// root
 app.get("/", async (req, res) => {
   return res.json({
     status: "ok",
@@ -44,17 +50,22 @@ app.get("/", async (req, res) => {
   });
 });
 
+// existing routes
 app.use("/api/pricing", pricingRoute);
 app.use("/api/projects", projectRoutes);
 app.use("/api/auth", authRoutes);
 
-// ✅ mount these so your client stops getting 404
 app.use("/api/enrollments", enrollmentRoutes);
 app.use("/api/access-requests", accessRequestRoutes);
-
-// ✅ mount dashboard summary endpoint
 app.use("/api/dashboard", dashboardRoutes);
 
+app.use("/api/team", teamRoutes);
+app.use("/api/admin", adminRoutes);
+
+// ✅ NEW ADMIN USERS ENDPOINT
+app.use("/api/admin/users", adminUsersRoutes);
+
+// health
 app.get("/api/health", async (req, res) => {
   return res.json({ message: "get health" });
 });

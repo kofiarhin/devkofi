@@ -1,5 +1,6 @@
 import React from "react";
 import { Users, MessageSquare, DollarSign, LifeBuoy } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const gridMapping = [
   {
@@ -9,6 +10,7 @@ const gridMapping = [
     badge: "12",
     desktop_span: 3,
     description: "View list of students.",
+    to: "/dashboard/admin/users",
   },
   {
     id: "messages",
@@ -51,11 +53,8 @@ const AdminDashboard = ({ user }) => {
           {gridMapping.map((item) => {
             const Icon = item.icon;
 
-            return (
-              <section
-                key={item.id}
-                className={`card ${item.id}-card span-${item.desktop_span}`}
-              >
+            const CardInner = (
+              <>
                 <div className="card-header">
                   <Icon size={22} strokeWidth={1.8} />
                   <span className="badge">{item.badge}</span>
@@ -65,6 +64,28 @@ const AdminDashboard = ({ user }) => {
                   <h2>{item.title}</h2>
                   <p>{item.description}</p>
                 </div>
+              </>
+            );
+
+            if (item.to) {
+              return (
+                <Link
+                  key={item.id}
+                  to={item.to}
+                  className={`card ${item.id}-card span-${item.desktop_span}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  {CardInner}
+                </Link>
+              );
+            }
+
+            return (
+              <section
+                key={item.id}
+                className={`card ${item.id}-card span-${item.desktop_span}`}
+              >
+                {CardInner}
               </section>
             );
           })}

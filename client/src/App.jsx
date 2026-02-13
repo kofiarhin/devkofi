@@ -21,6 +21,9 @@ import PricingPage from "./Pages/Pricing/Pricing";
 import Join from "./Pages/Join/Join";
 import Enterprise from "./Pages/Enterprise/Enterprise";
 
+import AdminRoute from "./components/AdminRoute/AdminRoute";
+import AdminUsers from "./Pages/Dashboard/AdminUsers/AdminUsers";
+
 const App = () => {
   useHealth();
   const { isOpen } = useSelector((state) => state.navigation);
@@ -45,6 +48,10 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/join/:planSlug" element={<Join />} />
           <Route path="/enterprise" element={<Enterprise />} />
+
+          <Route element={<AdminRoute />}>
+            <Route path="/dashboard/admin/users" element={<AdminUsers />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />
