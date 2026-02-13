@@ -13,6 +13,7 @@ const AdminRoute = () => {
   const location = useLocation();
   const { user } = useSelector((state) => state.auth);
 
+  //test
   const stored = getStoredUser();
   const role = user?.role || stored?.role || null;
 
