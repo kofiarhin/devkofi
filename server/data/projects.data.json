@@ -68,5 +68,19 @@
     "demoUrl": "https://rizz-app-topaz.vercel.app/",
     "repoUrl": "https://github.com/kofiarhin/rizz-app",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1770852885/riz-god_qupm7p.png"
+  },
+  {
+    "id": 16,
+    "name": "Detention Desk",
+    "description": "School/classroom management tool for tracking student detentions and behavior records.",
+    "features": [
+      "Detention logging + tracking",
+      "Student behavior records",
+      "Clean dashboard UI"
+    ],
+    "status": "Active",
+    "demoUrl": "https://detention-desk.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/detention-desk",
+    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1771761389/detention-desk_q8ixcv.png"
   }
 ]
