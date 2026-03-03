@@ -40,7 +40,7 @@ const Pricing = () => {
         whileInView="show"
         viewport={{ once: true, amount: 0.3 }}
       >
-        Pricing
+        Pricing Model
       </motion.h1>
 
       {/* Pricing Cards Container */}

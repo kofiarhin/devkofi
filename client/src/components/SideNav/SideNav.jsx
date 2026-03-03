@@ -58,6 +58,7 @@ const SideNav = () => {
     { to: "/courses", text: "Courses" },
     { to: "/chat", text: "Chat" },
     { to: "/projects", text: "Projects" },
+    { to: "/#course-outline", text: "Course Outline" },
     !user && { to: "/register", text: "Register" },
     user && { to: "/portal", text: "Portal" },
     !user && { to: "/login", text: "Login" },

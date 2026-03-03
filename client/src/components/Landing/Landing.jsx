@@ -6,22 +6,26 @@ import { text, title, subTitle } from "./landingData";
 
 const Landing = () => {
   return (
-    <div id="landing">
+    <section id="landing">
       <div className="landing-wrapper">
-        {/* Text Section */}
         <div className="text-wrapper">
           <Typewriter title={title} subtitle={subTitle} text={text} />
-          <Link to="/register" className="cta">
-            Get Started!
-          </Link>
+          <div className="cta-group">
+            <a href="/#course-outline" className="cta cta-secondary">
+              View Course Outline
+            </a>
+            <Link to="/register" className="cta">
+              Enroll Now
+            </Link>
+          </div>
+          <p className="hero-outcomes">Speed. Precision. Production readiness.</p>
         </div>
 
-        {/* Image Section */}
         <div className="image-wrapper">
-          <img src={profileImage} alt="Profile" />
+          <img src={profileImage} alt="DevKofi mentor" />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
