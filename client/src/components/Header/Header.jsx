@@ -52,6 +52,7 @@ const Header = () => {
             <Link to="/">Home</Link>
             <Link to="/courses">Courses</Link>
             <Link to="/projects">Projects</Link>
+            <a href="/#course-outline">Course Outline</a>
             <Link to="/youtube"> Youtube</Link>
             <Link to="/chat">Chat</Link>
             <Link to="about-me">About</Link>

@@ -53,6 +53,20 @@ const AppContent = () => {
     getData();
   }, []);
 
+
+  useEffect(() => {
+    if (!location.hash) {
+      return;
+    }
+
+    const id = location.hash.replace("#", "");
+    const target = document.getElementById(id);
+
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [location]);
+
   const isBlogRoute = location.pathname.startsWith("/blog");
 
   return (

@@ -1,27 +1,14 @@
 import "./home.styles.scss";
 import Landing from "../../components/Landing/Landing";
-import About from "../../components/About/About";
-import Audience from "../../components/Audience/Audience";
-import Services from "../../components/Services/Services";
 import Pricing from "../../components/Pricing/Pricing";
-import Newsletter from "../../components/Newsletter/Newsletter";
-import Faq from "../../components/Faq/Faq";
-import Features from "../../components/Features/Features";
-import Overview from "../../components/Overview/Overview";
-import Scale from "../../components/Scale/Scale";
-import IntegrateAI from "../../components/IntegrateAi/IntegrateAi";
+import AiProgram from "../../components/AiProgram/AiProgram";
 
 const Home = () => {
   return (
     <div id="home" className="container">
       <Landing />
-      <Overview />
-      <About />
-      <Scale />
-      <IntegrateAI />
+      <AiProgram />
       <Pricing />
-      <Faq />
-      <Newsletter />
     </div>
   );
 };

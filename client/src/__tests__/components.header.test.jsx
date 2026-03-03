@@ -1,3 +1,4 @@
+import React from "react";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Header from "../components/Header/Header";
@@ -5,7 +6,7 @@ import {
   renderWithProviders,
   createTestStore,
 } from "../tests/utils/renderWithProviders";
-import { vi, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { Routes, Route } from "react-router-dom";
 
 describe("Header component", () => {
@@ -24,6 +25,10 @@ describe("Header component", () => {
     expect(screen.getByRole("link", { name: /login/i })).toHaveAttribute(
       "href",
       "/login"
+    );
+    expect(screen.getByRole("link", { name: /course outline/i })).toHaveAttribute(
+      "href",
+      "/#course-outline"
     );
     expect(screen.getAllByRole("button", { name: /join now/i })[0]).toBeEnabled();
   });

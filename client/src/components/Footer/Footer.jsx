@@ -1,4 +1,3 @@
-// src/components/Footer.jsx
 import { motion } from "framer-motion";
 import { FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 import "./footer.styles.scss";
@@ -20,26 +19,27 @@ const item = {
 
 const sections = [
   {
-    title: "The Basics",
+    title: "Platform",
     links: [
-      { label: "About DevKofi", href: "/about-me" },
-      { label: "Contact Us", href: "/contact" },
-      { label: "Support", href: "/chat" },
+      { label: "AI-Powered MERN Engineering", href: "/" },
+      { label: "Course Outline", href: "/#course-outline" },
+      { label: "Enroll", href: "/register" },
     ],
   },
   {
-    title: "Get Involved",
+    title: "Workflow",
     links: [
-      { label: "Contribute", href: "/contact" },
-      { label: "Add New Course", href: "/contact" },
-      { label: "Add New Tool", href: "/contact" },
+      { label: "Planning to Deployment", href: "/" },
+      { label: "Prompt Structuring", href: "/" },
+      { label: "Testing and Refactoring", href: "/" },
     ],
   },
   {
-    title: "Community",
+    title: "Resources",
     links: [
-      { label: "Guidelines", href: "/chat" },
-      { label: "Discussions", href: "/chat" },
+      { label: "Projects", href: "/projects" },
+      { label: "YouTube", href: "/youtube" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {
@@ -74,6 +74,7 @@ const Footer = () => {
         <div className="brand">
           <a href="/" aria-label="DevKofi Home">
             <span className="brand__name">DevKofi</span>
+            <p>AI-powered engineering. Production-first MERN execution.</p>
           </a>
         </div>
 
@@ -101,7 +102,8 @@ const Footer = () => {
 
       <div className="footer__bottom">
         <p>
-          © <span>DevKofi</span>. All rights reserved.
+          © <span>DevKofi</span>. AI is not replacing the engineer. AI is your
+          execution partner.
         </p>
 
         <div className="footer-socials">
