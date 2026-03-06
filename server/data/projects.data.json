@@ -82,5 +82,19 @@
     "demoUrl": "https://detention-desk.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/detention-desk",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1771761389/detention-desk_q8ixcv.png"
+  },
+  {
+    "id": 17,
+    "name": "SelectFlow",
+    "description": "MERN app for selecting, organizing, and managing workflows with auth + dashboard UI. Deployed frontend on Vercel and backend API on Heroku.",
+    "features": [
+      "Auth + protected routes",
+      "Dashboard UI + logout flow",
+      "Deployed API + health endpoint"
+    ],
+    "status": "Active",
+    "demoUrl": "https://select-flow.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/select-flow",
+    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1771769999/select-flow_thumbnail.png"
   }
 ]
