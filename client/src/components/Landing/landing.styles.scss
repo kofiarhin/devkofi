@@ -9,7 +9,7 @@ $glass: rgba(20, 20, 20, 0.7);
   display: flex;
   flex-direction: column;
   gap: 4rem;
-  padding: 5rem 1.5rem;
+  padding: 5.5rem 1rem 4.5rem;
   background: radial-gradient(
       circle at top right,
       rgba($primary, 0.05),
@@ -26,9 +26,10 @@ $glass: rgba(20, 20, 20, 0.7);
     .hero-title {
       font-size: clamp(2.5rem, 8vw, 4.5rem); // Fluid typography
       font-weight: 800;
-      line-height: 1;
+      line-height: 1.08;
       color: #fff;
       margin-bottom: 1.5rem;
+      max-width: 13ch;
 
       .accent {
         color: $primary;
@@ -52,6 +53,7 @@ $glass: rgba(20, 20, 20, 0.7);
       border-radius: 24px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       max-width: 800px;
+      width: 100%;
 
       .hero-description {
         color: $text-sub;
@@ -160,16 +162,43 @@ $glass: rgba(20, 20, 20, 0.7);
   #landing {
     flex-direction: row;
     justify-content: center;
-    padding: 0 10%;
-    gap: 10%;
+    align-items: center;
+    padding: 7.5rem 0 5.5rem;
+    gap: clamp(2.25rem, 4vw, 4rem);
+    min-height: auto;
 
     .landing-content {
-      flex: 1.2;
+      flex: 1.18;
       text-align: left;
+
+      .hero-title {
+        line-height: 1.12;
+        max-width: 14ch;
+      }
+
+      .glass-card {
+        max-width: 700px;
+        padding: 2rem 2.1rem;
+      }
     }
 
     .landing-image {
       flex: 1;
+      max-width: 540px;
+    }
+  }
+}
+
+@media (min-width: 1280px) {
+  #landing {
+    gap: clamp(2.75rem, 4.5vw, 5rem);
+
+    .landing-content {
+      flex: 1.25;
+    }
+
+    .landing-image {
+      flex: 0.95;
     }
   }
 }
