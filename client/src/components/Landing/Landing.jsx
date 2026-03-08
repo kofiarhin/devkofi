@@ -7,7 +7,9 @@ const Landing = () => {
   return (
     <section id="landing">
       <div className="landing-content">
-        <h2 className="hero-subtitle">DevKofi AI-Powered MERN Stack Mentorship</h2>
+        <h2 className="hero-subtitle">
+          DevKofi AI-Powered MERN Stack Mentorship
+        </h2>
 
         <h1 className="hero-title">
           Build Real MERN Products <br />
@@ -16,13 +18,13 @@ const Landing = () => {
 
         <div className="glass-card">
           <p className="hero-description">
-            Learn engineering-first workflows for planning, feature scoping, code
-            generation, debugging, refactoring, testing, documentation, and
+            Learn engineering-first workflows for planning, feature scoping,
+            code generation, debugging, refactoring, testing, documentation, and
             shipping. This is mentorship for real products, not toy apps.
           </p>
 
           <div className="cta-group">
-            <Link to="/#pricing" className="btn-primary">
+            <Link to="/register" className="btn-primary">
               Apply for Mentorship
             </Link>
           </div>

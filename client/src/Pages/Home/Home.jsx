@@ -22,7 +22,7 @@ const Home = () => {
           highlightText="that actually ships"
           description="You work directly with a senior MERN engineer, not a teaching assistant or community moderator. Sessions focus on real blockers — architecture, backend logic, frontend state, or deployment. Every session is designed to move your codebase forward."
           buttonText="Join Now"
-          url="/#pricing"
+          url="/register"
           onButtonClick={handleJoinClick}
           imageSrc={workStation}
           reversed={false}
