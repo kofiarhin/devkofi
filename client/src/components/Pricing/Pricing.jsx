@@ -75,10 +75,10 @@ const Pricing = () => {
     }));
   }, [pricing]);
 
-  const headerTitle = "Pricing";
+  const headerTitle = "Mentorship Plans";
   const headerSubtitle =
     pricing?.program?.subtitle ||
-    "Pick your accountability level. Ship production-ready apps in 6 months.";
+    "Choose your mentorship depth and apply to start building with AI-powered MERN workflows.";
 
   return (
     <section id="pricing" className="pricing-section">

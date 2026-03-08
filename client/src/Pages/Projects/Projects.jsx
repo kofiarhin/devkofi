@@ -53,7 +53,7 @@ const Projects = () => {
       <header className="projects-header">
         <h1 className="main-title">Projects</h1>
         <p className="main-description">
-          Engineering digital products from concept to production.
+          Real products shipped with MERN engineering discipline and AI-enhanced workflows.
         </p>
 
         <nav className="filter-bar">

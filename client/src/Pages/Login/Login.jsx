@@ -1,16 +1,18 @@
 import { useState } from "react";
 import useLoginMutation from "../../hooks/useLoginMutation";
 import "./login.styles.scss";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/auth/authSlice";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
 
-  const redirectTo = location?.state?.from || "/dashboard";
+  const nextPlan = searchParams.get("plan");
+  const redirectTo = location?.state?.from || (nextPlan ? `/join/${nextPlan}` : "/dashboard");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -18,7 +20,6 @@ const Login = () => {
   });
 
   const { email, password } = formData;
-
   const { mutate, isPending, error } = useLoginMutation();
 
   const handleChange = (e) => {
@@ -46,44 +47,12 @@ const Login = () => {
   return (
     <div id="login">
       <h1 className="heading center">Login</h1>
-
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="text"
-              name="email"
-              placeholder="Enter Email"
-              onChange={handleChange}
-              value={email}
-              autoComplete="email"
-            />
-          </div>
-
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter Password"
-              onChange={handleChange}
-              value={password}
-              autoComplete="current-password"
-            />
-          </div>
-
-          {error && (
-            <p style={{ color: "#ff6b6b", marginTop: 10 }}>
-              {error.message || "Login failed."}
-            </p>
-          )}
-
-          <div className="button-wrapper">
-            <button type="submit" disabled={isPending}>
-              {isPending ? "Logging in..." : "Submit"}
-            </button>
-          </div>
+          <div className="input-group"><label htmlFor="email">Email</label><input type="text" name="email" placeholder="Enter Email" onChange={handleChange} value={email} autoComplete="email" /></div>
+          <div className="input-group"><label htmlFor="password">Password</label><input type="password" name="password" placeholder="Enter Password" onChange={handleChange} value={password} autoComplete="current-password" /></div>
+          {error && <p style={{ color: "#ff6b6b", marginTop: 10 }}>{error.message || "Login failed."}</p>}
+          <div className="button-wrapper"><button type="submit" disabled={isPending}>{isPending ? "Logging in..." : "Submit"}</button></div>
         </form>
       </div>
     </div>

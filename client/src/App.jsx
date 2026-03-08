@@ -20,6 +20,7 @@ import PricingPage from "./Pages/Pricing/Pricing";
 
 import Join from "./Pages/Join/Join";
 import Enterprise from "./Pages/Enterprise/Enterprise";
+import Onboarding from "./Pages/Onboarding/Onboarding";
 
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 import AdminUsers from "./Pages/Dashboard/AdminUsers/AdminUsers";
@@ -43,11 +44,12 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/playground" element={<Playground />} />
+        <Route path="/join/:planSlug" element={<Join />} />
+        <Route path="/enterprise" element={<Enterprise />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/join/:planSlug" element={<Join />} />
-          <Route path="/enterprise" element={<Enterprise />} />
+          <Route path="/onboarding" element={<Onboarding />} />
 
           <Route element={<AdminRoute />}>
             <Route path="/dashboard/admin/users" element={<AdminUsers />} />

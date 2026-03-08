@@ -19,8 +19,8 @@ const getBestRequest = (requests = []) => {
 };
 
 const prettyPlan = (slug) => {
-  if (slug === "standard") return "Full-Stack Bootcamp: Standard";
-  if (slug === "pro") return "Full-Stack Bootcamp: Pro";
+  if (slug === "standard") return "AI-Powered MERN Mentorship: Standard";
+  if (slug === "pro") return "AI-Powered MERN Mentorship: Pro";
   if (slug === "team") return "Team / Enterprise";
   return "No Plan Selected";
 };
@@ -62,9 +62,9 @@ const EnrollmentStatusCard = ({
   // ✅ key change: choose package should go to dedicated pricing page
   const cta =
     status === "active"
-      ? { label: "Go to Program", to: "/dashboard" }
+      ? { label: "Go to Dashboard", to: "/dashboard" }
       : status === "pending"
-        ? { label: "Complete onboarding", to: "/dashboard" }
+        ? { label: "Track application", to: "/dashboard" }
         : status === "request"
           ? { label: "Book discovery call", to: "/enterprise" }
           : { label: "Choose a package", to: "/pricing" };

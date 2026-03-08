@@ -11,25 +11,28 @@ const pricingRoute = require("./routes/pricingRoutes");
 const enrollmentRoutes = require("./routes/enrollmentRoutes");
 const accessRequestRoutes = require("./routes/accessRequestRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const onboardingRoutes = require("./routes/onboardingRoutes");
+const profileRoutes = require("./routes/profileRoutes");
 
 const teamRoutes = require("./routes/teamRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-
-// ✅ ADD THIS
 const adminUsersRoutes = require("./routes/adminUsersRoutes");
 
 const app = express();
 
-// connect database
 connectDB();
 
-// middleware
-app.use(cors("*"));
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 
 app.use(express.json());
 app.use(cleaner);
 
-// root
 app.get("/", async (req, res) => {
   return res.json({
     status: "ok",
@@ -38,7 +41,6 @@ app.get("/", async (req, res) => {
   });
 });
 
-// existing routes
 app.use("/api/pricing", pricingRoute);
 app.use("/api/projects", projectRoutes);
 app.use("/api/auth", authRoutes);
@@ -46,14 +48,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/enrollments", enrollmentRoutes);
 app.use("/api/access-requests", accessRequestRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/onboarding", onboardingRoutes);
 
 app.use("/api/team", teamRoutes);
 app.use("/api/admin", adminRoutes);
-
-// ✅ NEW ADMIN USERS ENDPOINT
 app.use("/api/admin/users", adminUsersRoutes);
 
-// health
 app.get("/api/health", async (req, res) => {
   return res.json({ message: "get health" });
 });

@@ -6,11 +6,9 @@ const TeamEnrollment = require("../models/TeamEnrollment");
 
 exports.getAdminUsers = async (req, res) => {
   try {
-    // 1️⃣ Load users (never return passwords)
     const users = await User.find({}, "-password").lean();
     const userIds = users.map((u) => u._id);
 
-    // 2️⃣ Load related collections in parallel (safe + fast)
     const [enrollments, teamMembers] = await Promise.all([
       Enrollment.find({ userId: { $in: userIds } }).lean(),
       TeamMember.find({ userId: { $in: userIds } }).lean(),
@@ -23,7 +21,6 @@ exports.getAdminUsers = async (req, res) => {
       TeamEnrollment.find({ teamId: { $in: teamIds } }).lean(),
     ]);
 
-    // 3️⃣ Build lookup maps (prevents O(n²) performance traps)
     const enrollmentMap = new Map();
     enrollments.forEach((e) => enrollmentMap.set(String(e.userId), e));
 
@@ -38,7 +35,6 @@ exports.getAdminUsers = async (req, res) => {
       teamEnrollmentMap.set(String(te.teamId), te),
     );
 
-    // 4️⃣ Compose final response safely
     const enrichedUsers = users.map((user) => {
       const enrollment = enrollmentMap.get(String(user._id)) || null;
       const teamMember = teamMemberMap.get(String(user._id)) || null;
@@ -46,13 +42,11 @@ exports.getAdminUsers = async (req, res) => {
       let derivedPlan = "free";
       let derivedStatus = "none";
 
-      // Individual enrollment logic
       if (enrollment) {
         derivedPlan = enrollment.planSlug || "standard";
         derivedStatus = enrollment.status || "pending";
       }
 
-      // Team membership logic overrides individual free state
       let team = null;
 
       if (teamMember) {
@@ -68,7 +62,6 @@ exports.getAdminUsers = async (req, res) => {
           seatLimit: teamEnrollment?.seatLimit || null,
         };
 
-        // If team is active → user is effectively paid
         if (teamEnrollment?.status === "active") {
           derivedPlan = "team";
           derivedStatus = "active";
@@ -81,17 +74,20 @@ exports.getAdminUsers = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         role: user.role,
-
         plan: derivedPlan,
         status: derivedStatus,
-
+        profile: user.profile || {},
         enrollment: enrollment
           ? {
+              _id: enrollment._id,
               planSlug: enrollment.planSlug,
               status: enrollment.status,
+              applicationStatus: enrollment.applicationStatus || "submitted",
+              paymentStatus: enrollment.paymentStatus || "not_required",
+              approvedAt: enrollment.approvedAt || null,
+              activatedAt: enrollment.activatedAt || null,
             }
           : null,
-
         team,
       };
     });

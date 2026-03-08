@@ -1,94 +1,68 @@
 import React, { useMemo } from "react";
 import "./StudentDashboard.styles.scss";
-import { MessageSquare, Zap, BookOpen, LifeBuoy } from "lucide-react";
+import { Briefcase, Sparkles, ShieldCheck, LifeBuoy } from "lucide-react";
 import { useSelector } from "react-redux";
 import useStudentDashboardSummaryQuery from "../../../hooks/useStudentDashboardSummaryQuery";
 import useMyAccessRequestsQuery from "../../../hooks/useMyAccessRequestsQuery";
-import useMyEnrollmentsQuery from "../../../hooks/useMyEnrollmentsQuery";
 
 const StudentDashboard = ({ user }) => {
   const { token } = useSelector((state) => state.auth);
 
   const { data: summaryData } = useStudentDashboardSummaryQuery(token);
   const { data: accessRequestsData } = useMyAccessRequestsQuery(token);
-  const { data: enrollmentsData } = useMyEnrollmentsQuery(token);
 
   const computed = useMemo(() => {
-    const messagesUnread = Number(summaryData?.messages?.unreadCount || 0);
-
-    const assignmentsDue = Number(summaryData?.assignments?.dueThisWeek || 0);
-
-    const supportOnline =
-      summaryData?.support?.online === true ? "Online" : "Offline";
-
-    const progressPct =
-      typeof summaryData?.progress?.percent === "number"
-        ? Math.max(0, Math.min(100, summaryData.progress.percent))
-        : null;
-
-    const pendingAccess =
-      Number(accessRequestsData?.requests?.length || 0) || 0;
-
-    const hasEnrollment = Boolean(
-      enrollmentsData?.enrollments && enrollmentsData.enrollments.length > 0,
-    );
-
-    const progressBadge =
-      progressPct !== null ? `${progressPct}%` : hasEnrollment ? "0%" : "--";
-
-    const subline =
-      assignmentsDue > 0
-        ? `You have ${assignmentsDue} assignment${
-            assignmentsDue === 1 ? "" : "s"
-          } due this week.`
-        : "No assignments due this week.";
+    const mentorship = summaryData?.mentorship || {};
+    const enrollment = summaryData?.enrollment || {};
+    const pendingAccess = Number(accessRequestsData?.requests?.length || 0) || 0;
 
     return {
-      subline,
-      messagesUnread,
-      assignmentsDue,
-      progressBadge,
-      supportOnline,
+      nextAction: mentorship.nextAction || "Select a mentorship plan to get started.",
+      selectedPlan: mentorship.selectedPlan || "none",
+      readiness: mentorship.aiWorkflowReadiness || "incomplete",
+      supportLevel: mentorship.supportLevel || "not-set",
+      enrollmentStatus: enrollment.status || "none",
+      applicationStatus: enrollment.applicationStatus || "draft",
       pendingAccess,
+      onboardingCompleted: mentorship.onboardingCompleted,
     };
-  }, [summaryData, accessRequestsData, enrollmentsData]);
+  }, [summaryData, accessRequestsData]);
 
   const gridMapping = useMemo(
     () => [
       {
-        id: "messages",
-        title: "Messages",
-        icon: MessageSquare,
-        badge: String(computed.messagesUnread),
-        desktop_span: 3,
-        description: "View latest updates and task status from mentors.",
-      },
-      {
-        id: "progress",
-        title: "Progress",
-        icon: Zap,
-        badge: computed.progressBadge,
-        desktop_span: 1,
-        description: "Course completion status.",
-      },
-      {
-        id: "assignments",
-        title: "Assignments",
-        icon: BookOpen,
-        badge: String(computed.assignmentsDue),
+        id: "plan",
+        title: "Current Plan",
+        icon: Briefcase,
+        badge: computed.selectedPlan,
         desktop_span: 2,
-        description: "Upcoming deadlines for MERN modules.",
+        description: `Enrollment: ${computed.enrollmentStatus} · Application: ${computed.applicationStatus}`,
+      },
+      {
+        id: "readiness",
+        title: "AI Workflow Readiness",
+        icon: Sparkles,
+        badge: computed.readiness,
+        desktop_span: 2,
+        description: computed.onboardingCompleted
+          ? "Intake complete. You can move through mentorship milestones."
+          : "Complete onboarding to unlock personalized mentorship support.",
       },
       {
         id: "support",
-        title: "Support",
+        title: "Support Level",
         icon: LifeBuoy,
-        badge: computed.supportOnline,
+        badge: computed.supportLevel,
         desktop_span: 2,
-        description:
-          computed.supportOnline === "Online"
-            ? "Instant help from the community."
-            : "Support is currently offline.",
+        description: "Support and accountability level based on your selected plan.",
+      },
+      {
+        id: "next",
+        title: "Next Action",
+        icon: ShieldCheck,
+        badge: computed.pendingAccess > 0 ? `${computed.pendingAccess} team request(s)` : "on track",
+        desktop_span: 2,
+        description: computed.nextAction,
       },
     ],
     [computed],
@@ -101,12 +75,7 @@ const StudentDashboard = ({ user }) => {
           <h1>
             Welcome back, <span>{user?.firstName || "Student"}</span>
           </h1>
-          <p>{computed.subline}</p>
-          {computed.pendingAccess > 0 && (
-            <p style={{ opacity: 0.8, marginTop: 6 }}>
-              Pending access requests: <strong>{computed.pendingAccess}</strong>
-            </p>
-          )}
+          <p>{computed.nextAction}</p>
         </header>
 
         <main className="bento-grid">
@@ -114,15 +83,11 @@ const StudentDashboard = ({ user }) => {
             const Icon = item.icon;
 
             return (
-              <section
-                key={item.id}
-                className={`card ${item.id}-card span-${item.desktop_span}`}
-              >
+              <section key={item.id} className={`card ${item.id}-card span-${item.desktop_span}`}>
                 <div className="card-header">
                   <Icon size={22} strokeWidth={1.8} />
                   <span className="badge">{item.badge}</span>
                 </div>
-
                 <div className="card-content">
                   <h2>{item.title}</h2>
                   <p>{item.description}</p>

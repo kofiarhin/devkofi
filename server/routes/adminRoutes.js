@@ -6,7 +6,6 @@ const requireAdmin = require("../middleware/requireAdmin");
 
 const controller = require("../controllers/adminController");
 
-// ✅ TEAM approvals
 router.get(
   "/team/pending",
   requireAuth,
@@ -21,12 +20,23 @@ router.post(
   controller.approveTeamEnrollment,
 );
 
-// ✅ INDIVIDUAL enrollment approvals (standard/pro)
 router.post(
   "/enrollments/approve",
   requireAuth,
   requireAdmin,
   controller.approveEnrollment,
+);
+router.post(
+  "/enrollments/reject",
+  requireAuth,
+  requireAdmin,
+  controller.rejectEnrollment,
+);
+router.post(
+  "/enrollments/activate",
+  requireAuth,
+  requireAdmin,
+  controller.activateEnrollment,
 );
 
 module.exports = router;

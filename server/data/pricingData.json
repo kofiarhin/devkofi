@@ -1,94 +1,65 @@
 {
-  "version": "v1.1",
-  "currency": "GBP",
-  "billing": {
-    "type": "manual_activation",
-    "note": "Payments are not enabled yet. Selecting a package creates an enrollment request. An admin manually activates access."
-  },
   "program": {
-    "name": "DevKofi Mentorship",
-    "durationMonths": 6,
-    "durationWeeks": 24,
-    "promise": "Move from tutorial hell to shipping production-ready applications.",
-    "subtitle": "Same roadmap. Different levels of pressure.",
+    "name": "DevKofi AI-Powered MERN Stack Mentorship",
+    "slug": "devkofi-ai-powered-mern-mentorship",
+    "subtitle": "Engineering-first mentorship to help you ship production MERN apps with AI integrated across planning, coding, debugging, testing, and deployment.",
+    "promise": "Learn how real engineers use AI as a multiplier while keeping architecture, code quality, and shipping discipline high.",
     "guarantee": {
-      "title": "14-day refund guarantee",
-      "details": "If you’re not satisfied in the first 14 days, request a refund."
+      "title": "14-day confidence guarantee",
+      "details": "If it’s not the right fit in your first 14 days, you can request a refund."
     }
   },
   "ui": {
-    "defaultFeaturedPlanSlug": "pro",
-    "planOrder": ["standard", "pro", "team"],
     "showGuarantee": true,
-    "showWhoItsFor": true,
-    "showOutcomes": true,
-    "enrollmentStatusMessaging": {
-      "none": {
-        "title": "Choose your package",
-        "subtitle": "Pick a package to start onboarding. Payments are handled manually for now."
-      },
-      "pending": {
-        "title": "Enrollment Pending",
-        "subtitle": "We’ve received your request. Complete onboarding or wait for activation."
-      },
-      "active": {
-        "title": "Enrollment Active",
-        "subtitle": "You have full access to your program."
-      },
-      "request": {
-        "title": "Request Submitted",
-        "subtitle": "A discovery call is required. We’ll contact you to schedule it."
-      }
-    }
+    "planOrder": ["standard", "pro", "team"],
+    "defaultFeaturedPlanSlug": "pro"
   },
   "plans": [
     {
       "id": "plan_standard",
       "slug": "standard",
-      "title": "Full-Stack Bootcamp: Standard",
-      "tagline": "Structure + roadmap + community momentum.",
+      "title": "Standard",
+      "tagline": "Structured mentorship for consistent AI-powered MERN execution.",
       "badge": null,
       "pricing": {
-        "amount": 1200,
-        "label": "£1,200",
+        "amount": 900,
+        "label": "£900",
         "cadence": "one_time",
         "cadenceLabel": "one-time"
       },
       "enrollment": {
-        "mode": "manual_activation",
+        "mode": "application",
         "initialStatus": "pending",
         "activation": "admin",
         "requiresPayment": false
       },
       "cta": {
-        "label": "Request Standard",
+        "label": "Apply for Standard",
         "type": "enroll",
         "route": "/join/standard"
       },
-      "summary": "Perfect for self-starters who want structure and community.",
+      "summary": "Build production-grade MERN projects while learning practical AI workflow integration.",
       "whoItsFor": [
-        "You want a clear 6-month roadmap to follow",
-        "You can self-manage but need direction",
-        "You want community pressure to stay consistent"
+        "Developers transitioning from tutorials to shipping real apps",
+        "Junior-to-mid engineers needing workflow discipline",
+        "Founders building product MVPs with MERN"
       ],
       "outcomes": [
-        "Ship multiple deployable full-stack apps",
-        "Build production habits and workflows",
-        "Create a portfolio that proves you can deliver"
+        "Plan features and scope work with AI support",
+        "Ship full-stack MERN features with strong debugging habits",
+        "Write cleaner docs, tests, and deployment checklists"
       ],
       "includes": [
-        "6-month full-stack web development mentorship",
-        "Weekly live sessions + lifetime recordings",
-        "10+ real-world portfolio projects",
-        "Private student community",
-        "End-of-program certificate",
-        "14-day refund guarantee"
+        "Weekly mentorship guidance",
+        "AI workflow training for planning → shipping",
+        "Project-based path with production constraints",
+        "Community support and accountability check-ins"
       ],
       "accountability": {
-        "level": "guided",
+        "level": "structured",
         "weeklyCheckIns": true,
         "submissionRequiredToProgress": false,
-        "reviewSlaHours": null,
+        "reviewSlaHours": 72,
         "support": {
           "community": true,
           "priorityChat": false,
@@ -97,15 +68,21 @@
       },
       "availability": {
         "isActive": true,
-        "seatsLimited": false,
-        "note": "Manual activation required."
-      }
+        "seatsLimited": true,
+        "note": "Rolling admissions with limited spots."
+      },
+      "applicationRequired": true,
+      "onboardingRequired": true,
+      "recommendedFor": "Developers who need structure and practical execution support",
+      "deliveryFormat": "Mentorship + async support",
+      "aiWorkflowCoverage": "Core",
+      "reviewLevel": "Guided"
     },
     {
       "id": "plan_pro",
       "slug": "pro",
-      "title": "Full-Stack Bootcamp: Pro",
-      "tagline": "Accountability + reviews + faster progress.",
+      "title": "Pro",
+      "tagline": "High-accountability mentorship with deeper code and architecture feedback.",
       "badge": "Most Popular",
       "pricing": {
         "amount": 1800,
@@ -114,37 +91,35 @@
         "cadenceLabel": "one-time"
       },
       "enrollment": {
-        "mode": "manual_activation",
+        "mode": "application",
         "initialStatus": "pending",
         "activation": "admin",
         "requiresPayment": false
       },
       "cta": {
-        "label": "Request Pro",
+        "label": "Apply for Pro",
         "type": "enroll",
         "route": "/join/pro"
       },
-      "summary": "For those who want hands-on accountability and faster growth.",
+      "summary": "Everything in Standard plus faster support, deeper review loops, and direct architecture mentoring.",
       "whoItsFor": [
-        "You want strong accountability to stay consistent",
-        "You want real code reviews on what you build",
-        "You want to move faster with feedback loops"
+        "Engineers shipping serious portfolio or startup work",
+        "Developers who need strong external accountability",
+        "Builders preparing for technical interviews or product launch"
       ],
       "outcomes": [
-        "Ship production-ready apps with review-driven iteration",
-        "Build an interview-ready portfolio",
-        "Develop professional shipping discipline"
+        "Ship faster with fewer regressions",
+        "Build review-ready repositories and architecture decisions",
+        "Develop confidence in AI-assisted engineering judgment"
       ],
       "includes": [
-        "All Standard features included",
-        "Bi-weekly 1:1 mentorship sessions",
-        "Detailed code reviews & feedback",
-        "Personalized portfolio & career guidance",
-        "Priority Slack/Discord support",
-        "14-day refund guarantee"
+        "Everything in Standard",
+        "Deeper code reviews and refactor feedback",
+        "Architecture decision support",
+        "Priority support and tighter accountability cadence"
       ],
       "accountability": {
-        "level": "accountability",
+        "level": "high-touch",
         "weeklyCheckIns": true,
         "submissionRequiredToProgress": true,
         "reviewSlaHours": 48,
@@ -157,20 +132,26 @@
       "availability": {
         "isActive": true,
         "seatsLimited": true,
-        "note": "Limited seats available. Manual activation required."
-      }
+        "note": "Limited seats with manual review and activation."
+      },
+      "applicationRequired": true,
+      "onboardingRequired": true,
+      "recommendedFor": "Developers and founders who need high-accountability shipping support",
+      "deliveryFormat": "Direct mentorship + faster feedback",
+      "aiWorkflowCoverage": "Advanced",
+      "reviewLevel": "Deep"
     },
     {
       "id": "plan_team",
       "slug": "team",
       "title": "Team / Enterprise",
-      "tagline": "Dedicated support for teams shipping real products.",
+      "tagline": "AI-powered MERN workflow training for teams shipping production software.",
       "badge": null,
       "pricing": {
         "amount": 5000,
-        "label": "£5,000",
+        "label": "From £5,000",
         "cadence": "up_to_members",
-        "cadenceLabel": "up to 5 members"
+        "cadenceLabel": "team engagement"
       },
       "enrollment": {
         "mode": "discovery_call",
@@ -179,28 +160,26 @@
         "requiresPayment": false
       },
       "cta": {
-        "label": "Request Access",
+        "label": "Book Discovery",
         "type": "request",
         "route": "/enterprise"
       },
-      "summary": "Upskill your small team with dedicated support.",
+      "summary": "Upskill your team with practical AI-enhanced MERN engineering systems and delivery discipline.",
       "whoItsFor": [
-        "You want your team shipping faster with fewer blockers",
-        "You want a structured program tailored to your stack",
-        "You want a process uplift — not just training"
+        "Startup teams shipping features weekly",
+        "Teams needing better code review and debugging practices",
+        "Engineering teams adopting AI safely"
       ],
       "outcomes": [
-        "Team-wide improvement in delivery velocity",
-        "Stronger engineering practices and standards",
-        "Clear roadmap for ongoing shipping"
+        "Higher code quality and review standards",
+        "Faster and cleaner feature shipping",
+        "Consistent AI-assisted workflow discipline"
       ],
       "includes": [
-        "Team access & custom scheduling",
-        "Team-focused real-world projects",
-        "Dedicated instructor support",
-        "Post-program team audit & recommendations",
-        "Private Slack channel for your team",
-        "14-day refund guarantee"
+        "Discovery and skill-gap assessment",
+        "Team workflow coaching and standards",
+        "Practical AI-assisted planning and delivery sessions",
+        "Implementation support for team-specific roadmaps"
       ],
       "accountability": {
         "level": "enterprise",
@@ -216,8 +195,14 @@
       "availability": {
         "isActive": true,
         "seatsLimited": true,
-        "note": "Requires a short discovery call."
-      }
+        "note": "Discovery call required before activation."
+      },
+      "applicationRequired": true,
+      "onboardingRequired": false,
+      "recommendedFor": "Teams that want better engineering output with AI-enabled workflows",
+      "deliveryFormat": "Team workshop + ongoing advisory",
+      "aiWorkflowCoverage": "Team-wide",
+      "reviewLevel": "Org"
     }
   ]
 }

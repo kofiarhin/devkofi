@@ -7,6 +7,12 @@ const enrollmentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    programSlug: {
+      type: String,
+      default: "devkofi-ai-powered-mern-mentorship",
+      trim: true,
+      lowercase: true,
+    },
     planSlug: {
       type: String,
       required: true,
@@ -22,11 +28,28 @@ const enrollmentSchema = new mongoose.Schema(
       default: "pending",
       index: true,
     },
+    applicationStatus: {
+      type: String,
+      enum: ["draft", "submitted", "pending_review", "approved", "rejected"],
+      default: "submitted",
+      index: true,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["not_required", "pending", "paid", "refunded"],
+      default: "not_required",
+    },
+    selectedTrack: { type: String, default: "ai-powered-mern" },
+    intakeSnapshot: { type: Object, default: {} },
+    adminNotes: { type: String, default: "" },
+    approvedAt: { type: Date },
+    activatedAt: { type: Date },
+    source: { type: String, default: "web" },
+    selectedPlanVersion: { type: String, default: "2026.1" },
   },
   { timestamps: true },
 );
 
-// ✅ only 1 enrollment per user for this phase
 enrollmentSchema.index({ userId: 1 }, { unique: true });
 
 module.exports = mongoose.model("Enrollment", enrollmentSchema);

@@ -1,7 +1,6 @@
 const Enrollment = require("../models/Enrollment");
 const TeamEnrollment = require("../models/TeamEnrollment");
 const Team = require("../models/Team");
-const TeamMember = require("../models/TeamMember");
 
 const normalizeId = (v) => String(v || "").trim();
 
@@ -11,7 +10,6 @@ exports.getPendingTeamEnrollments = async (req, res) => {
       .sort({ createdAt: -1 })
       .lean();
 
-    // optional enrich: team name
     const teamIds = pending.map((p) => p.teamId);
     const teams = await Team.find({ _id: { $in: teamIds } }).lean();
     const teamMap = new Map();
@@ -37,7 +35,7 @@ exports.approveTeamEnrollment = async (req, res) => {
 
     const updated = await TeamEnrollment.findOneAndUpdate(
       { teamId, status: "pending" },
-      { $set: { status: "active" } },
+      { $set: { status: "active", approvedAt: new Date() } },
       { new: true },
     ).lean();
 
@@ -54,43 +52,93 @@ exports.approveTeamEnrollment = async (req, res) => {
   }
 };
 
-// ✅ NEW: approve an individual enrollment (standard/pro)
+const resolveQuery = (body = {}) => {
+  const userId = normalizeId(body?.userId);
+  const enrollmentId = normalizeId(body?.enrollmentId);
+  if (!userId && !enrollmentId) return null;
+  return enrollmentId ? { _id: enrollmentId } : { userId };
+};
+
 exports.approveEnrollment = async (req, res) => {
   try {
-    const userId = normalizeId(req.body?.userId);
-    const enrollmentId = normalizeId(req.body?.enrollmentId);
-
-    if (!userId && !enrollmentId) {
-      return res.status(400).json({
-        success: false,
-        error: "Missing userId or enrollmentId.",
-      });
-    }
-
-    const query = enrollmentId ? { _id: enrollmentId } : { userId };
-
-    const existing = await Enrollment.findOne(query).lean();
-    if (!existing) {
-      return res.status(404).json({
-        success: false,
-        error: "Enrollment not found.",
-      });
-    }
-
-    if (existing.status === "active") {
-      return res.json({ success: true, enrollment: existing });
+    const query = resolveQuery(req.body);
+    if (!query) {
+      return res.status(400).json({ success: false, error: "Missing userId or enrollmentId." });
     }
 
     const updated = await Enrollment.findOneAndUpdate(
-      { ...query, status: "pending" },
-      { $set: { status: "active" } },
+      query,
+      {
+        $set: {
+          status: "pending",
+          applicationStatus: "approved",
+          approvedAt: new Date(),
+          adminNotes: req.body?.adminNotes || "",
+        },
+      },
       { new: true },
     ).lean();
 
     if (!updated) {
-      // e.g. was cancelled or already active; return latest
-      const latest = await Enrollment.findOne(query).lean();
-      return res.json({ success: true, enrollment: latest });
+      return res.status(404).json({ success: false, error: "Enrollment not found." });
+    }
+
+    return res.json({ success: true, enrollment: updated });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.rejectEnrollment = async (req, res) => {
+  try {
+    const query = resolveQuery(req.body);
+    if (!query) {
+      return res.status(400).json({ success: false, error: "Missing userId or enrollmentId." });
+    }
+
+    const updated = await Enrollment.findOneAndUpdate(
+      query,
+      {
+        $set: {
+          status: "cancelled",
+          applicationStatus: "rejected",
+          adminNotes: req.body?.adminNotes || "",
+        },
+      },
+      { new: true },
+    ).lean();
+
+    if (!updated) {
+      return res.status(404).json({ success: false, error: "Enrollment not found." });
+    }
+
+    return res.json({ success: true, enrollment: updated });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.activateEnrollment = async (req, res) => {
+  try {
+    const query = resolveQuery(req.body);
+    if (!query) {
+      return res.status(400).json({ success: false, error: "Missing userId or enrollmentId." });
+    }
+
+    const updated = await Enrollment.findOneAndUpdate(
+      query,
+      {
+        $set: {
+          status: "active",
+          applicationStatus: "approved",
+          activatedAt: new Date(),
+        },
+      },
+      { new: true },
+    ).lean();
+
+    if (!updated) {
+      return res.status(404).json({ success: false, error: "Enrollment not found." });
     }
 
     return res.json({ success: true, enrollment: updated });

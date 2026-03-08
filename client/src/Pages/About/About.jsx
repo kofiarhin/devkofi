@@ -20,20 +20,11 @@ const AboutMe = () => {
   const revealClass = isVisible ? "is-revealed" : "";
 
   return (
-    <section
-      className={`bio-section ${revealClass}`}
-      ref={sectionRef}
-      aria-label="About Kofi"
-    >
+    <section className={`bio-section ${revealClass}`} ref={sectionRef} aria-label="About Kofi">
       <div className="bio-section__wrapper">
         <div className="bio-section__visual">
           <div className="bio-section__image-glow"></div>
-          <img
-            className="bio-section__profile-img"
-            src={profileImage}
-            alt="Kofi"
-            loading="lazy"
-          />
+          <img className="bio-section__profile-img" src={profileImage} alt="Kofi" loading="lazy" />
         </div>
 
         <article className="bio-section__text-block">
@@ -41,62 +32,26 @@ const AboutMe = () => {
 
           <div className="bio-section__description">
             <p className="bio-section__lead">
-              I’m <strong>Kofi</strong> — a full-stack software engineer and
-              founder of DevKofi.
+              I’m <strong>Kofi</strong> — a full-stack engineer, founder, and the
+              mentor behind DevKofi AI-Powered MERN Stack Mentorship.
             </p>
-
             <p>
-              I build production-ready MERN applications end to end. Real
-              products with users, edge cases, performance constraints, and
-              systems that have to hold up in the real world.
+              I teach developers how to build and ship real MERN products while
+              integrating AI into practical engineering workflows.
             </p>
-
             <p>
-              My work spans{" "}
-              <span className="text-highlight">React, Node.js, MongoDB</span>,
-              APIs, authentication, dashboards, and deployments. I focus on
-              clean UI, fast UX, and shipping features that solve real problems.
+              My philosophy is <span className="text-highlight">engineering-first, AI-enhanced</span>:
+              use AI to move faster, but keep architecture quality, debugging
+              discipline, and technical judgment at the center.
             </p>
-
             <p>
-              DevKofi exists because most people learn how to code, but not how
-              to build. I teach how to design systems, make trade-offs, debug
-              confidently, and ship complete applications the way it’s done in
-              practice.
+              In mentorship, we focus on real product decisions: scoping features,
+              reviewing code, refactoring safely, writing meaningful tests,
+              documenting decisions, and shipping to production.
             </p>
-
             <p>
-              Alongside engineering, I work heavily in design and visual
-              direction. I care about products that feel considered, usable, and
-              well-crafted.
-            </p>
-
-            <p>
-              You can explore more of my design work on{" "}
-              <a
-                className="bio-section__link"
-                href="https://www.behance.net/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Behance
-              </a>{" "}
-              and{" "}
-              <a
-                className="bio-section__link"
-                href="https://dribbble.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Dribbble
-              </a>
-              .
-            </p>
-
-            <p>
-              If your goal is to become someone who can take an idea and turn it
-              into a working product, that’s what I help people do through{" "}
-              <strong>DevKofi</strong>.
+              If you want to become the kind of builder who can take ideas from
+              zero to shipped software, this is exactly what I help you do.
             </p>
           </div>
         </article>

@@ -10,34 +10,30 @@ const getStoredToken = () => {
   }
 };
 
-const joinEnrollment = async ({ slug, token }) => {
-  const url = `${baseUrl}/api/enrollments/apply/${slug}`;
+const submitOnboarding = async ({ payload, token }) => {
   const authToken = token || getStoredToken();
 
-  if (!authToken) throw new Error("Not authorized. Please log in again.");
-
-  const res = await fetch(url, {
+  const res = await fetch(`${baseUrl}/api/onboarding/intake`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${authToken}`,
     },
+    body: JSON.stringify(payload),
   });
 
   const data = await res.json().catch(() => ({}));
-
   if (!res.ok || data?.success === false) {
-    throw new Error(data?.error || "Failed to submit application.");
+    throw new Error(data?.error || "Failed to submit onboarding.");
   }
-
   return data;
 };
 
-const useJoinEnrollmentMutation = (token) => {
+const useOnboardingIntakeMutation = (token) => {
   return useMutation({
-    mutationKey: ["join-enrollment"],
-    mutationFn: ({ slug }) => joinEnrollment({ slug, token }),
+    mutationKey: ["onboarding-intake"],
+    mutationFn: (payload) => submitOnboarding({ payload, token }),
   });
 };
 
-export default useJoinEnrollmentMutation;
+export default useOnboardingIntakeMutation;

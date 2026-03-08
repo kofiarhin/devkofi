@@ -29,7 +29,7 @@ const Enterprise = () => {
       <div className="enterprise-card">
         <h1 className="enterprise-title">Team / Enterprise</h1>
         <p className="enterprise-subtitle">
-          Submit a request and we’ll reach out to schedule a discovery call.
+          Submit a request for AI-powered MERN workflow mentorship for your team. We’ll schedule a discovery call.
         </p>
 
         <form className="enterprise-form" onSubmit={onSubmit}>
@@ -63,7 +63,7 @@ const Enterprise = () => {
               name="message"
               value={form.message}
               onChange={onChange}
-              placeholder="Tell us what your team is trying to ship + what you need help with."
+              placeholder="Tell us what your team is shipping, where AI workflow adoption is blocked, and what outcomes you need."
               rows={5}
             />
           </div>

@@ -7,13 +7,9 @@ const {
 
 const router = Router();
 
-// current user's enrollments
 router.get("/me", requireAuth, getMyEnrollments);
-
-// ✅ join enrollment by slug in URL
 router.post("/join/:planSlug", requireAuth, createEnrollment);
-
-// (optional) keep body-based create if you still use it anywhere
+router.post("/apply/:planSlug", requireAuth, createEnrollment);
 router.post("/", requireAuth, createEnrollment);
 
 module.exports = router;
