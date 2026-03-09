@@ -1,40 +1,91 @@
-// Brand Colors
 $primary: #a3e635;
 $bg-dark: #0a0a0a;
-$surface: #141414;
 $text-sub: #94a3b8;
 $glass: rgba(20, 20, 20, 0.7);
 
+@keyframes glow-drift {
+  0% {
+    transform: translate3d(-3%, 0, 0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(3%, -2%, 0);
+    opacity: 0.72;
+  }
+  100% {
+    transform: translate3d(-3%, 0, 0);
+    opacity: 0.5;
+  }
+}
+
+@keyframes border-pulse {
+  0% {
+    box-shadow: 0 0 0 rgba($primary, 0.12), 0 0 0 rgba($primary, 0);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba($primary, 0.14), 0 0 80px rgba($primary, 0.06);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba($primary, 0.12), 0 0 0 rgba($primary, 0);
+  }
+}
+
+@keyframes badge-float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 #landing {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4rem;
   padding: 5.5rem 1rem 4.5rem;
-  background: radial-gradient(
-      circle at top right,
-      rgba($primary, 0.05),
-      transparent
-    ),
-    $bg-dark;
+  background: radial-gradient(circle at top right, rgba($primary, 0.06), transparent), $bg-dark;
   min-height: 100vh;
   align-items: center;
   overflow: hidden;
+
+  .hero-glow {
+    position: absolute;
+    top: 6%;
+    right: -8%;
+    width: min(40rem, 65vw);
+    height: min(40rem, 65vw);
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba($primary, 0.17) 0%, rgba($primary, 0.06) 38%, transparent 72%);
+    filter: blur(18px);
+    animation: glow-drift 14s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
 
   .landing-content {
     z-index: 2;
 
     .hero-title {
-      font-size: clamp(2.5rem, 8vw, 4.5rem); // Fluid typography
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
       font-weight: 800;
       line-height: 1.08;
       color: #fff;
       margin-bottom: 1.5rem;
       max-width: 13ch;
 
+      .hero-title-line {
+        display: block;
+      }
+
       .accent {
         color: $primary;
-        display: block; // Stack for impact
-        text-shadow: 0 0 20px rgba($primary, 0.3);
+        display: block;
+        text-shadow: 0 0 20px rgba($primary, 0.26);
       }
     }
 
@@ -74,7 +125,7 @@ $glass: rgba(20, 20, 20, 0.7);
         font-weight: 700;
         font-size: 1rem;
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition: transform 0.22s ease, box-shadow 0.22s ease;
       }
 
       .btn-primary {
@@ -84,19 +135,8 @@ $glass: rgba(20, 20, 20, 0.7);
         box-shadow: 0 10px 30px rgba($primary, 0.3);
 
         &:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 15px 40px rgba($primary, 0.4);
-        }
-      }
-
-      .btn-secondary {
-        background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.05);
-          border-color: #fff;
+          transform: translateY(-2px);
+          box-shadow: 0 14px 36px rgba($primary, 0.36);
         }
       }
     }
@@ -106,12 +146,14 @@ $glass: rgba(20, 20, 20, 0.7);
     width: 100%;
     display: flex;
     justify-content: center;
+    z-index: 2;
 
     .image-wrapper {
       position: relative;
       padding: 15px;
-      border: 2px solid $primary;
-      border-radius: 40px; // Modern rounded look
+      border: 2px solid rgba($primary, 0.9);
+      border-radius: 40px;
+      animation: border-pulse 8s ease-in-out infinite;
 
       &::before {
         content: "";
@@ -124,7 +166,7 @@ $glass: rgba(20, 20, 20, 0.7);
 
       img {
         width: 100%;
-        max-width: 550px; // Increased size
+        max-width: 550px;
         border-radius: 30px;
         display: block;
         object-fit: cover;
@@ -148,6 +190,7 @@ $glass: rgba(20, 20, 20, 0.7);
         font-size: 1.2rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         border: 4px solid $bg-dark;
+        animation: badge-float 5s ease-in-out infinite;
 
         span {
           font-size: 0.7rem;
