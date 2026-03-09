@@ -9,7 +9,7 @@
       "Fast, mobile-first UX"
     ],
     "status": "Building",
-    "demoUrl": "https://pregchat-tan.vercel.app/chat",
+    "demoUrl": "https://pregchat-tan.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/pregchat",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760930663/devkofi/pdfij4zqjkosttlcezp2.jpg"
   },
@@ -92,9 +92,9 @@
       "Dashboard UI + logout flow",
       "Deployed API + health endpoint"
     ],
-    "status": "Active",
+    "status": "Building",
     "demoUrl": "https://select-flow.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/select-flow",
-    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1771769999/select-flow_thumbnail.png"
+    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1773020762/thumbnail_jwb8ru.png"
   }
 ]
