@@ -96,5 +96,19 @@
     "demoUrl": "https://select-flow.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/select-flow",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1773020762/thumbnail_jwb8ru.png"
+  },
+  {
+    "id": 18,
+    "name": "FeedHub",
+    "description": "Multi-restaurant food ordering platform where users can browse restaurants, view menus, add items to cart, and place orders.",
+    "features": [
+      "Multi-restaurant ordering flow",
+      "Menu browsing + cart system",
+      "MERN stack with Vercel + Heroku deployment"
+    ],
+    "status": "Building",
+    "demoUrl": "https://feedhub-gamma.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/feedhub",
+    "thumbnailUrl": ""
   }
 ]
