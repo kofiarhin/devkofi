@@ -110,5 +110,19 @@
     "demoUrl": "https://feedhub-gamma.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/feedhub",
     "thumbnailUrl": ""
+  },
+  {
+    "id": 19,
+    "name": "Kflix",
+    "description": "Movie discovery app with JWT cookie authentication, protected routes, and a dark cinematic UI for browsing movies and series.",
+    "features": [
+      "JWT auth with register/login flow",
+      "Protected routes + profile/logout",
+      "Vercel frontend with deployed backend API"
+    ],
+    "status": "Building",
+    "demoUrl": "https://kflix-six.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/kflix",
+    "thumbnailUrl": ""
   }
 ]
