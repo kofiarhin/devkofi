@@ -124,5 +124,19 @@
     "demoUrl": "https://kflix-six.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/kflix",
     "thumbnailUrl": ""
+  },
+  {
+    "id": 20,
+    "name": "Crypto Pulse Pro",
+    "description": "Crypto market tracking app with a dynamic home table, coin detail views, and auth-ready product structure.",
+    "features": [
+      "Dynamic crypto market table",
+      "Coin details route",
+      "MVP auth flow foundation"
+    ],
+    "status": "Building",
+    "demoUrl": "https://crypto-pulse-pro.vercel.app/",
+    "repoUrl": "https://github.com/kofiarhin/crypto-pulse-pro",
+    "thumbnailUrl": ""
   }
 ]
