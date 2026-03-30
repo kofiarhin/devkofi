@@ -138,5 +138,19 @@
     "demoUrl": "https://crypto-pulse-pro.vercel.app/",
     "repoUrl": "https://github.com/kofiarhin/crypto-pulse-pro",
     "thumbnailUrl": ""
+  },
+  {
+    "id": 21,
+    "name": "Friends Showdown",
+    "description": "Real-time multiplayer trivia app where players create a room, share the code, and race to answer first.",
+    "features": [
+      "Real-time room-based trivia",
+      "Create + join game with room code",
+      "Weekly leaderboard"
+    ],
+    "status": "Active",
+    "demoUrl": "https://friends-show-down.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/friends-show-down",
+    "thumbnailUrl": ""
   }
 ]
