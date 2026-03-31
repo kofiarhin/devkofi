@@ -14,13 +14,66 @@ const editableFields = [
   "linkedinUrl",
   "currentProjectSummary",
   "preferredStartTimeline",
-  "onboardingCompleted",
-  "onboardingStep",
-  "selectedPlan",
-  "supportPreference",
+];
+
+const urlFields = ["githubUrl", "portfolioUrl", "linkedinUrl"];
+const allowedSkillLevels = ["beginner", "intermediate", "advanced"];
+const allowedPreferredStartTimelines = [
+  "immediately",
+  "within_30_days",
+  "within_90_days",
+  "just_exploring",
 ];
 
 const hasValue = (v) => typeof v === "string" ? v.trim().length > 0 : Boolean(v);
+const isPlainObject = (value) => Boolean(value) && typeof value === "object" && !Array.isArray(value);
+
+const isValidUrl = (value) => {
+  try {
+    const parsed = new URL(value);
+    return ["http:", "https:"].includes(parsed.protocol);
+  } catch {
+    return false;
+  }
+};
+
+const normalizeProfileField = (field, value) => {
+  if (typeof value !== "string") {
+    throw new Error(`${field} must be a string`);
+  }
+
+  const trimmed = value.trim();
+
+  if (field === "skillLevel") {
+    if (trimmed && !allowedSkillLevels.includes(trimmed)) {
+      throw new Error("skillLevel must be one of: beginner, intermediate, advanced");
+    }
+
+    return trimmed;
+  }
+
+  if (field === "preferredStartTimeline") {
+    if (trimmed && !allowedPreferredStartTimelines.includes(trimmed)) {
+      throw new Error(
+        "preferredStartTimeline must be one of: immediately, within_30_days, within_90_days, just_exploring",
+      );
+    }
+
+    return trimmed;
+  }
+
+  if (urlFields.includes(field)) {
+    if (!trimmed) {
+      return "";
+    }
+
+    if (!isValidUrl(trimmed)) {
+      throw new Error(`${field} must be a valid URL`);
+    }
+  }
+
+  return trimmed;
+};
 
 const getProfileMe = async (req, res) => {
   try {
@@ -37,24 +90,33 @@ const getProfileMe = async (req, res) => {
 
 const patchProfileMe = async (req, res) => {
   try {
-    const body = req.body || {};
+    const body = req.body;
+
+    if (!isPlainObject(body)) {
+      return res.status(400).json({ success: false, error: "Invalid request body" });
+    }
+
     const updates = {};
 
     for (const field of editableFields) {
       if (Object.prototype.hasOwnProperty.call(body, field)) {
-        updates[`profile.${field}`] = body[field];
+        updates[`profile.${field}`] = normalizeProfileField(field, body[field]);
       }
     }
 
     if (!Object.keys(updates).length) {
-      return res.status(400).json({ success: false, error: "No profile fields provided" });
+      return res.status(400).json({ success: false, error: "No valid profile fields provided" });
     }
 
     const user = await User.findByIdAndUpdate(
       req.userId,
       { $set: updates },
-      { new: true },
+      { new: true, runValidators: true },
     ).select("firstName lastName email profile").lean();
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
 
     return res.json({ success: true, profile: user?.profile || {} });
   } catch (error) {
