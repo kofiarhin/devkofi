@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import "./StudentDashboard.styles.scss";
 import { Briefcase, Sparkles, ShieldCheck, LifeBuoy } from "lucide-react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import useStudentDashboardSummaryQuery from "../../../hooks/useStudentDashboardSummaryQuery";
 import useMyAccessRequestsQuery from "../../../hooks/useMyAccessRequestsQuery";
 
@@ -76,6 +77,9 @@ const StudentDashboard = ({ user }) => {
             Welcome back, <span>{user?.firstName || "Student"}</span>
           </h1>
           <p>{computed.nextAction}</p>
+          <p>
+            <Link to="/settings">Edit profile settings</Link>
+          </p>
         </header>
 
         <main className="bento-grid">

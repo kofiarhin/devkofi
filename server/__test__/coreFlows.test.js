@@ -80,6 +80,75 @@ describe("core mentorship flows", () => {
     expect(status.body.onboardingCompleted).toBe(true);
   });
 
+  it("profile me endpoints enforce editable-only updates", async () => {
+    const { token } = await registerAndLogin("profile-me");
+
+    const read = await request(app)
+      .get("/api/profile/me")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(read.statusCode).toBe(200);
+    expect(read.body.user).toMatchObject({
+      firstName: "Test",
+      email: "user.profile-me@example.com",
+    });
+    expect(read.body.profile).toBeDefined();
+
+    const statusBeforeValidPatch = await request(app)
+      .get("/api/onboarding/status")
+      .set("Authorization", `Bearer ${token}`);
+    expect(statusBeforeValidPatch.body.readinessScore).toBe(0);
+
+    const validPatch = await request(app)
+      .patch("/api/profile/me")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        currentRole: "Frontend Developer",
+        skillLevel: "intermediate",
+        mernExperience: "3 years",
+        aiExperience: "1 year",
+        primaryGoal: "Get mentorship",
+        biggestBlocker: "Execution speed",
+        currentProjectSummary: "Building a dashboard",
+        timezone: "UTC",
+        country: "Ghana",
+        preferredStartTimeline: "within_30_days",
+        githubUrl: "https://github.com/devkofi",
+      });
+
+    expect(validPatch.statusCode).toBe(200);
+    expect(validPatch.body.profile.currentRole).toBe("Frontend Developer");
+    expect(validPatch.body.profile.githubUrl).toBe("https://github.com/devkofi");
+
+    const statusAfterValidPatch = await request(app)
+      .get("/api/onboarding/status")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(statusAfterValidPatch.body.readinessScore).toBe(10);
+
+    const invalidPatch = await request(app)
+      .patch("/api/profile/me")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ onboardingCompleted: true });
+
+    expect(invalidPatch.statusCode).toBe(400);
+    expect(invalidPatch.body.error).toBe("No valid profile fields provided");
+
+    const invalidPatchStep = await request(app)
+      .patch("/api/profile/me")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ onboardingStep: 4 });
+    expect(invalidPatchStep.statusCode).toBe(400);
+    expect(invalidPatchStep.body.error).toBe("No valid profile fields provided");
+
+    const invalidPatchPlan = await request(app)
+      .patch("/api/profile/me")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ selectedPlan: "pro" });
+    expect(invalidPatchPlan.statusCode).toBe(400);
+    expect(invalidPatchPlan.body.error).toBe("No valid profile fields provided");
+  });
+
   it("enrollment application creation works and avoids duplicates", async () => {
     const { token } = await registerAndLogin("enroll");
 

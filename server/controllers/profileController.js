@@ -14,17 +14,34 @@ const editableFields = [
   "linkedinUrl",
   "currentProjectSummary",
   "preferredStartTimeline",
-  "onboardingCompleted",
-  "onboardingStep",
-  "selectedPlan",
-  "supportPreference",
 ];
+
+const skillLevelValues = ["beginner", "intermediate", "advanced"];
+const startTimelineValues = ["immediately", "within_30_days", "within_90_days", "just_exploring"];
+const optionalUrlFields = ["githubUrl", "portfolioUrl", "linkedinUrl"];
 
 const hasValue = (v) => typeof v === "string" ? v.trim().length > 0 : Boolean(v);
 
+const sanitizeString = (value) => {
+  if (typeof value !== "string") {
+    return value;
+  }
+
+  return value.trim();
+};
+
+const isValidUrl = (urlValue) => {
+  try {
+    const parsed = new URL(urlValue);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
 const getProfileMe = async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select("firstName lastName email profile").lean();
+    const user = await User.findById(req.userId).select("firstName lastName email role profile").lean();
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found" });
     }
@@ -41,22 +58,44 @@ const patchProfileMe = async (req, res) => {
     const updates = {};
 
     for (const field of editableFields) {
-      if (Object.prototype.hasOwnProperty.call(body, field)) {
-        updates[`profile.${field}`] = body[field];
+      if (!Object.prototype.hasOwnProperty.call(body, field)) {
+        continue;
       }
+
+      const rawValue = body[field];
+      if (typeof rawValue !== "string") {
+        return res.status(400).json({ success: false, error: `${field} must be a string` });
+      }
+      const value = sanitizeString(rawValue);
+
+      if (optionalUrlFields.includes(field)) {
+        if (value !== "" && !isValidUrl(value)) {
+          return res.status(400).json({ success: false, error: `${field} must be a valid URL` });
+        }
+      }
+
+      if (field === "skillLevel" && value && !skillLevelValues.includes(value)) {
+        return res.status(400).json({ success: false, error: "skillLevel is invalid" });
+      }
+
+      if (field === "preferredStartTimeline" && value && !startTimelineValues.includes(value)) {
+        return res.status(400).json({ success: false, error: "preferredStartTimeline is invalid" });
+      }
+
+      updates[`profile.${field}`] = value;
     }
 
     if (!Object.keys(updates).length) {
-      return res.status(400).json({ success: false, error: "No profile fields provided" });
+      return res.status(400).json({ success: false, error: "No valid profile fields provided" });
     }
 
     const user = await User.findByIdAndUpdate(
       req.userId,
       { $set: updates },
       { new: true },
-    ).select("firstName lastName email profile").lean();
+    ).select("firstName lastName email role profile").lean();
 
-    return res.json({ success: true, profile: user?.profile || {} });
+    return res.json({ success: true, message: "Profile updated successfully", profile: user?.profile || {} });
   } catch (error) {
     return res.status(400).json({ success: false, error: error.message });
   }
