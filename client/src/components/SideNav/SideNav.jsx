@@ -72,6 +72,17 @@ const SideNav = () => {
                 </NavLink>
               </li>
               <li className="nav-item">
+                <NavLink
+                  to="/settings"
+                  onClick={closeNav}
+                  className={({ isActive }) =>
+                    isActive ? "active-link" : "nav-link"
+                  }
+                >
+                  Settings
+                </NavLink>
+              </li>
+              <li className="nav-item">
                 <button className="logout-btn" onClick={handleLogout}>
                   Logout
                 </button>

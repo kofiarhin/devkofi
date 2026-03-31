@@ -14,6 +14,7 @@ const editableFields = [
   "linkedinUrl",
   "currentProjectSummary",
   "preferredStartTimeline",
+<<<<<<< HEAD
 ];
 
 const urlFields = ["githubUrl", "portfolioUrl", "linkedinUrl"];
@@ -23,7 +24,13 @@ const allowedPreferredStartTimelines = [
   "within_30_days",
   "within_90_days",
   "just_exploring",
+=======
+>>>>>>> agent-zero/implement-account-settings-page
 ];
+
+const skillLevelValues = ["beginner", "intermediate", "advanced"];
+const startTimelineValues = ["immediately", "within_30_days", "within_90_days", "just_exploring"];
+const optionalUrlFields = ["githubUrl", "portfolioUrl", "linkedinUrl"];
 
 const hasValue = (v) => typeof v === "string" ? v.trim().length > 0 : Boolean(v);
 const isPlainObject = (value) => Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -75,9 +82,26 @@ const normalizeProfileField = (field, value) => {
   return trimmed;
 };
 
+const sanitizeString = (value) => {
+  if (typeof value !== "string") {
+    return value;
+  }
+
+  return value.trim();
+};
+
+const isValidUrl = (urlValue) => {
+  try {
+    const parsed = new URL(urlValue);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
 const getProfileMe = async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select("firstName lastName email profile").lean();
+    const user = await User.findById(req.userId).select("firstName lastName email role profile").lean();
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found" });
     }
@@ -99,9 +123,36 @@ const patchProfileMe = async (req, res) => {
     const updates = {};
 
     for (const field of editableFields) {
+<<<<<<< HEAD
       if (Object.prototype.hasOwnProperty.call(body, field)) {
         updates[`profile.${field}`] = normalizeProfileField(field, body[field]);
+=======
+      if (!Object.prototype.hasOwnProperty.call(body, field)) {
+        continue;
+>>>>>>> agent-zero/implement-account-settings-page
       }
+
+      const rawValue = body[field];
+      if (typeof rawValue !== "string") {
+        return res.status(400).json({ success: false, error: `${field} must be a string` });
+      }
+      const value = sanitizeString(rawValue);
+
+      if (optionalUrlFields.includes(field)) {
+        if (value !== "" && !isValidUrl(value)) {
+          return res.status(400).json({ success: false, error: `${field} must be a valid URL` });
+        }
+      }
+
+      if (field === "skillLevel" && value && !skillLevelValues.includes(value)) {
+        return res.status(400).json({ success: false, error: "skillLevel is invalid" });
+      }
+
+      if (field === "preferredStartTimeline" && value && !startTimelineValues.includes(value)) {
+        return res.status(400).json({ success: false, error: "preferredStartTimeline is invalid" });
+      }
+
+      updates[`profile.${field}`] = value;
     }
 
     if (!Object.keys(updates).length) {
@@ -111,6 +162,7 @@ const patchProfileMe = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.userId,
       { $set: updates },
+<<<<<<< HEAD
       { new: true, runValidators: true },
     ).select("firstName lastName email profile").lean();
 
@@ -119,6 +171,12 @@ const patchProfileMe = async (req, res) => {
     }
 
     return res.json({ success: true, profile: user?.profile || {} });
+=======
+      { new: true },
+    ).select("firstName lastName email role profile").lean();
+
+    return res.json({ success: true, message: "Profile updated successfully", profile: user?.profile || {} });
+>>>>>>> agent-zero/implement-account-settings-page
   } catch (error) {
     return res.status(400).json({ success: false, error: error.message });
   }

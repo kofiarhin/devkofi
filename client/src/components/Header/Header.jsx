@@ -46,6 +46,9 @@ const Header = () => {
               <Link to="/dashboard" className="nav-item">
                 Dashboard
               </Link>
+              <Link to="/settings" className="nav-item">
+                Settings
+              </Link>
               <button className="btn-logout" onClick={handleLogout}>
                 Logout
               </button>

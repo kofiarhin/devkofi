@@ -21,6 +21,7 @@ import PricingPage from "./Pages/Pricing/Pricing";
 import Join from "./Pages/Join/Join";
 import Enterprise from "./Pages/Enterprise/Enterprise";
 import Onboarding from "./Pages/Onboarding/Onboarding";
+import Settings from "./Pages/Settings/Settings";
 
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 import AdminUsers from "./Pages/Dashboard/AdminUsers/AdminUsers";
@@ -50,6 +51,7 @@ const App = () => {
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/settings" element={<Settings />} />
 
           <Route element={<AdminRoute />}>
             <Route path="/dashboard/admin/users" element={<AdminUsers />} />
