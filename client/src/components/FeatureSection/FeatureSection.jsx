@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import "./feature-section.styles.scss";
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const FeatureSection = ({
   title,
@@ -11,68 +12,61 @@ const FeatureSection = ({
   imageSrc,
   reversed = false,
   url = "/register",
+  label,
 }) => {
   const imageVariants = {
-    hidden: { opacity: 0, x: reversed ? 26 : -26 },
+    hidden: { opacity: 0, x: reversed ? 28 : -28 },
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
   const textVariants = {
-    hidden: { opacity: 0, x: reversed ? -22 : 22, y: 10 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.08 },
-    },
-  };
-
-  const buttonVariants = {
-    hidden: { opacity: 0, y: 10 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.18 },
+      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.1 },
     },
   };
 
   return (
     <section className={`feature-section ${reversed ? "reversed" : ""}`}>
-      <div className="container">
-        <div className="content-wrapper">
-          <motion.div
-            className="image-container"
-            variants={imageVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.35 }}
-          >
-            <img src={imageSrc} alt={title} className="feature-image" />
-          </motion.div>
+      <div className="feature-inner">
+        <motion.div
+          className="image-container"
+          variants={imageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <img src={imageSrc} alt={title} className="feature-image" />
+        </motion.div>
 
-          <motion.div
-            className="text-container"
-            variants={textVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.4 }}
-          >
-            <h2 className="title">
-              {title} <br />
-              <span className="highlight">{highlightText}</span>
-            </h2>
-            <p className="description">{description}</p>
-            <motion.div variants={buttonVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.7 }}>
-              <Link className="primary-btn" to={url}>
-                {buttonText}
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
+        <motion.div
+          className="text-container"
+          variants={textVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          {label && <span className="section-label">{label}</span>}
+
+          <h2 className="title">
+            {title}
+            <br />
+            <span className="highlight">{highlightText}</span>
+          </h2>
+
+          <p className="description">{description}</p>
+
+          <Link className="primary-btn" to={url}>
+            {buttonText}
+            <ArrowRight size={16} strokeWidth={2.5} />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "./pricing.styles.scss";
 import { baseUrl } from "../../constants/constants";
+import { Check } from "lucide-react";
 
 const Pricing = () => {
   const [pricing, setPricing] = useState(null);
@@ -83,6 +84,7 @@ const Pricing = () => {
   return (
     <section id="pricing" className="pricing-section">
       <div className="pricing-header">
+        <span className="pricing-eyebrow">Pricing</span>
         <h2 className="pricing-main-title">{headerTitle}</h2>
         <p className="pricing-subtitle">{headerSubtitle}</p>
 
@@ -109,7 +111,7 @@ const Pricing = () => {
 
       {!status.loading && status.error && (
         <div className="pricing-state pricing-state--error">
-          <p className="pricing-error-title">Couldn’t load pricing.</p>
+          <p className="pricing-error-title">Couldn't load pricing.</p>
           <p className="pricing-error-text">{status.error}</p>
           <button
             type="button"
@@ -172,7 +174,15 @@ const Pricing = () => {
 
                 <ul className="card-features">
                   {features.map((feature, i) => (
-                    <li key={`${plan.slug || plan.id}-f-${i}`}>{feature}</li>
+                    <li key={`${plan.slug || plan.id}-f-${i}`}>
+                      <Check
+                        size={14}
+                        strokeWidth={2.5}
+                        className="check-icon"
+                        aria-hidden="true"
+                      />
+                      {feature}
+                    </li>
                   ))}
                 </ul>
 

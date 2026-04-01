@@ -14,18 +14,6 @@ const editableFields = [
   "linkedinUrl",
   "currentProjectSummary",
   "preferredStartTimeline",
-<<<<<<< HEAD
-];
-
-const urlFields = ["githubUrl", "portfolioUrl", "linkedinUrl"];
-const allowedSkillLevels = ["beginner", "intermediate", "advanced"];
-const allowedPreferredStartTimelines = [
-  "immediately",
-  "within_30_days",
-  "within_90_days",
-  "just_exploring",
-=======
->>>>>>> agent-zero/implement-account-settings-page
 ];
 
 const skillLevelValues = ["beginner", "intermediate", "advanced"];
@@ -35,51 +23,13 @@ const optionalUrlFields = ["githubUrl", "portfolioUrl", "linkedinUrl"];
 const hasValue = (v) => typeof v === "string" ? v.trim().length > 0 : Boolean(v);
 const isPlainObject = (value) => Boolean(value) && typeof value === "object" && !Array.isArray(value);
 
-const isValidUrl = (value) => {
+const isValidUrl = (urlValue) => {
   try {
-    const parsed = new URL(value);
-    return ["http:", "https:"].includes(parsed.protocol);
+    const parsed = new URL(urlValue);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
   } catch {
     return false;
   }
-};
-
-const normalizeProfileField = (field, value) => {
-  if (typeof value !== "string") {
-    throw new Error(`${field} must be a string`);
-  }
-
-  const trimmed = value.trim();
-
-  if (field === "skillLevel") {
-    if (trimmed && !allowedSkillLevels.includes(trimmed)) {
-      throw new Error("skillLevel must be one of: beginner, intermediate, advanced");
-    }
-
-    return trimmed;
-  }
-
-  if (field === "preferredStartTimeline") {
-    if (trimmed && !allowedPreferredStartTimelines.includes(trimmed)) {
-      throw new Error(
-        "preferredStartTimeline must be one of: immediately, within_30_days, within_90_days, just_exploring",
-      );
-    }
-
-    return trimmed;
-  }
-
-  if (urlFields.includes(field)) {
-    if (!trimmed) {
-      return "";
-    }
-
-    if (!isValidUrl(trimmed)) {
-      throw new Error(`${field} must be a valid URL`);
-    }
-  }
-
-  return trimmed;
 };
 
 const sanitizeString = (value) => {
@@ -88,15 +38,6 @@ const sanitizeString = (value) => {
   }
 
   return value.trim();
-};
-
-const isValidUrl = (urlValue) => {
-  try {
-    const parsed = new URL(urlValue);
-    return parsed.protocol === "http:" || parsed.protocol === "https:";
-  } catch {
-    return false;
-  }
 };
 
 const getProfileMe = async (req, res) => {
@@ -123,13 +64,8 @@ const patchProfileMe = async (req, res) => {
     const updates = {};
 
     for (const field of editableFields) {
-<<<<<<< HEAD
-      if (Object.prototype.hasOwnProperty.call(body, field)) {
-        updates[`profile.${field}`] = normalizeProfileField(field, body[field]);
-=======
       if (!Object.prototype.hasOwnProperty.call(body, field)) {
         continue;
->>>>>>> agent-zero/implement-account-settings-page
       }
 
       const rawValue = body[field];
@@ -162,21 +98,10 @@ const patchProfileMe = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.userId,
       { $set: updates },
-<<<<<<< HEAD
-      { new: true, runValidators: true },
-    ).select("firstName lastName email profile").lean();
-
-    if (!user) {
-      return res.status(404).json({ success: false, error: "User not found" });
-    }
-
-    return res.json({ success: true, profile: user?.profile || {} });
-=======
       { new: true },
     ).select("firstName lastName email role profile").lean();
 
     return res.json({ success: true, message: "Profile updated successfully", profile: user?.profile || {} });
->>>>>>> agent-zero/implement-account-settings-page
   } catch (error) {
     return res.status(400).json({ success: false, error: error.message });
   }
