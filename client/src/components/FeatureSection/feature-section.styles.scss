@@ -1,153 +1,198 @@
 $primary: #a3e635;
-$bg-dark: #0a0a0a;
-$bg-alt: #0e0e0e;
-$text-main: #f0f0f0;
-$text-sub: #94a3b8;
+$bg-dark: #09090b;
+$bg-alt: #0c0c0e;
+$text-main: #fafafa;
+$text-sub: #a1a1aa;
+$text-muted: #71717a;
 
-.feature-section {
-  padding: 5.5rem 1.5rem;
-  background-color: $bg-dark;
+// ── Section ──────────────────────────────────────────────────────────────
+.feature-bento {
+  padding: 6rem 1.25rem 7rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// ── Header ───────────────────────────────────────────────────────────────
+.bento-header {
+  margin-bottom: 3.5rem;
+}
+
+.bento-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: rgba($primary, 0.06);
+  border: 1px solid rgba($primary, 0.15);
+  color: $primary;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.bento-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
   color: $text-main;
-  overflow-x: clip;
 
-  &:nth-of-type(even) {
-    background-color: $bg-alt;
+  &--accent {
+    color: $primary;
+  }
+}
+
+// ── Grid — Asymmetric Bento (taste-skill: DESIGN_VARIANCE 8) ────────────
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+// ── Tile ─────────────────────────────────────────────────────────────────
+.bento-tile {
+  position: relative;
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s ease, box-shadow 0.35s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.35);
   }
 
-  .feature-inner {
-    display: flex;
-    flex-direction: column;
-    gap: 2.75rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    align-items: center;
-  }
+  &--accent {
+    border-color: rgba($primary, 0.12);
+    background: rgba($primary, 0.02);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
-  // ── Image ──────────────────────────────────────────────────────────────
-  .image-container {
-    width: 100%;
-    border-radius: 20px;
-    overflow: hidden;
-    will-change: transform, opacity;
-    box-shadow:
-      0 20px 60px rgba(0, 0, 0, 0.45),
-      0 0 0 1px rgba(255, 255, 255, 0.04);
-
-    .feature-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-      transition: transform 0.55s ease, filter 0.55s ease;
-      filter: saturate(0.96);
-    }
-
-    &:hover .feature-image {
-      transform: scale(1.022);
-      filter: saturate(1.05);
+    &:hover {
+      border-color: rgba($primary, 0.25);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
   }
+}
 
-  // ── Text ───────────────────────────────────────────────────────────────
-  .text-container {
-    width: 100%;
-    will-change: transform, opacity;
+.tile-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
 
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
-      background: rgba($primary, 0.07);
-      border: 1px solid rgba($primary, 0.2);
-      color: $primary;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      margin-bottom: 1.2rem;
-    }
+.tile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba($primary, 0.08);
+  border: 1px solid rgba($primary, 0.12);
+  color: $primary;
+  flex-shrink: 0;
+}
 
-    .title {
-      font-size: clamp(2rem, 6vw, 3.2rem);
-      font-weight: 800;
-      line-height: 1.06;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.25rem;
-      color: $text-main;
+.tile-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: $text-muted;
+}
 
-      .highlight {
-        color: $primary;
-      }
-    }
+.tile-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: $text-main;
+  margin-bottom: 0.75rem;
+}
 
-    .description {
-      font-size: 1.05rem;
-      line-height: 1.75;
-      color: $text-sub;
-      margin-bottom: 2.25rem;
-      max-width: 52ch;
-    }
+.tile-description {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: $text-sub;
+  margin-bottom: 1.5rem;
+  max-width: 48ch;
+  flex: 1;
+}
 
-    .primary-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: $primary;
-      color: #0a0a0a;
-      border: none;
-      padding: 0.9rem 1.75rem;
-      font-size: 0.95rem;
-      font-weight: 700;
-      border-radius: 10px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.22s ease, box-shadow 0.22s ease;
-      box-shadow: 0 4px 18px rgba($primary, 0.22);
+.tile-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: $primary;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: gap 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.2s ease;
 
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 28px rgba($primary, 0.32);
-      }
+  &:hover {
+    gap: 0.65rem;
+    opacity: 0.85;
+  }
+}
 
-      &:active {
-        transform: translateY(0) scale(0.98);
-      }
-    }
+// ── Desktop — Asymmetric bento grid ─────────────────────────────────────
+@media (min-width: 768px) {
+  .feature-bento {
+    padding: 7rem 2rem 8rem;
   }
 
-  // ── Desktop ────────────────────────────────────────────────────────────
-  @media (min-width: 992px) {
-    padding: 6.5rem 2rem;
-
-    .feature-inner {
-      flex-direction: row;
-      gap: 4.5rem;
-      align-items: center;
-    }
-
-    .image-container {
-      flex: 1;
-    }
-
-    .text-container {
-      flex: 1;
-
-      .description {
-        max-width: 46ch;
-      }
-    }
-
-    &.reversed .feature-inner {
-      flex-direction: row-reverse;
-    }
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
   }
 
-  @media (min-width: 1280px) {
-    padding: 7rem 2rem;
+  .bento-tile--wide {
+    grid-column: span 2;
+  }
+}
 
-    .feature-inner {
-      gap: 5.5rem;
-    }
+@media (min-width: 1024px) {
+  .bento-grid {
+    // Row 1: wide (2fr) + standard (1fr)
+    // Row 2: standard + standard + standard (3-column for middle row)
+    // Row 3: standard + wide
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .bento-tile--wide {
+    grid-column: span 2;
+  }
+
+  .bento-tile {
+    padding: 2rem;
+  }
+
+  .tile-title {
+    font-size: 1.45rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .feature-bento {
+    padding: 8rem 0 9rem;
+  }
+
+  .bento-grid {
+    gap: 1.5rem;
+  }
+
+  .bento-tile {
+    padding: 2.25rem;
   }
 }

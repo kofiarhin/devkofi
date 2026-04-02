@@ -1,8 +1,20 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowUpRight,
+  GithubLogo,
+  X,
+  FunnelSimple,
+  Globe,
+  Code,
+  Tag,
+} from "@phosphor-icons/react";
 import "./projects.styles.scss";
 
 const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 const FILTERS = ["All", "Active", "Building", "Archived"];
+
+const spring = { type: "spring", stiffness: 100, damping: 20 };
 
 const normalizeStatus = (s) => {
   const v = String(s || "")
@@ -15,16 +27,173 @@ const normalizeStatus = (s) => {
   return "active";
 };
 
-const GithubIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C6.477 2 2 6.586 2 12.253c0 4.534 2.865 8.384 6.839 9.742.5.097.682-.22.682-.49 0-.242-.009-.883-.014-1.734-2.782.618-3.369-1.37-3.369-1.37-.455-1.183-1.11-1.497-1.11-1.497-.908-.638.069-.626.069-.626 1.004.073 1.532 1.057 1.532 1.057.893 1.567 2.342 1.114 2.913.852.091-.668.35-1.114.636-1.37-2.22-.26-4.555-1.14-4.555-5.072 0-1.12.39-2.036 1.03-2.753-.104-.26-.447-1.306.098-2.723 0 0 .84-.276 2.75 1.051A9.28 9.28 0 0 1 12 6.84c.85.004 1.705.118 2.503.347 1.909-1.327 2.748-1.051 2.748-1.051.546 1.417.203 2.463.1 2.723.64.717 1.028 1.633 1.028 2.753 0 3.944-2.338 4.808-4.566 5.063.36.317.68.94.68 1.894 0 1.366-.012 2.466-.012 2.801 0 .272.18.592.688.49C19.137 20.632 22 16.784 22 12.253 22 6.586 17.523 2 12 2Z" />
-  </svg>
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { ...spring, duration: 0.55 },
+  },
+  exit: { opacity: 0, scale: 0.96, transition: { duration: 0.2 } },
+};
+
+const overlayVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: { duration: 0.15 } },
+};
+
+const modalVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { ...spring, duration: 0.5 },
+  },
+  exit: {
+    opacity: 0,
+    y: 20,
+    scale: 0.97,
+    transition: { duration: 0.2 },
+  },
+};
+
+const SkeletonCard = ({ index }) => (
+  <div className={`skeleton-card ${index === 0 ? "skeleton-card--large" : ""}`}>
+    <div className="skeleton-media" />
+    <div className="skeleton-body">
+      <div className="skel-line skel-name" />
+      <div className="skel-line skel-bio" />
+      <div className="skel-line skel-bio-short" />
+      <div className="skel-tags">
+        <div className="skel-line skel-tag" />
+        <div className="skel-line skel-tag" />
+      </div>
+      <div className="skel-line skel-action" />
+    </div>
+  </div>
 );
+
+const ProjectDetail = ({ project, onClose }) => {
+  const status = normalizeStatus(project.status);
+  const features = project.features || [];
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <motion.div
+      className="detail-overlay"
+      variants={overlayVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      onClick={onClose}
+    >
+      <motion.div
+        className="detail-modal"
+        variants={modalVariants}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-label={`${project.name} details`}
+      >
+        <button
+          type="button"
+          className="detail-close"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          <X size={20} weight="bold" />
+        </button>
+
+        <div className="detail-hero">
+          <img
+            src={project.thumbnailUrl}
+            alt=""
+            className="detail-hero-img"
+          />
+          <div className="detail-hero-overlay" />
+          <span className={`detail-status ${status}`}>
+            <i className="status-dot" /> {status}
+          </span>
+        </div>
+
+        <div className="detail-body">
+          <h2 className="detail-title">{project.name}</h2>
+          <p className="detail-description">{project.description}</p>
+
+          {features.length > 0 && (
+            <div className="detail-section">
+              <h3 className="detail-section-title">
+                <Tag size={16} weight="duotone" />
+                Tech Stack
+              </h3>
+              <div className="detail-tags">
+                {features.map((tag) => (
+                  <span key={tag} className="detail-tag">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="detail-actions">
+            {project.demoUrl && (
+              <a
+                href={project.demoUrl}
+                className="detail-btn detail-btn--primary"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Globe size={18} weight="duotone" />
+                Visit Live Site
+                <ArrowUpRight size={16} weight="bold" />
+              </a>
+            )}
+            {project.repoUrl && (
+              <a
+                href={project.repoUrl}
+                className="detail-btn detail-btn--secondary"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Code size={18} weight="duotone" />
+                View Source
+                <ArrowUpRight size={16} weight="bold" />
+              </a>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [filter, setFilter] = useState("All");
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -34,6 +203,9 @@ const Projects = () => {
         setProjects(Array.isArray(json) ? json : json.data || []);
       } catch (e) {
         console.error("Fetch error:", e);
+        setError(
+          "Failed to load projects. Check your connection and try again.",
+        );
       } finally {
         setLoading(false);
       }
@@ -48,15 +220,37 @@ const Projects = () => {
     );
   }, [projects, filter]);
 
-  return (
-    <main className="projects-container">
-      <header className="projects-header">
-        <h1 className="main-title">Projects</h1>
-        <p className="main-description">
-          Real products shipped with MERN engineering discipline and AI-enhanced workflows.
-        </p>
+  const handleClose = useCallback(() => setSelected(null), []);
 
-        <nav className="filter-bar">
+  return (
+    <main className="projects-page">
+      <header className="projects-header">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...spring, duration: 0.6 }}
+        >
+          <span className="projects-eyebrow">Portfolio</span>
+          <h1 className="page-title">Projects</h1>
+          <p className="page-description">
+            Real products shipped with MERN engineering discipline and
+            AI-enhanced workflows.
+          </p>
+        </motion.div>
+
+        <motion.nav
+          className="filter-bar"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...spring, duration: 0.5, delay: 0.15 }}
+          aria-label="Filter projects"
+        >
+          <FunnelSimple
+            size={14}
+            weight="bold"
+            className="filter-icon"
+            aria-hidden="true"
+          />
           {FILTERS.map((f) => (
             <button
               key={f}
@@ -66,65 +260,134 @@ const Projects = () => {
               {f}
             </button>
           ))}
-        </nav>
+        </motion.nav>
       </header>
 
-      <section className="projects-grid">
-        {loading ? (
-          <div className="status-container">
-            <p>Loading projects...</p>
-          </div>
-        ) : (
-          filtered.map((p) => (
-            <article className="project-card" key={p._id || p.id}>
-              <div className="card-media">
-                <img
-                  src={p.thumbnailUrl}
-                  alt=""
-                  className="card-img"
-                  loading="lazy"
-                />
-                <div className="card-overlay" />
-                <span className={`status-pill ${normalizeStatus(p.status)}`}>
-                  <i className="status-dot" /> {normalizeStatus(p.status)}
-                </span>
-              </div>
+      {loading && (
+        <div className="projects-grid">
+          {[0, 1, 2, 3].map((i) => (
+            <SkeletonCard key={i} index={i} />
+          ))}
+        </div>
+      )}
 
-              <div className="card-body">
-                <h2 className="project-name">{p.name}</h2>
-                <p className="project-bio">{p.description}</p>
+      {!loading && error && (
+        <div className="projects-error">
+          <p className="error-title">Something went wrong</p>
+          <p className="error-text">{error}</p>
+          <button
+            type="button"
+            className="retry-btn"
+            onClick={() => window.location.reload()}
+          >
+            Retry
+          </button>
+        </div>
+      )}
 
-                <div className="tag-cloud">
-                  {(p.features || []).slice(0, 3).map((tag) => (
-                    <span key={tag} className="feature-tag">
-                      {tag}
-                    </span>
-                  ))}
+      {!loading && !error && filtered.length === 0 && (
+        <motion.div
+          className="projects-empty"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          <p className="empty-title">No projects found</p>
+          <p className="empty-text">
+            {filter === "All"
+              ? "Projects will appear here once they are added."
+              : `No ${filter.toLowerCase()} projects right now. Try a different filter.`}
+          </p>
+        </motion.div>
+      )}
+
+      {!loading && !error && filtered.length > 0 && (
+        <motion.div
+          className="projects-grid"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <AnimatePresence mode="popLayout">
+            {filtered.map((p, index) => (
+              <motion.article
+                className={`project-card ${index === 0 ? "project-card--featured" : ""}`}
+                key={p._id || p.id}
+                variants={cardVariants}
+                layout
+                exit="exit"
+                onClick={() => setSelected(p)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setSelected(p);
+                  }
+                }}
+              >
+                <div className="card-media">
+                  <img
+                    src={p.thumbnailUrl}
+                    alt=""
+                    className="card-img"
+                    loading="lazy"
+                  />
+                  <div className="card-overlay" />
+                  <span
+                    className={`status-pill ${normalizeStatus(p.status)}`}
+                  >
+                    <i className="status-dot" /> {normalizeStatus(p.status)}
+                  </span>
                 </div>
 
-                <div className="action-row">
-                  <a
-                    href={p.demoUrl}
-                    className="btn-primary"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Launch Site
-                  </a>
-                  <a
-                    href={p.repoUrl}
-                    className="btn-secondary"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <GithubIcon />
-                  </a>
+                <div className="card-body">
+                  <h2 className="project-name">{p.name}</h2>
+                  <p className="project-bio">{p.description}</p>
+
+                  <div className="tag-cloud">
+                    {(p.features || []).slice(0, 3).map((tag) => (
+                      <span key={tag} className="feature-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="action-row">
+                    <a
+                      href={p.demoUrl}
+                      className="btn-launch"
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Globe size={16} weight="duotone" />
+                      Launch Site
+                      <ArrowUpRight size={14} weight="bold" />
+                    </a>
+                    <a
+                      href={p.repoUrl}
+                      className="btn-repo"
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label="View source on GitHub"
+                    >
+                      <GithubLogo size={20} weight="fill" />
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))
+              </motion.article>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      )}
+
+      <AnimatePresence>
+        {selected && (
+          <ProjectDetail project={selected} onClose={handleClose} />
         )}
-      </section>
+      </AnimatePresence>
     </main>
   );
 };

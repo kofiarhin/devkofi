@@ -1,8 +1,28 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import "./pricing.styles.scss";
 import { baseUrl } from "../../constants/constants";
-import { Check } from "lucide-react";
+import { Check, ShieldCheck } from "@phosphor-icons/react";
+
+const spring = { type: "spring", stiffness: 100, damping: 20 };
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12, delayChildren: 0.05 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { ...spring, duration: 0.6 },
+  },
+};
 
 const Pricing = () => {
   const [pricing, setPricing] = useState(null);
@@ -76,42 +96,146 @@ const Pricing = () => {
     }));
   }, [pricing]);
 
+  const featuredPlan = plans.find((p) => p.isPopular);
+  const otherPlans = plans.filter((p) => !p.isPopular);
+
   const headerTitle = "Mentorship Plans";
   const headerSubtitle =
     pricing?.program?.subtitle ||
     "Choose your mentorship depth and apply to start building with AI-powered MERN workflows.";
 
+  const renderCard = (plan, isFeatured = false) => {
+    const priceLabel = plan?.pricing?.label || "";
+    const cadenceLabel = plan?.pricing?.cadenceLabel
+      ? `/ ${plan.pricing.cadenceLabel}`
+      : "";
+    const features = Array.isArray(plan?.includes) ? plan.includes : [];
+
+    const ctaType = plan?.cta?.type || "enroll";
+    const ctaRoute =
+      ctaType === "request" ? "/enterprise" : `/join/${plan.slug}`;
+    const ctaLabel = plan?.cta?.label || "Get Started";
+
+    const cardClass = [
+      "pricing-card",
+      isFeatured ? "is-featured" : "",
+      plan.isDisabled ? "is-disabled" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const buttonClass = [
+      "card-button",
+      isFeatured ? "btn-highlight" : "btn-outline",
+      plan.isDisabled ? "is-disabled" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    return (
+      <motion.div
+        key={plan.id || plan.slug}
+        className={cardClass}
+        variants={cardVariants}
+      >
+        {isFeatured && (
+          <span className="featured-badge">MOST POPULAR</span>
+        )}
+
+        <div className="card-top">
+          <h3 className="card-title">{plan.title}</h3>
+
+          <div className="card-price">
+            {priceLabel} <span className="duration">{cadenceLabel}</span>
+          </div>
+
+          <p className="card-description">
+            {plan.summary || plan.tagline || ""}
+          </p>
+        </div>
+
+        <ul className="card-features">
+          {features.map((feature, i) => (
+            <li key={`${plan.slug || plan.id}-f-${i}`}>
+              <Check
+                size={14}
+                weight="bold"
+                className="check-icon"
+                aria-hidden="true"
+              />
+              {feature}
+            </li>
+          ))}
+        </ul>
+
+        {plan.isDisabled ? (
+          <button type="button" className={buttonClass} disabled>
+            Not Available
+          </button>
+        ) : (
+          <Link to={ctaRoute} className={buttonClass}>
+            {ctaLabel}
+          </Link>
+        )}
+
+        {plan?.availability?.note && (
+          <p className="card-note">{plan.availability.note}</p>
+        )}
+      </motion.div>
+    );
+  };
+
   return (
     <section id="pricing" className="pricing-section">
-      <div className="pricing-header">
+      <motion.div
+        className="pricing-header"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ ...spring, duration: 0.6 }}
+      >
         <span className="pricing-eyebrow">Pricing</span>
         <h2 className="pricing-main-title">{headerTitle}</h2>
         <p className="pricing-subtitle">{headerSubtitle}</p>
 
         {pricing?.program?.guarantee?.title && pricing?.ui?.showGuarantee && (
           <div className="pricing-guarantee">
-            <span className="pricing-guarantee__label">
-              {pricing.program.guarantee.title}
-            </span>
-            {pricing.program.guarantee.details && (
-              <span className="pricing-guarantee__text">
-                {pricing.program.guarantee.details}
+            <ShieldCheck size={18} weight="duotone" className="guarantee-icon" />
+            <div className="pricing-guarantee__content">
+              <span className="pricing-guarantee__label">
+                {pricing.program.guarantee.title}
               </span>
-            )}
+              {pricing.program.guarantee.details && (
+                <span className="pricing-guarantee__text">
+                  {pricing.program.guarantee.details}
+                </span>
+              )}
+            </div>
           </div>
         )}
-      </div>
+      </motion.div>
 
       {status.loading && (
         <div className="pricing-state">
-          <div className="pricing-spinner" aria-hidden="true" />
-          <p>Loading plans…</p>
+          <div className="pricing-skeleton-grid">
+            {[0, 1].map((i) => (
+              <div key={i} className="pricing-skeleton-card">
+                <div className="skel-line skel-title" />
+                <div className="skel-line skel-price" />
+                <div className="skel-line skel-desc" />
+                <div className="skel-line skel-feat" />
+                <div className="skel-line skel-feat" />
+                <div className="skel-line skel-feat" />
+                <div className="skel-line skel-btn" />
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
       {!status.loading && status.error && (
         <div className="pricing-state pricing-state--error">
-          <p className="pricing-error-title">Couldn't load pricing.</p>
+          <p className="pricing-error-title">Could not load pricing.</p>
           <p className="pricing-error-text">{status.error}</p>
           <button
             type="button"
@@ -124,85 +248,18 @@ const Pricing = () => {
       )}
 
       {!status.loading && !status.error && (
-        <div className="pricing-grid">
-          {plans.map((plan) => {
-            const priceLabel = plan?.pricing?.label || "";
-            const cadenceLabel = plan?.pricing?.cadenceLabel
-              ? `/ ${plan.pricing.cadenceLabel}`
-              : "";
-            const features = Array.isArray(plan?.includes) ? plan.includes : [];
-
-            const ctaType = plan?.cta?.type || "enroll";
-            const ctaRoute =
-              ctaType === "request" ? "/enterprise" : `/join/${plan.slug}`;
-            const ctaLabel = plan?.cta?.label || "Get Started";
-
-            const cardClass = [
-              "pricing-card",
-              plan.isPopular ? "is-popular" : "",
-              plan.isDisabled ? "is-disabled" : "",
-            ]
-              .filter(Boolean)
-              .join(" ");
-
-            const buttonClass = [
-              "card-button",
-              plan.isPopular ? "btn-highlight" : "btn-outline",
-              plan.isDisabled ? "is-disabled" : "",
-            ]
-              .filter(Boolean)
-              .join(" ");
-
-            return (
-              <div key={plan.id || plan.slug} className={cardClass}>
-                {plan.isPopular && (
-                  <span className="popular-badge">MOST POPULAR</span>
-                )}
-
-                <div className="card-top">
-                  <h3 className="card-title">{plan.title}</h3>
-
-                  <div className="card-price">
-                    {priceLabel}{" "}
-                    <span className="duration">{cadenceLabel}</span>
-                  </div>
-
-                  <p className="card-description">
-                    {plan.summary || plan.tagline || ""}
-                  </p>
-                </div>
-
-                <ul className="card-features">
-                  {features.map((feature, i) => (
-                    <li key={`${plan.slug || plan.id}-f-${i}`}>
-                      <Check
-                        size={14}
-                        strokeWidth={2.5}
-                        className="check-icon"
-                        aria-hidden="true"
-                      />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                {plan.isDisabled ? (
-                  <button type="button" className={buttonClass} disabled>
-                    Not Available
-                  </button>
-                ) : (
-                  <Link to={ctaRoute} className={buttonClass}>
-                    {ctaLabel}
-                  </Link>
-                )}
-
-                {plan?.availability?.note && (
-                  <p className="card-note">{plan.availability.note}</p>
-                )}
-              </div>
-            );
-          })}
-        </div>
+        <motion.div
+          className="pricing-layout"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+        >
+          {featuredPlan && renderCard(featuredPlan, true)}
+          <div className="pricing-supporting">
+            {otherPlans.map((plan) => renderCard(plan))}
+          </div>
+        </motion.div>
       )}
     </section>
   );
