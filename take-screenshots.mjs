@@ -5,10 +5,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const projects = [
-  { name: "feedhub", url: "https://feedhub-gamma.vercel.app" },
-  { name: "kflix", url: "https://kflix-six.vercel.app" },
-  { name: "crypto-pulse-pro", url: "https://crypto-pulse-pro.vercel.app/" },
-  { name: "friends-showdown", url: "https://friends-show-down.vercel.app" },
+  { name: "crypto-pulse-pro", url: "https://crypto-pulse-pro.vercel.app/", wait: 6000 },
 ];
 
 const outputDir = path.join(__dirname, "_screenshots");
@@ -27,11 +24,10 @@ async function takeScreenshots() {
     try {
       await page.goto(project.url, {
         waitUntil: "networkidle2",
-        timeout: 30000,
+        timeout: 45000,
       });
 
-      // Extra wait for any animations/lazy loads
-      await new Promise((r) => setTimeout(r, 2000));
+      await new Promise((r) => setTimeout(r, project.wait || 2000));
 
       const outputPath = path.join(outputDir, `${project.name}.png`);
       await page.screenshot({ path: outputPath, fullPage: false });
