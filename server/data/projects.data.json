@@ -14,6 +14,20 @@
     "thumbnailUrl": ""
   },
   {
+    "id": 22,
+    "name": "SnapSell",
+    "description": "Image-led premium marketplace for discovering and selling products across tech, home, fashion, and more.",
+    "features": [
+      "Image-based product listings",
+      "Marketplace search + browsing",
+      "Dashboard + user account system"
+    ],
+    "status": "Building",
+    "demoUrl": "https://snap-sell-beta.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/snap-sell",
+    "thumbnailUrl": ""
+  },
+  {
     "id": 13,
     "name": "PregChat",
     "description": "AI pregnancy companion chat app for daily baby + mother updates.",
