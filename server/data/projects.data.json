@@ -1,5 +1,19 @@
 [
   {
+    "id": 10,
+    "name": "PromptHive",
+    "description": "Community-driven platform for sharing, discovering, and organizing prompts and skills for your favorite AI tools.",
+    "features": [
+      "Prompt discovery + sharing",
+      "Search + explore prompts",
+      "Community-driven platform"
+    ],
+    "status": "Active",
+    "demoUrl": "https://prompt-hive-ebon.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/prompt-hive",
+    "thumbnailUrl": ""
+  },
+  {
     "id": 13,
     "name": "PregChat",
     "description": "AI pregnancy companion chat app for daily baby + mother updates.",
