@@ -10,6 +10,8 @@ import {
   Tag,
   MagnifyingGlass,
   ArrowsDownUp,
+  Sparkle,
+  ArrowRight,
 } from "@phosphor-icons/react";
 import "./projects.styles.scss";
 
@@ -24,9 +26,11 @@ const normalizeStatus = (s) => {
   const v = String(s || "")
     .trim()
     .toLowerCase();
+
   if (v.includes("active") || v === "live") return "active";
-  if (v.includes("build") || v.includes("progress") || v.includes("wip"))
+  if (v.includes("build") || v.includes("progress") || v.includes("wip")) {
     return "building";
+  }
   if (v.includes("archiv") || v.includes("paused")) return "archived";
   return "active";
 };
@@ -42,7 +46,7 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 18 },
   visible: {
     opacity: 1,
     y: 0,
@@ -52,7 +56,7 @@ const cardVariants = {
 };
 
 const drawerVariants = {
-  hidden: { x: 440, opacity: 0 },
+  hidden: { x: 460, opacity: 0 },
   visible: {
     x: 0,
     opacity: 1,
@@ -65,14 +69,22 @@ const drawerVariants = {
   },
 };
 
+const overlayVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: { duration: 0.18 } },
+};
+
 const SkeletonCard = ({ index }) => (
   <div className={`skeleton-card ${index === 0 ? "skeleton-card--large" : ""}`}>
     <div className="skeleton-media" />
     <div className="skeleton-body">
+      <div className="skel-line skel-kicker" />
       <div className="skel-line skel-name" />
       <div className="skel-line skel-bio" />
       <div className="skel-line skel-bio-short" />
       <div className="skel-tags">
+        <div className="skel-line skel-tag" />
         <div className="skel-line skel-tag" />
         <div className="skel-line skel-tag" />
       </div>
@@ -83,6 +95,7 @@ const SkeletonCard = ({ index }) => (
 
 const DetailRow = ({ label, value }) => {
   if (!value) return null;
+
   return (
     <p className="detail-meta-row">
       <span>{label}</span>
@@ -93,114 +106,146 @@ const DetailRow = ({ label, value }) => {
 
 const ProjectDrawer = ({ project, onClose }) => {
   const status = normalizeStatus(project.status);
-  const features = project.features || [];
+  const features = Array.isArray(project.features) ? project.features : [];
   const outcome = project.outcomes || project.impact || project.result;
 
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === "Escape") onClose();
     };
+
+    document.body.style.overflow = "hidden";
     document.addEventListener("keydown", handleKey);
+
     return () => {
+      document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKey);
     };
   }, [onClose]);
 
   return (
-    <motion.aside
-      className="detail-drawer"
-      variants={drawerVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      role="dialog"
-      aria-label={`${project.name} details`}
-    >
-      <button
-        type="button"
-        className="detail-close"
+    <>
+      <motion.div
+        className="drawer-backdrop"
+        variants={overlayVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
         onClick={onClose}
-        aria-label="Close project details"
+      />
+
+      <motion.aside
+        className="detail-drawer"
+        variants={drawerVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${project.name} details`}
       >
-        <X size={20} weight="bold" />
-      </button>
+        <button
+          type="button"
+          className="detail-close"
+          onClick={onClose}
+          aria-label="Close project details"
+        >
+          <X size={20} weight="bold" />
+        </button>
 
-      <div className="detail-hero">
-        <img
-          src={project.thumbnailUrl}
-          alt={`${project.name} preview image`}
-          className="detail-hero-img"
-        />
-        <div className="detail-hero-overlay" />
-        <span className={`detail-status ${status}`}>
-          <i className="status-dot" /> {status}
-        </span>
-      </div>
-
-      <div className="detail-body">
-        <h2 className="detail-title">{project.name}</h2>
-        <p className="detail-description">{project.description}</p>
-
-        <div className="detail-section">
-          <h3 className="detail-section-title">Overview</h3>
-          <DetailRow label="Role" value={project.role} />
-          <DetailRow label="Year" value={project.year} />
-          <DetailRow label="Status" value={status} />
+        <div className="detail-hero">
+          <img
+            src={project.thumbnailUrl}
+            alt={`${project.name} preview image`}
+            className="detail-hero-img"
+          />
+          <div className="detail-hero-overlay" />
+          <span className={`detail-status ${status}`}>
+            <i className="status-dot" /> {status}
+          </span>
         </div>
 
-        {(project.challenge || project.approach || outcome) && (
-          <div className="detail-section">
-            <h3 className="detail-section-title">Case-study snapshot</h3>
-            {project.challenge && <p className="detail-copy"><b>Challenge:</b> {project.challenge}</p>}
-            {project.approach && <p className="detail-copy"><b>Approach:</b> {project.approach}</p>}
-            {outcome && <p className="detail-copy"><b>Outcome:</b> {outcome}</p>}
+        <div className="detail-body">
+          <div className="detail-intro">
+            <p className="detail-eyebrow">Project overview</p>
+            <h2 className="detail-title">{project.name}</h2>
+            <p className="detail-description">{project.description}</p>
           </div>
-        )}
 
-        {features.length > 0 && (
-          <div className="detail-section">
-            <h3 className="detail-section-title">
-              <Tag size={16} weight="duotone" />
-              Tech stack
-            </h3>
-            <div className="detail-tags">
-              {features.map((tag) => (
-                <span key={tag} className="detail-tag">
-                  {tag}
-                </span>
-              ))}
+          <div className="detail-section detail-section--meta">
+            <h3 className="detail-section-title">Overview</h3>
+            <DetailRow label="Role" value={project.role} />
+            <DetailRow label="Year" value={project.year} />
+            <DetailRow label="Status" value={status} />
+          </div>
+
+          {(project.challenge || project.approach || outcome) && (
+            <div className="detail-section">
+              <h3 className="detail-section-title">Case-study snapshot</h3>
+              {project.challenge && (
+                <p className="detail-copy">
+                  <b>Challenge:</b> {project.challenge}
+                </p>
+              )}
+              {project.approach && (
+                <p className="detail-copy">
+                  <b>Approach:</b> {project.approach}
+                </p>
+              )}
+              {outcome && (
+                <p className="detail-copy">
+                  <b>Outcome:</b> {outcome}
+                </p>
+              )}
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="detail-actions">
-          {project.demoUrl && (
-            <a
-              href={project.demoUrl}
-              className="detail-btn detail-btn--primary"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Globe size={18} weight="duotone" />
-              Visit live site
-              <ArrowUpRight size={16} weight="bold" />
-            </a>
+          {features.length > 0 && (
+            <div className="detail-section">
+              <h3 className="detail-section-title">
+                <Tag size={16} weight="duotone" />
+                Tech stack
+              </h3>
+              <div className="detail-tags">
+                {features.map((tag) => (
+                  <span key={tag} className="detail-tag">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
           )}
-          {project.repoUrl && (
-            <a
-              href={project.repoUrl}
-              className="detail-btn detail-btn--secondary"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Code size={18} weight="duotone" />
-              View source
-              <ArrowUpRight size={16} weight="bold" />
-            </a>
-          )}
+
+          <div className="detail-actions">
+            {project.demoUrl && (
+              <a
+                href={project.demoUrl}
+                className="detail-btn detail-btn--primary"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Globe size={18} weight="duotone" />
+                Visit live site
+                <ArrowUpRight size={16} weight="bold" />
+              </a>
+            )}
+
+            {project.repoUrl && (
+              <a
+                href={project.repoUrl}
+                className="detail-btn detail-btn--secondary"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Code size={18} weight="duotone" />
+                View source
+                <ArrowUpRight size={16} weight="bold" />
+              </a>
+            )}
+          </div>
         </div>
-      </div>
-    </motion.aside>
+      </motion.aside>
+    </>
   );
 };
 
@@ -219,6 +264,11 @@ const Projects = () => {
     const fetchProjects = async () => {
       try {
         const res = await fetch(`${API_BASE}/api/projects`);
+
+        if (!res.ok) {
+          throw new Error(`Request failed with status ${res.status}`);
+        }
+
         const json = await res.json();
         setProjects(Array.isArray(json) ? json : json.data || []);
       } catch (e) {
@@ -230,12 +280,19 @@ const Projects = () => {
         setLoading(false);
       }
     };
+
     fetchProjects();
   }, []);
 
   const availableTags = useMemo(() => {
-    const tags = projects.flatMap((p) => (Array.isArray(p.features) ? p.features : []));
-    return [...new Set(tags)].sort((a, b) => a.localeCompare(b)).slice(0, 12);
+    const tags = projects.flatMap((p) =>
+      Array.isArray(p.features) ? p.features : [],
+    );
+
+    return [...new Set(tags)]
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b))
+      .slice(0, 12);
   }, [projects]);
 
   const filtered = useMemo(() => {
@@ -249,17 +306,19 @@ const Projects = () => {
 
     if (search.trim()) {
       const query = search.trim().toLowerCase();
+
       list = list.filter((p) => {
         const haystack = [p.name, p.description, ...(p.features || [])]
           .join(" ")
           .toLowerCase();
+
         return haystack.includes(query);
       });
     }
 
     if (activeTags.length > 0) {
       list = list.filter((p) => {
-        const tags = p.features || [];
+        const tags = Array.isArray(p.features) ? p.features : [];
         return activeTags.every((tag) => tags.includes(tag));
       });
     }
@@ -279,6 +338,9 @@ const Projects = () => {
     return list;
   }, [projects, statusFilter, search, activeTags, sortBy]);
 
+  const featuredProject = filtered[0] || null;
+  const projectCountLabel = filtered.length === 1 ? "project" : "projects";
+
   const handleClose = useCallback(() => setSelected(null), []);
 
   const toggleTag = (tag) => {
@@ -287,50 +349,115 @@ const Projects = () => {
     );
   };
 
+  const clearFilters = () => {
+    setStatusFilter("All");
+    setSearch("");
+    setSortBy("Featured");
+    setViewMode("Grid");
+    setActiveTags([]);
+  };
+
   return (
     <main className="projects-page">
-      <header className="projects-header">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...spring, duration: 0.6 }}
-        >
-          <span className="projects-eyebrow">Portfolio</span>
-          <h1 className="page-title">Case studies & shipped projects</h1>
-          <p className="page-description">
-            Explore production-ready work through outcomes, architecture choices,
-            and implementation quality.
-          </p>
-          <div className="proof-chips" aria-label="Portfolio highlights">
-            <span>{projects.length} Projects</span>
-            <span>{availableTags.length} Core technologies</span>
-            <span>Delivery-focused engineering</span>
-          </div>
-        </motion.div>
+      <section className="projects-hero">
+        <div className="projects-hero__bg" />
 
-        <motion.div
-          className="toolbar-stack"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...spring, duration: 0.5, delay: 0.15 }}
-        >
-          <nav className="filter-bar" aria-label="Filter projects by status">
-            <FunnelSimple
-              size={14}
-              weight="bold"
-              className="filter-icon"
-              aria-hidden="true"
-            />
-            {STATUS_FILTERS.map((f) => (
+        <header className="projects-header">
+          <motion.div
+            className="hero-copy"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...spring, duration: 0.6 }}
+          >
+            <span className="projects-eyebrow">Selected work</span>
+            <h1 className="page-title">
+              Design, engineering, and shipped outcomes
+            </h1>
+            <p className="page-description">
+              A cleaner portfolio experience built around product thinking,
+              implementation depth, and launch-ready execution.
+            </p>
+
+            <div className="proof-chips" aria-label="Portfolio highlights">
+              <span>{projects.length} Projects</span>
+              <span>{availableTags.length} Core technologies</span>
+              <span>Outcome-driven builds</span>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="hero-spotlight"
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ ...spring, duration: 0.6, delay: 0.12 }}
+          >
+            <div className="spotlight-card">
+              <div className="spotlight-top">
+                <span className="spotlight-badge">
+                  <Sparkle size={14} weight="fill" />
+                  Featured
+                </span>
+                <span className="spotlight-count">
+                  {filtered.length} {projectCountLabel}
+                </span>
+              </div>
+
+              <div className="spotlight-body">
+                <h2>{featuredProject?.name || "Portfolio system"}</h2>
+                <p>
+                  {featuredProject?.description ||
+                    "Refined interface for case studies, filters, and deeper project storytelling."}
+                </p>
+              </div>
+
               <button
-                key={f}
-                onClick={() => setStatusFilter(f)}
-                className={`filter-btn ${statusFilter === f ? "is-active" : ""}`}
+                type="button"
+                className="spotlight-action"
+                onClick={() => {
+                  if (featuredProject) setSelected(featuredProject);
+                }}
+                disabled={!featuredProject}
               >
-                {f}
+                Open featured project
+                <ArrowRight size={16} weight="bold" />
               </button>
-            ))}
-          </nav>
+            </div>
+          </motion.div>
+        </header>
+      </section>
+
+      <motion.section
+        className="projects-toolbar-shell"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...spring, duration: 0.5, delay: 0.15 }}
+      >
+        <div className="toolbar-stack">
+          <div className="toolbar-top">
+            <nav className="filter-bar" aria-label="Filter projects by status">
+              <FunnelSimple
+                size={14}
+                weight="bold"
+                className="filter-icon"
+                aria-hidden="true"
+              />
+
+              {STATUS_FILTERS.map((f) => (
+                <button
+                  key={f}
+                  type="button"
+                  onClick={() => setStatusFilter(f)}
+                  className={`filter-btn ${statusFilter === f ? "is-active" : ""}`}
+                >
+                  {f}
+                </button>
+              ))}
+            </nav>
+
+            <button type="button" className="clear-btn" onClick={clearFilters}>
+              Reset
+            </button>
+          </div>
 
           <div className="toolbar-controls">
             <label className="search-wrap" htmlFor="projects-search">
@@ -359,10 +486,15 @@ const Projects = () => {
               </select>
             </label>
 
-            <div className="view-toggle" role="tablist" aria-label="Select view mode">
+            <div
+              className="view-toggle"
+              role="tablist"
+              aria-label="Select view mode"
+            >
               {VIEW_MODES.map((mode) => (
                 <button
                   key={mode}
+                  type="button"
                   role="tab"
                   aria-selected={viewMode === mode}
                   className={`view-toggle-btn ${viewMode === mode ? "is-active" : ""}`}
@@ -388,8 +520,8 @@ const Projects = () => {
               ))}
             </div>
           )}
-        </motion.div>
-      </header>
+        </div>
+      </motion.section>
 
       {loading && (
         <div className="projects-grid">
@@ -428,7 +560,7 @@ const Projects = () => {
       )}
 
       {!loading && !error && filtered.length > 0 && (
-        <motion.div
+        <motion.section
           className={`projects-grid ${viewMode === "Case Study" ? "is-case-study" : ""}`}
           variants={containerVariants}
           initial="hidden"
@@ -437,7 +569,7 @@ const Projects = () => {
           <AnimatePresence mode="popLayout">
             {filtered.map((p, index) => {
               const status = normalizeStatus(p.status);
-              const key = p._id || p.id;
+              const key = p._id || p.id || p.name;
               const outcome = p.outcomes || p.impact || p.result;
 
               return (
@@ -471,19 +603,34 @@ const Projects = () => {
                   </div>
 
                   <div className="card-body">
+                    <div className="card-head">
+                      <span className="card-kicker">
+                        {p.role || "Product build"}
+                      </span>
+                      {p.year ? (
+                        <span className="card-year">{p.year}</span>
+                      ) : null}
+                    </div>
+
                     <h2 className="project-name">{p.name}</h2>
                     <p className="project-bio">{p.description}</p>
 
                     {viewMode === "Case Study" && (
                       <div className="case-study-snippet">
                         <p>
-                          <b>Challenge:</b> {p.challenge || "Scaling product quality and speed."}
+                          <b>Challenge:</b>{" "}
+                          {p.challenge ||
+                            "Scaling product quality while keeping delivery speed high."}
                         </p>
                         <p>
-                          <b>Approach:</b> {p.approach || "Iterative product delivery with focused engineering tradeoffs."}
+                          <b>Approach:</b>{" "}
+                          {p.approach ||
+                            "Iterative product delivery with focused engineering tradeoffs."}
                         </p>
                         <p>
-                          <b>Outcome:</b> {outcome || "Improved user-facing reliability and launch readiness."}
+                          <b>Outcome:</b>{" "}
+                          {outcome ||
+                            "Improved launch readiness, stability, and user-facing polish."}
                         </p>
                       </div>
                     )}
@@ -497,38 +644,50 @@ const Projects = () => {
                     </div>
 
                     <div className="action-row">
-                      {p.demoUrl && (
-                        <a
-                          href={p.demoUrl}
-                          className="btn-launch"
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Globe size={16} weight="duotone" />
-                          Launch site
-                          <ArrowUpRight size={14} weight="bold" />
-                        </a>
-                      )}
-                      {p.repoUrl && (
-                        <a
-                          href={p.repoUrl}
-                          className="btn-repo"
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          aria-label={`View ${p.name} source on GitHub`}
-                        >
-                          <GithubLogo size={20} weight="fill" />
-                        </a>
-                      )}
+                      <button
+                        type="button"
+                        className="card-open-btn"
+                        onClick={() => setSelected(p)}
+                      >
+                        View details
+                        <ArrowRight size={14} weight="bold" />
+                      </button>
+
+                      <div className="action-links">
+                        {p.demoUrl && (
+                          <a
+                            href={p.demoUrl}
+                            className="btn-launch"
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Globe size={16} weight="duotone" />
+                            Launch site
+                            <ArrowUpRight size={14} weight="bold" />
+                          </a>
+                        )}
+
+                        {p.repoUrl && (
+                          <a
+                            href={p.repoUrl}
+                            className="btn-repo"
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            aria-label={`View ${p.name} source on GitHub`}
+                          >
+                            <GithubLogo size={20} weight="fill" />
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </motion.article>
               );
             })}
           </AnimatePresence>
-        </motion.div>
+        </motion.section>
       )}
 
       <AnimatePresence>
