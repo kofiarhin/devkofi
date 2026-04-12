@@ -176,7 +176,7 @@
       "Create + join game with room code",
       "Weekly leaderboard"
     ],
-    "status": "Active",
+    "status": "Building",
     "demoUrl": "https://friends-show-down.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/friends-show-down",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1775796780/friends-show-down_uuvebp.png"
