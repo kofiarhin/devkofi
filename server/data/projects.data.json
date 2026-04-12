@@ -114,7 +114,7 @@
   {
     "id": 17,
     "name": "SelectFlow",
-    "description": "MERN app for selecting, organizing, and managing workflows with auth + dashboard UI. Deployed frontend on Vercel and backend API on Heroku.",
+    "description": "MERN app for selecting, organizing, and managing workflows with auth + dashboard UI.",
     "features": [
       "Auth + protected routes",
       "Dashboard UI + logout flow",
@@ -128,11 +128,11 @@
   {
     "id": 18,
     "name": "FeedHub",
-    "description": "Multi-restaurant food ordering platform where users can browse restaurants, view menus, add items to cart, and place orders.",
+    "description": "Multi-restaurant food ordering platform.",
     "features": [
       "Multi-restaurant ordering flow",
       "Menu browsing + cart system",
-      "MERN stack with Vercel + Heroku deployment"
+      "MERN stack deployment"
     ],
     "status": "Archived",
     "demoUrl": "https://feedhub-gamma.vercel.app",
@@ -142,12 +142,8 @@
   {
     "id": 19,
     "name": "Kflix",
-    "description": "Movie discovery app with JWT cookie authentication, protected routes, and a dark cinematic UI for browsing movies and series.",
-    "features": [
-      "JWT auth with register/login flow",
-      "Protected routes + profile/logout",
-      "Vercel frontend with deployed backend API"
-    ],
+    "description": "Movie discovery app with auth and protected routes.",
+    "features": ["JWT auth flow", "Protected routes", "Cinematic UI"],
     "status": "Building",
     "demoUrl": "https://kflix-six.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/kflix",
@@ -156,12 +152,8 @@
   {
     "id": 20,
     "name": "Crypto Pulse Pro",
-    "description": "Crypto market tracking app with a dynamic home table, coin detail views, and auth-ready product structure.",
-    "features": [
-      "Dynamic crypto market table",
-      "Coin details route",
-      "MVP auth flow foundation"
-    ],
+    "description": "Crypto market tracking app.",
+    "features": ["Market table", "Coin details", "Auth-ready structure"],
     "status": "Building",
     "demoUrl": "https://crypto-pulse-pro.vercel.app/",
     "repoUrl": "https://github.com/kofiarhin/crypto-pulse-pro",
@@ -170,15 +162,26 @@
   {
     "id": 21,
     "name": "Friends Showdown",
-    "description": "Real-time multiplayer trivia app where players create a room, share the code, and race to answer first.",
-    "features": [
-      "Real-time room-based trivia",
-      "Create + join game with room code",
-      "Weekly leaderboard"
-    ],
+    "description": "Real-time multiplayer trivia app.",
+    "features": ["Room-based gameplay", "Join via code", "Leaderboard"],
     "status": "Building",
     "demoUrl": "https://friends-show-down.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/friends-show-down",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1775796780/friends-show-down_uuvebp.png"
+  },
+  {
+    "id": 23,
+    "name": "Trading Bot",
+    "description": "Automated trading bot dashboard with real-time cycle monitoring, signal scanning, and paper trading execution.",
+    "features": [
+      "Live trading dashboard",
+      "Symbol scanning + signal approval",
+      "Paper trading + PnL tracking",
+      "Activity feed + cycle logs"
+    ],
+    "status": "Active",
+    "demoUrl": "https://trading-bot-three-cyan.vercel.app/dashboard",
+    "repoUrl": "https://github.com/kofiarhin/trading-bot",
+    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1777000000/trading-bot.png"
   }
 ]
