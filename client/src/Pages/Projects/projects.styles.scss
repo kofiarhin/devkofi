@@ -1,7 +1,27 @@
+$accent: #94ff2b;
+$accent-strong: #adff2f;
+$accent-ink: #09090b;
+$bg-main: #09090b;
+$bg-surface: #111113;
+$bg-card: #18181b;
+$bg-elevated: #202024;
+$text-main: #fafafa;
+$text-soft: #e4e4e7;
+$text-muted: #a1a1aa;
+$border: #27272a;
+$border-strong: rgba(148, 255, 43, 0.22);
+$surface-border: rgba(255, 255, 255, 0.08);
+$surface-hover: rgba(255, 255, 255, 0.06);
+$shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+
 .projects-page {
-  min-height: 100vh;
-  background: #f6f8fb;
-  color: #0f172a;
+  position: relative;
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at top right, rgba(148, 255, 43, 0.11), transparent 28%),
+    radial-gradient(circle at bottom left, rgba(148, 255, 43, 0.07), transparent 24%),
+    linear-gradient(180deg, #0c0c10 0%, $bg-main 100%);
+  color: $text-main;
   padding: 20px;
 }
 
@@ -12,72 +32,7 @@
   gap: 24px;
 }
 
-.projects-nav-trigger {
-  width: fit-content;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid #d1d5db;
-  background: #fff;
-  border-radius: 10px;
-  padding: 8px 12px;
-}
-
-.projects-intro h1 {
-  margin: 0;
-  font-size: 2rem;
-}
-
-.projects-intro p {
-  margin: 8px 0 0;
-  color: #475569;
-}
-
-.featured-project {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 20px;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 20px;
-}
-
-.featured-project img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-.featured-label {
-  margin: 0;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #64748b;
-}
-
-.featured-project h2 {
-  margin: 10px 0 8px;
-}
-
-.featured-project p {
-  margin: 0;
-  color: #334155;
-}
-
-.featured-project ul {
-  margin: 14px 0;
-  padding-left: 18px;
-  color: #475569;
-}
-
-.featured-actions {
-  display: flex;
-  gap: 10px;
-}
-
+.projects-nav-trigger,
 .featured-actions button,
 .featured-actions a,
 .card-actions button,
@@ -87,23 +42,175 @@
 .projects-drawer-close,
 .projects-toolbar button,
 .filters-drawer button {
-  border: 1px solid #cbd5e1;
-  background: #fff;
-  color: #0f172a;
-  border-radius: 10px;
-  padding: 8px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid $surface-border;
+  background: rgba(255, 255, 255, 0.03);
+  color: $text-main;
+  border-radius: 12px;
+  padding: 9px 14px;
   text-decoration: none;
   font: inherit;
+  font-weight: 600;
   cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.projects-nav-trigger:hover,
+.featured-actions button:hover,
+.featured-actions a:hover,
+.card-actions button:hover,
+.card-actions a:hover,
+.case-study-card button:hover,
+.drawer-actions a:hover,
+.projects-drawer-close:hover,
+.projects-toolbar button:hover,
+.filters-drawer button:hover {
+  transform: translateY(-1px);
+  border-color: $border-strong;
+  background: $surface-hover;
+}
+
+.projects-nav-trigger:focus-visible,
+.featured-actions button:focus-visible,
+.featured-actions a:focus-visible,
+.card-actions button:focus-visible,
+.card-actions a:focus-visible,
+.case-study-card button:focus-visible,
+.drawer-actions a:focus-visible,
+.projects-drawer-close:focus-visible,
+.projects-toolbar button:focus-visible,
+.projects-toolbar select:focus-visible,
+.filters-drawer button:focus-visible,
+.search-control:focus-within {
+  outline: none;
+  border-color: rgba(148, 255, 43, 0.45);
+  box-shadow: 0 0 0 3px rgba(148, 255, 43, 0.12);
+}
+
+.projects-nav-trigger {
+  width: fit-content;
+  backdrop-filter: blur(14px);
+  box-shadow: $shadow;
+}
+
+.projects-intro {
+  display: grid;
+  gap: 10px;
+}
+
+.projects-intro h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.projects-intro p {
+  margin: 0;
+  max-width: 52ch;
+  color: $text-muted;
+  font-size: 1.05rem;
+}
+
+.featured-project,
+.projects-toolbar,
+.filters-drawer,
+.project-card,
+.case-study-card,
+.projects-drawer {
+  background: linear-gradient(180deg, rgba(24, 24, 27, 0.96) 0%, rgba(17, 17, 19, 0.98) 100%);
+  border: 1px solid $surface-border;
+  box-shadow: $shadow;
+}
+
+.featured-project {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 20px;
+  border-radius: 24px;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.featured-project img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.featured-label {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $accent;
+}
+
+.featured-project h2 {
+  margin: 10px 0 8px;
+  font-size: clamp(1.85rem, 3vw, 2.4rem);
+  letter-spacing: -0.03em;
+}
+
+.featured-project p,
+.featured-project ul,
+.project-card p,
+.case-study-card p,
+.projects-drawer p,
+.projects-drawer li,
+.active-summary,
+.projects-state {
+  color: $text-muted;
+}
+
+.featured-project ul {
+  margin: 14px 0 0;
+  padding-left: 18px;
+}
+
+.featured-actions,
+.card-actions,
+.drawer-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.featured-actions {
+  margin-top: 18px;
 }
 
 .featured-actions button,
 .card-actions button,
 .case-study-card button,
-.drawer-actions a:first-child {
-  background: #0f172a;
-  color: #fff;
-  border-color: #0f172a;
+.drawer-actions a:first-child,
+.view-toggle button.active,
+.filters-drawer button.active {
+  background: $accent-strong;
+  border-color: rgba(173, 255, 47, 0.45);
+  color: $accent-ink;
+  box-shadow: 0 14px 32px rgba(148, 255, 43, 0.12);
+}
+
+.featured-actions button:hover,
+.card-actions button:hover,
+.case-study-card button:hover,
+.drawer-actions a:first-child:hover,
+.view-toggle button.active:hover,
+.filters-drawer button.active:hover {
+  background: $accent;
+  border-color: rgba(148, 255, 43, 0.55);
+  color: $accent-ink;
 }
 
 .projects-toolbar {
@@ -111,35 +218,47 @@
   grid-template-columns: 1.5fr repeat(2, minmax(120px, 180px)) auto auto auto;
   gap: 10px;
   align-items: center;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 12px;
+  border-radius: 18px;
+  padding: 14px;
 }
 
 .search-control {
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  padding: 0 10px;
-  background: #fff;
+  min-height: 44px;
+  border: 1px solid $surface-border;
+  border-radius: 12px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.02);
+  color: $text-muted;
 }
 
 .search-control input,
 .projects-toolbar select {
   border: 0;
   outline: none;
-  min-height: 36px;
+  min-height: 40px;
   background: transparent;
   width: 100%;
+  color: $text-main;
+}
+
+.search-control input::placeholder {
+  color: rgba(161, 161, 170, 0.9);
 }
 
 .projects-toolbar select {
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  padding: 0 10px;
+  appearance: none;
+  border: 1px solid $surface-border;
+  border-radius: 12px;
+  padding: 0 12px;
+  background: $bg-surface;
+}
+
+.projects-toolbar select option {
+  background: $bg-surface;
+  color: $text-main;
 }
 
 .view-toggle {
@@ -147,49 +266,48 @@
   gap: 6px;
 }
 
-.view-toggle button.active,
-.filters-drawer button.active {
-  background: #0f172a;
-  color: #fff;
-  border-color: #0f172a;
-}
-
 .filters-drawer {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 14px;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  background: #fff;
+  padding: 16px;
+  border-radius: 18px;
 }
 
 .active-summary,
 .projects-state {
   margin: 0;
-  color: #475569;
 }
 
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 
 .project-card {
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 12px;
-  background: #fff;
+  border-radius: 20px;
+  padding: 14px;
   display: grid;
-  gap: 10px;
+  gap: 12px;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: $border-strong;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
 }
 
 .project-card img {
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .status-chip {
@@ -197,53 +315,62 @@
   margin: 0;
   font-size: 0.75rem;
   text-transform: capitalize;
-  border: 1px solid #cbd5e1;
+  border: 1px solid $surface-border;
   border-radius: 999px;
-  padding: 4px 8px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  color: $text-soft;
 }
 
 .status-chip.active {
-  color: #166534;
-  border-color: #86efac;
+  color: $accent;
+  border-color: rgba(148, 255, 43, 0.28);
+  background: rgba(148, 255, 43, 0.1);
 }
 
 .status-chip.building {
-  color: #92400e;
-  border-color: #fcd34d;
+  color: #facc15;
+  border-color: rgba(250, 204, 21, 0.28);
+  background: rgba(250, 204, 21, 0.08);
 }
 
 .status-chip.archived {
-  color: #334155;
-  border-color: #cbd5e1;
+  color: #d4d4d8;
+  border-color: rgba(212, 212, 216, 0.18);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .project-card h3,
-.project-card p {
+.project-card p,
+.case-study-card h3,
+.case-study-card h4,
+.case-study-card p,
+.projects-drawer h2,
+.projects-drawer h3,
+.projects-drawer p {
   margin: 0;
 }
 
-.project-card p {
-  color: #475569;
+.project-card h3,
+.case-study-card h3,
+.projects-drawer h2 {
+  letter-spacing: -0.03em;
 }
 
 .card-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .card-tags span,
 .drawer-tags span {
-  border: 1px solid #cbd5e1;
+  border: 1px solid rgba(148, 255, 43, 0.18);
+  background: rgba(148, 255, 43, 0.07);
   border-radius: 999px;
   font-size: 0.75rem;
-  padding: 4px 8px;
-  color: #334155;
-}
-
-.card-actions {
-  display: flex;
-  gap: 8px;
+  padding: 5px 9px;
+  color: #d9ffb3;
 }
 
 .case-study-list {
@@ -252,28 +379,22 @@
 }
 
 .case-study-card {
-  border: 1px solid #e2e8f0;
-  background: #fff;
-  border-radius: 14px;
-  padding: 16px;
+  border-radius: 20px;
+  padding: 18px;
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
-.case-study-card h3,
 .case-study-card h4,
-.case-study-card p {
-  margin: 0;
-}
-
-.case-study-card p {
-  color: #475569;
+.projects-drawer h3 {
+  color: $text-main;
 }
 
 .projects-drawer-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.35);
+  background: rgba(6, 7, 9, 0.74);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: flex-end;
   z-index: 200;
@@ -281,12 +402,12 @@
 
 .projects-drawer {
   width: min(680px, 100%);
-  background: #fff;
   height: 100%;
-  padding: 18px;
+  padding: 20px;
   overflow: auto;
   display: grid;
-  gap: 14px;
+  gap: 16px;
+  border-left: 1px solid $surface-border;
 }
 
 .projects-drawer-close {
@@ -302,24 +423,9 @@
 .projects-drawer-header img {
   width: 100%;
   aspect-ratio: 16 / 10;
-  border-radius: 10px;
+  border-radius: 14px;
   object-fit: cover;
-}
-
-.projects-drawer h2,
-.projects-drawer h3,
-.projects-drawer p {
-  margin: 0;
-}
-
-.projects-drawer p,
-.projects-drawer li {
-  color: #475569;
-}
-
-.drawer-actions {
-  display: flex;
-  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 @media (max-width: 1080px) {
@@ -345,6 +451,13 @@
   .projects-grid,
   .projects-toolbar {
     grid-template-columns: 1fr;
+  }
+
+  .featured-project,
+  .projects-drawer,
+  .case-study-card,
+  .project-card {
+    border-radius: 18px;
   }
 }
 

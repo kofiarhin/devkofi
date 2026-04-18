@@ -20,6 +20,76 @@ const adminUsersRoutes = require("./routes/adminUsersRoutes");
 
 const app = express();
 
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  process.env.CLIENT_ORIGIN,
+  process.env.FRONTEND_URL,
+  process.env.CORS_ORIGIN,
+  process.env.CORS_ORIGINS,
+]
+  .filter(Boolean)
+  .flatMap((value) => value.split(","))
+  .map((value) => value.trim())
+  .filter(Boolean);
+
+if (allowedOrigins.length === 0) {
+  allowedOrigins.push("http://localhost:5173");
+}
+
+app.use((req, res, next) => {
+  const requestOrigin = req.headers.origin;
+  const isAllowedOrigin = requestOrigin && allowedOrigins.includes(requestOrigin);
+  const originalSetHeader = res.setHeader.bind(res);
+
+  res.setHeader = (name, value) => {
+    if (
+      typeof name === "string" &&
+      name.toLowerCase() === "access-control-allow-origin" &&
+      value === "*" &&
+      isAllowedOrigin
+    ) {
+      return originalSetHeader(name, requestOrigin);
+    }
+
+    if (
+      typeof name === "string" &&
+      name.toLowerCase() === "access-control-allow-credentials"
+    ) {
+      return originalSetHeader(name, "true");
+    }
+
+    return originalSetHeader(name, value);
+  };
+
+  if (isAllowedOrigin) {
+    res.setHeader("Access-Control-Allow-Origin", requestOrigin);
+  }
+
+  const currentVaryHeader = res.getHeader("Vary");
+  res.setHeader(
+    "Vary",
+    currentVaryHeader ? `${currentVaryHeader}, Origin` : "Origin"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  if (req.method === "OPTIONS") {
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+    );
+
+    const requestedHeaders = req.headers["access-control-request-headers"];
+
+    if (requestedHeaders) {
+      res.setHeader("Access-Control-Allow-Headers", requestedHeaders);
+    }
+
+    return res.sendStatus(204);
+  }
+
+  return next();
+});
+
 connectDB();
 
 app.use(
