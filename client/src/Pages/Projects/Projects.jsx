@@ -222,7 +222,7 @@ const Projects = () => {
           className="projects-nav-trigger"
           onClick={() => dispatch(toggleSideNav())}
         >
-          <List size={16} /> Menu
+          <List size={16} /> Menu remove
         </button>
 
         <section className="projects-intro">
