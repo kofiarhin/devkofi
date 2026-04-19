@@ -69,7 +69,11 @@ const ProjectDrawer = ({ project, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className="projects-drawer-overlay" onClick={onClose} role="presentation">
+    <div
+      className="projects-drawer-overlay"
+      onClick={onClose}
+      role="presentation"
+    >
       <aside
         ref={drawerRef}
         className="projects-drawer"
@@ -90,7 +94,9 @@ const ProjectDrawer = ({ project, onClose }) => {
         <header className="projects-drawer-header">
           <img src={project.thumbnailUrl} alt={`${project.name} preview`} />
           <div>
-            <p className={`status-chip ${normalizeStatus(project.status)}`}>{normalizeStatus(project.status)}</p>
+            <p className={`status-chip ${normalizeStatus(project.status)}`}>
+              {normalizeStatus(project.status)}
+            </p>
             <h2>{project.name}</h2>
             <p>{project.shortDescription || project.description}</p>
           </div>
@@ -128,16 +134,17 @@ const ProjectDrawer = ({ project, onClose }) => {
           </section>
         )}
 
-        {Array.isArray(project.technologies) && project.technologies.length > 0 && (
-          <section>
-            <h3>Tech stack</h3>
-            <div className="drawer-tags">
-              {project.technologies.map((tech) => (
-                <span key={tech}>{tech}</span>
-              ))}
-            </div>
-          </section>
-        )}
+        {Array.isArray(project.technologies) &&
+          project.technologies.length > 0 && (
+            <section>
+              <h3>Tech stack</h3>
+              <div className="drawer-tags">
+                {project.technologies.map((tech) => (
+                  <span key={tech}>{tech}</span>
+                ))}
+              </div>
+            </section>
+          )}
 
         <footer className="drawer-actions">
           {project.demoUrl && (
@@ -167,7 +174,10 @@ const Projects = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   const { data, isLoading, isError, error } = useProjects();
-  const projects = useMemo(() => (Array.isArray(data) ? data : data?.data || []), [data]);
+  const projects = useMemo(
+    () => (Array.isArray(data) ? data : data?.data || []),
+    [data],
+  );
 
   const tags = useMemo(() => getProjectTags(projects), [projects]);
 
@@ -184,12 +194,18 @@ const Projects = () => {
   );
 
   const featuredProject = useMemo(
-    () => filteredProjects.find((project) => project.featured) || filteredProjects[0] || null,
+    () =>
+      filteredProjects.find((project) => project.featured) ||
+      filteredProjects[0] ||
+      null,
     [filteredProjects],
   );
 
   const hasActiveFilters =
-    statusFilter !== "All" || search.trim() || sortBy !== "Featured" || activeTags.length > 0;
+    statusFilter !== "All" ||
+    search.trim() ||
+    sortBy !== "Featured" ||
+    activeTags.length > 0;
 
   const resetFilters = () => {
     setSearch("");
@@ -201,12 +217,16 @@ const Projects = () => {
   return (
     <main className="projects-page">
       <div className="projects-shell">
-        <button type="button" className="projects-nav-trigger" onClick={() => dispatch(toggleSideNav())}>
+        <button
+          type="button"
+          className="projects-nav-trigger"
+          onClick={() => dispatch(toggleSideNav())}
+        >
           <List size={16} /> Menu
         </button>
 
         <section className="projects-intro">
-          <h1>Projects</h1>
+          <h1>Projects</h1> <span>Triggered</span>
           <p>Shipped builds across product, AI, and systems.</p>
         </section>
 
@@ -215,24 +235,37 @@ const Projects = () => {
             <div>
               <p className="featured-label">Featured build</p>
               <h2>{featuredProject.name}</h2>
-              <p>{featuredProject.shortDescription || featuredProject.description}</p>
+              <p>
+                {featuredProject.shortDescription ||
+                  featuredProject.description}
+              </p>
               <ul>
                 {(featuredProject.features || []).slice(0, 3).map((bullet) => (
                   <li key={bullet}>{bullet}</li>
                 ))}
               </ul>
               <div className="featured-actions">
-                <button type="button" onClick={() => setSelectedProject(featuredProject)}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedProject(featuredProject)}
+                >
                   View Case Study
                 </button>
                 {featuredProject.demoUrl && (
-                  <a href={featuredProject.demoUrl} target="_blank" rel="noreferrer">
+                  <a
+                    href={featuredProject.demoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Live Site <ArrowUpRight size={14} />
                   </a>
                 )}
               </div>
             </div>
-            <img src={featuredProject.thumbnailUrl} alt={`${featuredProject.name} preview`} />
+            <img
+              src={featuredProject.thumbnailUrl}
+              alt={`${featuredProject.name} preview`}
+            />
           </section>
         )}
 
@@ -248,19 +281,29 @@ const Projects = () => {
             />
           </label>
 
-          <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+          <select
+            value={statusFilter}
+            onChange={(event) => setStatusFilter(event.target.value)}
+          >
             {STATUS_FILTERS.map((option) => (
               <option key={option}>{option}</option>
             ))}
           </select>
 
-          <select value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+          <select
+            value={sortBy}
+            onChange={(event) => setSortBy(event.target.value)}
+          >
             {SORT_OPTIONS.map((option) => (
               <option key={option}>{option}</option>
             ))}
           </select>
 
-          <div className="view-toggle" role="tablist" aria-label="Project view mode">
+          <div
+            className="view-toggle"
+            role="tablist"
+            aria-label="Project view mode"
+          >
             {VIEW_MODES.map((mode) => (
               <button
                 key={mode}
@@ -268,17 +311,30 @@ const Projects = () => {
                 className={viewMode === mode ? "active" : ""}
                 onClick={() => setViewMode(mode)}
               >
-                {mode === "Grid" ? <SquaresFour size={14} /> : <List size={14} />} {mode}
+                {mode === "Grid" ? (
+                  <SquaresFour size={14} />
+                ) : (
+                  <List size={14} />
+                )}{" "}
+                {mode}
               </button>
             ))}
           </div>
 
-          <button type="button" className="filter-toggle" onClick={() => setShowFilters((open) => !open)}>
+          <button
+            type="button"
+            className="filter-toggle"
+            onClick={() => setShowFilters((open) => !open)}
+          >
             <FadersHorizontal size={15} /> Filters
           </button>
 
           {hasActiveFilters && (
-            <button type="button" className="reset-control" onClick={resetFilters}>
+            <button
+              type="button"
+              className="reset-control"
+              onClick={resetFilters}
+            >
               Reset
             </button>
           )}
@@ -307,82 +363,127 @@ const Projects = () => {
 
         {hasActiveFilters && (
           <p className="active-summary">
-            {filteredProjects.length} result(s) • status: {statusFilter} • sort: {sortBy}
+            {filteredProjects.length} result(s) • status: {statusFilter} • sort:{" "}
+            {sortBy}
             {activeTags.length > 0 ? ` • tags: ${activeTags.join(", ")}` : ""}
           </p>
         )}
 
         {isLoading && <p className="projects-state">Loading projects…</p>}
-        {isError && <p className="projects-state">{error?.message || "Failed to load projects."}</p>}
+        {isError && (
+          <p className="projects-state">
+            {error?.message || "Failed to load projects."}
+          </p>
+        )}
 
         {!isLoading && !isError && filteredProjects.length === 0 && (
-          <p className="projects-state">No projects found. Try a different search or filter.</p>
+          <p className="projects-state">
+            No projects found. Try a different search or filter.
+          </p>
         )}
 
-        {!isLoading && !isError && filteredProjects.length > 0 && viewMode === "Grid" && (
-          <section className="projects-grid">
-            {filteredProjects.map((project) => (
-              <article key={project._id || project.id || project.slug || project.name} className="project-card">
-                <img src={project.thumbnailUrl} alt={`${project.name} cover`} />
-                <p className={`status-chip ${normalizeStatus(project.status)}`}>{normalizeStatus(project.status)}</p>
-                <h3>{project.name}</h3>
-                <p>{project.shortDescription || project.description}</p>
-                <div className="card-tags">
-                  {(project.features || []).slice(0, 3).map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
-                </div>
-                <div className="card-actions">
-                  <button type="button" onClick={() => setSelectedProject(project)}>
-                    View
-                  </button>
-                  {project.demoUrl && (
-                    <a href={project.demoUrl} target="_blank" rel="noreferrer">
-                      Live
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
-          </section>
-        )}
-
-        {!isLoading && !isError && filteredProjects.length > 0 && viewMode === "Case Study" && (
-          <section className="case-study-list">
-            {filteredProjects.map((project) => {
-              const { problem, solution, outcome } = getCaseStudy(project);
-              return (
-                <article key={project._id || project.id || project.slug || project.name} className="case-study-card">
+        {!isLoading &&
+          !isError &&
+          filteredProjects.length > 0 &&
+          viewMode === "Grid" && (
+            <section className="projects-grid">
+              {filteredProjects.map((project) => (
+                <article
+                  key={
+                    project._id || project.id || project.slug || project.name
+                  }
+                  className="project-card"
+                >
+                  <img
+                    src={project.thumbnailUrl}
+                    alt={`${project.name} cover`}
+                  />
+                  <p
+                    className={`status-chip ${normalizeStatus(project.status)}`}
+                  >
+                    {normalizeStatus(project.status)}
+                  </p>
                   <h3>{project.name}</h3>
-                  {problem && (
-                    <div>
-                      <h4>Problem</h4>
-                      <p>{problem}</p>
-                    </div>
-                  )}
-                  {solution && (
-                    <div>
-                      <h4>Solution</h4>
-                      <p>{solution}</p>
-                    </div>
-                  )}
-                  {outcome && (
-                    <div>
-                      <h4>Outcome</h4>
-                      <p>{outcome}</p>
-                    </div>
-                  )}
-                  <button type="button" onClick={() => setSelectedProject(project)}>
-                    Open Project
-                  </button>
+                  <p>{project.shortDescription || project.description}</p>
+                  <div className="card-tags">
+                    {(project.features || []).slice(0, 3).map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                  <div className="card-actions">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedProject(project)}
+                    >
+                      View
+                    </button>
+                    {project.demoUrl && (
+                      <a
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Live
+                      </a>
+                    )}
+                  </div>
                 </article>
-              );
-            })}
-          </section>
-        )}
+              ))}
+            </section>
+          )}
+
+        {!isLoading &&
+          !isError &&
+          filteredProjects.length > 0 &&
+          viewMode === "Case Study" && (
+            <section className="case-study-list">
+              {filteredProjects.map((project) => {
+                const { problem, solution, outcome } = getCaseStudy(project);
+                return (
+                  <article
+                    key={
+                      project._id || project.id || project.slug || project.name
+                    }
+                    className="case-study-card"
+                  >
+                    <h3>{project.name}</h3>
+                    {problem && (
+                      <div>
+                        <h4>Problem</h4>
+                        <p>{problem}</p>
+                      </div>
+                    )}
+                    {solution && (
+                      <div>
+                        <h4>Solution</h4>
+                        <p>{solution}</p>
+                      </div>
+                    )}
+                    {outcome && (
+                      <div>
+                        <h4>Outcome</h4>
+                        <p>{outcome}</p>
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedProject(project)}
+                    >
+                      Open Project
+                    </button>
+                  </article>
+                );
+              })}
+            </section>
+          )}
       </div>
 
-      {selectedProject && <ProjectDrawer project={selectedProject} onClose={() => setSelectedProject(null)} />}
+      {selectedProject && (
+        <ProjectDrawer
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+      )}
     </main>
   );
 };
