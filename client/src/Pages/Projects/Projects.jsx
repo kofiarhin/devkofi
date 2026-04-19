@@ -1,698 +1,388 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   ArrowUpRight,
-  GithubLogo,
-  X,
-  FunnelSimple,
+  FadersHorizontal,
   Globe,
-  Code,
-  Tag,
+  GithubLogo,
+  List,
   MagnifyingGlass,
-  ArrowsDownUp,
-  Sparkle,
-  ArrowRight,
+  SquaresFour,
+  X,
 } from "@phosphor-icons/react";
+import useProjects from "../../hooks/useProjects";
+import { toggleSideNav } from "../../redux/navigation/navigationSlice";
+import {
+  applyProjectFilters,
+  getCaseStudy,
+  getProjectTags,
+  SORT_OPTIONS,
+  STATUS_FILTERS,
+  VIEW_MODES,
+  normalizeStatus,
+} from "./projectUtils";
 import "./projects.styles.scss";
 
-const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
-const STATUS_FILTERS = ["All", "Active", "Building", "Archived"];
-const SORT_OPTIONS = ["Featured", "Name A–Z", "Name Z–A", "Status"];
-const VIEW_MODES = ["Grid", "Case Study"];
-
-const spring = { type: "spring", stiffness: 100, damping: 20 };
-
-const normalizeStatus = (s) => {
-  const v = String(s || "")
-    .trim()
-    .toLowerCase();
-
-  if (v.includes("active") || v === "live") return "active";
-  if (v.includes("build") || v.includes("progress") || v.includes("wip")) {
-    return "building";
-  }
-  if (v.includes("archiv") || v.includes("paused")) return "archived";
-  return "active";
-};
-
-const statusPriority = { active: 0, building: 1, archived: 2 };
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { ...spring, duration: 0.45 },
-  },
-  exit: { opacity: 0, scale: 0.98, transition: { duration: 0.2 } },
-};
-
-const drawerVariants = {
-  hidden: { x: 460, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: { ...spring, duration: 0.45 },
-  },
-  exit: {
-    x: 420,
-    opacity: 0,
-    transition: { duration: 0.2 },
-  },
-};
-
-const overlayVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.2 } },
-  exit: { opacity: 0, transition: { duration: 0.18 } },
-};
-
-const SkeletonCard = ({ index }) => (
-  <div className={`skeleton-card ${index === 0 ? "skeleton-card--large" : ""}`}>
-    <div className="skeleton-media" />
-    <div className="skeleton-body">
-      <div className="skel-line skel-kicker" />
-      <div className="skel-line skel-name" />
-      <div className="skel-line skel-bio" />
-      <div className="skel-line skel-bio-short" />
-      <div className="skel-tags">
-        <div className="skel-line skel-tag" />
-        <div className="skel-line skel-tag" />
-        <div className="skel-line skel-tag" />
-      </div>
-      <div className="skel-line skel-action" />
-    </div>
-  </div>
-);
-
-const DetailRow = ({ label, value }) => {
-  if (!value) return null;
-
-  return (
-    <p className="detail-meta-row">
-      <span>{label}</span>
-      {value}
-    </p>
-  );
-};
-
 const ProjectDrawer = ({ project, onClose }) => {
-  const status = normalizeStatus(project.status);
-  const features = Array.isArray(project.features) ? project.features : [];
-  const outcome = project.outcomes || project.impact || project.result;
+  const drawerRef = useRef(null);
+  const { problem, solution, outcome } = getCaseStudy(project);
 
   useEffect(() => {
-    const handleKey = (e) => {
-      if (e.key === "Escape") onClose();
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusable = drawerRef.current?.querySelectorAll(
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+      );
+
+      if (!focusable || focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      }
+
+      if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
 
     document.body.style.overflow = "hidden";
-    document.addEventListener("keydown", handleKey);
+    document.addEventListener("keydown", onKeyDown);
+
+    const initialFocus = drawerRef.current?.querySelector("button, a");
+    initialFocus?.focus();
 
     return () => {
       document.body.style.overflow = "";
-      document.removeEventListener("keydown", handleKey);
+      document.removeEventListener("keydown", onKeyDown);
     };
   }, [onClose]);
 
   return (
-    <>
-      <motion.div
-        className="drawer-backdrop"
-        variants={overlayVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        onClick={onClose}
-      />
-
-      <motion.aside
-        className="detail-drawer"
-        variants={drawerVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
+    <div className="projects-drawer-overlay" onClick={onClose} role="presentation">
+      <aside
+        ref={drawerRef}
+        className="projects-drawer"
         role="dialog"
         aria-modal="true"
         aria-label={`${project.name} details`}
+        onClick={(event) => event.stopPropagation()}
       >
         <button
           type="button"
-          className="detail-close"
+          className="projects-drawer-close"
           onClick={onClose}
           aria-label="Close project details"
         >
-          <X size={20} weight="bold" />
+          <X size={18} />
         </button>
 
-        <div className="detail-hero">
-          <img
-            src={project.thumbnailUrl}
-            alt={`${project.name} preview image`}
-            className="detail-hero-img"
-          />
-          <div className="detail-hero-overlay" />
-          <span className={`detail-status ${status}`}>
-            <i className="status-dot" /> {status}
-          </span>
-        </div>
-
-        <div className="detail-body">
-          <div className="detail-intro">
-            <p className="detail-eyebrow">Project overview</p>
-            <h2 className="detail-title">{project.name}</h2>
-            <p className="detail-description">{project.description}</p>
+        <header className="projects-drawer-header">
+          <img src={project.thumbnailUrl} alt={`${project.name} preview`} />
+          <div>
+            <p className={`status-chip ${normalizeStatus(project.status)}`}>{normalizeStatus(project.status)}</p>
+            <h2>{project.name}</h2>
+            <p>{project.shortDescription || project.description}</p>
           </div>
+        </header>
 
-          <div className="detail-section detail-section--meta">
-            <h3 className="detail-section-title">Overview</h3>
-            <DetailRow label="Role" value={project.role} />
-            <DetailRow label="Year" value={project.year} />
-            <DetailRow label="Status" value={status} />
-          </div>
+        {problem && (
+          <section>
+            <h3>Problem</h3>
+            <p>{problem}</p>
+          </section>
+        )}
 
-          {(project.challenge || project.approach || outcome) && (
-            <div className="detail-section">
-              <h3 className="detail-section-title">Case-study snapshot</h3>
-              {project.challenge && (
-                <p className="detail-copy">
-                  <b>Challenge:</b> {project.challenge}
-                </p>
-              )}
-              {project.approach && (
-                <p className="detail-copy">
-                  <b>Approach:</b> {project.approach}
-                </p>
-              )}
-              {outcome && (
-                <p className="detail-copy">
-                  <b>Outcome:</b> {outcome}
-                </p>
-              )}
+        {solution && (
+          <section>
+            <h3>Solution</h3>
+            <p>{solution}</p>
+          </section>
+        )}
+
+        {outcome && (
+          <section>
+            <h3>Outcome</h3>
+            <p>{outcome}</p>
+          </section>
+        )}
+
+        {Array.isArray(project.features) && project.features.length > 0 && (
+          <section>
+            <h3>Features</h3>
+            <ul>
+              {project.features.map((feature) => (
+                <li key={feature}>{feature}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {Array.isArray(project.technologies) && project.technologies.length > 0 && (
+          <section>
+            <h3>Tech stack</h3>
+            <div className="drawer-tags">
+              {project.technologies.map((tech) => (
+                <span key={tech}>{tech}</span>
+              ))}
             </div>
+          </section>
+        )}
+
+        <footer className="drawer-actions">
+          {project.demoUrl && (
+            <a href={project.demoUrl} target="_blank" rel="noreferrer">
+              <Globe size={16} /> Live
+            </a>
           )}
-
-          {features.length > 0 && (
-            <div className="detail-section">
-              <h3 className="detail-section-title">
-                <Tag size={16} weight="duotone" />
-                Tech stack
-              </h3>
-              <div className="detail-tags">
-                {features.map((tag) => (
-                  <span key={tag} className="detail-tag">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+          {project.repoUrl && (
+            <a href={project.repoUrl} target="_blank" rel="noreferrer">
+              <GithubLogo size={16} /> Repo
+            </a>
           )}
-
-          <div className="detail-actions">
-            {project.demoUrl && (
-              <a
-                href={project.demoUrl}
-                className="detail-btn detail-btn--primary"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Globe size={18} weight="duotone" />
-                Visit live site
-                <ArrowUpRight size={16} weight="bold" />
-              </a>
-            )}
-
-            {project.repoUrl && (
-              <a
-                href={project.repoUrl}
-                className="detail-btn detail-btn--secondary"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Code size={18} weight="duotone" />
-                View source
-                <ArrowUpRight size={16} weight="bold" />
-              </a>
-            )}
-          </div>
-        </div>
-      </motion.aside>
-    </>
+        </footer>
+      </aside>
+    </div>
   );
 };
 
 const Projects = () => {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
   const [sortBy, setSortBy] = useState("Featured");
   const [viewMode, setViewMode] = useState("Grid");
   const [activeTags, setActiveTags] = useState([]);
-  const [selected, setSelected] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const res = await fetch(`${API_BASE}/api/projects`);
+  const { data, isLoading, isError, error } = useProjects();
+  const projects = useMemo(() => (Array.isArray(data) ? data : data?.data || []), [data]);
 
-        if (!res.ok) {
-          throw new Error(`Request failed with status ${res.status}`);
-        }
+  const tags = useMemo(() => getProjectTags(projects), [projects]);
 
-        const json = await res.json();
-        setProjects(Array.isArray(json) ? json : json.data || []);
-      } catch (e) {
-        console.error("Fetch error:", e);
-        setError(
-          "Failed to load projects. Check your connection and try again.",
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+  const filteredProjects = useMemo(
+    () =>
+      applyProjectFilters({
+        projects,
+        statusFilter,
+        search,
+        activeTags,
+        sortBy,
+      }),
+    [projects, statusFilter, search, activeTags, sortBy],
+  );
 
-    fetchProjects();
-  }, []);
+  const featuredProject = useMemo(
+    () => filteredProjects.find((project) => project.featured) || filteredProjects[0] || null,
+    [filteredProjects],
+  );
 
-  const availableTags = useMemo(() => {
-    const tags = projects.flatMap((p) =>
-      Array.isArray(p.features) ? p.features : [],
-    );
+  const hasActiveFilters =
+    statusFilter !== "All" || search.trim() || sortBy !== "Featured" || activeTags.length > 0;
 
-    return [...new Set(tags)]
-      .filter(Boolean)
-      .sort((a, b) => a.localeCompare(b))
-      .slice(0, 12);
-  }, [projects]);
-
-  const filtered = useMemo(() => {
-    let list = [...projects];
-
-    if (statusFilter !== "All") {
-      list = list.filter(
-        (p) => normalizeStatus(p.status) === statusFilter.toLowerCase(),
-      );
-    }
-
-    if (search.trim()) {
-      const query = search.trim().toLowerCase();
-
-      list = list.filter((p) => {
-        const haystack = [p.name, p.description, ...(p.features || [])]
-          .join(" ")
-          .toLowerCase();
-
-        return haystack.includes(query);
-      });
-    }
-
-    if (activeTags.length > 0) {
-      list = list.filter((p) => {
-        const tags = Array.isArray(p.features) ? p.features : [];
-        return activeTags.every((tag) => tags.includes(tag));
-      });
-    }
-
-    if (sortBy === "Name A–Z") {
-      list.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-    } else if (sortBy === "Name Z–A") {
-      list.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
-    } else if (sortBy === "Status") {
-      list.sort(
-        (a, b) =>
-          statusPriority[normalizeStatus(a.status)] -
-          statusPriority[normalizeStatus(b.status)],
-      );
-    }
-
-    return list;
-  }, [projects, statusFilter, search, activeTags, sortBy]);
-
-  const featuredProject = filtered[0] || null;
-  const projectCountLabel = filtered.length === 1 ? "project" : "projects";
-
-  const handleClose = useCallback(() => setSelected(null), []);
-
-  const toggleTag = (tag) => {
-    setActiveTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
-    );
-  };
-
-  const clearFilters = () => {
-    setStatusFilter("All");
+  const resetFilters = () => {
     setSearch("");
+    setStatusFilter("All");
     setSortBy("Featured");
-    setViewMode("Grid");
     setActiveTags([]);
   };
 
   return (
     <main className="projects-page">
-      <section className="projects-hero">
-        <div className="projects-hero__bg" />
+      <div className="projects-shell">
+        <button type="button" className="projects-nav-trigger" onClick={() => dispatch(toggleSideNav())}>
+          <List size={16} /> Menu
+        </button>
 
-        <header className="projects-header">
-          <motion.div
-            className="hero-copy"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...spring, duration: 0.6 }}
-          >
-            <span className="projects-eyebrow">Selected work</span>
-            <h1 className="page-title">
-              Design, engineering, and shipped outcomes
-            </h1>
-            <p className="page-description">
-              A cleaner portfolio experience built around product thinking,
-              implementation depth, and launch-ready execution.
-            </p>
+        <section className="projects-intro">
+          <h1>Projects</h1>
+          <p>Shipped builds across product, AI, and systems.</p>
+        </section>
 
-            <div className="proof-chips" aria-label="Portfolio highlights">
-              <span>{projects.length} Projects</span>
-              <span>{availableTags.length} Core technologies</span>
-              <span>Outcome-driven builds</span>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="hero-spotlight"
-            initial={{ opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ ...spring, duration: 0.6, delay: 0.12 }}
-          >
-            <div className="spotlight-card">
-              <div className="spotlight-top">
-                <span className="spotlight-badge">
-                  <Sparkle size={14} weight="fill" />
-                  Featured
-                </span>
-                <span className="spotlight-count">
-                  {filtered.length} {projectCountLabel}
-                </span>
-              </div>
-
-              <div className="spotlight-body">
-                <h2>{featuredProject?.name || "Portfolio system"}</h2>
-                <p>
-                  {featuredProject?.description ||
-                    "Refined interface for case studies, filters, and deeper project storytelling."}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                className="spotlight-action"
-                onClick={() => {
-                  if (featuredProject) setSelected(featuredProject);
-                }}
-                disabled={!featuredProject}
-              >
-                Open featured project
-                <ArrowRight size={16} weight="bold" />
-              </button>
-            </div>
-          </motion.div>
-        </header>
-      </section>
-
-      <motion.section
-        className="projects-toolbar-shell"
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ ...spring, duration: 0.5, delay: 0.15 }}
-      >
-        <div className="toolbar-stack">
-          <div className="toolbar-top">
-            <nav className="filter-bar" aria-label="Filter projects by status">
-              <FunnelSimple
-                size={14}
-                weight="bold"
-                className="filter-icon"
-                aria-hidden="true"
-              />
-
-              {STATUS_FILTERS.map((f) => (
-                <button
-                  key={f}
-                  type="button"
-                  onClick={() => setStatusFilter(f)}
-                  className={`filter-btn ${statusFilter === f ? "is-active" : ""}`}
-                >
-                  {f}
+        {featuredProject && (
+          <section className="featured-project">
+            <div>
+              <p className="featured-label">Featured build</p>
+              <h2>{featuredProject.name}</h2>
+              <p>{featuredProject.shortDescription || featuredProject.description}</p>
+              <ul>
+                {(featuredProject.features || []).slice(0, 3).map((bullet) => (
+                  <li key={bullet}>{bullet}</li>
+                ))}
+              </ul>
+              <div className="featured-actions">
+                <button type="button" onClick={() => setSelectedProject(featuredProject)}>
+                  View Case Study
                 </button>
-              ))}
-            </nav>
+                {featuredProject.demoUrl && (
+                  <a href={featuredProject.demoUrl} target="_blank" rel="noreferrer">
+                    Live Site <ArrowUpRight size={14} />
+                  </a>
+                )}
+              </div>
+            </div>
+            <img src={featuredProject.thumbnailUrl} alt={`${featuredProject.name} preview`} />
+          </section>
+        )}
 
-            <button type="button" className="clear-btn" onClick={clearFilters}>
+        <section className="projects-toolbar">
+          <label className="search-control" htmlFor="project-search">
+            <MagnifyingGlass size={15} />
+            <input
+              id="project-search"
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search projects"
+            />
+          </label>
+
+          <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+            {STATUS_FILTERS.map((option) => (
+              <option key={option}>{option}</option>
+            ))}
+          </select>
+
+          <select value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+            {SORT_OPTIONS.map((option) => (
+              <option key={option}>{option}</option>
+            ))}
+          </select>
+
+          <div className="view-toggle" role="tablist" aria-label="Project view mode">
+            {VIEW_MODES.map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                className={viewMode === mode ? "active" : ""}
+                onClick={() => setViewMode(mode)}
+              >
+                {mode === "Grid" ? <SquaresFour size={14} /> : <List size={14} />} {mode}
+              </button>
+            ))}
+          </div>
+
+          <button type="button" className="filter-toggle" onClick={() => setShowFilters((open) => !open)}>
+            <FadersHorizontal size={15} /> Filters
+          </button>
+
+          {hasActiveFilters && (
+            <button type="button" className="reset-control" onClick={resetFilters}>
               Reset
             </button>
-          </div>
-
-          <div className="toolbar-controls">
-            <label className="search-wrap" htmlFor="projects-search">
-              <MagnifyingGlass size={16} weight="bold" aria-hidden="true" />
-              <input
-                id="projects-search"
-                type="search"
-                placeholder="Search by name, description, or tech"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </label>
-
-            <label className="sort-wrap" htmlFor="projects-sort">
-              <ArrowsDownUp size={14} weight="bold" aria-hidden="true" />
-              <select
-                id="projects-sort"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                {SORT_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <div
-              className="view-toggle"
-              role="tablist"
-              aria-label="Select view mode"
-            >
-              {VIEW_MODES.map((mode) => (
-                <button
-                  key={mode}
-                  type="button"
-                  role="tab"
-                  aria-selected={viewMode === mode}
-                  className={`view-toggle-btn ${viewMode === mode ? "is-active" : ""}`}
-                  onClick={() => setViewMode(mode)}
-                >
-                  {mode}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {availableTags.length > 0 && (
-            <div className="tech-filter" aria-label="Filter by technology">
-              {availableTags.map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => toggleTag(tag)}
-                  className={`tech-chip ${activeTags.includes(tag) ? "is-active" : ""}`}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
           )}
-        </div>
-      </motion.section>
+        </section>
 
-      {loading && (
-        <div className="projects-grid">
-          {[0, 1, 2, 3].map((i) => (
-            <SkeletonCard key={i} index={i} />
-          ))}
-        </div>
-      )}
+        {showFilters && tags.length > 0 && (
+          <section className="filters-drawer">
+            {tags.map((tag) => (
+              <button
+                type="button"
+                key={tag}
+                className={activeTags.includes(tag) ? "active" : ""}
+                onClick={() =>
+                  setActiveTags((previous) =>
+                    previous.includes(tag)
+                      ? previous.filter((item) => item !== tag)
+                      : [...previous, tag],
+                  )
+                }
+              >
+                {tag}
+              </button>
+            ))}
+          </section>
+        )}
 
-      {!loading && error && (
-        <div className="projects-error">
-          <p className="error-title">Something went wrong</p>
-          <p className="error-text">{error}</p>
-          <button
-            type="button"
-            className="retry-btn"
-            onClick={() => window.location.reload()}
-          >
-            Retry
-          </button>
-        </div>
-      )}
-
-      {!loading && !error && filtered.length === 0 && (
-        <motion.div
-          className="projects-empty"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-        >
-          <p className="empty-title">No projects found</p>
-          <p className="empty-text">
-            Try adjusting search text, tags, or status filters.
+        {hasActiveFilters && (
+          <p className="active-summary">
+            {filteredProjects.length} result(s) • status: {statusFilter} • sort: {sortBy}
+            {activeTags.length > 0 ? ` • tags: ${activeTags.join(", ")}` : ""}
           </p>
-        </motion.div>
-      )}
+        )}
 
-      {!loading && !error && filtered.length > 0 && (
-        <motion.section
-          className={`projects-grid ${viewMode === "Case Study" ? "is-case-study" : ""}`}
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <AnimatePresence mode="popLayout">
-            {filtered.map((p, index) => {
-              const status = normalizeStatus(p.status);
-              const key = p._id || p.id || p.name;
-              const outcome = p.outcomes || p.impact || p.result;
+        {isLoading && <p className="projects-state">Loading projects…</p>}
+        {isError && <p className="projects-state">{error?.message || "Failed to load projects."}</p>}
 
+        {!isLoading && !isError && filteredProjects.length === 0 && (
+          <p className="projects-state">No projects found. Try a different search or filter.</p>
+        )}
+
+        {!isLoading && !isError && filteredProjects.length > 0 && viewMode === "Grid" && (
+          <section className="projects-grid">
+            {filteredProjects.map((project) => (
+              <article key={project._id || project.id || project.slug || project.name} className="project-card">
+                <img src={project.thumbnailUrl} alt={`${project.name} cover`} />
+                <p className={`status-chip ${normalizeStatus(project.status)}`}>{normalizeStatus(project.status)}</p>
+                <h3>{project.name}</h3>
+                <p>{project.shortDescription || project.description}</p>
+                <div className="card-tags">
+                  {(project.features || []).slice(0, 3).map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+                <div className="card-actions">
+                  <button type="button" onClick={() => setSelectedProject(project)}>
+                    View
+                  </button>
+                  {project.demoUrl && (
+                    <a href={project.demoUrl} target="_blank" rel="noreferrer">
+                      Live
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </section>
+        )}
+
+        {!isLoading && !isError && filteredProjects.length > 0 && viewMode === "Case Study" && (
+          <section className="case-study-list">
+            {filteredProjects.map((project) => {
+              const { problem, solution, outcome } = getCaseStudy(project);
               return (
-                <motion.article
-                  className={`project-card ${index < 2 ? "project-card--featured" : ""}`}
-                  key={key}
-                  variants={cardVariants}
-                  layout
-                  exit="exit"
-                  onClick={() => setSelected(p)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setSelected(p);
-                    }
-                  }}
-                >
-                  <div className="card-media">
-                    <img
-                      src={p.thumbnailUrl}
-                      alt={`${p.name} project cover`}
-                      className="card-img"
-                      loading="lazy"
-                    />
-                    <div className="card-overlay" />
-                    <span className={`status-pill ${status}`}>
-                      <i className="status-dot" /> {status}
-                    </span>
-                  </div>
-
-                  <div className="card-body">
-                    <div className="card-head">
-                      <span className="card-kicker">
-                        {p.role || "Product build"}
-                      </span>
-                      {p.year ? (
-                        <span className="card-year">{p.year}</span>
-                      ) : null}
+                <article key={project._id || project.id || project.slug || project.name} className="case-study-card">
+                  <h3>{project.name}</h3>
+                  {problem && (
+                    <div>
+                      <h4>Problem</h4>
+                      <p>{problem}</p>
                     </div>
-
-                    <h2 className="project-name">{p.name}</h2>
-                    <p className="project-bio">{p.description}</p>
-
-                    {viewMode === "Case Study" && (
-                      <div className="case-study-snippet">
-                        <p>
-                          <b>Challenge:</b>{" "}
-                          {p.challenge ||
-                            "Scaling product quality while keeping delivery speed high."}
-                        </p>
-                        <p>
-                          <b>Approach:</b>{" "}
-                          {p.approach ||
-                            "Iterative product delivery with focused engineering tradeoffs."}
-                        </p>
-                        <p>
-                          <b>Outcome:</b>{" "}
-                          {outcome ||
-                            "Improved launch readiness, stability, and user-facing polish."}
-                        </p>
-                      </div>
-                    )}
-
-                    <div className="tag-cloud">
-                      {(p.features || []).slice(0, 4).map((tag) => (
-                        <span key={tag} className="feature-tag">
-                          {tag}
-                        </span>
-                      ))}
+                  )}
+                  {solution && (
+                    <div>
+                      <h4>Solution</h4>
+                      <p>{solution}</p>
                     </div>
-
-                    <div className="action-row">
-                      <button
-                        type="button"
-                        className="card-open-btn"
-                        onClick={() => setSelected(p)}
-                      >
-                        View details
-                        <ArrowRight size={14} weight="bold" />
-                      </button>
-
-                      <div className="action-links">
-                        {p.demoUrl && (
-                          <a
-                            href={p.demoUrl}
-                            className="btn-launch"
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <Globe size={16} weight="duotone" />
-                            Launch site
-                            <ArrowUpRight size={14} weight="bold" />
-                          </a>
-                        )}
-
-                        {p.repoUrl && (
-                          <a
-                            href={p.repoUrl}
-                            className="btn-repo"
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            aria-label={`View ${p.name} source on GitHub`}
-                          >
-                            <GithubLogo size={20} weight="fill" />
-                          </a>
-                        )}
-                      </div>
+                  )}
+                  {outcome && (
+                    <div>
+                      <h4>Outcome</h4>
+                      <p>{outcome}</p>
                     </div>
-                  </div>
-                </motion.article>
+                  )}
+                  <button type="button" onClick={() => setSelectedProject(project)}>
+                    Open Project
+                  </button>
+                </article>
               );
             })}
-          </AnimatePresence>
-        </motion.section>
-      )}
+          </section>
+        )}
+      </div>
 
-      <AnimatePresence>
-        {selected && <ProjectDrawer project={selected} onClose={handleClose} />}
-      </AnimatePresence>
+      {selectedProject && <ProjectDrawer project={selectedProject} onClose={() => setSelectedProject(null)} />}
     </main>
   );
 };
