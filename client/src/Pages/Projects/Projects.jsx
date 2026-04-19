@@ -226,7 +226,7 @@ const Projects = () => {
         </button>
 
         <section className="projects-intro">
-          <h1>Projects</h1> <span>Triggered</span>
+          <h1>Projects</h1> <span>Triggered Again </span>
           <p>Shipped builds across product, AI, and systems.</p>
         </section>
 
