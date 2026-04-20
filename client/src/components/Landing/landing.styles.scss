@@ -66,7 +66,7 @@ $text-muted: #71717a;
   display: flex;
   align-items: center;
   padding: 7rem 1.25rem 5rem;
-  background: $bg-dark;
+  background: linear-gradient(180deg, $bg-dark 0%, #050a1a 100%);
   overflow: hidden;
 
   .hero-grain {
@@ -163,7 +163,7 @@ $text-muted: #71717a;
   }
 
   .hero-title {
-    font-size: clamp(2.4rem, 7.5vw, 4.5rem);
+    font-size: clamp(3rem, 7.5vw, 4.5rem);
     font-weight: 800;
     line-height: 1.02;
     letter-spacing: -0.04em;
@@ -257,10 +257,11 @@ $text-muted: #71717a;
         background 0.22s ease, transform 0.22s ease;
 
       &:hover {
-        border-color: rgba(255, 255, 255, 0.16);
-        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba($primary, 0.2);
+        background: rgba($primary, 0.04);
         color: #fafafa;
         transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba($primary, 0.08);
       }
 
       &:active {
@@ -410,6 +411,12 @@ $text-muted: #71717a;
       top: 20px;
       left: -8px;
     }
+
+    &--bottom {
+      bottom: 48px;
+      left: -8px;
+      animation-delay: -4s;
+    }
   }
 }
 
@@ -453,6 +460,11 @@ $text-muted: #71717a;
     .floating-tag--top {
       left: -32px;
       top: 40px;
+    }
+
+    .floating-tag--bottom {
+      left: -32px;
+      bottom: 64px;
     }
   }
 }

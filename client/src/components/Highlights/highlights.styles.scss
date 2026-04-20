@@ -1,0 +1,138 @@
+$primary: #a3e635;
+$bg-dark: #09090b;
+$text-main: #fafafa;
+$text-sub: #a1a1aa;
+$text-muted: #71717a;
+
+// ── Section ──────────────────────────────────────────────────────────────
+.highlights {
+  padding: 0 1.25rem 6rem;
+}
+
+.highlights-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// ── Header ───────────────────────────────────────────────────────────────
+.highlights-header {
+  margin-bottom: 3rem;
+}
+
+.highlights-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: rgba($primary, 0.06);
+  border: 1px solid rgba($primary, 0.15);
+  color: $primary;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.highlights-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: $text-main;
+
+  &--accent {
+    color: $primary;
+  }
+}
+
+// ── Grid ─────────────────────────────────────────────────────────────────
+.highlights-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+// ── Card ─────────────────────────────────────────────────────────────────
+.highlight-card {
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+
+  &:hover {
+    border-color: rgba($primary, 0.18);
+    box-shadow: 0 20px 48px -16px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.card-image {
+  overflow: hidden;
+  border-radius: 16px 16px 0 0;
+  aspect-ratio: 16 / 9;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+}
+
+.card-body {
+  padding: 2rem 2.5rem 2.5rem;
+}
+
+.card-title {
+  font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: $text-main;
+  margin-bottom: 0.875rem;
+}
+
+.card-desc {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: $text-sub;
+  margin-bottom: 1.5rem;
+  max-width: 48ch;
+}
+
+.card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: $primary;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: gap 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+
+  &:hover {
+    gap: 0.65rem;
+    opacity: 0.85;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+// ── Desktop ───────────────────────────────────────────────────────────────
+@media (min-width: 768px) {
+  .highlights {
+    padding: 0 2rem 7rem;
+  }
+
+  .highlights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .highlights {
+    padding: 0 0 8rem;
+  }
+}

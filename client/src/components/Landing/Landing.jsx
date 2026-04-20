@@ -9,6 +9,7 @@ import {
   Users,
   StackSimple,
   Lightning,
+  Brain,
 } from "@phosphor-icons/react";
 
 const spring = { type: "spring", stiffness: 100, damping: 20 };
@@ -180,6 +181,7 @@ const Landing = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ ...spring, delay: 0.7 }}
+            whileHover={{ scale: 1.05 }}
             style={{ y: badgeY }}
           >
             5+<span>Years</span>
@@ -188,6 +190,11 @@ const Landing = () => {
           <div className="floating-tag floating-tag--top" aria-hidden="true">
             <StackSimple size={14} weight="duotone" />
             MERN Stack
+          </div>
+
+          <div className="floating-tag floating-tag--bottom" aria-hidden="true">
+            <Brain size={14} weight="duotone" />
+            AI Workflow
           </div>
         </motion.div>
       </div>

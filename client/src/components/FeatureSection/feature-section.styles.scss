@@ -1,23 +1,22 @@
 $primary: #a3e635;
 $bg-dark: #09090b;
-$bg-alt: #0c0c0e;
 $text-main: #fafafa;
 $text-sub: #a1a1aa;
 $text-muted: #71717a;
 
 // ── Section ──────────────────────────────────────────────────────────────
-.feature-bento {
+.features-zigzag {
   padding: 6rem 1.25rem 7rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 // ── Header ───────────────────────────────────────────────────────────────
-.bento-header {
-  margin-bottom: 3.5rem;
+.features-header {
+  margin-bottom: 4rem;
 }
 
-.bento-eyebrow {
+.features-eyebrow {
   display: inline-flex;
   align-items: center;
   padding: 0.3rem 0.8rem;
@@ -32,7 +31,7 @@ $text-muted: #71717a;
   margin-bottom: 1.25rem;
 }
 
-.bento-title {
+.features-title {
   font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 800;
   letter-spacing: -0.04em;
@@ -44,100 +43,89 @@ $text-muted: #71717a;
   }
 }
 
-// ── Grid — Asymmetric Bento (taste-skill: DESIGN_VARIANCE 8) ────────────
-.bento-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-// ── Tile ─────────────────────────────────────────────────────────────────
-.bento-tile {
-  position: relative;
-  border-radius: 1.5rem;
-  padding: 1.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(255, 255, 255, 0.02);
+// ── Rows ─────────────────────────────────────────────────────────────────
+.features-rows {
   display: flex;
   flex-direction: column;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.35s ease, box-shadow 0.35s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.35);
-  }
-
-  &--accent {
-    border-color: rgba($primary, 0.12);
-    background: rgba($primary, 0.02);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-    &:hover {
-      border-color: rgba($primary, 0.25);
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    }
-  }
+  gap: 5rem;
 }
 
-.tile-header {
+.feature-row {
   display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
   align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 1.25rem;
 }
 
-.tile-icon {
+// ── Image ─────────────────────────────────────────────────────────────────
+.feature-row__image {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.45);
+
+  img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 16 / 10;
+    transition: transform 0.4s ease;
+  }
+}
+
+// ── Content ───────────────────────────────────────────────────────────────
+.feature-row__content {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba($primary, 0.08);
-  border: 1px solid rgba($primary, 0.12);
-  color: $primary;
-  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.tile-label {
+.feature-number {
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1;
+  color: rgba($primary, 0.12);
+  letter-spacing: -0.04em;
+  margin-bottom: 0.25rem;
+  font-family: "Outfit", sans-serif;
+}
+
+.feature-label {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: $text-muted;
-}
-
-.tile-title {
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.15;
-  color: $text-main;
+  color: $primary;
   margin-bottom: 0.75rem;
 }
 
-.tile-description {
-  font-size: 0.92rem;
-  line-height: 1.65;
-  color: $text-sub;
-  margin-bottom: 1.5rem;
-  max-width: 48ch;
-  flex: 1;
+.feature-title {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: $text-main;
+  margin-bottom: 1rem;
 }
 
-.tile-cta {
+.feature-desc {
+  font-size: 0.97rem;
+  line-height: 1.75;
+  color: $text-sub;
+  margin-bottom: 1.75rem;
+  max-width: 48ch;
+}
+
+.feature-cta {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   color: $primary;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
   text-decoration: none;
-  transition: gap 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.2s ease;
+  transition: gap 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
 
   &:hover {
     gap: 0.65rem;
@@ -145,54 +133,45 @@ $text-muted: #71717a;
   }
 }
 
-// ── Desktop — Asymmetric bento grid ─────────────────────────────────────
+// ── Desktop — Zig-zag grid ───────────────────────────────────────────────
 @media (min-width: 768px) {
-  .feature-bento {
+  .features-zigzag {
     padding: 7rem 2rem 8rem;
   }
 
-  .bento-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
+  .feature-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
 
-  .bento-tile--wide {
-    grid-column: span 2;
+    &--image-right {
+      .feature-row__image {
+        order: 2;
+      }
+      .feature-row__content {
+        order: 1;
+      }
+    }
   }
 }
 
 @media (min-width: 1024px) {
-  .bento-grid {
-    // Row 1: wide (2fr) + standard (1fr)
-    // Row 2: standard + standard + standard (3-column for middle row)
-    // Row 3: standard + wide
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
+  .features-rows {
+    gap: 6rem;
   }
 
-  .bento-tile--wide {
-    grid-column: span 2;
-  }
-
-  .bento-tile {
-    padding: 2rem;
-  }
-
-  .tile-title {
-    font-size: 1.45rem;
+  .feature-row {
+    gap: 5rem;
   }
 }
 
 @media (min-width: 1280px) {
-  .feature-bento {
+  .features-zigzag {
     padding: 8rem 0 9rem;
   }
 
-  .bento-grid {
-    gap: 1.5rem;
-  }
-
-  .bento-tile {
-    padding: 2.25rem;
+  .features-rows {
+    gap: 7rem;
   }
 }
