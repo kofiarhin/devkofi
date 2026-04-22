@@ -41,9 +41,9 @@ const imageVariants = {
 };
 
 const STATS = [
-  { icon: Users, value: "47+", label: "Engineers mentored" },
-  { icon: Star, value: "4.8", label: "Avg. mentor rating" },
   { icon: StackSimple, value: "12+", label: "Production apps shipped" },
+  { icon: Star, value: "5+", label: "Years experience" },
+  { icon: Users, value: "MERN", label: "Full-stack expertise" },
 ];
 
 const SCRAMBLE_WORDS = ["MERN", "Full-Stack", "Production", "Scalable"];
@@ -122,28 +122,28 @@ const Landing = () => {
           <motion.div className="hero-chip" variants={itemVariants}>
             <span className="chip-dot" aria-hidden="true" />
             <Lightning size={12} weight="fill" aria-hidden="true" />
-            AI-Powered MERN Mentorship
+            Senior MERN Engineer
           </motion.div>
 
           <motion.h1 className="hero-title" variants={itemVariants}>
-            <span className="hero-title-line">Build Real</span>
+            <span className="hero-title-line">Building Real</span>
             <span className="hero-title-line">
               <TextScramble /> Products
             </span>
             <span className="hero-title-line hero-title-line--accent">
-              with AI the Right Way
+              the Right Way
             </span>
           </motion.h1>
 
           <motion.p className="hero-description" variants={itemVariants}>
-            Engineering-first workflows for planning, feature scoping, code
-            generation, debugging, refactoring, testing, and shipping. Mentorship
-            for real products, not toy apps.
+            Full-stack engineer specialising in MERN. I build and ship production
+            apps with clean architecture, AI-powered workflows, and attention to
+            every detail.
           </motion.p>
 
           <motion.div className="cta-group" variants={itemVariants}>
-            <Link to="/register" className="btn-primary">
-              Apply for Mentorship
+            <Link to="/contact" className="btn-primary">
+              Get in Touch
               <ArrowRight size={18} weight="bold" />
             </Link>
             <Link to="/projects" className="btn-ghost">

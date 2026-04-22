@@ -1,20 +1,15 @@
 import { FaTimes } from "react-icons/fa";
 import { toggleSideNav } from "../../redux/navigation/navigationSlice";
-import { logoutUser } from "../../redux/auth/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import "./sideNav.styles.scss";
 
 const SideNav = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
 
   const closeNav = () => dispatch(toggleSideNav());
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    closeNav();
-  };
+  const navLinkClass = ({ isActive }) => (isActive ? "active-link" : "nav-link");
 
   return (
     <div id="sideNav">
@@ -23,97 +18,25 @@ const SideNav = () => {
       <div className="nav-content">
         <ul className="nav-list">
           <li className="nav-item">
-            <NavLink
-              to="/"
-              onClick={closeNav}
-              className={({ isActive }) =>
-                isActive ? "active-link" : "nav-link"
-              }
-            >
+            <NavLink to="/" onClick={closeNav} className={navLinkClass}>
               Home
             </NavLink>
           </li>
-
           <li className="nav-item">
-            <NavLink
-              to="/about"
-              onClick={closeNav}
-              className={({ isActive }) =>
-                isActive ? "active-link" : "nav-link"
-              }
-            >
+            <NavLink to="/about" onClick={closeNav} className={navLinkClass}>
               About
             </NavLink>
           </li>
-
           <li className="nav-item">
-            <NavLink
-              to="/projects"
-              onClick={closeNav}
-              className={({ isActive }) =>
-                isActive ? "active-link" : "nav-link"
-              }
-            >
+            <NavLink to="/projects" onClick={closeNav} className={navLinkClass}>
               Projects
             </NavLink>
           </li>
-
-          {user ? (
-            <>
-              <li className="nav-item">
-                <NavLink
-                  to="/dashboard"
-                  onClick={closeNav}
-                  className={({ isActive }) =>
-                    isActive ? "active-link" : "nav-link"
-                  }
-                >
-                  Dashboard
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  to="/settings"
-                  onClick={closeNav}
-                  className={({ isActive }) =>
-                    isActive ? "active-link" : "nav-link"
-                  }
-                >
-                  Settings
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <button className="logout-btn" onClick={handleLogout}>
-                  Logout
-                </button>
-              </li>
-            </>
-          ) : (
-            <>
-              <li className="nav-item">
-                <NavLink
-                  to="/login"
-                  onClick={closeNav}
-                  className={({ isActive }) =>
-                    isActive ? "active-link" : "nav-link"
-                  }
-                >
-                  Login
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  to="/register"
-                  onClick={closeNav}
-                  className={({ isActive }) =>
-                    isActive ? "active-link" : "nav-link"
-                  }
-                >
-                  Register
-                </NavLink>
-              </li>
-            </>
-          )}
+          <li className="nav-item">
+            <NavLink to="/contact" onClick={closeNav} className={navLinkClass}>
+              Contact
+            </NavLink>
+          </li>
         </ul>
       </div>
     </div>

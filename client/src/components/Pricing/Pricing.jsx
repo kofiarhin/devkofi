@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import "./pricing.styles.scss";
 import { baseUrl } from "../../constants/constants";
-import { Check, ShieldCheck } from "@phosphor-icons/react";
+import { Check, ShieldCheck, ChatCircleText, Headset, Users } from "@phosphor-icons/react";
 
 const spring = { type: "spring", stiffness: 100, damping: 20 };
 
@@ -111,10 +111,8 @@ const Pricing = () => {
       : "";
     const features = Array.isArray(plan?.includes) ? plan.includes : [];
 
-    const ctaType = plan?.cta?.type || "enroll";
-    const ctaRoute =
-      ctaType === "request" ? "/enterprise" : `/join/${plan.slug}`;
     const ctaLabel = plan?.cta?.label || "Get Started";
+    const ctaRoute = "/contact";
 
     const cardClass = [
       "pricing-card",
@@ -131,6 +129,16 @@ const Pricing = () => {
     ]
       .filter(Boolean)
       .join(" ");
+
+    const whoItsFor = Array.isArray(plan?.whoItsFor) ? plan.whoItsFor : [];
+    const support = plan?.accountability?.support || {};
+    const reviewSla = plan?.accountability?.reviewSlaHours;
+
+    const supportBadges = [
+      support.oneToOne && { icon: Headset, label: "1-on-1 Support" },
+      support.priorityChat && { icon: ChatCircleText, label: "Priority Chat" },
+      support.community && { icon: Users, label: "Community Access" },
+    ].filter(Boolean);
 
     return (
       <motion.div
@@ -167,6 +175,34 @@ const Pricing = () => {
             </li>
           ))}
         </ul>
+
+        {isFeatured && whoItsFor.length > 0 && (
+          <div className="card-who">
+            <p className="card-who__label">Who it's for</p>
+            <ul className="card-who__list">
+              {whoItsFor.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {isFeatured && (supportBadges.length > 0 || reviewSla) && (
+          <div className="card-support-row">
+            {supportBadges.map(({ icon: Icon, label }) => (
+              <span key={label} className="support-badge">
+                <Icon size={13} weight="duotone" aria-hidden="true" />
+                {label}
+              </span>
+            ))}
+            {reviewSla && (
+              <span className="support-badge">
+                <Check size={13} weight="bold" aria-hidden="true" />
+                {reviewSla}hr review SLA
+              </span>
+            )}
+          </div>
+        )}
 
         {plan.isDisabled ? (
           <button type="button" className={buttonClass} disabled>

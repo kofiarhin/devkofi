@@ -1,21 +1,11 @@
 import "./header.styles.scss";
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { logoutUser } from "../../redux/auth/authSlice";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { FaBars } from "react-icons/fa";
 import { toggleSideNav } from "../../redux/navigation/navigationSlice";
 
 const Header = () => {
-  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    dispatch(logoutUser());
-    navigate("/login");
-  };
 
   return (
     <header className="main-header">
@@ -30,39 +20,15 @@ const Header = () => {
           <Link to="/" className="nav-item">
             Home
           </Link>
-
           <Link to="/about" className="nav-item">
             About
           </Link>
-
           <Link to="/projects" className="nav-item">
             Projects
           </Link>
-
-          {import.meta.env.DEV ? <Link to="/playground">Playground</Link> : ""}
-
-          {user ? (
-            <>
-              <Link to="/dashboard" className="nav-item">
-                Dashboard
-              </Link>
-              <Link to="/settings" className="nav-item">
-                Settings
-              </Link>
-              <button className="btn-logout" onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="nav-item">
-                Login
-              </Link>
-              <Link to="/register" className="btn-cta">
-                Get Started
-              </Link>
-            </>
-          )}
+          <Link to="/contact" className="btn-cta">
+            Contact
+          </Link>
         </nav>
 
         <div className="mobile-actions">

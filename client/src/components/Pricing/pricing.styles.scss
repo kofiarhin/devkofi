@@ -198,7 +198,7 @@ $text-muted: #71717a;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  flex: 1;
+  margin-bottom: 1rem;
 }
 
 .card-features li {
@@ -214,6 +214,73 @@ $text-muted: #71717a;
     flex-shrink: 0;
     margin-top: 2px;
   }
+}
+
+// ── Who it's for ─────────────────────────────────────────────────────────
+.card-who {
+  padding: 1.1rem 1.15rem;
+  border-radius: 12px;
+  background: rgba($primary, 0.04);
+  border: 1px solid rgba($primary, 0.1);
+  margin-bottom: 1rem;
+
+  &__label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $primary;
+    margin: 0 0 0.6rem 0;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+
+    li {
+      font-size: 0.83rem;
+      color: #c4c4cc;
+      line-height: 1.5;
+      padding-left: 1rem;
+      position: relative;
+
+      &::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: $primary;
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
+
+// ── Support badges ────────────────────────────────────────────────────────
+.card-support-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.support-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #d4d4d8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  letter-spacing: 0.01em;
+
+  svg { color: $primary; flex-shrink: 0; }
 }
 
 // ── Buttons ──────────────────────────────────────────────────────────────

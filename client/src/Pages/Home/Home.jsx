@@ -1,8 +1,6 @@
 import "./home.styles.scss";
 import Landing from "../../components/Landing/Landing";
 import Pricing from "../../components/Pricing/Pricing";
-import FeatureBento from "../../components/FeatureSection/FeatureSection";
-import Highlights from "../../components/Highlights/Highlights";
 
 const Home = () => {
   return (
@@ -11,13 +9,7 @@ const Home = () => {
         <Landing />
       </div>
 
-      <FeatureBento />
-
-      <Highlights />
-
-      <div className="container">
-        <Pricing />
-      </div>
+      <Pricing />
     </div>
   );
 };
