@@ -1,5 +1,10 @@
 import { useSelector } from "react-redux";
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
@@ -13,11 +18,12 @@ import About from "./Pages/About/About";
 import Contact from "./Pages/Contact/Contact";
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 import AdminLogin from "./Pages/Login/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 import useAdminSession from "./hooks/queries/useAdminSession";
 
 const PublicLayout = () => {
   const { isOpen } = useSelector((state) => state.navigation);
+
   return (
     <>
       <Header />
