@@ -265,3 +265,72 @@ $lime-dim: #84cc16;
     cursor: not-allowed;
   }
 }
+
+.exportRow {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 1.25rem 0;
+}
+
+.exportWrap {
+  position: relative;
+}
+
+.exportBtn {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $text-main;
+  background-color: transparent;
+  border: 1px solid $border;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: #52525b;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.exportMenu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 170px;
+  border: 1px solid $border;
+  background-color: $bg-surface;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.exportMenuItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: $text-main;
+  border: none;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.errorText {
+  color: #fda4af;
+  font-size: 0.82rem;
+  margin: 0.75rem 1.25rem 0;
+}

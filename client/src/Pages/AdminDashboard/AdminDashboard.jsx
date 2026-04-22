@@ -1,8 +1,14 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useMutation } from '@tanstack/react-query';
 import useContactMessages from '../../hooks/queries/useContactMessages';
 import useNewsletterSubscribers from '../../hooks/queries/useNewsletterSubscribers';
 import useLogoutAdmin from '../../hooks/mutations/useLogoutAdmin';
+import {
+  exportNewsletterSubscribersCsv,
+  exportNewsletterSubscribersJson,
+} from '../../services/adminService';
+import downloadFile, { getFilenameFromDisposition } from '../../utils/downloadFile';
 import s from './AdminDashboard.module.scss';
 
 const TABS = ['Contact Messages', 'Newsletter Subscribers'];
@@ -70,36 +76,123 @@ const ContactMessagesTab = () => {
 
 const NewsletterSubscribersTab = () => {
   const [page, setPage] = useState(1);
+  const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
+  const [exportError, setExportError] = useState('');
   const { data, isLoading } = useNewsletterSubscribers(page);
   const { subscribers = [], total = 0, limit = 20 } = data?.data?.data || {};
 
+  const csvMutation = useMutation({
+    mutationFn: exportNewsletterSubscribersCsv,
+  });
+
+  const jsonMutation = useMutation({
+    mutationFn: exportNewsletterSubscribersJson,
+  });
+
+  const isExporting = csvMutation.isPending || jsonMutation.isPending;
+
+  const exportActions = useMemo(
+    () => ({
+      csv: {
+        fallbackName: `newsletter-subscribers-${new Date().toISOString().slice(0, 10)}.csv`,
+        run: csvMutation.mutateAsync,
+      },
+      json: {
+        fallbackName: `newsletter-subscribers-${new Date().toISOString().slice(0, 10)}.json`,
+        run: jsonMutation.mutateAsync,
+      },
+    }),
+    [csvMutation.mutateAsync, jsonMutation.mutateAsync]
+  );
+
+  const handleExport = async (format) => {
+    setExportError('');
+
+    try {
+      const action = exportActions[format];
+      const response = await action.run();
+      const filename = getFilenameFromDisposition(
+        response.headers?.['content-disposition'],
+        action.fallbackName
+      );
+
+      downloadFile({ blob: response.data, filename });
+      setIsExportMenuOpen(false);
+    } catch {
+      setExportError('Export failed. Please try again.');
+    }
+  };
+
   if (isLoading) return <Spinner />;
-  if (!subscribers.length) return <p className={s.empty}>No subscribers yet</p>;
 
   return (
     <>
-      <div className={s.tableWrapper}>
-        <table className={s.table}>
-          <thead className={s.thead}>
-            <tr>
-              <th>Email</th>
-              <th>Subscribed</th>
-            </tr>
-          </thead>
-          <tbody className={s.tbody}>
-            {subscribers.map((sub) => (
-              <tr key={sub._id}>
-                <td>{sub.email}</td>
-                <td className={s.cellMono}>{new Date(sub.createdAt).toLocaleDateString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className={s.exportRow}>
+        <div className={s.exportWrap}>
+          <button
+            type="button"
+            onClick={() => setIsExportMenuOpen((open) => !open)}
+            className={s.exportBtn}
+            disabled={isExporting}
+          >
+            {isExporting ? 'Exporting...' : 'Export'}
+          </button>
+
+          {isExportMenuOpen && (
+            <div className={s.exportMenu} role="menu" aria-label="Export options">
+              <button
+                type="button"
+                role="menuitem"
+                className={s.exportMenuItem}
+                onClick={() => handleExport('csv')}
+                disabled={isExporting}
+              >
+                Export CSV
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                className={s.exportMenuItem}
+                onClick={() => handleExport('json')}
+                disabled={isExporting}
+              >
+                Export JSON
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-      <Pagination page={page} total={total} limit={limit}
-        onPrev={() => setPage((p) => p - 1)}
-        onNext={() => setPage((p) => p + 1)}
-      />
+
+      {exportError ? <p className={s.errorText}>{exportError}</p> : null}
+
+      {!subscribers.length ? (
+        <p className={s.empty}>No subscribers yet</p>
+      ) : (
+        <>
+          <div className={s.tableWrapper}>
+            <table className={s.table}>
+              <thead className={s.thead}>
+                <tr>
+                  <th>Email</th>
+                  <th>Subscribed</th>
+                </tr>
+              </thead>
+              <tbody className={s.tbody}>
+                {subscribers.map((sub) => (
+                  <tr key={sub._id}>
+                    <td>{sub.email}</td>
+                    <td className={s.cellMono}>{new Date(sub.createdAt).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Pagination page={page} total={total} limit={limit}
+            onPrev={() => setPage((p) => p - 1)}
+            onNext={() => setPage((p) => p + 1)}
+          />
+        </>
+      )}
     </>
   );
 };
