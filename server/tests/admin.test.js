@@ -26,15 +26,25 @@ beforeAll(async () => {
     subject: 'Hello',
     message: 'Test message',
   });
+<<<<<<< HEAD
   testMessageId = seededMessage._id.toString();
 
   await NewsletterSubscriber.create({ email: 'subscriber@test.com' });
+=======
+
+  await NewsletterSubscriber.insertMany([
+    { email: 'older-subscriber@test.com', createdAt: new Date('2026-01-10T00:00:00.000Z') },
+    { email: 'new-subscriber@test.com', createdAt: new Date('2026-04-22T10:30:00.000Z') },
+  ]);
+>>>>>>> agent-zero/implement-newsletter-subscribers-export-feature
 });
 
 afterAll(async () => {
   await Admin.deleteMany({ email: TEST_EMAIL });
   await ContactMessage.deleteMany({ email: 'alice@test.com' });
-  await NewsletterSubscriber.deleteMany({ email: 'subscriber@test.com' });
+  await NewsletterSubscriber.deleteMany({
+    email: { $in: ['older-subscriber@test.com', 'new-subscriber@test.com'] },
+  });
   await mongoose.disconnect();
 });
 
@@ -200,6 +210,87 @@ describe('GET /api/admin/newsletter-subscribers', () => {
   it('returns 401 when unauthenticated', async () => {
     const res = await request(app).get('/api/admin/newsletter-subscribers');
     expect(res.status).toBe(401);
+  });
+});
+
+describe('GET /api/admin/newsletter/export/csv', () => {
+  it('returns csv file for authenticated admin', async () => {
+    const cookie = await getAuthCookie();
+    const res = await request(app)
+      .get('/api/admin/newsletter/export/csv')
+      .set('Cookie', cookie);
+
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toContain('text/csv');
+    expect(res.headers['content-disposition']).toContain('.csv');
+    expect(res.text).toContain('email,subscribedAt');
+
+    const lines = res.text.trim().split('\n');
+    expect(lines[1]).toContain('new-subscriber@test.com');
+    expect(lines[2]).toContain('older-subscriber@test.com');
+  });
+
+  it('returns 401 when unauthenticated', async () => {
+    const res = await request(app).get('/api/admin/newsletter/export/csv');
+    expect(res.status).toBe(401);
+  });
+
+  it('returns headers only when list is empty', async () => {
+    await NewsletterSubscriber.deleteMany({});
+
+    const cookie = await getAuthCookie();
+    const res = await request(app)
+      .get('/api/admin/newsletter/export/csv')
+      .set('Cookie', cookie);
+
+    expect(res.status).toBe(200);
+    expect(res.text).toBe('email,subscribedAt\n');
+
+    await NewsletterSubscriber.insertMany([
+      { email: 'older-subscriber@test.com', createdAt: new Date('2026-01-10T00:00:00.000Z') },
+      { email: 'new-subscriber@test.com', createdAt: new Date('2026-04-22T10:30:00.000Z') },
+    ]);
+  });
+});
+
+describe('GET /api/admin/newsletter/export/json', () => {
+  it('returns json file for authenticated admin', async () => {
+    const cookie = await getAuthCookie();
+    const res = await request(app)
+      .get('/api/admin/newsletter/export/json')
+      .set('Cookie', cookie);
+
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toContain('application/json');
+    expect(res.headers['content-disposition']).toContain('.json');
+
+    const payload = JSON.parse(res.text);
+    expect(Array.isArray(payload)).toBe(true);
+    expect(payload[0]).toHaveProperty('email', 'new-subscriber@test.com');
+    expect(payload[0]).toHaveProperty('subscribedAt', '2026-04-22T10:30:00.000Z');
+    expect(payload[1]).toHaveProperty('email', 'older-subscriber@test.com');
+  });
+
+  it('returns 401 when unauthenticated', async () => {
+    const res = await request(app).get('/api/admin/newsletter/export/json');
+    expect(res.status).toBe(401);
+  });
+
+  it('returns empty array when list is empty', async () => {
+    await NewsletterSubscriber.deleteMany({});
+
+    const cookie = await getAuthCookie();
+    const res = await request(app)
+      .get('/api/admin/newsletter/export/json')
+      .set('Cookie', cookie);
+
+    expect(res.status).toBe(200);
+    expect(JSON.parse(res.text)).toEqual([]);
+
+    await NewsletterSubscriber.insertMany([
+      { email: 'older-subscriber@test.com', createdAt: new Date('2026-01-10T00:00:00.000Z') },
+      { email: 'new-subscriber@test.com', createdAt: new Date('2026-04-22T10:30:00.000Z') },
+    ]);
   });
 });
 

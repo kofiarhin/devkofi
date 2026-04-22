@@ -17,3 +17,9 @@ export const getContactMessageById = (messageId) =>
 
 export const getNewsletterSubscribers = (page = 1, limit = 20) =>
   api.get('/api/admin/newsletter-subscribers', { params: { page, limit } });
+
+export const exportNewsletterSubscribersCsv = () =>
+  api.get('/api/admin/newsletter/export/csv', { responseType: 'blob' });
+
+export const exportNewsletterSubscribersJson = () =>
+  api.get('/api/admin/newsletter/export/json', { responseType: 'blob' });
