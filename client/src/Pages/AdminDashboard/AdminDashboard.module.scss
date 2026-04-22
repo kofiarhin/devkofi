@@ -1,0 +1,267 @@
+$bg-main: #09090b;
+$bg-surface: #111113;
+$bg-card: #18181b;
+$border: #27272a;
+$text-main: #fafafa;
+$text-muted: #a1a1aa;
+$lime: #a3e635;
+$lime-dim: #84cc16;
+
+.page {
+  min-height: 100vh;
+  background-color: $bg-main;
+}
+
+// ── Header ──────────────────────────────────────────────────────────────────
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background-color: $bg-surface;
+  border-bottom: 1px solid $border;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.headerBadge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $lime;
+  background-color: rgba(163, 230, 53, 0.1);
+  border: 1px solid rgba(163, 230, 53, 0.2);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+}
+
+.headerTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $text-main;
+  letter-spacing: -0.02em;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.adminEmail {
+  font-size: 0.8rem;
+  color: $text-muted;
+}
+
+.logoutBtn {
+  padding: 0.45rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $text-main;
+  background-color: transparent;
+  border: 1px solid $border;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: #52525b;
+    color: $text-main;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// ── Main layout ──────────────────────────────────────────────────────────────
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+// ── Tabs ─────────────────────────────────────────────────────────────────────
+
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid $border;
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $text-muted;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s;
+  margin-bottom: -1px;
+
+  &:hover {
+    color: $text-main;
+  }
+
+  &.active {
+    color: $lime;
+    border-bottom-color: $lime;
+  }
+}
+
+// ── Card ─────────────────────────────────────────────────────────────────────
+
+.card {
+  background-color: $bg-card;
+  border: 1px solid $border;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+// ── Table ────────────────────────────────────────────────────────────────────
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+.thead {
+  background-color: $bg-surface;
+
+  th {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $text-muted;
+    border-bottom: 1px solid $border;
+    white-space: nowrap;
+  }
+}
+
+.tbody {
+  tr {
+    border-bottom: 1px solid $border;
+    transition: background-color 0.1s;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+  }
+
+  td {
+    padding: 1rem 1.25rem;
+    color: $text-main;
+    vertical-align: middle;
+  }
+}
+
+.cellMuted {
+  color: $text-muted;
+  font-size: 0.8rem;
+}
+
+.cellTruncate {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cellMono {
+  font-size: 0.8rem;
+  color: $text-muted;
+  white-space: nowrap;
+}
+
+// ── Empty / spinner ───────────────────────────────────────────────────────────
+
+.empty {
+  padding: 4rem 1.5rem;
+  text-align: center;
+  color: $text-muted;
+  font-size: 0.9rem;
+}
+
+.spinnerWrap {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid $border;
+  border-top-color: $lime;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ── Pagination ────────────────────────────────────────────────────────────────
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid $border;
+  font-size: 0.8rem;
+  color: $text-muted;
+}
+
+.paginationBtns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pageBtn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $text-main;
+  background: transparent;
+  border: 1px solid $border;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: #52525b;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
@@ -11,26 +11,43 @@ import SideNav from "./components/SideNav/SideNav";
 import Projects from "./Pages/Projects/Projects";
 import About from "./Pages/About/About";
 import Contact from "./Pages/Contact/Contact";
+import AdminRoute from "./components/AdminRoute/AdminRoute";
+import AdminLogin from "./Pages/Login/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import useAdminSession from "./hooks/queries/useAdminSession";
+
+const PublicLayout = () => {
+  const { isOpen } = useSelector((state) => state.navigation);
+  return (
+    <>
+      <Header />
+      {isOpen && <SideNav />}
+      <Outlet />
+      <Footer />
+    </>
+  );
+};
 
 const App = () => {
-  const { isOpen } = useSelector((state) => state.navigation);
+  useAdminSession();
 
   return (
     <Router>
       <ScrollToTop />
-
-      <Header />
-      {isOpen && <SideNav />}
-
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
 
-      <Footer />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route element={<AdminRoute />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        </Route>
+      </Routes>
     </Router>
   );
 };

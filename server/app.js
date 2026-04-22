@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const connectDB = require("./config/db");
 const projectRoutes = require("./routes/projectRoutes");
 const pricingRoutes = require("./routes/pricingRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 
@@ -89,6 +91,7 @@ app.use(
   })
 );
 
+app.use(cookieParser());
 app.use(express.json());
 
 app.get("/", async (req, res) => {
@@ -103,6 +106,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.get("/api/health", async (req, res) => {
   return res.json({ message: "ok" });
