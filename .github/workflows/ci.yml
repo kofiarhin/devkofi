@@ -1,11 +1,10 @@
-name: Deploy client + server
+name: Deploy client
 
 on:
   push:
     branches: [master, main]
     paths:
       - "client/**"
-      - "server/**"
       - ".github/workflows/**"
   workflow_dispatch:
 
@@ -14,10 +13,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ---------- Frontend -> Namecheap ----------
   deploy_client:
     runs-on: ubuntu-latest
     environment: Production
+
     steps:
       - uses: actions/checkout@v4
 
@@ -27,17 +26,13 @@ jobs:
           cache: npm
           cache-dependency-path: client/package-lock.json
 
-      # (optional) one-run debug — remove after confirmed
-      # - name: Debug VITE_API_URL
-      #   run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}"
-
       - name: Build client
         working-directory: client
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           npm ci
-          npm run build   # outputs client/dist
+          npm run build
 
       - name: Upload dist to Namecheap (root public_html)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -54,125 +49,11 @@ jobs:
             **/.github/**
             **/node_modules/**
 
-  # ---------- Backend -> Heroku (subtree push, repo unchanged) ----------
-  deploy_heroku:
-    runs-on: ubuntu-latest
-    needs: [deploy_client]
-    env:
-      HEROKU_APP: devkofi-api
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      HEROKU_GIT: https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/devkofi-api.git
-      HEALTH_URL: https://devkofi-api-82532bf8b693.herokuapp.com/health
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # required for subtree split
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install Heroku CLI
-        run: curl https://cli-assets.heroku.com/install.sh | sh
-
-      - name: Verify Heroku auth & app
-        run: |
-          heroku auth:whoami || (echo "❌ Invalid HEROKU_API_KEY" && exit 1)
-          heroku apps:info -a "$HEROKU_APP" || (echo "❌ App $HEROKU_APP not found" && exit 1)
-
-      - name: Configure git identity (for temp commit)
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name  "GitHub Action"
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-
-      - name: Create temp branch for Heroku packaging
-        run: git checkout -b heroku-deploy-temp
-
-      - name: Synthesize server/Procfile and minimal server/package.json (CI-only)
-        run: |
-          echo "web: node server.js" > server/Procfile
-          node -e "const fs=require('fs');
-          const root=JSON.parse(fs.readFileSync('package.json','utf8'));
-          const out={
-            name: (root.name? root.name+'-server' : 'devkofi-server'),
-            private:true,
-            engines:{ node: '>=20.x' },
-            main:'server.js',
-            scripts:{ start:'node server.js' },
-            dependencies: root.dependencies || {}
-          };
-          fs.writeFileSync('server/package.json', JSON.stringify(out,null,2));"
-          test -f server/server.js || (echo '❌ server/server.js not found' && exit 1)
-
-      - name: Generate matching lockfile for server/ (fix npm ci mismatch)
-        run: |
-          npm --prefix server install --package-lock-only
-          test -f server/package-lock.json || (echo '❌ failed to create server/package-lock.json' && exit 1)
-          git add -f server/Procfile server/package.json server/package-lock.json
-          git commit -m "ci: synthesize heroku files + lock (temp)"
-
-      - name: Compute server subtree SHA
-        id: subtree
-        run: |
-          SUBTREE_SHA=$(git subtree split --prefix server heroku-deploy-temp)
-          echo "sha=$SUBTREE_SHA" >> $GITHUB_OUTPUT
-          echo "Subtree SHA: $SUBTREE_SHA"
-
-      - name: Verify subtree contents
-        run: |
-          git archive --format=tar ${{ steps.subtree.outputs.sha }} | tar -tv > tree.txt
-          grep -q " Procfile$" tree.txt || (echo "❌ Procfile missing in subtree root" && exit 1)
-          grep -q " package.json$" tree.txt || (echo "❌ package.json missing in subtree root" && exit 1)
-          grep -q " package-lock.json$" tree.txt || (echo "❌ package-lock.json missing in subtree root" && exit 1)
-          echo "✅ subtree contains Procfile, package.json, package-lock.json"
-
-      - name: Set Heroku stack & Node buildpack (idempotent)
-        run: |
-          heroku stack:set heroku-22 -a "$HEROKU_APP" || true
-          heroku buildpacks:clear -a "$HEROKU_APP" || true
-          heroku buildpacks:add -a "$HEROKU_APP" heroku/nodejs || true
-          heroku buildpacks -a "$HEROKU_APP"
-
-      - name: Push server subtree → Heroku main
-        run: git push --force "$HEROKU_GIT" ${{ steps.subtree.outputs.sha }}:main
-
-      - name: Release config
-        run: |
-          heroku config:set NODE_ENV=production NPM_CONFIG_PRODUCTION=true -a "$HEROKU_APP"
-          heroku labs:enable runtime-dyno-metadata -a "$HEROKU_APP" || true
-
-      - name: Health check (retry until 200)
-        shell: bash
-        run: |
-          set -e
-          for i in {1..20}; do
-            CODE=$(curl -s -o /dev/null -w "%{http_code}" "$HEALTH_URL")
-            echo "Attempt $i → HTTP $CODE"
-            [ "$CODE" -eq 200 ] && exit 0
-            sleep 10
-          done
-          echo "Health check failed"; exit 1
-
-      - name: Print Heroku build output on failure
-        if: failure()
-        run: |
-          BUILD_ID=$(heroku builds -a "$HEROKU_APP" --json | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{const a=JSON.parse(d);console.log(a[0]?.id||'');}catch(e){console.log('');}})")
-          if [ -n "$BUILD_ID" ]; then
-            heroku builds:output -a "$HEROKU_APP" -b "$BUILD_ID" || true
-          fi
-
-      - name: Print recent Heroku logs on failure
-        if: failure()
-        run: |
-          heroku releases -n 5 -a "$HEROKU_APP" || true
-          heroku logs -n 300 -a "$HEROKU_APP" || true
-
-  # ---------- Verify Live Deployment (Playwright) ----------
   verify_live:
     runs-on: ubuntu-latest
-    needs: [deploy_client, deploy_heroku]
+    needs: [deploy_client]
     timeout-minutes: 5
+
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -188,6 +69,7 @@ jobs:
         run: |
           cat > playwright.config.js <<'EOF'
           import { defineConfig, devices } from '@playwright/test';
+
           export default defineConfig({
             testDir: '.',
             use: { trace: 'on-first-retry' },
@@ -202,8 +84,13 @@ jobs:
 
           cat > production.spec.js <<'EOF'
           import { test, expect } from '@playwright/test';
+
           test('devkofi.com returns 200', async ({ page }) => {
-            const response = await page.goto('https://devkofi.com', { waitUntil: 'domcontentloaded', timeout: 30000 });
+            const response = await page.goto('https://devkofi.com', {
+              waitUntil: 'domcontentloaded',
+              timeout: 30000,
+            });
+
             console.log('Status Code:', response?.status());
             expect(response?.status()).toBe(200);
           });
