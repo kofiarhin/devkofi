@@ -5,6 +5,7 @@ const connectDB = require("./config/db");
 const projectRoutes = require("./routes/projectRoutes");
 const pricingRoutes = require("./routes/pricingRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const newsletterRoutes = require("./routes/newsletterRoutes");
 
 const app = express();
 
@@ -101,6 +102,7 @@ app.get("/", async (req, res) => {
 app.use("/api/projects", projectRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/newsletter", newsletterRoutes);
 
 app.get("/api/health", async (req, res) => {
   return res.json({ message: "ok" });

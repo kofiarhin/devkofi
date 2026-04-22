@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import "./pricing.styles.scss";
 import { baseUrl } from "../../constants/constants";
 import { Check, ShieldCheck, ChatCircleText, Headset, Users } from "@phosphor-icons/react";
+import Newsletter from "../Newsletter/Newsletter";
 
 const spring = { type: "spring", stiffness: 100, damping: 20 };
 
@@ -297,6 +298,8 @@ const Pricing = () => {
           </div>
         </motion.div>
       )}
+
+      <Newsletter />
     </section>
   );
 };
