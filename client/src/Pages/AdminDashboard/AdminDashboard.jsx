@@ -1,10 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom';
-=======
 import { useMutation } from '@tanstack/react-query';
->>>>>>> agent-zero/implement-newsletter-subscribers-export-feature
 import useContactMessages from '../../hooks/queries/useContactMessages';
 import useNewsletterSubscribers from '../../hooks/queries/useNewsletterSubscribers';
 import useLogoutAdmin from '../../hooks/mutations/useLogoutAdmin';

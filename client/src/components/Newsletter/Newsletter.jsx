@@ -1,105 +1,69 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, EnvelopeSimple } from "@phosphor-icons/react";
-import { baseUrl } from "../../constants/constants";
+import {
+  NEWSLETTER_BODY,
+  NEWSLETTER_CARD_COPY,
+  NEWSLETTER_CARD_TITLE,
+  NEWSLETTER_EYEBROW,
+  NEWSLETTER_FEATURED_IMAGE,
+  NEWSLETTER_HEADLINE,
+  NEWSLETTER_TRUST_PRIMARY,
+  NEWSLETTER_TRUST_SECONDARY,
+  NEWSLETTER_VISUAL_BADGE,
+} from "./newsletter.constants";
+import NewsletterSignupForm from "./NewsletterSignupForm";
+import NewsletterValueChips from "./NewsletterValueChips";
 import "./newsletter.styles.scss";
 
-const spring = { type: "spring", stiffness: 100, damping: 20 };
-
 const Newsletter = () => {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState({ state: "idle", message: "" });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const trimmed = email.trim();
-    if (!trimmed) return;
-
-    setStatus({ state: "loading", message: "" });
-
-    try {
-      const res = await fetch(`${baseUrl}/api/newsletter/subscribe`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed }),
-      });
-
-      const data = await res.json().catch(() => ({}));
-
-      if (!res.ok) {
-        throw new Error(data?.error || "Something went wrong. Please try again.");
-      }
-
-      setStatus({ state: "success", message: data.message || "Thanks for subscribing!" });
-      setEmail("");
-    } catch (err) {
-      setStatus({ state: "error", message: err?.message || "Failed to subscribe." });
-    }
-  };
-
-  const isLoading = status.state === "loading";
-  const isSuccess = status.state === "success";
-
   return (
-    <motion.section
+    <section
       className="newsletter-section"
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ ...spring, duration: 0.6 }}
+      aria-labelledby="newsletter-title"
     >
-      <div className="newsletter-inner">
-        <div className="newsletter-icon-wrap">
-          <EnvelopeSimple size={22} weight="duotone" aria-hidden="true" />
+      <div className="newsletter-shell">
+        <div className="newsletter-layout">
+          <div className="newsletter-story">
+            <div className="newsletter-media">
+              <img
+                src={NEWSLETTER_FEATURED_IMAGE}
+                alt="DevKofi builder portrait"
+                loading="lazy"
+              />
+              <div className="newsletter-media-badge">{NEWSLETTER_VISUAL_BADGE}</div>
+            </div>
+
+            <div className="newsletter-copy">
+              <p className="newsletter-eyebrow">{NEWSLETTER_EYEBROW}</p>
+              <h3 id="newsletter-title" className="newsletter-title">
+                {NEWSLETTER_HEADLINE}
+              </h3>
+              <p className="newsletter-description">{NEWSLETTER_BODY}</p>
+              <NewsletterValueChips />
+            </div>
+          </div>
+
+          <aside className="newsletter-card" aria-label="Newsletter signup panel">
+            <div className="newsletter-card-header">
+              <div className="newsletter-card-icon" aria-hidden="true">
+                <span className="newsletter-card-icon-core" />
+              </div>
+
+              <div>
+                <p className="newsletter-card-eyebrow">Builder signal</p>
+                <h4 className="newsletter-card-title">{NEWSLETTER_CARD_TITLE}</h4>
+                <p className="newsletter-card-copy">{NEWSLETTER_CARD_COPY}</p>
+              </div>
+            </div>
+
+            <NewsletterSignupForm />
+
+            <div className="newsletter-trust">
+              <p className="newsletter-trust-primary">{NEWSLETTER_TRUST_PRIMARY}</p>
+              <p className="newsletter-trust-secondary">{NEWSLETTER_TRUST_SECONDARY}</p>
+            </div>
+          </aside>
         </div>
-
-        <div className="newsletter-copy">
-          <h3 className="newsletter-title">Weekly dev insights</h3>
-          <p className="newsletter-subtitle">
-            MERN tips, AI workflows, and career moves — straight to your inbox.
-            No spam.
-          </p>
-        </div>
-
-        {isSuccess ? (
-          <p className="newsletter-success">{status.message}</p>
-        ) : (
-          <form className="newsletter-form" onSubmit={handleSubmit} noValidate>
-            <label htmlFor="newsletter-email" className="sr-only">
-              Email address
-            </label>
-            <input
-              id="newsletter-email"
-              type="email"
-              className="newsletter-input"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoading}
-              required
-              autoComplete="email"
-            />
-            <button
-              type="submit"
-              className="newsletter-btn"
-              disabled={isLoading || !email.trim()}
-              aria-label="Subscribe to newsletter"
-            >
-              {isLoading ? (
-                <span className="newsletter-spinner" aria-hidden="true" />
-              ) : (
-                <ArrowRight size={18} weight="bold" aria-hidden="true" />
-              )}
-            </button>
-          </form>
-        )}
-
-        {status.state === "error" && (
-          <p className="newsletter-error">{status.message}</p>
-        )}
       </div>
-    </motion.section>
+    </section>
   );
 };
 

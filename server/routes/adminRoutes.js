@@ -3,14 +3,10 @@ const rateLimit = require('express-rate-limit');
 const { loginAdmin, logoutAdmin, getAdminSession } = require('../controllers/adminAuthController');
 const {
   getContactMessages,
-<<<<<<< HEAD
   getContactMessageById,
-  getNewsletterSubscribers,
-=======
   getNewsletterSubscribers,
   exportNewsletterSubscribersJson,
   exportNewsletterSubscribersCsv,
->>>>>>> agent-zero/implement-newsletter-subscribers-export-feature
 } = require('../controllers/adminDashboardController');
 const requireAdminAuth = require('../middleware/requireAdminAuth');
 const { loginRateLimit } = require('../config/env');

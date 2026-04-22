@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "node ../node_modules/cross-env/src/bin/cross-env.js NODE_ENV=test vitest"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

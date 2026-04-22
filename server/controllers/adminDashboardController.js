@@ -81,9 +81,6 @@ const getNewsletterSubscribers = async (req, res) => {
   });
 };
 
-<<<<<<< HEAD
-module.exports = { getContactMessages, getContactMessageById, getNewsletterSubscribers };
-=======
 const exportNewsletterSubscribersJson = async (req, res) => {
   const subscribers = await NewsletterSubscriber.find().sort({ createdAt: -1 });
   const rows = toExportRows(subscribers);
@@ -112,8 +109,8 @@ const exportNewsletterSubscribersCsv = async (req, res) => {
 
 module.exports = {
   getContactMessages,
+  getContactMessageById,
   getNewsletterSubscribers,
   exportNewsletterSubscribersJson,
   exportNewsletterSubscribersCsv,
 };
->>>>>>> agent-zero/implement-newsletter-subscribers-export-feature

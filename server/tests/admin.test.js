@@ -26,17 +26,12 @@ beforeAll(async () => {
     subject: 'Hello',
     message: 'Test message',
   });
-<<<<<<< HEAD
   testMessageId = seededMessage._id.toString();
-
-  await NewsletterSubscriber.create({ email: 'subscriber@test.com' });
-=======
 
   await NewsletterSubscriber.insertMany([
     { email: 'older-subscriber@test.com', createdAt: new Date('2026-01-10T00:00:00.000Z') },
     { email: 'new-subscriber@test.com', createdAt: new Date('2026-04-22T10:30:00.000Z') },
   ]);
->>>>>>> agent-zero/implement-newsletter-subscribers-export-feature
 });
 
 afterAll(async () => {
