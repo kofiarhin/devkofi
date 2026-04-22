@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client \"",
     "server": "nodemon server/server.js",
+    "start:server": "node server/server.js",
     "client": "npm run dev --prefix client",
     "test": "jest --watchAll server",
     "test:client": "concurrently \"npm run server\" \"npm run test --prefix client\""
