@@ -1,0 +1,130 @@
+$bg-main: #09090b;
+$bg-surface: #111113;
+$bg-card: #18181b;
+$border: #27272a;
+$text-main: #fafafa;
+$text-muted: #a1a1aa;
+$lime: #a3e635;
+
+.page {
+  min-height: 100vh;
+  background-color: $bg-main;
+  color: $text-main;
+}
+
+.main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.statusBadge {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $lime;
+  border: 1px solid rgba(163, 230, 53, 0.35);
+  background: rgba(163, 230, 53, 0.1);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+}
+
+.card {
+  background-color: $bg-card;
+  border: 1px solid $border;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  margin: 0 0 0.7rem;
+  font-size: 0.9rem;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+
+  dt {
+    font-size: 0.75rem;
+    color: $text-muted;
+    margin-bottom: 0.25rem;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.92rem;
+  }
+}
+
+.subject {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.body {
+  margin: 0;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.actionBtn,
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid $border;
+  background: $bg-surface;
+  color: $text-main;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #52525b;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $lime;
+    outline-offset: 2px;
+  }
+}
+
+.muted {
+  margin: 0;
+  color: $text-muted;
+}
+
+.copyFeedback {
+  margin: 0.75rem 0 0;
+  color: $lime;
+  font-size: 0.82rem;
+}

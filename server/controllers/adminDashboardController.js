@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const ContactMessage = require('../models/ContactMessage');
 const NewsletterSubscriber = require('../models/NewsletterSubscriber');
 
@@ -22,6 +23,31 @@ const getContactMessages = async (req, res) => {
   });
 };
 
+const getContactMessageById = async (req, res) => {
+  const { messageId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(messageId)) {
+    return res.status(400).json({
+      success: false,
+      error: 'Invalid message id',
+    });
+  }
+
+  const message = await ContactMessage.findById(messageId);
+
+  if (!message) {
+    return res.status(404).json({
+      success: false,
+      error: 'Message not found',
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    data: { message },
+  });
+};
+
 const getNewsletterSubscribers = async (req, res) => {
   const { page, limit, skip } = parsePagination(req.query);
 
@@ -36,4 +62,4 @@ const getNewsletterSubscribers = async (req, res) => {
   });
 };
 
-module.exports = { getContactMessages, getNewsletterSubscribers };
+module.exports = { getContactMessages, getContactMessageById, getNewsletterSubscribers };

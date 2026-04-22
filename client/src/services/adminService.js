@@ -12,5 +12,8 @@ export const getAdminSession = () =>
 export const getContactMessages = (page = 1, limit = 20) =>
   api.get('/api/admin/contact-messages', { params: { page, limit } });
 
+export const getContactMessageById = (messageId) =>
+  api.get(`/api/admin/contact-messages/${messageId}`);
+
 export const getNewsletterSubscribers = (page = 1, limit = 20) =>
   api.get('/api/admin/newsletter-subscribers', { params: { page, limit } });

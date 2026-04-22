@@ -6,6 +6,8 @@ const contactMessageSchema = new mongoose.Schema(
     email: { type: String, required: true, lowercase: true, trim: true },
     subject: { type: String, required: true, trim: true },
     message: { type: String, required: true, trim: true },
+    isRead: { type: Boolean, default: false },
+    readAt: { type: Date, default: null },
   },
   { timestamps: true }
 );

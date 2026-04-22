@@ -19,6 +19,7 @@ import Contact from "./Pages/Contact/Contact";
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 import AdminLogin from "./Pages/Login/AdminLogin";
 import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
+import AdminMessageDetails from "./Pages/AdminMessageDetails/AdminMessageDetails";
 import useAdminSession from "./hooks/queries/useAdminSession";
 
 const PublicLayout = () => {
@@ -52,6 +53,7 @@ const App = () => {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route element={<AdminRoute />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/messages/:messageId" element={<AdminMessageDetails />} />
         </Route>
       </Routes>
     </Router>

@@ -200,6 +200,26 @@ $lime-dim: #84cc16;
   white-space: nowrap;
 }
 
+.subjectBtn {
+  color: $text-main;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    color: $lime;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $lime;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
 // ── Empty / spinner ───────────────────────────────────────────────────────────
 
 .empty {

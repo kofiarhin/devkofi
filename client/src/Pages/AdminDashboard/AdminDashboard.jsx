@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import useContactMessages from '../../hooks/queries/useContactMessages';
 import useNewsletterSubscribers from '../../hooks/queries/useNewsletterSubscribers';
 import useLogoutAdmin from '../../hooks/mutations/useLogoutAdmin';
@@ -27,6 +28,7 @@ const Pagination = ({ page, total, limit, onPrev, onNext }) => {
 };
 
 const ContactMessagesTab = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const { data, isLoading } = useContactMessages(page);
   const { messages = [], total = 0, limit = 20 } = data?.data?.data || {};
@@ -52,7 +54,16 @@ const ContactMessagesTab = () => {
               <tr key={msg._id}>
                 <td>{msg.name}</td>
                 <td className={s.cellMuted}>{msg.email}</td>
-                <td>{msg.subject}</td>
+                <td>
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/admin/messages/${msg._id}`)}
+                    className={s.subjectBtn}
+                    aria-label={`View message from ${msg.name}`}
+                  >
+                    {msg.subject || 'No subject'}
+                  </button>
+                </td>
                 <td className={s.cellTruncate} title={msg.message}>{msg.message}</td>
                 <td className={s.cellMono}>{new Date(msg.createdAt).toLocaleDateString()}</td>
               </tr>

@@ -8,6 +8,7 @@ const NewsletterSubscriber = require('../models/NewsletterSubscriber');
 
 const TEST_EMAIL = 'testadmin@devkofi.com';
 const TEST_PASSWORD = 'TestAdmin@2026!';
+let testMessageId;
 
 beforeAll(async () => {
   const uri = process.env.MONGO_URI;
@@ -19,12 +20,14 @@ beforeAll(async () => {
   await Admin.deleteMany({ email: TEST_EMAIL });
   await Admin.create({ email: TEST_EMAIL, password: hash, role: 'admin' });
 
-  await ContactMessage.create({
+  const seededMessage = await ContactMessage.create({
     name: 'Alice',
     email: 'alice@test.com',
     subject: 'Hello',
     message: 'Test message',
   });
+  testMessageId = seededMessage._id.toString();
+
   await NewsletterSubscriber.create({ email: 'subscriber@test.com' });
 });
 
@@ -132,6 +135,50 @@ describe('GET /api/admin/contact-messages', () => {
   it('returns 401 when unauthenticated', async () => {
     const res = await request(app).get('/api/admin/contact-messages');
     expect(res.status).toBe(401);
+  });
+});
+
+describe('GET /api/admin/contact-messages/:messageId', () => {
+  it('returns 200 with a single message when authenticated', async () => {
+    const cookie = await getAuthCookie();
+    const res = await request(app)
+      .get(`/api/admin/contact-messages/${testMessageId}`)
+      .set('Cookie', cookie);
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data).toHaveProperty('message');
+    expect(res.body.data.message._id).toBe(testMessageId);
+  });
+
+  it('returns 401 when unauthenticated', async () => {
+    const res = await request(app).get(`/api/admin/contact-messages/${testMessageId}`);
+
+    expect(res.status).toBe(401);
+    expect(res.body.success).toBe(false);
+  });
+
+  it('returns 400 for invalid object id', async () => {
+    const cookie = await getAuthCookie();
+    const res = await request(app)
+      .get('/api/admin/contact-messages/not-a-valid-id')
+      .set('Cookie', cookie);
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.error).toBe('Invalid message id');
+  });
+
+  it('returns 404 for a valid id that does not exist', async () => {
+    const cookie = await getAuthCookie();
+    const missingId = new mongoose.Types.ObjectId().toString();
+    const res = await request(app)
+      .get(`/api/admin/contact-messages/${missingId}`)
+      .set('Cookie', cookie);
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.error).toBe('Message not found');
   });
 });
 

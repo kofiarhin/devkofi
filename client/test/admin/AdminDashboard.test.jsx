@@ -4,9 +4,9 @@ import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import authReducer from '../../src/redux/auth/authSlice';
-import AdminDashboard from '../../src/pages/AdminDashboard/AdminDashboard';
+import AdminDashboard from '../../src/Pages/AdminDashboard/AdminDashboard';
 
 vi.mock('../../src/hooks/queries/useContactMessages');
 vi.mock('../../src/hooks/queries/useNewsletterSubscribers');
@@ -30,8 +30,11 @@ const renderDashboard = () => {
   return render(
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <AdminDashboard />
+        <MemoryRouter initialEntries={['/admin/dashboard']}>
+          <Routes>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/messages/:messageId" element={<p>Message details route</p>} />
+          </Routes>
         </MemoryRouter>
       </QueryClientProvider>
     </Provider>
@@ -62,7 +65,21 @@ describe('AdminDashboard — Contact Messages tab', () => {
 
     expect(screen.getByText('Alice')).toBeInTheDocument();
     expect(screen.getByText('alice@test.com')).toBeInTheDocument();
-    expect(screen.getByText('Hello')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /view message from alice/i })).toBeInTheDocument();
+  });
+
+  it('navigates to details route when subject button is clicked', () => {
+    useContactMessages.mockReturnValue({
+      data: { data: { data: { messages: mockMessages, total: 1, limit: 20 } } },
+      isLoading: false,
+    });
+    useNewsletterSubscribers.mockReturnValue({ data: null, isLoading: false });
+
+    renderDashboard();
+
+    fireEvent.click(screen.getByRole('button', { name: /view message from alice/i }));
+
+    expect(screen.getByText('Message details route')).toBeInTheDocument();
   });
 
   it('shows empty state when messages array is empty', () => {
