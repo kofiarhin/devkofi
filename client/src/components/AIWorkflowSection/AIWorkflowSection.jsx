@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   workStation,
   codeImage,
@@ -8,12 +9,37 @@ import {
 } from "../../constants/constants";
 import "./ai-workflow-section.styles.scss";
 
-const blockVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
+const HEADING_WORDS = "How We Build with Agentic AI Workflows".split(" ");
+
+const wordVariants = {
+  hidden: { opacity: 0, y: 22, filter: "blur(6px)" },
+  visible: (i) => ({
     opacity: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 100, damping: 20, duration: 0.6 },
+    filter: "blur(0px)",
+    transition: {
+      type: "spring",
+      stiffness: 90,
+      damping: 20,
+      delay: i * 0.07,
+    },
+  }),
+};
+
+const tagsContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.15 },
+  },
+};
+
+const tagVariants = {
+  hidden: { opacity: 0, scale: 0.75, y: 8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 220, damping: 18 },
   },
 };
 
@@ -61,39 +87,92 @@ const BLOCKS = [
   },
 ];
 
+const ParallaxImage = ({ src, alt }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [-28, 28]);
+
+  return (
+    <div ref={ref} className="ai-workflow-block__image-wrap">
+      <motion.img
+        src={src}
+        alt={alt}
+        className="ai-workflow-block__image"
+        loading="lazy"
+        style={{ y }}
+      />
+    </div>
+  );
+};
+
 const WorkflowBlock = ({ block, index }) => {
   const isReversed = index % 2 !== 0;
+
   return (
     <motion.div
+      data-number={block.id}
       className={`ai-workflow-block${isReversed ? " ai-workflow-block--reversed" : ""}`}
-      variants={blockVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      initial={{ opacity: 0, x: isReversed ? 64 : -64 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-70px" }}
+      transition={{ type: "spring", stiffness: 75, damping: 22 }}
+      whileHover={{ y: -6, transition: { type: "spring", stiffness: 300, damping: 28 } }}
     >
       <div className="ai-workflow-block__content">
-        <span className="ai-workflow-block__number">{block.id}</span>
-        <h3 className="ai-workflow-block__title">{block.title}</h3>
-        <p className="ai-workflow-block__description">{block.description}</p>
-        <ul className="ai-workflow-block__tags" aria-label="Topics covered">
+        <motion.span
+          className="ai-workflow-block__number"
+          initial={{ opacity: 0, scale: 0.7 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.1 }}
+        >
+          {block.id}
+        </motion.span>
+
+        <motion.h3
+          className="ai-workflow-block__title"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.15 }}
+        >
+          {block.title}
+        </motion.h3>
+
+        <motion.p
+          className="ai-workflow-block__description"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.2 }}
+        >
+          {block.description}
+        </motion.p>
+
+        <motion.ul
+          className="ai-workflow-block__tags"
+          aria-label="Topics covered"
+          variants={tagsContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           {block.tags.map((tag) => (
-            <li key={tag} className="ai-workflow-block__tag">
+            <motion.li
+              key={tag}
+              className="ai-workflow-block__tag"
+              variants={tagVariants}
+            >
               {tag}
-            </li>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
       </div>
 
-      {block.image && (
-        <div className="ai-workflow-block__image-wrap">
-          <img
-            src={block.image}
-            alt={block.alt}
-            className="ai-workflow-block__image"
-            loading="lazy"
-          />
-        </div>
-      )}
+      {block.image && <ParallaxImage src={block.image} alt={block.alt} />}
     </motion.div>
   );
 };
@@ -105,19 +184,51 @@ const AIWorkflowSection = () => {
       className="ai-workflow-section"
     >
       <div className="ai-workflow-section__intro">
-        <span className="ai-workflow-section__eyebrow">
-          AI ENGINEERING MENTORSHIP
-        </span>
-        <h2
-          id="ai-workflow-title"
-          className="ai-workflow-section__heading"
+        <motion.div
+          className="ai-workflow-section__eyebrow-wrap"
+          initial={{ opacity: 0, x: -16 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
         >
-          How We Build with Agentic AI Workflows
+          <motion.span
+            className="ai-workflow-section__eyebrow-line"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+          />
+          <span className="ai-workflow-section__eyebrow">
+            AI ENGINEERING MENTORSHIP
+          </span>
+        </motion.div>
+
+        <h2 id="ai-workflow-title" className="ai-workflow-section__heading">
+          {HEADING_WORDS.map((word, i) => (
+            <motion.span
+              key={i}
+              className="ai-workflow-section__heading-word"
+              custom={i}
+              variants={wordVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              {word}
+            </motion.span>
+          ))}
         </h2>
-        <p className="ai-workflow-section__subheading">
+
+        <motion.p
+          className="ai-workflow-section__subheading"
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.55, duration: 0.6, ease: "easeOut" }}
+        >
           A guided mentorship system using Claude Code, Codex, agents, specs,
           reviews, testing, and deployment.
-        </p>
+        </motion.p>
       </div>
 
       <div className="ai-workflow-section__blocks">
