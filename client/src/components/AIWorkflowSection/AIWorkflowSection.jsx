@@ -9,7 +9,7 @@ import {
 } from "../../constants/constants";
 import "./ai-workflow-section.styles.scss";
 
-const HEADING_WORDS = "How We Build with Agentic AI Workflows".split(" ");
+const HEADING_WORDS = "The Agentic AI Workflow I Teach".split(" ");
 
 const wordVariants = {
   hidden: { opacity: 0, y: 22, filter: "blur(6px)" },
@@ -46,9 +46,9 @@ const tagVariants = {
 const BLOCKS = [
   {
     id: "01",
-    title: "AI Coding Mentorship with Agentic Workflows",
+    title: "Build Inside a Real AI Engineering Workflow",
     description:
-      "Build alongside me using Claude Code, Codex, and real AI-driven systems.",
+      "Work directly with me using Claude Code, Codex, and agentic systems to build real production apps.",
     tags: ["Claude Code", "Codex", "Agentic Workflows", "Real Builds"],
     image: workStation,
     alt: "Developer working at a workstation with AI tools open",
@@ -226,8 +226,8 @@ const AIWorkflowSection = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.55, duration: 0.6, ease: "easeOut" }}
         >
-          A guided mentorship system using Claude Code, Codex, agents, specs,
-          reviews, testing, and deployment.
+          A real-world mentorship system for building apps using Claude Code,
+          Codex, agents, specs, reviews, testing, and deployment.
         </motion.p>
       </div>
 

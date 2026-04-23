@@ -133,7 +133,7 @@ const Landing = () => {
           <motion.p className="hero-description" variants={itemVariants}>
             I mentor developers to ship real MERN apps by layering Claude Code,
             Codex, AI agents, code review, testing, automation, and deployment
-            into one practical engineering workflow.
+            into one production-ready workflow.
           </motion.p>
 
           <motion.div className="cta-group" variants={itemVariants}>
@@ -146,6 +146,10 @@ const Landing = () => {
               <ArrowRight size={16} weight="bold" />
             </Link>
           </motion.div>
+
+          <motion.p className="hero-supporting" variants={itemVariants}>
+            Learn the exact workflow I use to build and ship real products.
+          </motion.p>
 
           <motion.div className="hero-stats" variants={itemVariants}>
             {STATS.map(({ icon: Icon, value, label }) => (
