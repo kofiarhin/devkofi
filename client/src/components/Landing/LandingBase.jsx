@@ -43,15 +43,15 @@ const imageVariants = {
 const STATS = [
   { icon: StackSimple, value: "12+", label: "Production apps shipped" },
   { icon: Star, value: "5+", label: "Years experience" },
-  { icon: Users, value: "MERN", label: "Full-stack expertise" },
+  { icon: Users, value: "AI", label: "Workflow expertise" },
 ];
 
 const HERO_ROTATING_PHRASES = [
   "Claude Code",
   "Codex",
-  "Agentic AI",
-  "Multi-Agent",
-  "MCP Servers",
+  "AI Agents",
+  "Code Review",
+  "Automation",
 ];
 
 const LONGEST_HERO_PHRASE = HERO_ROTATING_PHRASES.reduce((longest, phrase) =>
@@ -116,25 +116,24 @@ const Landing = () => {
           <motion.div className="hero-chip" variants={itemVariants}>
             <span className="chip-dot" aria-hidden="true" />
             <Lightning size={12} weight="fill" aria-hidden="true" />
-            AI-Powered MERN Mentorship
+            Agentic AI Coding Mentorship
           </motion.div>
 
           <motion.h1 className="hero-title" variants={itemVariants}>
-            <span className="hero-title-line">Mentoring MERN Devs</span>
+            <span className="hero-title-line">Build Full-Stack Apps</span>
             <span className="hero-title-line hero-title-line--rotating">
               <span className="hero-title-prefix">with</span>
               <HeroRotatingText />
             </span>
             <span className="hero-title-line hero-title-line--accent">
-              into AI Engineers
+              Agentic AI Workflows
             </span>
           </motion.h1>
 
           <motion.p className="hero-description" variants={itemVariants}>
-            I mentor individual developers to become confident full-stack
-            engineers by combining the MERN stack with Claude Code, Codex,
-            agentic workflows, multi-agent systems, and MCP in practical,
-            real-world builds.
+            I mentor developers to ship real MERN apps by layering Claude Code,
+            Codex, AI agents, code review, testing, automation, and deployment
+            into one practical engineering workflow.
           </motion.p>
 
           <motion.div className="cta-group" variants={itemVariants}>
@@ -143,7 +142,7 @@ const Landing = () => {
               <ArrowRight size={18} weight="bold" />
             </Link>
             <Link to="/projects" className="btn-ghost">
-              View Projects
+              See Workflow
               <ArrowRight size={16} weight="bold" />
             </Link>
           </motion.div>
