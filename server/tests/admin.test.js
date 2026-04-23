@@ -100,13 +100,17 @@ describe('GET /api/admin/auth/me', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);
+    expect(res.body.authenticated).toBe(true);
     expect(res.body.data.email).toBe(TEST_EMAIL);
   });
 
-  it('returns 401 with no cookie', async () => {
+  it('returns 200 with unauthenticated state when no cookie exists', async () => {
     const res = await request(app).get('/api/admin/auth/me');
-    expect(res.status).toBe(401);
-    expect(res.body.success).toBe(false);
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.authenticated).toBe(false);
+    expect(res.body.data).toBeNull();
   });
 });
 

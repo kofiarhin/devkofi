@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
 const { jwtSecret, jwtExpiresIn } = require('../config/env');
+const { resolveAdminFromRequest } = require('../utils/adminAuth');
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -42,10 +43,21 @@ const logoutAdmin = (req, res) => {
   return res.status(200).json({ success: true, message: 'Logged out' });
 };
 
-const getAdminSession = (req, res) => {
+const getAdminSession = async (req, res) => {
+  const admin = await resolveAdminFromRequest(req);
+
+  if (!admin) {
+    return res.status(200).json({
+      success: true,
+      authenticated: false,
+      data: null,
+    });
+  }
+
   return res.status(200).json({
     success: true,
-    data: { email: req.admin.email, role: req.admin.role },
+    authenticated: true,
+    data: { email: admin.email, role: admin.role },
   });
 };
 

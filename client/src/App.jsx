@@ -22,6 +22,28 @@ import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 import AdminMessageDetails from "./Pages/AdminMessageDetails/AdminMessageDetails";
 import useAdminSession from "./hooks/queries/useAdminSession";
 
+const AppRoutes = () => {
+  useAdminSession();
+
+  return (
+    <Routes>
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route element={<AdminRoute />}>
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/messages/:messageId" element={<AdminMessageDetails />} />
+      </Route>
+    </Routes>
+  );
+};
+
 const PublicLayout = () => {
   const { isOpen } = useSelector((state) => state.navigation);
 
@@ -36,26 +58,10 @@ const PublicLayout = () => {
 };
 
 const App = () => {
-  useAdminSession();
-
   return (
     <Router>
       <ScrollToTop />
-      <Routes>
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route element={<AdminRoute />}>
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/messages/:messageId" element={<AdminMessageDetails />} />
-        </Route>
-      </Routes>
+      <AppRoutes />
     </Router>
   );
 };

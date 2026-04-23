@@ -23,7 +23,7 @@ const loginLimiter = rateLimit({
 
 router.post('/auth/login', loginLimiter, loginAdmin);
 router.post('/auth/logout', logoutAdmin);
-router.get('/auth/me', requireAdminAuth, getAdminSession);
+router.get('/auth/me', getAdminSession);
 router.get('/contact-messages', requireAdminAuth, getContactMessages);
 router.get('/contact-messages/:messageId', requireAdminAuth, getContactMessageById);
 router.get('/newsletter-subscribers', requireAdminAuth, getNewsletterSubscribers);
