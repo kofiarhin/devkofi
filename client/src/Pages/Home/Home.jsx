@@ -1,5 +1,6 @@
 import "./home.styles.scss";
 import Landing from "../../components/Landing/Landing";
+import AIWorkflowSection from "../../components/AIWorkflowSection/AIWorkflowSection";
 import Pricing from "../../components/Pricing/Pricing";
 
 const Home = () => {
@@ -8,6 +9,8 @@ const Home = () => {
       <div className="container">
         <Landing />
       </div>
+
+      <AIWorkflowSection />
 
       <Pricing />
     </div>
