@@ -17,3 +17,10 @@ if (!process.env.ADMIN_EMAIL) {
 if (!process.env.ADMIN_PASSWORD) {
   process.env.ADMIN_PASSWORD = 'TestAdmin@Pass2026!';
 }
+
+// Raise the login rate limit so regular test calls don't exhaust it, but keep
+// it low enough that the rate-limit test (12 concurrent calls) still triggers
+// a 429. Regular tests make ~15 login calls; with max=25 the remaining 10
+// in the rate-limit test push over the limit (calls 26-27 → 429).
+process.env.LOGIN_RATE_LIMIT_MAX = '25';
+process.env.LOGIN_RATE_LIMIT_WINDOW_MS = '60000';

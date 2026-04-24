@@ -11,6 +11,12 @@ const COOKIE_OPTIONS = {
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
+const CLEAR_COOKIE_OPTIONS = {
+  httpOnly: true,
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+  secure: process.env.NODE_ENV === 'production',
+};
+
 const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -39,7 +45,7 @@ const loginAdmin = async (req, res) => {
 };
 
 const logoutAdmin = (req, res) => {
-  res.clearCookie('adminToken', COOKIE_OPTIONS);
+  res.clearCookie('adminToken', CLEAR_COOKIE_OPTIONS);
   return res.status(200).json({ success: true, message: 'Logged out' });
 };
 

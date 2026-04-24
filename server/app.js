@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const mongoose = require("mongoose");
 
+require("./config/env"); // fail fast on missing required env vars
 const connectDB = require("./config/db");
 const projectRoutes = require("./routes/projectRoutes");
 const pricingRoutes = require("./routes/pricingRoutes");
@@ -27,74 +29,28 @@ if (allowedOrigins.length === 0) {
   allowedOrigins.push("http://localhost:5173");
 }
 
-app.use((req, res, next) => {
-  const requestOrigin = req.headers.origin;
-  const isAllowedOrigin = requestOrigin && allowedOrigins.includes(requestOrigin);
-  const originalSetHeader = res.setHeader.bind(res);
-
-  res.setHeader = (name, value) => {
-    if (
-      typeof name === "string" &&
-      name.toLowerCase() === "access-control-allow-origin" &&
-      value === "*" &&
-      isAllowedOrigin
-    ) {
-      return originalSetHeader(name, requestOrigin);
-    }
-
-    if (
-      typeof name === "string" &&
-      name.toLowerCase() === "access-control-allow-credentials"
-    ) {
-      return originalSetHeader(name, "true");
-    }
-
-    return originalSetHeader(name, value);
-  };
-
-  if (isAllowedOrigin) {
-    res.setHeader("Access-Control-Allow-Origin", requestOrigin);
-  }
-
-  const currentVaryHeader = res.getHeader("Vary");
-  res.setHeader(
-    "Vary",
-    currentVaryHeader ? `${currentVaryHeader}, Origin` : "Origin"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-
-  if (req.method === "OPTIONS") {
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET,POST,PUT,PATCH,DELETE,OPTIONS"
-    );
-
-    const requestedHeaders = req.headers["access-control-request-headers"];
-
-    if (requestedHeaders) {
-      res.setHeader("Access-Control-Allow-Headers", requestedHeaders);
-    }
-
-    return res.sendStatus(204);
-  }
-
-  return next();
-});
-
-connectDB();
-
 app.use(
   cors({
-    origin: "*",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (server-to-server, curl, health checks)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin || true);
+      } else {
+        callback(null, false);
+      }
+    },
+    credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
+connectDB();
+
 app.use(cookieParser());
 app.use(express.json());
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   return res.json({
     status: "ok",
     timeStamp: new Date(),
@@ -108,12 +64,14 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/admin", adminRoutes);
 
-app.get("/api/health", async (req, res) => {
-  return res.json({ message: "ok" });
+app.get("/api/health", (req, res) => {
+  const dbState = mongoose.connection.readyState;
+  return res.json({ message: dbState === 1 ? "ok" : "db_disconnected", db: dbState });
 });
 
-app.get("/health", async (req, res) => {
-  return res.json({ message: "ok" });
+app.get("/health", (req, res) => {
+  const dbState = mongoose.connection.readyState;
+  return res.json({ message: dbState === 1 ? "ok" : "db_disconnected", db: dbState });
 });
 
 // Centralized error handler
