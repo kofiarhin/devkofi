@@ -2,11 +2,11 @@
   "program": {
     "name": "DevKofi AI-Powered MERN Stack Mentorship",
     "slug": "devkofi-ai-powered-mern-mentorship",
-    "subtitle": "Engineering-first mentorship to help you ship production MERN apps with AI integrated across planning, coding, debugging, testing, and deployment.",
+    "subtitle": "Choose the level of engineering support you need to plan, build, debug, test, and ship production-grade MERN applications with practical AI workflows.",
     "promise": "Learn how real engineers use AI as a multiplier while keeping architecture, code quality, and shipping discipline high.",
     "guarantee": {
-      "title": "14-day confidence guarantee",
-      "details": "If it’s not the right fit in your first 14 days, you can request a refund."
+      "title": "14-day fit guarantee",
+      "details": "If the program is not the right fit within your first 14 days, you can request a refund."
     }
   },
   "ui": {
@@ -19,7 +19,7 @@
       "id": "plan_standard",
       "slug": "standard",
       "title": "Standard",
-      "tagline": "Structured mentorship for consistent AI-powered MERN execution.",
+      "tagline": "Structured guidance for developers building real MERN projects with AI-assisted workflows.",
       "badge": null,
       "pricing": {
         "amount": 900,
@@ -38,11 +38,11 @@
         "type": "enroll",
         "route": "/join/standard"
       },
-      "summary": "Build production-grade MERN projects while learning practical AI workflow integration.",
+      "summary": "Best for developers who want weekly guidance, practical accountability, and a clear path to shipping production-ready MERN projects with AI integrated into the workflow.",
       "whoItsFor": [
-        "Developers transitioning from tutorials to shipping real apps",
-        "Junior-to-mid engineers needing workflow discipline",
-        "Founders building product MVPs with MERN"
+        "Developers building serious portfolio projects",
+        "Junior-to-mid engineers improving full-stack execution",
+        "Builders who need structure, direction, and accountability"
       ],
       "outcomes": [
         "Plan features and scope work with AI support",
@@ -51,8 +51,9 @@
       ],
       "includes": [
         "Weekly mentorship guidance",
-        "AI workflow training for planning → shipping",
-        "Project-based path with production constraints",
+        "AI workflow training from planning to shipping",
+        "Project-based roadmap with real production constraints",
+        "Code review support for key milestones",
         "Community support and accountability check-ins"
       ],
       "accountability": {
@@ -73,7 +74,7 @@
       },
       "applicationRequired": true,
       "onboardingRequired": true,
-      "recommendedFor": "Developers who need structure and practical execution support",
+      "recommendedFor": "Developers who want structure, accountability, and practical AI-powered MERN execution",
       "deliveryFormat": "Mentorship + async support",
       "aiWorkflowCoverage": "Core",
       "reviewLevel": "Guided"
@@ -82,7 +83,7 @@
       "id": "plan_pro",
       "slug": "pro",
       "title": "Pro",
-      "tagline": "High-accountability mentorship with deeper code and architecture feedback.",
+      "tagline": "High-accountability engineering support for builders shipping serious apps faster.",
       "badge": "Most Popular",
       "pricing": {
         "amount": 1800,
@@ -101,11 +102,11 @@
         "type": "enroll",
         "route": "/join/pro"
       },
-      "summary": "Everything in Standard plus faster support, deeper review loops, and direct architecture mentoring.",
+      "summary": "Best for builders who want deeper technical review, faster feedback loops, architecture support, and closer guidance while shipping a serious product or advanced portfolio project.",
       "whoItsFor": [
         "Engineers shipping serious portfolio or startup work",
-        "Developers who need strong external accountability",
-        "Builders preparing for technical interviews or product launch"
+        "Developers preparing for technical interviews or product launches",
+        "Builders who want stronger external accountability"
       ],
       "outcomes": [
         "Ship faster with fewer regressions",
@@ -116,7 +117,9 @@
         "Everything in Standard",
         "Deeper code reviews and refactor feedback",
         "Architecture decision support",
-        "Priority support and tighter accountability cadence"
+        "Priority feedback and tighter accountability cadence",
+        "Launch, deployment, and debugging support",
+        "Direct support for production-level implementation decisions"
       ],
       "accountability": {
         "level": "high-touch",
@@ -136,7 +139,7 @@
       },
       "applicationRequired": true,
       "onboardingRequired": true,
-      "recommendedFor": "Developers and founders who need high-accountability shipping support",
+      "recommendedFor": "Developers and founders who want deeper review, faster feedback, and production-level support",
       "deliveryFormat": "Direct mentorship + faster feedback",
       "aiWorkflowCoverage": "Advanced",
       "reviewLevel": "Deep"
@@ -145,7 +148,7 @@
       "id": "plan_team",
       "slug": "team",
       "title": "Team / Enterprise",
-      "tagline": "AI-powered MERN workflow training for teams shipping production software.",
+      "tagline": "Practical AI-assisted engineering workflow training for teams.",
       "badge": null,
       "pricing": {
         "amount": 5000,
@@ -164,11 +167,11 @@
         "type": "request",
         "route": "/enterprise"
       },
-      "summary": "Upskill your team with practical AI-enhanced MERN engineering systems and delivery discipline.",
+      "summary": "Best for teams that want practical AI-assisted engineering workflows, shared development standards, and implementation support across real projects.",
       "whoItsFor": [
         "Startup teams shipping features weekly",
-        "Teams needing better code review and debugging practices",
-        "Engineering teams adopting AI safely"
+        "Engineering teams adopting AI-assisted workflows",
+        "Teams needing stronger planning, review, and delivery systems"
       ],
       "outcomes": [
         "Higher code quality and review standards",
@@ -177,9 +180,11 @@
       ],
       "includes": [
         "Discovery and skill-gap assessment",
-        "Team workflow coaching and standards",
+        "Team workflow coaching and engineering standards",
         "Practical AI-assisted planning and delivery sessions",
-        "Implementation support for team-specific roadmaps"
+        "Implementation support for team-specific roadmaps",
+        "Code review systems and delivery process improvements",
+        "Custom training for Claude Code, Codex, and agentic workflows"
       ],
       "accountability": {
         "level": "enterprise",
@@ -199,7 +204,7 @@
       },
       "applicationRequired": true,
       "onboardingRequired": false,
-      "recommendedFor": "Teams that want better engineering output with AI-enabled workflows",
+      "recommendedFor": "Teams that want practical AI-assisted engineering systems and stronger delivery discipline",
       "deliveryFormat": "Team workshop + ongoing advisory",
       "aiWorkflowCoverage": "Team-wide",
       "reviewLevel": "Org"

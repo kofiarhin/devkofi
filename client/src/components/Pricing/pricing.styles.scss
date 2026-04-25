@@ -85,17 +85,12 @@ $text-muted: #71717a;
   line-height: 1.4;
 }
 
-// ── Layout: Asymmetric ──────────────────────────────────────────────────
+// ── Layout ───────────────────────────────────────────────────────────────
 .pricing-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.25rem;
-}
-
-.pricing-supporting {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
+  align-items: stretch;
 }
 
 // ── Card ─────────────────────────────────────────────────────────────────
@@ -122,8 +117,12 @@ $text-muted: #71717a;
 }
 
 .pricing-card.is-featured {
-  border-color: rgba($primary, 0.2);
-  background: rgba($primary, 0.02);
+  border-color: rgba($primary, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba($primary, 0.055),
+    rgba(255, 255, 255, 0.025)
+  );
   box-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
@@ -185,9 +184,9 @@ $text-muted: #71717a;
 
 .card-description {
   margin: 0;
-  color: #a1a1aa;
-  line-height: 1.6;
-  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.65;
+  font-size: 0.92rem;
 }
 
 // ── Features list ────────────────────────────────────────────────────────
@@ -205,7 +204,7 @@ $text-muted: #71717a;
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  color: #d4d4d8;
+  color: rgba(255, 255, 255, 0.82);
   font-size: 0.88rem;
   line-height: 1.5;
 
@@ -339,7 +338,7 @@ $text-muted: #71717a;
 .card-note {
   margin: 0.75rem 0 0;
   font-size: 0.72rem;
-  color: $text-muted;
+  color: rgba(255, 255, 255, 0.58);
   text-align: center;
 }
 
@@ -457,28 +456,18 @@ $text-muted: #71717a;
 
 // ── Responsive ───────────────────────────────────────────────────────────
 @media (min-width: 768px) {
-  .pricing-skeleton-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .pricing-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .pricing-supporting {
+  .pricing-skeleton-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1180px) {
   .pricing-layout {
-    grid-template-columns: 1.2fr 0.8fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
-    align-items: start;
-  }
-
-  .pricing-supporting {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .pricing-card.is-featured {
-    padding: 2.25rem;
   }
 }
