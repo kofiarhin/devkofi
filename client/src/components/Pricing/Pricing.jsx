@@ -97,10 +97,7 @@ const Pricing = () => {
     }));
   }, [pricing]);
 
-  const featuredPlan = plans.find((p) => p.isPopular);
-  const otherPlans = plans.filter((p) => !p.isPopular);
-
-  const headerTitle = "Mentorship Plans";
+  const headerTitle = "Choose Your AI Engineering Support Level";
   const headerSubtitle =
     pricing?.program?.subtitle ||
     "Choose your mentorship depth and apply to start building with AI-powered MERN workflows.";
@@ -113,7 +110,7 @@ const Pricing = () => {
     const features = Array.isArray(plan?.includes) ? plan.includes : [];
 
     const ctaLabel = plan?.cta?.label || "Get Started";
-    const ctaRoute = "/contact";
+    const ctaRoute = plan?.cta?.route || "/contact";
 
     const cardClass = [
       "pricing-card",
@@ -177,7 +174,7 @@ const Pricing = () => {
           ))}
         </ul>
 
-        {isFeatured && whoItsFor.length > 0 && (
+        {whoItsFor.length > 0 && (
           <div className="card-who">
             <p className="card-who__label">Who it's for</p>
             <ul className="card-who__list">
@@ -292,10 +289,7 @@ const Pricing = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
         >
-          {featuredPlan && renderCard(featuredPlan, true)}
-          <div className="pricing-supporting">
-            {otherPlans.map((plan) => renderCard(plan))}
-          </div>
+          {plans.map((plan) => renderCard(plan, plan.isPopular))}
         </motion.div>
       )}
 
