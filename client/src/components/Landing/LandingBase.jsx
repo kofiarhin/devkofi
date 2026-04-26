@@ -41,21 +41,31 @@ const imageVariants = {
 };
 
 const STATS = [
-  { icon: StackSimple, value: "12+", label: "Production apps shipped" },
-  { icon: Star, value: "5+", label: "Years experience" },
-  { icon: Users, value: "AI", label: "Workflow expertise" },
+  { icon: StackSimple, value: "12+", label: "Apps shipped" },
+  { icon: Star, value: "5+", label: "Years mentoring" },
+  { icon: Users, value: "AI", label: "Engineering workflow" },
 ];
 
 const HERO_ROTATING_PHRASES = [
-  "Claude Code",
-  "Codex",
   "AI Agents",
-  "Code Review",
-  "Automation",
+  "Claude Code",
+  "Codex Workflows",
+  "Production AI",
 ];
 
 const LONGEST_HERO_PHRASE = HERO_ROTATING_PHRASES.reduce((longest, phrase) =>
   phrase.length > longest.length ? phrase : longest,
+);
+
+const HERO_DESCRIPTION_PHRASES = [
+  "Learn AI engineering through production-focused mentorship.",
+  "Turn prompts into specs, architecture, tests, and working systems.",
+  "Build with Claude Code, Codex, and agents inside a real workflow.",
+  "Ship MERN apps with validation, deployment, and code review built in.",
+];
+
+const LONGEST_HERO_DESCRIPTION = HERO_DESCRIPTION_PHRASES.reduce(
+  (longest, phrase) => (phrase.length > longest.length ? phrase : longest),
 );
 
 const HeroRotatingText = () => {
@@ -84,6 +94,40 @@ const HeroRotatingText = () => {
           transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
         >
           {HERO_ROTATING_PHRASES[currentIndex]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+};
+
+const HeroRotatingDescription = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setCurrentIndex(
+        (index) => (index + 1) % HERO_DESCRIPTION_PHRASES.length,
+      );
+    }, 3600);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  return (
+    <span className="hero-rotating-description">
+      <span className="hero-rotating-description__measure">
+        {LONGEST_HERO_DESCRIPTION}
+      </span>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={HERO_DESCRIPTION_PHRASES[currentIndex]}
+          className="hero-rotating-description__item"
+          initial={{ opacity: 0.18, y: "0.7em" }}
+          animate={{ opacity: 1, y: "0em" }}
+          exit={{ opacity: 0.18, y: "-0.7em" }}
+          transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {HERO_DESCRIPTION_PHRASES[currentIndex]}
         </motion.span>
       </AnimatePresence>
     </span>
@@ -120,21 +164,25 @@ const Landing = () => {
           </motion.div>
 
           <motion.h1 className="hero-title" variants={itemVariants}>
-            <span className="hero-title-line">Build Full-Stack Apps</span>
-            <span className="hero-title-line hero-title-line--rotating">
-              <span className="hero-title-prefix">with</span>
+            <span className="hero-title-line">AI Engineering</span>
+            <span className="hero-title-line">Mentorship</span>
+            <span className="hero-title-line hero-title-line--rotating hero-title-line--accent">
+              <span className="hero-title-prefix">for</span>
               <HeroRotatingText />
-            </span>
-            <span className="hero-title-line hero-title-line--accent">
-              Agentic AI Workflows
             </span>
           </motion.h1>
 
           <motion.p className="hero-description" variants={itemVariants}>
-            I mentor developers to ship real MERN apps by layering Claude Code,
-            Codex, AI agents, code review, testing, automation, and deployment
-            into one production-ready workflow.
+            <HeroRotatingDescription />
           </motion.p>
+
+          <motion.div className="hero-proof" variants={itemVariants}>
+            <span>Spec</span>
+            <span>Architecture</span>
+            <span>Agent Build</span>
+            <span>Review</span>
+            <span>Deploy</span>
+          </motion.div>
 
           <motion.div className="cta-group" variants={itemVariants}>
             <Link to="/contact" className="btn-primary">
@@ -148,7 +196,8 @@ const Landing = () => {
           </motion.div>
 
           <motion.p className="hero-supporting" variants={itemVariants}>
-            Learn the exact workflow I use to build and ship real products.
+            A structured mentorship path for developers who want to engineer
+            production software with AI tools, not just prompt for snippets.
           </motion.p>
 
           <motion.div className="hero-stats" variants={itemVariants}>

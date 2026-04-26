@@ -1,43 +1,44 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "./about.styles.scss";
 import { profileImage } from "../../constants/constants";
 
 const trustStats = [
-  { label: "Mentees Supported", value: "50+" },
-  { label: "Projects Shipped", value: "30+" },
-  { label: "Years Building", value: "7+" },
+  { label: "Apps Shipped", value: "12+" },
+  { label: "Years Mentoring", value: "5+" },
+  { label: "Workflow Focus", value: "AI" },
 ];
 
 const credibilityCards = [
   {
-    title: "Full-Stack Product Experience",
-    body: "From feature scoping to production deployment, I coach with real product constraints in mind.",
+    title: "Production AI Engineering",
+    body: "Learn how to turn prompts into specs, architecture, tests, and working software without losing technical judgment.",
   },
   {
-    title: "MERN + AI Workflows",
-    body: "Build modern MERN apps and use AI as a force multiplier for speed, quality, and debugging.",
+    title: "Claude Code and Codex Workflows",
+    body: "Use modern coding agents inside a disciplined build loop for planning, implementation, debugging, and review.",
   },
   {
-    title: "Hands-On Mentorship",
-    body: "We work through code reviews, architecture decisions, test strategy, and production readiness.",
+    title: "MERN Systems That Ship",
+    body: "Build React, Node, Express, and MongoDB projects with validation, API structure, deployment, and maintainability in mind.",
   },
   {
-    title: "Outcome-Focused Delivery",
-    body: "The goal is simple: ship software that works in production and grows your engineering confidence.",
+    title: "Code Review as a Habit",
+    body: "Develop the review instincts to question generated code, reduce rework, and make stronger engineering decisions.",
   },
 ];
 
 const processSteps = [
-  "Scope clear product goals and delivery milestones",
-  "Build with guided implementation and review loops",
-  "Refactor, test, and document meaningful decisions",
-  "Deploy, monitor, and iterate based on feedback",
+  "Define the product goal, constraints, and acceptance criteria",
+  "Convert the idea into a practical spec and implementation plan",
+  "Build with Claude Code, Codex, and agent-assisted review loops",
+  "Test, deploy, and tighten the system based on real feedback",
 ];
 
 const outcomes = [
-  "From tutorial dependency to independent product builder",
-  "From local demos to deployment-ready software",
-  "From shallow AI use to disciplined AI engineering workflows",
+  "From prompt experiments to repeatable AI engineering workflows",
+  "From generated snippets to architecture you can explain and maintain",
+  "From local demos to production-ready MERN applications",
 ];
 
 const AboutMe = () => {
@@ -75,26 +76,26 @@ const AboutMe = () => {
             <img
               className="about-page__profile-img"
               src={profileImage}
-              alt="Kofi, mentor and full-stack engineer"
+              alt="Kofi, AI engineering mentor and full-stack engineer"
               loading="lazy"
             />
           </div>
 
           <div className="about-page__hero-content">
             <p className="about-page__eyebrow">About DevKofi</p>
-            <h2 className="about-page__title">I Help Developers Build and Ship Real Products</h2>
+            <h2 className="about-page__title">Mentorship for Developers Building With AI Agents</h2>
             <p className="about-page__lead">
-              I’m <strong>Kofi</strong> — a full-stack engineer and mentorship founder helping developers become
-              engineering-first builders with practical AI workflows.
+              I am <strong>Kofi</strong>, a senior MERN engineer helping developers use Claude Code,
+              Codex, and agentic workflows to plan, build, review, and ship production software.
             </p>
 
             <div className="about-page__cta-group">
-              <a className="about-page__btn about-page__btn--primary" href="/contact">
-                Book a Mentorship Call
-              </a>
-              <a className="about-page__btn about-page__btn--secondary" href="/program">
-                View Program
-              </a>
+              <Link className="about-page__btn about-page__btn--primary" to="/contact">
+                Start Mentorship
+              </Link>
+              <Link className="about-page__btn about-page__btn--secondary" to="/projects">
+                See Workflow
+              </Link>
             </div>
 
             <ul className="about-page__trust-row" aria-label="Trust metrics">
@@ -122,9 +123,9 @@ const AboutMe = () => {
         <section className="about-page__section" id="about-philosophy">
           <h3 className="about-page__section-title">My Mentorship Philosophy</h3>
           <p>
-            I teach with an <span className="about-page__highlight">engineering-first, AI-enhanced</span> mindset:
-            use AI to accelerate delivery while keeping architecture quality, debugging discipline, and technical
-            judgment at the center.
+            I teach an <span className="about-page__highlight">engineering-first, AI-assisted</span> approach:
+            use AI to move faster, but keep specs, architecture, debugging discipline, tests, and
+            production judgment at the center of every decision.
           </p>
         </section>
 
@@ -138,7 +139,7 @@ const AboutMe = () => {
         </section>
 
         <section className="about-page__section" id="about-outcomes">
-          <h3 className="about-page__section-title">Transformation You Can Expect</h3>
+          <h3 className="about-page__section-title">What You Learn to Do</h3>
           <ul className="about-page__outcomes">
             {outcomes.map((outcome) => (
               <li key={outcome}>{outcome}</li>
@@ -149,28 +150,29 @@ const AboutMe = () => {
         <section className="about-page__section about-page__story" aria-label="Personal story">
           <h3 className="about-page__section-title">Why I Mentor</h3>
           <p>
-            I built DevKofi to help developers move beyond tutorials and start shipping real products with confidence.
+            I built DevKofi for developers who want more than AI-generated snippets. The goal is to
+            become the engineer who can guide the tool, evaluate the output, and own the system.
           </p>
           <p>
-            We focus on practical decision-making: scoping, clean architecture, code reviews, testing strategy, and
-            production deployment.
+            We work through the full delivery path: scoping, technical planning, agent-assisted builds,
+            code review, test strategy, deployment, and iteration.
           </p>
           <p>
-            If your goal is to become the builder who can take ideas from zero to shipped software, I can help you get
-            there.
+            If your goal is to build production MERN apps with AI as part of your engineering workflow,
+            this mentorship is designed for that.
           </p>
         </section>
 
         <section className="about-page__final-cta" id="about-cta" aria-label="Apply for mentorship">
-          <h3>Ready to Build Your Next Product the Right Way?</h3>
-          <p>Let’s turn your ideas into production-ready software with strong engineering habits.</p>
+          <h3>Ready to Build With AI Like an Engineer?</h3>
+          <p>Turn your ideas into shipped software with a structured spec, build, review, and deploy workflow.</p>
           <div className="about-page__cta-group">
-            <a className="about-page__btn about-page__btn--primary" href="/contact">
-              Apply for Mentorship
-            </a>
-            <a className="about-page__btn about-page__btn--secondary" href="/testimonials">
-              See Success Stories
-            </a>
+            <Link className="about-page__btn about-page__btn--primary" to="/contact">
+              Start Mentorship
+            </Link>
+            <Link className="about-page__btn about-page__btn--secondary" to="/projects">
+              See Workflow
+            </Link>
           </div>
         </section>
       </div>
