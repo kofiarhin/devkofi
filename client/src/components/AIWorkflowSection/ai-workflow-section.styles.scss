@@ -9,8 +9,8 @@ $border: rgba(255, 255, 255, 0.07);
 $text-muted: #71717a;
 
 .ai-workflow-section {
-  padding: 7rem 1.25rem 8rem;
-  max-width: 1200px;
+  padding: 7rem var(--layout-gutter) 8rem;
+  max-width: var(--layout-max-wide);
   margin: 0 auto;
   position: relative;
 
@@ -40,7 +40,7 @@ $text-muted: #71717a;
 
   &__intro {
     margin-bottom: 5rem;
-    max-width: 680px;
+    max-width: 760px;
   }
 
   // Eyebrow with animated line
@@ -71,7 +71,7 @@ $text-muted: #71717a;
 
   // Heading — word spans flow inline
   &__heading {
-    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    font-size: clamp(2.5rem, 4.6vw, 4.35rem);
     font-weight: 800;
     color: #fff;
     line-height: 1.12;
@@ -88,10 +88,11 @@ $text-muted: #71717a;
   }
 
   &__subheading {
-    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    font-size: clamp(1.05rem, 1.4vw, 1.18rem);
     color: $text-muted;
     line-height: 1.75;
     margin: 0;
+    max-width: 60ch;
   }
 }
 
@@ -101,8 +102,8 @@ $text-muted: #71717a;
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
-  padding: 2.75rem;
+  gap: 2.5rem;
+  padding: 3rem;
   background: $bg-card;
   border: 1px solid $border;
   border-radius: 1.25rem;
@@ -161,7 +162,7 @@ $text-muted: #71717a;
   }
 
   @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     align-items: center;
 
     &--reversed {
@@ -180,7 +181,7 @@ $text-muted: #71717a;
     flex-direction: column;
     position: relative;
     z-index: 1;
-    max-width: 560px;
+    max-width: 620px;
   }
 
   &__number {
@@ -200,20 +201,20 @@ $text-muted: #71717a;
   }
 
   &__title {
-    font-size: clamp(1.35rem, 2.35vw, 1.8rem);
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
     font-weight: 800;
     color: #fff;
     margin-bottom: 0.85rem;
     line-height: 1.22;
-    max-width: 18ch;
+    max-width: 21ch;
   }
 
   &__description {
-    font-size: clamp(1rem, 1.35vw, 1.08rem);
+    font-size: clamp(1.02rem, 1.2vw, 1.12rem);
     color: rgba(255, 255, 255, 0.88);
     margin-bottom: 1.5rem;
     line-height: 1.8;
-    max-width: 58ch;
+    max-width: 62ch;
   }
 
   // ─── Tags ─────────────────────────────────────────────────────────────────
@@ -287,20 +288,20 @@ $text-muted: #71717a;
 
 @media (min-width: 768px) {
   .ai-workflow-block {
-    padding: 3.25rem;
+    padding: 3.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .ai-workflow-block {
-    min-height: 380px;
+    min-height: 420px;
   }
 
   .ai-workflow-block__title {
-    max-width: 22ch;
+    max-width: 23ch;
   }
 
   .ai-workflow-block__description {
-    max-width: 60ch;
+    max-width: 64ch;
   }
 }

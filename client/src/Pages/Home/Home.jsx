@@ -6,9 +6,7 @@ import Pricing from "../../components/Pricing/Pricing";
 const Home = () => {
   return (
     <div id="home">
-      <div className="container">
-        <Landing />
-      </div>
+      <Landing />
 
       <AIWorkflowSection />
 

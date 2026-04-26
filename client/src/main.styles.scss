@@ -6,6 +6,9 @@
   --primary-color: #4caf50;
   --primary-accent: #7cff00;
   --main-color: #94ff2b;
+  --layout-max: 1400px;
+  --layout-max-wide: 1480px;
+  --layout-gutter: clamp(1.25rem, 2.4vw, 2.5rem);
 
   /* Backgrounds — no pure black */
   --bg-main: #09090b;
@@ -92,8 +95,7 @@ select {
 
 // layout
 .container {
-  width: 1200px;
-  max-width: 95%;
+  width: min(var(--layout-max), calc(100% - (var(--layout-gutter) * 2)));
   margin: 0 auto;
 }
 

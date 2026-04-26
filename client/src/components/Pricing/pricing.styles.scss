@@ -4,16 +4,16 @@ $text-muted: #71717a;
 
 // ── Section ──────────────────────────────────────────────────────────────
 .pricing-section {
-  padding: 6rem 1.25rem 7rem;
-  max-width: 1200px;
+  padding: 6rem var(--layout-gutter) 7rem;
+  max-width: var(--layout-max-wide);
   margin: 0 auto;
 }
 
 // ── Header ───────────────────────────────────────────────────────────────
 .pricing-header {
   text-align: left;
-  margin-bottom: 3.5rem;
-  max-width: 600px;
+  margin-bottom: 4rem;
+  max-width: 720px;
 }
 
 .pricing-eyebrow {
@@ -32,7 +32,7 @@ $text-muted: #71717a;
 }
 
 .pricing-main-title {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.05;
@@ -42,8 +42,8 @@ $text-muted: #71717a;
 
 .pricing-subtitle {
   margin: 0;
-  max-width: 520px;
-  font-size: 1.02rem;
+  max-width: 620px;
+  font-size: 1.08rem;
   line-height: 1.7;
   color: #a1a1aa;
 }
@@ -89,15 +89,20 @@ $text-muted: #71717a;
 .pricing-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
-  align-items: stretch;
+  gap: 1.5rem;
+}
+
+.pricing-supporting {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
 }
 
 // ── Card ─────────────────────────────────────────────────────────────────
 .pricing-card {
   position: relative;
   border-radius: 1.5rem;
-  padding: 1.75rem;
+  padding: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(4px);
@@ -105,13 +110,16 @@ $text-muted: #71717a;
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-4px);
     border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.35),
+    box-shadow:
+      0 20px 40px -15px rgba(0, 0, 0, 0.35),
       inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 }
@@ -123,12 +131,14 @@ $text-muted: #71717a;
     rgba($primary, 0.055),
     rgba(255, 255, 255, 0.025)
   );
-  box-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.4),
+  box-shadow:
+    0 16px 48px -12px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
   &:hover {
     border-color: rgba($primary, 0.3);
-    box-shadow: 0 24px 56px -12px rgba(0, 0, 0, 0.45),
+    box-shadow:
+      0 24px 56px -12px rgba(0, 0, 0, 0.45),
       inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 }
@@ -160,14 +170,14 @@ $text-muted: #71717a;
 
 .card-title {
   margin: 0 0 0.75rem 0;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: #f4f4f5;
   letter-spacing: -0.01em;
 }
 
 .card-price {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 900;
   letter-spacing: -0.03em;
   color: $primary;
@@ -184,9 +194,9 @@ $text-muted: #71717a;
 
 .card-description {
   margin: 0;
-  color: rgba(255, 255, 255, 0.82);
-  line-height: 1.65;
-  font-size: 0.92rem;
+  color: #a1a1aa;
+  line-height: 1.6;
+  font-size: 0.96rem;
 }
 
 // ── Features list ────────────────────────────────────────────────────────
@@ -204,8 +214,8 @@ $text-muted: #71717a;
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 0.88rem;
+  color: #d4d4d8;
+  font-size: 0.95rem;
   line-height: 1.5;
 
   .check-icon {
@@ -279,7 +289,10 @@ $text-muted: #71717a;
   background: rgba(255, 255, 255, 0.03);
   letter-spacing: 0.01em;
 
-  svg { color: $primary; flex-shrink: 0; }
+  svg {
+    color: $primary;
+    flex-shrink: 0;
+  }
 }
 
 // ── Buttons ──────────────────────────────────────────────────────────────
@@ -294,8 +307,12 @@ $text-muted: #71717a;
   font-size: 0.9rem;
   text-decoration: none;
   letter-spacing: 0.01em;
-  transition: transform 0.15s ease, opacity 0.15s ease,
-    background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .card-button:active {
@@ -320,11 +337,13 @@ $text-muted: #71717a;
   background: $primary;
   color: $bg-dark;
   border: none;
-  box-shadow: 0 4px 16px rgba($primary, 0.18),
+  box-shadow:
+    0 4px 16px rgba($primary, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.12);
 
   &:hover {
-    box-shadow: 0 8px 24px rgba($primary, 0.25),
+    box-shadow:
+      0 8px 24px rgba($primary, 0.25),
       inset 0 1px 0 rgba(255, 255, 255, 0.12);
     transform: translateY(-1px);
   }
@@ -355,12 +374,12 @@ $text-muted: #71717a;
 .pricing-skeleton-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .pricing-skeleton-card {
   border-radius: 1.5rem;
-  padding: 1.75rem;
+  padding: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.04);
   background: rgba(255, 255, 255, 0.02);
   display: flex;
@@ -413,6 +432,17 @@ $text-muted: #71717a;
   max-width: 600px;
 }
 
+@media (min-width: 1024px) {
+  .pricing-layout {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    align-items: stretch;
+  }
+
+  .pricing-supporting {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .pricing-state--error {
   padding: 1.75rem;
   border-radius: 1.25rem;
@@ -443,7 +473,9 @@ $text-muted: #71717a;
   font-weight: 700;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
 
   &:hover {
     background: rgba(255, 255, 255, 0.08);
