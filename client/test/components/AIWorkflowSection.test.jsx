@@ -1,56 +1,82 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { describe, it, expect } from "vitest";
+import { MemoryRouter } from "react-router-dom";
 import AIWorkflowSection from "../../src/components/AIWorkflowSection/AIWorkflowSection";
+
+const renderSection = () =>
+  render(
+    <MemoryRouter>
+      <AIWorkflowSection />
+    </MemoryRouter>
+  );
 
 describe("AIWorkflowSection", () => {
   it("renders the section", () => {
-    render(<AIWorkflowSection />);
+    renderSection();
     expect(
-      screen.getByRole("region", { name: /agentic ai workflows/i })
+      screen.getByRole("region", { name: /the agentic ai workflow i teach/i })
     ).toBeInTheDocument();
   });
 
   it("renders the main h2 heading", () => {
-    render(<AIWorkflowSection />);
+    renderSection();
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: /how we build with agentic ai workflows/i,
+        name: /the agentic ai workflow i teach/i,
       })
     ).toBeInTheDocument();
   });
 
   it("renders all 5 block headings", () => {
-    render(<AIWorkflowSection />);
+    renderSection();
     expect(
       screen.getByRole("heading", {
-        name: /ai coding mentorship with agentic workflows/i,
+        name: /build inside a real ai engineering workflow/i,
       })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /spec-driven development/i })
+      screen.getByRole("heading", { name: /ai-powered system design/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: /agentic coding with claude code/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /fix ai hallucinations/i })
+      screen.getByRole("heading", { name: /eliminate ai hallucinations/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /ship full-stack apps fast/i })
+      screen.getByRole("heading", { name: /ship full-stack applications faster/i })
     ).toBeInTheDocument();
   });
 
   it("renders key technology keywords", () => {
-    render(<AIWorkflowSection />);
+    renderSection();
     expect(screen.getAllByText(/claude code/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/codex/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/agentic workflows/i).length).toBeGreaterThan(0);
   });
 
+  it("renders section CTAs linking to contact", () => {
+    renderSection();
+    const labels = [
+      /start this workflow/i,
+      /plan my system/i,
+      /build with ai agents/i,
+      /make my code reliable/i,
+      /ship my full-stack app/i,
+    ];
+
+    labels.forEach((label) => {
+      expect(screen.getByRole("link", { name: label })).toHaveAttribute(
+        "href",
+        "/contact"
+      );
+    });
+  });
+
   it("renders images with alt text and lazy loading", () => {
-    render(<AIWorkflowSection />);
+    renderSection();
     const images = screen.getAllByRole("img");
     expect(images.length).toBe(5);
     images.forEach((img) => {

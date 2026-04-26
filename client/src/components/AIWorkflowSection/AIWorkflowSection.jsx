@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   workStation,
@@ -50,6 +51,7 @@ const BLOCKS = [
     description:
       "Work directly inside real AI-powered development environments to design, build, and ship production-ready applications using Claude Code, Codex, and agentic workflows.",
     tags: ["Claude Code", "Codex", "Agentic Workflows", "Real Builds"],
+    cta: "Start This Workflow →",
     image: workStation,
     alt: "Developer working at a workstation with AI tools open",
   },
@@ -59,6 +61,7 @@ const BLOCKS = [
     description:
       "Break ideas into clear specifications, system flows, and scalable architectures that can be executed efficiently with AI-assisted development.",
     tags: ["System Design", "Specs", "Architecture", "Scalable Systems"],
+    cta: "Plan My System →",
     image: codeImage,
     alt: "Code editor showing system design specs",
   },
@@ -68,6 +71,7 @@ const BLOCKS = [
     description:
       "Design, generate, debug, and iterate on real applications using Claude Code, Codex CLI, VS Code, and production-focused AI coding workflows.",
     tags: ["Claude Code", "Codex CLI", "VS Code", "AI Workflows", "Developer Automation"],
+    cta: "Build With AI Agents →",
     image: personCoding,
     alt: "Person coding with AI assistant in VS Code",
   },
@@ -77,6 +81,7 @@ const BLOCKS = [
     description:
       "Validate outputs, enforce accuracy, and apply structured prompting techniques to make AI-generated code reliable, testable, and production-ready.",
     tags: ["Hallucinations", "Verification", "Prompting", "Reliability"],
+    cta: "Make My Code Reliable →",
     image: AiImage,
     alt: "AI output verification and hallucination control",
   },
@@ -86,6 +91,7 @@ const BLOCKS = [
     description:
       "Build, test, deploy, and refine full-stack systems using automation, modern tooling, and production-grade workflows designed for speed and reliability.",
     tags: ["Testing", "Automation", "Deployment", "Full-Stack Systems"],
+    cta: "Ship My Full-Stack App →",
     image: defaultImage,
     alt: "Full-stack application deployment pipeline",
   },
@@ -174,6 +180,10 @@ const WorkflowBlock = ({ block, index }) => {
             </motion.li>
           ))}
         </motion.ul>
+
+        <Link to="/contact" className="ai-workflow-block__cta">
+          {block.cta}
+        </Link>
       </div>
 
       {block.image && <ParallaxImage src={block.image} alt={block.alt} />}
