@@ -23,7 +23,7 @@ import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 import AdminMessageDetails from "./Pages/AdminMessageDetails/AdminMessageDetails";
 import useAdminSession from "./hooks/queries/useAdminSession";
 
-const AppRoutes = () => {
+export const AppRoutes = () => {
   useAdminSession();
 
   return (
@@ -39,8 +39,10 @@ const AppRoutes = () => {
 
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route element={<AdminRoute />}>
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/messages/:messageId" element={<AdminMessageDetails />} />
+        <Route element={<AdminLayout />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/messages/:messageId" element={<AdminMessageDetails />} />
+        </Route>
       </Route>
     </Routes>
   );
@@ -55,6 +57,18 @@ const PublicLayout = () => {
       {isOpen && <SideNav />}
       <Outlet />
       <Footer />
+    </>
+  );
+};
+
+const AdminLayout = () => {
+  const { isOpen } = useSelector((state) => state.navigation);
+
+  return (
+    <>
+      <Header />
+      {isOpen && <SideNav />}
+      <Outlet />
     </>
   );
 };

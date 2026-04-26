@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import AdminDashboard from './AdminDashboard';
 import {
   exportNewsletterSubscribersCsv,
@@ -48,6 +49,45 @@ vi.mock('../../hooks/queries/useNewsletterSubscribers', () => ({
   }),
 }));
 
+vi.mock('../../hooks/queries/useAdminBookings', () => ({
+  default: () => ({
+    isLoading: false,
+    isError: false,
+    refetch: vi.fn(),
+    data: {
+      data: {
+        data: {
+          bookings: [],
+          page: 1,
+          total: 0,
+          limit: 20,
+        },
+      },
+    },
+  }),
+}));
+
+vi.mock('../../hooks/queries/useAdminBooking', () => ({
+  default: () => ({
+    isLoading: false,
+    isError: false,
+    refetch: vi.fn(),
+    data: null,
+  }),
+}));
+
+vi.mock('../../hooks/mutations/useUpdateBooking', () => ({
+  default: () => ({ mutateAsync: vi.fn(), isPending: false, error: null }),
+}));
+
+vi.mock('../../hooks/mutations/useCancelBooking', () => ({
+  default: () => ({ mutateAsync: vi.fn(), isPending: false, error: null }),
+}));
+
+vi.mock('../../hooks/mutations/useDeleteBooking', () => ({
+  default: () => ({ mutateAsync: vi.fn(), isPending: false, error: null }),
+}));
+
 vi.mock('../../services/adminService', () => ({
   exportNewsletterSubscribersCsv: vi.fn(),
   exportNewsletterSubscribersJson: vi.fn(),
@@ -84,7 +124,7 @@ describe('AdminDashboard newsletter export', () => {
     renderComponent();
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole('button', { name: 'Newsletter Subscribers' }));
+    await user.click(screen.getByRole('tab', { name: 'Newsletter Subscribers' }));
     await user.click(screen.getByRole('button', { name: 'Export' }));
     await user.click(screen.getByRole('menuitem', { name: 'Export CSV' }));
 
@@ -103,7 +143,7 @@ describe('AdminDashboard newsletter export', () => {
     renderComponent();
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole('button', { name: 'Newsletter Subscribers' }));
+    await user.click(screen.getByRole('tab', { name: 'Newsletter Subscribers' }));
     await user.click(screen.getByRole('button', { name: 'Export' }));
     await user.click(screen.getByRole('menuitem', { name: 'Export JSON' }));
 
@@ -119,7 +159,7 @@ describe('AdminDashboard newsletter export', () => {
     renderComponent();
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole('button', { name: 'Newsletter Subscribers' }));
+    await user.click(screen.getByRole('tab', { name: 'Newsletter Subscribers' }));
     await user.click(screen.getByRole('button', { name: 'Export' }));
     await user.click(screen.getByRole('menuitem', { name: 'Export CSV' }));
 
@@ -137,7 +177,7 @@ describe('AdminDashboard newsletter export', () => {
     renderComponent();
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole('button', { name: 'Newsletter Subscribers' }));
+    await user.click(screen.getByRole('tab', { name: 'Newsletter Subscribers' }));
     await user.click(screen.getByRole('button', { name: 'Export' }));
     await user.click(screen.getByRole('menuitem', { name: 'Export CSV' }));
 

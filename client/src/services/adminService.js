@@ -15,6 +15,21 @@ export const getContactMessages = (page = 1, limit = 20) =>
 export const getContactMessageById = (messageId) =>
   api.get(`/api/admin/contact-messages/${messageId}`);
 
+export const getBookings = (params = {}) =>
+  api.get('/api/admin/bookings', { params });
+
+export const getBookingById = (bookingId) =>
+  api.get(`/api/admin/bookings/${bookingId}`);
+
+export const updateBooking = (bookingId, payload) =>
+  api.patch(`/api/admin/bookings/${bookingId}`, payload);
+
+export const cancelBooking = (bookingId) =>
+  api.patch(`/api/admin/bookings/${bookingId}/cancel`);
+
+export const deleteBooking = (bookingId) =>
+  api.delete(`/api/admin/bookings/${bookingId}`);
+
 export const getNewsletterSubscribers = (page = 1, limit = 20) =>
   api.get('/api/admin/newsletter-subscribers', { params: { page, limit } });
 

@@ -197,7 +197,9 @@ describe("GET /api/admin/bookings", () => {
     });
 
     const cookie = await getAuthCookie();
-    const res = await request(app).get("/api/admin/bookings").set("Cookie", cookie);
+    const res = await request(app)
+      .get("/api/admin/bookings?search=booking-test-admin")
+      .set("Cookie", cookie);
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);

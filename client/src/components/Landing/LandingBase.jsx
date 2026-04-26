@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { profileImage } from "../../constants/constants";
 import "./landing.styles.scss";
 import { Link } from "react-router-dom";
@@ -162,13 +162,33 @@ const HeroRotatingDescription = () => {
 
 const Landing = () => {
   const heroRef = useRef(null);
+  const frameRef = useRef(null);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], [0, 24]);
-  const badgeY = useTransform(scrollYProgress, [0, 1], [0, -14]);
+  const imageY = useTransform(scrollYProgress, [0, 1], [0, 32]);
+  const badgeY = useTransform(scrollYProgress, [0, 1], [0, -18]);
+
+  // 3-D tilt tracking
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const tiltX = useSpring(useTransform(rawY, [-1, 1], [12, -12]), { stiffness: 180, damping: 28 });
+  const tiltY = useSpring(useTransform(rawX, [-1, 1], [-12, 12]), { stiffness: 180, damping: 28 });
+
+  const handleMouseMove = (e) => {
+    const rect = frameRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    rawX.set((e.clientX - rect.left) / rect.width * 2 - 1);
+    rawY.set((e.clientY - rect.top) / rect.height * 2 - 1);
+  };
+
+  const handleMouseLeave = () => {
+    rawX.set(0);
+    rawY.set(0);
+  };
 
   return (
     <section id="landing" ref={heroRef}>
@@ -239,56 +259,90 @@ const Landing = () => {
           animate="visible"
           style={{ y: imageY }}
         >
-          <div className="image-frame">
-            <motion.img
-              src={profileImage}
-              alt="DevKofi - Senior MERN Engineer"
-              initial={{ opacity: 0, scale: 1.06 }}
-              animate={{
-                opacity: 1,
-                scale: [1, 1.03, 1],
-                y: [0, -10, 0],
-              }}
-              transition={{
-                opacity: { duration: 0.7, delay: 0.35 },
-                scale: {
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.35,
-                },
-                y: {
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.35,
-                },
-              }}
-            />
-            <div className="frame-shine" aria-hidden="true" />
-            <div className="frame-border-glow" aria-hidden="true" />
-          </div>
-
+          {/* 3-D tilt wrapper */}
           <motion.div
-            className="experience-badge"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ ...spring, delay: 0.7 }}
-            whileHover={{ scale: 1.05 }}
-            style={{ y: badgeY }}
+            ref={frameRef}
+            className="image-frame-wrapper"
+            style={{ rotateX: tiltX, rotateY: tiltY, transformPerspective: 700 }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
           >
-            5+<span>Years</span>
+            <div className="image-frame">
+              <motion.img
+                src={profileImage}
+                alt="DevKofi - Senior MERN Engineer"
+                initial={{ opacity: 0, scale: 1.08 }}
+                animate={{
+                  opacity: 1,
+                  scale: [1, 1.04, 1],
+                  y: [0, -18, 0],
+                }}
+                transition={{
+                  opacity: { duration: 0.7, delay: 0.35 },
+                  scale: {
+                    duration: 9,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.35,
+                  },
+                  y: {
+                    duration: 9,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.35,
+                  },
+                }}
+              />
+              <div className="frame-shine" aria-hidden="true" />
+              <div className="frame-border-glow" aria-hidden="true" />
+            </div>
+
+            <motion.div
+              className="experience-badge"
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ ...spring, delay: 0.75 }}
+              style={{ y: badgeY }}
+            >
+              <motion.div
+                className="experience-badge__ring"
+                animate={{ scale: [1, 1.35, 1], opacity: [0.6, 0, 0.6] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut" }}
+                aria-hidden="true"
+              />
+              5+<span>Years</span>
+            </motion.div>
           </motion.div>
 
-          <div className="floating-tag floating-tag--top" aria-hidden="true">
+          <motion.div
+            className="floating-tag floating-tag--top"
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0, y: [0, -9, 0] }}
+            transition={{
+              opacity: { delay: 0.9, duration: 0.5 },
+              x: { delay: 0.9, duration: 0.5 },
+              y: { duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 },
+            }}
+            aria-hidden="true"
+          >
             <StackSimple size={14} weight="duotone" />
             MERN Stack
-          </div>
+          </motion.div>
 
-          <div className="floating-tag floating-tag--bottom" aria-hidden="true">
+          <motion.div
+            className="floating-tag floating-tag--bottom"
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0, y: [0, 9, 0] }}
+            transition={{
+              opacity: { delay: 1.05, duration: 0.5 },
+              x: { delay: 1.05, duration: 0.5 },
+              y: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.2 },
+            }}
+            aria-hidden="true"
+          >
             <Brain size={14} weight="duotone" />
             AI Workflow
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

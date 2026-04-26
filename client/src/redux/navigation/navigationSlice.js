@@ -11,8 +11,11 @@ export const navigationSlice = createSlice({
     toggleSideNav: (state) => {
       state.isOpen = !state.isOpen;
     },
+    closeSideNav: (state) => {
+      state.isOpen = false;
+    },
   },
 });
 
-export const { toggleSideNav } = navigationSlice.actions;
+export const { toggleSideNav, closeSideNav } = navigationSlice.actions;
 export default navigationSlice.reducer;

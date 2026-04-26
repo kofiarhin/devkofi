@@ -10,9 +10,10 @@ import {
   exportNewsletterSubscribersJson,
 } from '../../services/adminService';
 import downloadFile, { getFilenameFromDisposition } from '../../utils/downloadFile';
+import AdminBookingsTab from '../../components/AdminBookings/AdminBookingsTab';
 import s from './AdminDashboard.module.scss';
 
-const TABS = ['Contact Messages', 'Newsletter Subscribers'];
+const TABS = ['Bookings', 'Contact Messages', 'Newsletter Subscribers'];
 
 const Spinner = () => (
   <div className={s.spinnerWrap}>
@@ -229,12 +230,14 @@ const AdminDashboard = () => {
       </header>
 
       <main className={s.main}>
-        <div className={s.tabs}>
+        <div className={s.tabs} role="tablist" aria-label="Admin dashboard sections">
           {TABS.map((tab, i) => (
             <button
               key={tab}
               onClick={() => setActiveTab(i)}
               className={`${s.tab} ${activeTab === i ? s.active : ''}`}
+              role="tab"
+              aria-selected={activeTab === i}
             >
               {tab}
             </button>
@@ -242,7 +245,9 @@ const AdminDashboard = () => {
         </div>
 
         <div className={s.card}>
-          {activeTab === 0 ? <ContactMessagesTab /> : <NewsletterSubscribersTab />}
+          {activeTab === 0 && <AdminBookingsTab />}
+          {activeTab === 1 && <ContactMessagesTab />}
+          {activeTab === 2 && <NewsletterSubscribersTab />}
         </div>
       </main>
     </div>
