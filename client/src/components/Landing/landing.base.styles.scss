@@ -165,29 +165,38 @@ $text-muted: #71717a;
   }
 
   .hero-title {
-    font-size: clamp(2rem, 3.7vw, 3.75rem);
+    font-size: clamp(2.85rem, 5.2vw, 5.25rem);
     font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.035em;
+    line-height: 0.96;
+    letter-spacing: -0.04em;
     color: #f4f4f5;
-    margin-bottom: 1.05rem;
+    margin: 0 0 1.1rem;
+    max-width: 12ch;
 
     .hero-title-line {
       display: block;
 
+      &--primary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 0.14em;
+      }
+
       &--rotating {
         display: inline-flex;
         align-items: baseline;
-        gap: 0.16em;
+        gap: 0.13em;
         flex-wrap: wrap;
-      }
-
-      &--accent {
         background: linear-gradient(135deg, $primary 0%, #bef264 100%);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
       }
+    }
+
+    .hero-title-word {
+      display: inline-block;
+      will-change: transform, opacity;
     }
 
     .hero-title-prefix {
@@ -204,6 +213,7 @@ $text-muted: #71717a;
       font-family: "Outfit", sans-serif;
       letter-spacing: -0.02em;
       white-space: nowrap;
+      -webkit-text-fill-color: $primary;
 
       &__measure {
         display: block;
@@ -219,28 +229,30 @@ $text-muted: #71717a;
         left: 0;
         width: 100%;
         display: block;
+        color: $primary;
         white-space: nowrap;
         text-align: left;
+        -webkit-text-fill-color: $primary;
         will-change: transform, opacity;
       }
     }
   }
 
   .hero-description {
-    font-size: clamp(2.4rem, 4.4vw, 4.55rem);
-    line-height: 1.06;
-    letter-spacing: -0.035em;
-    color: #f4f4f5;
-    margin-bottom: 1.35rem;
-    max-width: 18ch;
-    min-height: calc(1em * 1.06);
+    font-size: clamp(1.32rem, 1.75vw, 1.75rem);
+    line-height: 1.42;
+    letter-spacing: 0;
+    color: #e4e4e7;
+    margin-bottom: 1.55rem;
+    max-width: 38ch;
+    min-height: calc(2em * 1.42);
   }
 
   .hero-rotating-description {
     position: relative;
     display: block;
     overflow: hidden;
-    max-width: 18ch;
+    max-width: 38ch;
     contain: layout paint;
     transform: translateZ(0);
     backface-visibility: hidden;
@@ -258,7 +270,7 @@ $text-muted: #71717a;
       left: 0;
       width: 100%;
       display: block;
-      color: #f4f4f5;
+      color: #e4e4e7;
       transform: translateZ(0);
       backface-visibility: hidden;
       will-change: transform, opacity;
@@ -517,66 +529,98 @@ $text-muted: #71717a;
 @media (max-width: 767px) {
   #landing {
     align-items: flex-start;
-    padding-top: 5rem;
-    padding-bottom: 4rem;
+    padding-top: 3.85rem;
+    padding-bottom: 4.5rem;
 
     .landing-grid {
-      gap: 2.75rem;
+      gap: 3.25rem;
     }
   }
 
   .landing-content {
     .hero-chip {
-      margin-bottom: 1.35rem;
+      max-width: 100%;
+      margin-bottom: 1.65rem;
+      padding: 0.5rem 0.78rem;
+      white-space: normal;
     }
 
     .hero-title {
-      font-size: clamp(2rem, 9vw, 2.72rem);
-      margin-bottom: 1.15rem;
-      max-width: 12ch;
+      font-size: clamp(2.72rem, 12.8vw, 4.05rem);
+      line-height: 1.01;
+      margin-bottom: 1.45rem;
+      max-width: min(100%, 12.8ch);
+
+      .hero-title-line--rotating {
+        width: 100%;
+        font-size: clamp(2.36rem, 9.85vw, 2.72rem);
+      }
+
+      .hero-rotating-text,
+      .hero-rotating-text__measure,
+      .hero-rotating-text__item {
+        max-width: 100%;
+        white-space: nowrap;
+      }
     }
 
     .hero-description {
-      font-size: clamp(2.3rem, 11vw, 3rem);
-      line-height: 1.08;
-      max-width: 11.5ch;
-      min-height: calc(1em * 1.08);
+      font-size: clamp(1.22rem, 5.45vw, 1.62rem);
+      line-height: 1.38;
+      max-width: min(100%, 29ch);
+      min-height: calc(3em * 1.38);
+      margin-bottom: 1.9rem;
     }
 
     .hero-rotating-description {
-      max-width: 11.5ch;
+      max-width: min(100%, 29ch);
     }
 
     .hero-proof {
-      gap: 0.45rem;
-      margin-bottom: 1.45rem;
+      gap: 0.58rem;
+      margin-bottom: 1.85rem;
+      max-width: 100%;
 
       span {
-        min-height: 1.8rem;
-        padding: 0.34rem 0.58rem;
-        font-size: 0.66rem;
+        min-height: 2rem;
+        padding: 0.38rem 0.62rem;
+        font-size: 0.68rem;
+        letter-spacing: 0.025em;
       }
     }
 
     .cta-group {
       width: 100%;
+      gap: 0.95rem;
+      margin-bottom: 1.7rem;
 
       .btn-primary,
       .btn-ghost {
         justify-content: center;
         flex: 1 1 100%;
+        min-height: 3.35rem;
+        padding-inline: 1rem;
       }
     }
 
     .hero-supporting {
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
+      max-width: min(100%, 34ch);
+      margin-bottom: 1.85rem;
+      font-size: 1rem;
+      line-height: 1.72;
+    }
+
+    .hero-stats {
+      gap: 0.9rem 1.35rem;
+      padding-top: 1.45rem;
     }
   }
 
   .landing-visual {
+    padding-inline: 0;
+
     .image-frame {
-      max-width: min(100%, 360px);
+      max-width: min(100%, 390px);
     }
 
     .floating-tag {
@@ -616,15 +660,15 @@ $text-muted: #71717a;
     max-width: 58rem;
 
     .hero-title {
-      max-width: 16ch;
+      max-width: 12ch;
     }
 
     .hero-description {
-      max-width: 18ch;
+      max-width: 38ch;
     }
 
     .hero-rotating-description {
-      max-width: 18ch;
+      max-width: 38ch;
     }
 
     .hero-proof {

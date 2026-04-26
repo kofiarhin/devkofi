@@ -50,7 +50,7 @@ const HERO_ROTATING_PHRASES = [
   "AI Agents",
   "Claude Code",
   "Codex Workflows",
-  "Production AI",
+  "Spec to Deploy",
 ];
 
 const LONGEST_HERO_PHRASE = HERO_ROTATING_PHRASES.reduce((longest, phrase) =>
@@ -88,9 +88,9 @@ const HeroRotatingText = () => {
         <motion.span
           key={HERO_ROTATING_PHRASES[currentIndex]}
           className="hero-rotating-text__item"
-          initial={{ opacity: 0, y: "0.32em" }}
+          initial={{ opacity: 0.42, y: "0.32em" }}
           animate={{ opacity: 1, y: "0em" }}
-          exit={{ opacity: 0, y: "-0.32em" }}
+          exit={{ opacity: 0.42, y: "-0.32em" }}
           transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
         >
           {HERO_ROTATING_PHRASES[currentIndex]}
@@ -99,6 +99,32 @@ const HeroRotatingText = () => {
     </span>
   );
 };
+
+const HeroAnimatedHeadline = () => (
+  <>
+    <span className="hero-title-line hero-title-line--primary">
+      {"Build production software".split(" ").map((word, index) => (
+        <motion.span
+          className="hero-title-word"
+          key={word}
+          initial={{ opacity: 0, y: "0.42em" }}
+          animate={{ opacity: 1, y: "0em" }}
+          transition={{
+            duration: 0.46,
+            delay: 0.2 + index * 0.07,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </span>
+    <span className="hero-title-line hero-title-line--rotating">
+      <span className="hero-title-prefix">with</span>
+      <HeroRotatingText />
+    </span>
+  </>
+);
 
 const HeroRotatingDescription = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -122,9 +148,9 @@ const HeroRotatingDescription = () => {
         <motion.span
           key={HERO_DESCRIPTION_PHRASES[currentIndex]}
           className="hero-rotating-description__item"
-          initial={{ opacity: 0.18, y: "0.7em" }}
+          initial={{ opacity: 0.34, y: "0.7em" }}
           animate={{ opacity: 1, y: "0em" }}
-          exit={{ opacity: 0.18, y: "-0.7em" }}
+          exit={{ opacity: 0.34, y: "-0.7em" }}
           transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
         >
           {HERO_DESCRIPTION_PHRASES[currentIndex]}
@@ -164,12 +190,7 @@ const Landing = () => {
           </motion.div>
 
           <motion.h1 className="hero-title" variants={itemVariants}>
-            <span className="hero-title-line">AI Engineering</span>
-            <span className="hero-title-line">Mentorship</span>
-            <span className="hero-title-line hero-title-line--rotating hero-title-line--accent">
-              <span className="hero-title-prefix">for</span>
-              <HeroRotatingText />
-            </span>
+            <HeroAnimatedHeadline />
           </motion.h1>
 
           <motion.p className="hero-description" variants={itemVariants}>
@@ -221,7 +242,7 @@ const Landing = () => {
           <div className="image-frame">
             <motion.img
               src={profileImage}
-              alt="DevKofi — Senior MERN Engineer"
+              alt="DevKofi - Senior MERN Engineer"
               initial={{ opacity: 0, scale: 1.06 }}
               animate={{
                 opacity: 1,

@@ -13,6 +13,7 @@ $text-muted: #71717a;
   max-width: var(--layout-max-wide);
   margin: 0 auto;
   position: relative;
+  overflow: hidden;
 
   // Ambient glow blob behind the whole section
   &::before {
@@ -329,6 +330,74 @@ $text-muted: #71717a;
     margin-top: -7.5%; // center the oversized image
     will-change: transform;
     transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+}
+
+@media (max-width: 767px) {
+  .ai-workflow-section {
+    padding-top: 5rem;
+    padding-bottom: 5.5rem;
+
+    &__intro {
+      margin-bottom: 3rem;
+    }
+
+    &__heading {
+      font-size: clamp(2.35rem, 10.8vw, 3.35rem);
+      line-height: 1.08;
+      margin-bottom: 1.35rem;
+      column-gap: 0.24em;
+    }
+
+    &__subheading {
+      font-size: 1.04rem;
+      line-height: 1.72;
+      max-width: 34ch;
+    }
+  }
+
+  .ai-workflow-block {
+    gap: 2rem;
+    padding: 1.35rem;
+    margin-bottom: 1.35rem;
+
+    &::before {
+      right: 0.65rem;
+      bottom: -1.25rem;
+      font-size: 7rem;
+    }
+
+    &__number {
+      margin-bottom: 1rem;
+    }
+
+    &__title {
+      max-width: 100%;
+      font-size: clamp(1.55rem, 7vw, 2.05rem);
+      line-height: 1.18;
+      margin-bottom: 1rem;
+    }
+
+    &__description {
+      max-width: 100%;
+      font-size: 1rem;
+      line-height: 1.72;
+      margin-bottom: 1.35rem;
+    }
+
+    &__tags {
+      gap: 0.58rem;
+    }
+
+    &__tag {
+      padding-inline: 0.74rem;
+    }
+
+    &__cta {
+      width: 100%;
+      min-height: 3.2rem;
+      margin-top: 1.5rem;
+    }
   }
 }
 
