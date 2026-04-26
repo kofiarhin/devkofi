@@ -349,6 +349,17 @@ $text-muted: #71717a;
     display: block;
     will-change: transform;
   }
+
+  @media (max-width: 1023px) {
+    width: min(400px, 90vw);
+    height: min(514px, calc(90vw * 562 / 437));
+    border-radius: 20px;
+  }
+
+  @media (max-width: 480px) {
+    width: 88vw;
+    height: calc(88vw * 562 / 437);
+  }
 }
 
 @keyframes frameGlow {
@@ -399,6 +410,14 @@ $text-muted: #71717a;
   position: absolute;
   top: -22px;
   right: -24px;
+
+  @media (max-width: 1023px) {
+    right: -8px;
+    top: -16px;
+    width: 64px;
+    height: 64px;
+    font-size: 1.05rem;
+  }
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -454,10 +473,18 @@ $text-muted: #71717a;
   &--top {
     top: 32px;
     left: -40px;
+
+    @media (max-width: 1023px) {
+      left: 16px;
+    }
   }
 
   &--bottom {
     bottom: 48px;
     left: -48px;
+
+    @media (max-width: 1023px) {
+      left: 16px;
+    }
   }
 }
