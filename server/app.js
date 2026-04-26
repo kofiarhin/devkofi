@@ -9,6 +9,7 @@ const projectRoutes = require("./routes/projectRoutes");
 const pricingRoutes = require("./routes/pricingRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
@@ -62,6 +63,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/bookings", bookingRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.get("/api/health", (req, res) => {

@@ -16,6 +16,7 @@ import SideNav from "./components/SideNav/SideNav";
 import Projects from "./Pages/Projects/Projects";
 import About from "./Pages/About/About";
 import Contact from "./Pages/Contact/Contact";
+import BookCall from "./Pages/BookCall/BookCall";
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 import AdminLogin from "./Pages/Login/AdminLogin";
 import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
@@ -32,6 +33,7 @@ const AppRoutes = () => {
         <Route path="/about" element={<About />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/book-a-call" element={<BookCall />} />
         <Route path="*" element={<NotFound />} />
       </Route>
 

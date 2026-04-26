@@ -2,6 +2,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const { loginAdmin, logoutAdmin, getAdminSession } = require('../controllers/adminAuthController');
 const {
+  getBookings,
   getContactMessages,
   getContactMessageById,
   getNewsletterSubscribers,
@@ -24,6 +25,7 @@ const loginLimiter = rateLimit({
 router.post('/auth/login', loginLimiter, loginAdmin);
 router.post('/auth/logout', logoutAdmin);
 router.get('/auth/me', getAdminSession);
+router.get('/bookings', requireAdminAuth, getBookings);
 router.get('/contact-messages', requireAdminAuth, getContactMessages);
 router.get('/contact-messages/:messageId', requireAdminAuth, getContactMessageById);
 router.get('/newsletter-subscribers', requireAdminAuth, getNewsletterSubscribers);

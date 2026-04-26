@@ -37,6 +37,11 @@ const SideNav = () => {
               Contact
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to="/book-a-call" onClick={closeNav} className={navLinkClass}>
+              Book a Call
+            </NavLink>
+          </li>
         </ul>
       </div>
     </div>

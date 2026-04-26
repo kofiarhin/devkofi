@@ -1,0 +1,69 @@
+.book-call-page {
+  background: #09090b;
+  color: #f8fafc;
+  min-height: 100dvh;
+  padding: 7rem 1.25rem 5rem;
+
+  &__intro,
+  &__layout {
+    margin: 0 auto;
+    max-width: 1240px;
+  }
+
+  &__intro {
+    margin-bottom: 2rem;
+    max-width: 1240px;
+
+    h1 {
+      font-size: clamp(2.1rem, 5vw, 4.4rem);
+      letter-spacing: 0;
+      line-height: 0.98;
+      margin: 0.45rem 0 0.85rem;
+      max-width: 780px;
+    }
+
+    p {
+      color: #d4d4d8;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      margin: 0;
+      max-width: 58ch;
+    }
+  }
+
+  &__eyebrow {
+    color: #86efac;
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  &__layout {
+    align-items: start;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1.75fr) minmax(320px, 0.85fr);
+  }
+}
+
+@media (max-width: 1040px) {
+  .book-call-page {
+    padding-top: 6rem;
+
+    &__layout {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 560px) {
+  .book-call-page {
+    padding: 5.5rem 0.85rem 3.5rem;
+
+    &__intro {
+      margin-bottom: 1.25rem;
+    }
+  }
+}

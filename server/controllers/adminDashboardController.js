@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Booking = require('../models/Booking');
 const ContactMessage = require('../models/ContactMessage');
 const NewsletterSubscriber = require('../models/NewsletterSubscriber');
 
@@ -27,6 +28,18 @@ const escapeCsvValue = (value) => {
   }
   return `"${normalized.replace(/"/g, '""')}"`;
 };
+
+const toBookingRow = (booking) => ({
+  id: booking._id.toString(),
+  name: booking.name,
+  email: booking.email,
+  company: booking.company,
+  message: booking.message,
+  slotStart: booking.slotStart.toISOString(),
+  slotEnd: booking.slotEnd.toISOString(),
+  status: booking.status,
+  createdAt: booking.createdAt.toISOString(),
+});
 
 const getContactMessages = async (req, res) => {
   const { page, limit, skip } = parsePagination(req.query);
@@ -81,6 +94,42 @@ const getNewsletterSubscribers = async (req, res) => {
   });
 };
 
+const getBookings = async (req, res) => {
+  const query = {};
+  const { status, from, to } = req.query;
+
+  if (status) {
+    query.status = status;
+  }
+
+  if (from || to) {
+    query.slotStart = {};
+
+    if (from) {
+      const fromDate = new Date(from);
+      if (Number.isNaN(fromDate.getTime())) {
+        return res.status(400).json({ success: false, error: 'Invalid from date' });
+      }
+      query.slotStart.$gte = fromDate;
+    }
+
+    if (to) {
+      const toDate = new Date(to);
+      if (Number.isNaN(toDate.getTime())) {
+        return res.status(400).json({ success: false, error: 'Invalid to date' });
+      }
+      query.slotStart.$lte = toDate;
+    }
+  }
+
+  const bookings = await Booking.find(query).sort({ slotStart: 1 });
+
+  return res.status(200).json({
+    success: true,
+    data: { bookings: bookings.map(toBookingRow) },
+  });
+};
+
 const exportNewsletterSubscribersJson = async (req, res) => {
   const subscribers = await NewsletterSubscriber.find().sort({ createdAt: -1 });
   const rows = toExportRows(subscribers);
@@ -108,6 +157,7 @@ const exportNewsletterSubscribersCsv = async (req, res) => {
 };
 
 module.exports = {
+  getBookings,
   getContactMessages,
   getContactMessageById,
   getNewsletterSubscribers,
