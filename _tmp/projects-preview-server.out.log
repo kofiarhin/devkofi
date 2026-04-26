@@ -1,0 +1,7 @@
+
+> fullstack-template-projects@1.0.0 start:server
+> node server/server.js
+
+[dotenv@17.2.3] injecting env (25) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+server started on port: 5010
+connected to database cluster0-shard-00-02.lj8un.mongodb.net

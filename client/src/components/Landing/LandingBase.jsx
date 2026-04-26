@@ -42,15 +42,15 @@ const imageVariants = {
 
 const STATS = [
   { icon: StackSimple, value: "12+", label: "Apps shipped" },
-  { icon: Star, value: "5+", label: "Years mentoring" },
-  { icon: Users, value: "AI", label: "Engineering workflow" },
+  { icon: Star, value: "5+", label: "Years guiding builds" },
+  { icon: Users, value: "AI", label: "Workflow-first training" },
 ];
 
 const HERO_ROTATING_PHRASES = [
-  "AI Agents",
+  "AI agents",
   "Claude Code",
-  "Codex Workflows",
-  "Spec to Deploy",
+  "Codex workflows",
+  "spec-to-deploy",
 ];
 
 const LONGEST_HERO_PHRASE = HERO_ROTATING_PHRASES.reduce((longest, phrase) =>
@@ -59,9 +59,9 @@ const LONGEST_HERO_PHRASE = HERO_ROTATING_PHRASES.reduce((longest, phrase) =>
 
 const HERO_DESCRIPTION_PHRASES = [
   "Learn AI engineering through production-focused mentorship.",
-  "Turn prompts into specs, architecture, tests, and working systems.",
-  "Build with Claude Code, Codex, and agents inside a real workflow.",
-  "Ship MERN apps with validation, deployment, and code review built in.",
+  "Turn rough ideas into specs, architecture, tests, and working systems.",
+  "Use Claude Code, Codex, and agents inside a disciplined build workflow.",
+  "Ship MERN apps with validation, review, and deployment built in.",
 ];
 
 const LONGEST_HERO_DESCRIPTION = HERO_DESCRIPTION_PHRASES.reduce(
@@ -186,7 +186,7 @@ const Landing = () => {
           <motion.div className="hero-chip" variants={itemVariants}>
             <span className="chip-dot" aria-hidden="true" />
             <Lightning size={12} weight="fill" aria-hidden="true" />
-            Agentic AI Coding Mentorship
+            AI Engineering Mentorship
           </motion.div>
 
           <motion.h1 className="hero-title" variants={itemVariants}>
@@ -200,25 +200,25 @@ const Landing = () => {
           <motion.div className="hero-proof" variants={itemVariants}>
             <span>Spec</span>
             <span>Architecture</span>
-            <span>Agent Build</span>
+            <span>AI Build</span>
             <span>Review</span>
             <span>Deploy</span>
           </motion.div>
 
           <motion.div className="cta-group" variants={itemVariants}>
             <Link to="/contact" className="btn-primary">
-              Start Mentorship
+              Start mentorship
               <ArrowRight size={18} weight="bold" />
             </Link>
             <Link to="/projects" className="btn-ghost">
-              See Workflow
+              See the work
               <ArrowRight size={16} weight="bold" />
             </Link>
           </motion.div>
 
           <motion.p className="hero-supporting" variants={itemVariants}>
-            A structured mentorship path for developers who want to engineer
-            production software with AI tools, not just prompt for snippets.
+            A structured path for developers who want to build production
+            software with AI tools while keeping engineering judgment in the loop.
           </motion.p>
 
           <motion.div className="hero-stats" variants={itemVariants}>

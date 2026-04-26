@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="footer-top">
           <div className="footer-brand">
             <h2 className="footer-logo">DevKofi</h2>
-            <p className="footer-tagline">Build, code, and scale.</p>
+            <p className="footer-tagline">AI engineering mentorship for builders.</p>
           </div>
 
           <div className="footer-links-grid">

@@ -10,7 +10,7 @@ import {
 } from "../../constants/constants";
 import "./ai-workflow-section.styles.scss";
 
-const HEADING_WORDS = "The Agentic AI Workflow I Teach".split(" ");
+const HEADING_WORDS = "The AI Engineering Workflow I Teach".split(" ");
 
 const wordVariants = {
   hidden: { opacity: 0, y: 22, filter: "blur(6px)" },
@@ -47,51 +47,51 @@ const tagVariants = {
 const BLOCKS = [
   {
     id: "01",
-    title: "Build Inside a Real AI Engineering Workflow for Production Apps",
+    title: "Build inside a real production workflow",
     description:
-      "Work directly inside real AI-powered development environments to design, build, and ship production-ready applications using Claude Code, Codex, and agentic workflows.",
-    tags: ["Claude Code", "Codex", "Agentic Workflows", "Real Builds"],
-    cta: "Start This Workflow →",
+      "Use Claude Code, Codex, and agent workflows to plan, implement, review, and ship real application features.",
+    tags: ["Claude Code", "Codex", "Agent Workflows", "Real Builds"],
+    cta: "Start the workflow",
     image: workStation,
     alt: "Developer working at a workstation with AI tools open",
   },
   {
     id: "02",
-    title: "AI-Powered System Design, Specs & Scalable Architecture",
+    title: "Turn ideas into specs and architecture",
     description:
-      "Break ideas into clear specifications, system flows, and scalable architectures that can be executed efficiently with AI-assisted development.",
+      "Break product ideas into clear requirements, system flows, and implementation plans before the first line of code.",
     tags: ["System Design", "Specs", "Architecture", "Scalable Systems"],
-    cta: "Plan My System →",
+    cta: "Plan my system",
     image: codeImage,
     alt: "Code editor showing system design specs",
   },
   {
     id: "03",
-    title: "Agentic Coding with Claude Code, Codex & VS Code to Ship AI Products Faster",
+    title: "Code with agents without losing control",
     description:
-      "Design, generate, debug, and iterate on real applications using Claude Code, Codex CLI, VS Code, and production-focused AI coding workflows.",
+      "Design, generate, debug, and iterate in VS Code with AI assistance while keeping decisions traceable and reviewable.",
     tags: ["Claude Code", "Codex CLI", "VS Code", "AI Workflows", "Developer Automation"],
-    cta: "Build With AI Agents →",
+    cta: "Build with AI agents",
     image: personCoding,
     alt: "Person coding with AI assistant in VS Code",
   },
   {
     id: "04",
-    title: "Eliminate AI Hallucinations and Ship Reliable Production Code",
+    title: "Verify outputs before they reach production",
     description:
-      "Validate outputs, enforce accuracy, and apply structured prompting techniques to make AI-generated code reliable, testable, and production-ready.",
+      "Validate AI-generated code with tests, review checklists, debugging discipline, and prompts that make assumptions visible.",
     tags: ["Hallucinations", "Verification", "Prompting", "Reliability"],
-    cta: "Make My Code Reliable →",
+    cta: "Make code reliable",
     image: AiImage,
     alt: "AI output verification and hallucination control",
   },
   {
     id: "05",
-    title: "Ship Full-Stack Applications Faster with AI Automation & Testing",
+    title: "Ship full-stack apps with tests and deployment",
     description:
-      "Build, test, deploy, and refine full-stack systems using automation, modern tooling, and production-grade workflows designed for speed and reliability.",
+      "Move from local build to deployed MERN application with automation, regression checks, and production-ready handoff habits.",
     tags: ["Testing", "Automation", "Deployment", "Full-Stack Systems"],
-    cta: "Ship My Full-Stack App →",
+    cta: "Ship my full-stack app",
     image: defaultImage,
     alt: "Full-stack application deployment pipeline",
   },
@@ -132,35 +132,17 @@ const WorkflowBlock = ({ block, index }) => {
       whileHover={{ y: -6, transition: { type: "spring", stiffness: 300, damping: 28 } }}
     >
       <div className="ai-workflow-block__content">
-        <motion.span
-          className="ai-workflow-block__number"
-          initial={{ opacity: 0, scale: 0.7 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ type: "spring", stiffness: 200, damping: 18, delay: 0.1 }}
-        >
+        <span className="ai-workflow-block__number">
           {block.id}
-        </motion.span>
+        </span>
 
-        <motion.h3
-          className="ai-workflow-block__title"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.15 }}
-        >
+        <h3 className="ai-workflow-block__title">
           {block.title}
-        </motion.h3>
+        </h3>
 
-        <motion.p
-          className="ai-workflow-block__description"
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.2 }}
-        >
+        <p className="ai-workflow-block__description">
           {block.description}
-        </motion.p>
+        </p>
 
         <motion.ul
           className="ai-workflow-block__tags"
@@ -213,7 +195,7 @@ const AIWorkflowSection = () => {
             transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
           />
           <span className="ai-workflow-section__eyebrow">
-            AI ENGINEERING MENTORSHIP
+            AI engineering mentorship
           </span>
         </motion.div>
 
@@ -240,8 +222,9 @@ const AIWorkflowSection = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.55, duration: 0.6, ease: "easeOut" }}
         >
-          A real-world mentorship system for building apps using Claude Code,
-          Codex, agents, specs, reviews, testing, and deployment.
+          The page starts with the promise. This is the operating system:
+          scope the work, guide the agents, verify the output, and deploy with
+          confidence.
         </motion.p>
       </div>
 

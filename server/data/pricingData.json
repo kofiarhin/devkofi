@@ -83,7 +83,7 @@
       "id": "plan_pro",
       "slug": "pro",
       "title": "Pro",
-      "tagline": "High-accountability engineering support for builders shipping serious apps faster.",
+      "tagline": "High-accountability engineering support for builders shipping serious apps with stronger review habits.",
       "badge": "Most Popular",
       "pricing": {
         "amount": 1800,
@@ -109,7 +109,7 @@
         "Builders who want stronger external accountability"
       ],
       "outcomes": [
-        "Ship faster with fewer regressions",
+        "Ship with fewer regressions",
         "Build review-ready repositories and architecture decisions",
         "Develop confidence in AI-assisted engineering judgment"
       ],

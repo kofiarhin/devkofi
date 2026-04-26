@@ -2,11 +2,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   ArrowUpRight,
+  Code,
   FadersHorizontal,
   Globe,
   GithubLogo,
   List,
   MagnifyingGlass,
+  SlidersHorizontal,
   SquaresFour,
   X,
 } from "@phosphor-icons/react";
@@ -22,6 +24,9 @@ import {
   normalizeStatus,
 } from "./projectUtils";
 import "./projects.styles.scss";
+
+const getProjectKey = (project) =>
+  project._id || project.id || project.slug || project.name;
 
 const ProjectDrawer = ({ project, onClose }) => {
   const drawerRef = useRef(null);
@@ -163,6 +168,32 @@ const ProjectDrawer = ({ project, onClose }) => {
   );
 };
 
+const ProjectsLoadingState = () => (
+  <section className="projects-loading" aria-label="Loading projects">
+    <div className="loading-feature">
+      <div className="skeleton-line skeleton-kicker" />
+      <div className="skeleton-line skeleton-title" />
+      <div className="skeleton-line" />
+      <div className="skeleton-line skeleton-short" />
+      <div className="skeleton-actions">
+        <span />
+        <span />
+      </div>
+    </div>
+    <div className="loading-card-list">
+      {[0, 1, 2].map((item) => (
+        <div className="loading-card" key={item}>
+          <div className="skeleton-media" />
+          <div className="skeleton-line skeleton-kicker" />
+          <div className="skeleton-line skeleton-card-title" />
+          <div className="skeleton-line" />
+          <div className="skeleton-line skeleton-short" />
+        </div>
+      ))}
+    </div>
+  </section>
+);
+
 const Projects = () => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -201,6 +232,21 @@ const Projects = () => {
     [filteredProjects],
   );
 
+  const projectStats = useMemo(() => {
+    const active = projects.filter(
+      (project) => normalizeStatus(project.status) === "active",
+    ).length;
+    const building = projects.filter(
+      (project) => normalizeStatus(project.status) === "building",
+    ).length;
+
+    return [
+      { label: "Live", value: active },
+      { label: "Building", value: building },
+      { label: "Total", value: projects.length },
+    ];
+  }, [projects]);
+
   const hasActiveFilters =
     statusFilter !== "All" ||
     search.trim() ||
@@ -222,15 +268,33 @@ const Projects = () => {
           className="projects-nav-trigger"
           onClick={() => dispatch(toggleSideNav())}
         >
-          <List size={16} /> Menu remove
+          <List size={17} /> Menu
         </button>
 
         <section className="projects-intro">
-          <h1>Projects</h1> <span>Triggered Again </span>
-          <p>Shipped builds across product, AI, and systems.</p>
+          <div>
+            <p className="projects-kicker">Selected builds</p>
+            <h1>Projects built to be used.</h1>
+          </div>
+          <p>
+            A mobile-first look at shipped products, work in progress, and
+            experiments across marketplaces, dashboards, AI tools, and real-time
+            apps.
+          </p>
+
+          {projects.length > 0 && (
+            <dl className="projects-stats" aria-label="Project summary">
+              {projectStats.map((stat) => (
+                <div key={stat.label}>
+                  <dt>{stat.label}</dt>
+                  <dd>{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </section>
 
-        {featuredProject && (
+        {!isLoading && !isError && featuredProject && (
           <section className="featured-project">
             <div>
               <p className="featured-label">Featured build</p>
@@ -249,7 +313,7 @@ const Projects = () => {
                   type="button"
                   onClick={() => setSelectedProject(featuredProject)}
                 >
-                  View Case Study
+                  View Case Study <ArrowUpRight size={15} />
                 </button>
                 {featuredProject.demoUrl && (
                   <a
@@ -262,10 +326,16 @@ const Projects = () => {
                 )}
               </div>
             </div>
-            <img
-              src={featuredProject.thumbnailUrl}
-              alt={`${featuredProject.name} preview`}
-            />
+            <figure>
+              <img
+                src={featuredProject.thumbnailUrl}
+                alt={`${featuredProject.name} preview`}
+              />
+              <figcaption>
+                <Code size={15} />
+                {(featuredProject.features || []).slice(0, 2).join(" / ")}
+              </figcaption>
+            </figure>
           </section>
         )}
 
@@ -284,6 +354,7 @@ const Projects = () => {
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
+            aria-label="Filter projects by status"
           >
             {STATUS_FILTERS.map((option) => (
               <option key={option}>{option}</option>
@@ -293,6 +364,7 @@ const Projects = () => {
           <select
             value={sortBy}
             onChange={(event) => setSortBy(event.target.value)}
+            aria-label="Sort projects"
           >
             {SORT_OPTIONS.map((option) => (
               <option key={option}>{option}</option>
@@ -315,7 +387,7 @@ const Projects = () => {
                   <SquaresFour size={14} />
                 ) : (
                   <List size={14} />
-                )}{" "}
+                )}
                 {mode}
               </button>
             ))}
@@ -325,8 +397,9 @@ const Projects = () => {
             type="button"
             className="filter-toggle"
             onClick={() => setShowFilters((open) => !open)}
+            aria-expanded={showFilters}
           >
-            <FadersHorizontal size={15} /> Filters
+            <FadersHorizontal size={15} /> Tags
           </button>
 
           {hasActiveFilters && (
@@ -339,6 +412,11 @@ const Projects = () => {
             </button>
           )}
         </section>
+
+        <div className="mobile-filter-cue" aria-hidden="true">
+          <SlidersHorizontal size={15} />
+          Use search, status, sort, or tags to shape the gallery.
+        </div>
 
         {showFilters && tags.length > 0 && (
           <section className="filters-drawer">
@@ -363,23 +441,31 @@ const Projects = () => {
 
         {hasActiveFilters && (
           <p className="active-summary">
-            {filteredProjects.length} result(s) • status: {statusFilter} • sort:{" "}
+            {filteredProjects.length} results / status: {statusFilter} / sort:{" "}
             {sortBy}
-            {activeTags.length > 0 ? ` • tags: ${activeTags.join(", ")}` : ""}
+            {activeTags.length > 0 ? ` / tags: ${activeTags.join(", ")}` : ""}
           </p>
         )}
 
-        {isLoading && <p className="projects-state">Loading projects…</p>}
+        {isLoading && <ProjectsLoadingState />}
+
         {isError && (
-          <p className="projects-state">
-            {error?.message || "Failed to load projects."}
-          </p>
+          <section className="projects-state projects-state-panel">
+            <p className="state-label">Could not load projects</p>
+            <h2>Something blocked the gallery.</h2>
+            <p>{error?.message || "Failed to load projects."}</p>
+          </section>
         )}
 
         {!isLoading && !isError && filteredProjects.length === 0 && (
-          <p className="projects-state">
-            No projects found. Try a different search or filter.
-          </p>
+          <section className="projects-state projects-state-panel">
+            <p className="state-label">No matches</p>
+            <h2>No project fits those filters.</h2>
+            <p>Clear a tag, change the status, or search for another build.</p>
+            <button type="button" onClick={resetFilters}>
+              Reset filters
+            </button>
+          </section>
         )}
 
         {!isLoading &&
@@ -387,24 +473,31 @@ const Projects = () => {
           filteredProjects.length > 0 &&
           viewMode === "Grid" && (
             <section className="projects-grid">
-              {filteredProjects.map((project) => (
+              {filteredProjects.map((project, index) => (
                 <article
-                  key={
-                    project._id || project.id || project.slug || project.name
-                  }
+                  key={getProjectKey(project)}
                   className="project-card"
+                  style={{ "--project-index": index }}
                 >
-                  <img
-                    src={project.thumbnailUrl}
-                    alt={`${project.name} cover`}
-                  />
-                  <p
-                    className={`status-chip ${normalizeStatus(project.status)}`}
-                  >
-                    {normalizeStatus(project.status)}
-                  </p>
-                  <h3>{project.name}</h3>
-                  <p>{project.shortDescription || project.description}</p>
+                  <div className="project-card-media">
+                    <img
+                      src={project.thumbnailUrl}
+                      alt={`${project.name} cover`}
+                      loading="lazy"
+                    />
+                    <p
+                      className={`status-chip ${normalizeStatus(project.status)}`}
+                    >
+                      {normalizeStatus(project.status)}
+                    </p>
+                  </div>
+                  <div className="project-card-body">
+                    <p className="project-count">
+                      {String(index + 1).padStart(2, "0")}
+                    </p>
+                    <h3>{project.name}</h3>
+                    <p>{project.shortDescription || project.description}</p>
+                  </div>
                   <div className="card-tags">
                     {(project.features || []).slice(0, 3).map((tag) => (
                       <span key={tag}>{tag}</span>
@@ -441,9 +534,7 @@ const Projects = () => {
                 const { problem, solution, outcome } = getCaseStudy(project);
                 return (
                   <article
-                    key={
-                      project._id || project.id || project.slug || project.name
-                    }
+                    key={getProjectKey(project)}
                     className="case-study-card"
                   >
                     <h3>{project.name}</h3>

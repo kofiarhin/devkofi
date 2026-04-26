@@ -97,10 +97,10 @@ const Pricing = () => {
     }));
   }, [pricing]);
 
-  const headerTitle = "Choose Your AI Engineering Support Level";
+  const headerTitle = "Choose the support level that matches the build";
   const headerSubtitle =
     pricing?.program?.subtitle ||
-    "Choose your mentorship depth and apply to start building with AI-powered MERN workflows.";
+    "Pick the amount of review, accountability, and implementation support you need to move from plan to shipped MERN application.";
 
   const renderCard = (plan, isFeatured = false) => {
     const priceLabel = plan?.pricing?.label || "";
@@ -196,7 +196,7 @@ const Pricing = () => {
             {reviewSla && (
               <span className="support-badge">
                 <Check size={13} weight="bold" aria-hidden="true" />
-                {reviewSla}hr review SLA
+                {reviewSla}-hour review SLA
               </span>
             )}
           </div>
