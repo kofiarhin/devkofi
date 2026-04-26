@@ -15,7 +15,7 @@ const TEST_PASSWORD = "BookingAdmin@2026!";
 
 const getFutureMonday = () => getWeekMonday("2099-01-07");
 
-const getFutureSlot = (dayOffset = 0, hour = 9, minute = 0) => {
+const getFutureSlot = (dayOffset = 0, hour = 16, minute = 0) => {
   const monday = getFutureMonday();
   return new Date(
     Date.UTC(
@@ -79,21 +79,21 @@ describe("booking slot utilities", () => {
 
     expect(days).toHaveLength(5);
     expect(days.map((day) => day.weekday)).toEqual(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]);
-    expect(days[0].slots).toHaveLength(16);
-    expect(days[0].slots[0].label).toBe("09:00");
-    expect(days[0].slots[15].label).toBe("16:30");
+    expect(days[0].slots).toHaveLength(4);
+    expect(days[0].slots[0].label).toBe("16:00");
+    expect(days[0].slots[3].label).toBe("17:30");
   });
 
   it("rejects weekend and outside-hours slots", () => {
-    expect(isValidBookableSlot("2099-01-10T09:00:00.000Z")).toBe(false);
-    expect(isValidBookableSlot("2099-01-05T17:00:00.000Z")).toBe(false);
-    expect(isValidBookableSlot("2099-01-05T09:15:00.000Z")).toBe(false);
-    expect(isValidBookableSlot("2099-01-05T09:00:00.000Z")).toBe(true);
+    expect(isValidBookableSlot("2099-01-10T16:00:00.000Z")).toBe(false);
+    expect(isValidBookableSlot("2099-01-05T18:00:00.000Z")).toBe(false);
+    expect(isValidBookableSlot("2099-01-05T16:15:00.000Z")).toBe(false);
+    expect(isValidBookableSlot("2099-01-05T16:00:00.000Z")).toBe(true);
   });
 });
 
 describe("GET /api/bookings/availability", () => {
-  it("returns Monday-Friday slots from 09:00 to 16:30 GMT", async () => {
+  it("returns Monday-Friday slots from 16:00 to 17:30 GMT", async () => {
     const res = await request(app).get("/api/bookings/availability?weekStart=2099-01-07");
 
     expect(res.status).toBe(200);
@@ -101,12 +101,12 @@ describe("GET /api/bookings/availability", () => {
     expect(res.body.timezone).toBe("GMT");
     expect(res.body.slotDurationMinutes).toBe(30);
     expect(res.body.days).toHaveLength(5);
-    expect(res.body.days[0].slots[0]).toMatchObject({ label: "09:00", available: true });
-    expect(res.body.days[0].slots[15]).toMatchObject({ label: "16:30", available: true });
+    expect(res.body.days[0].slots[0]).toMatchObject({ label: "16:00", available: true });
+    expect(res.body.days[0].slots[3]).toMatchObject({ label: "17:30", available: true });
   });
 
   it("marks booked slots unavailable", async () => {
-    const slotStart = getFutureSlot(1, 10, 30);
+    const slotStart = getFutureSlot(1, 16, 30);
     await Booking.create({
       name: "Booked Slot",
       email: "booking-test-booked@example.com",
@@ -115,7 +115,7 @@ describe("GET /api/bookings/availability", () => {
     });
 
     const res = await request(app).get("/api/bookings/availability?weekStart=2099-01-07");
-    const tuesdaySlot = res.body.days[1].slots.find((slot) => slot.label === "10:30");
+    const tuesdaySlot = res.body.days[1].slots.find((slot) => slot.label === "16:30");
 
     expect(tuesdaySlot.available).toBe(false);
   });
@@ -146,7 +146,7 @@ describe("POST /api/bookings", () => {
   it("rejects weekend slots", async () => {
     const res = await request(app)
       .post("/api/bookings")
-      .send(createPayload({ slotStart: getFutureSlot(5, 9, 0).toISOString() }));
+      .send(createPayload({ slotStart: getFutureSlot(5, 16, 0).toISOString() }));
 
     expect(res.status).toBe(400);
     expect(res.body.success).toBe(false);
@@ -155,18 +155,18 @@ describe("POST /api/bookings", () => {
   it("rejects outside-hours slots and non-30-minute boundaries", async () => {
     const outsideHours = await request(app)
       .post("/api/bookings")
-      .send(createPayload({ slotStart: getFutureSlot(0, 17, 0).toISOString() }));
+      .send(createPayload({ slotStart: getFutureSlot(0, 9, 0).toISOString() }));
 
     const invalidBoundary = await request(app)
       .post("/api/bookings")
-      .send(createPayload({ slotStart: getFutureSlot(0, 9, 15).toISOString() }));
+      .send(createPayload({ slotStart: getFutureSlot(0, 16, 15).toISOString() }));
 
     expect(outsideHours.status).toBe(400);
     expect(invalidBoundary.status).toBe(400);
   });
 
   it("rejects duplicate slots with 409", async () => {
-    const slotStart = getFutureSlot(2, 11, 0).toISOString();
+    const slotStart = getFutureSlot(2, 17, 0).toISOString();
     await request(app).post("/api/bookings").send(createPayload({ slotStart }));
 
     const res = await request(app)

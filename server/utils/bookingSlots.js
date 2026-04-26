@@ -1,6 +1,6 @@
 const SLOT_DURATION_MINUTES = 30;
-const BUSINESS_START_HOUR = 9;
-const BUSINESS_END_HOUR = 17;
+const BUSINESS_START_HOUR = 16;
+const BUSINESS_END_HOUR = 18;
 const BOOKABLE_WEEKDAYS = new Set([1, 2, 3, 4, 5]);
 const WEEKDAY_LABELS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 

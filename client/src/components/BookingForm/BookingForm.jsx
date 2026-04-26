@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, CheckCircle, Clock, WarningCircle } from "@phosphor-icons/react";
+import { ArrowLeft, ArrowRight, CheckCircle, Clock, WarningCircle } from "@phosphor-icons/react";
 import { formatSlotSummary } from "../../Pages/BookCall/bookCallDateUtils";
 import { getBookingErrorMessage } from "../../services/bookingService";
 import "./booking-form.styles.scss";
@@ -32,7 +32,7 @@ const validateForm = (form, selectedSlot) => {
   return errors;
 };
 
-const BookingForm = ({ selectedSlot, mutation, onSuccess }) => {
+const BookingForm = ({ selectedSlot, mutation, onSuccess, onBack }) => {
   const [form, setForm] = useState(INITIAL_FORM);
   const [fieldErrors, setFieldErrors] = useState({});
 
@@ -43,9 +43,7 @@ const BookingForm = ({ selectedSlot, mutation, onSuccess }) => {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     setFieldErrors((prev) => {
-      if (!prev[name]) {
-        return prev;
-      }
+      if (!prev[name]) return prev;
       const next = { ...prev };
       delete next[name];
       return next;
@@ -57,9 +55,7 @@ const BookingForm = ({ selectedSlot, mutation, onSuccess }) => {
     const nextErrors = validateForm(form, selectedSlot);
     setFieldErrors(nextErrors);
 
-    if (Object.keys(nextErrors).length > 0) {
-      return;
-    }
+    if (Object.keys(nextErrors).length > 0) return;
 
     mutation.mutate(
       {
@@ -82,14 +78,17 @@ const BookingForm = ({ selectedSlot, mutation, onSuccess }) => {
   const isSubmitDisabled = mutation.isPending || !selectedSlot || !form.name.trim() || !form.email.trim();
 
   return (
-    <aside className="booking-form-panel" aria-labelledby="booking-form-title">
-      <div className="booking-form-panel__summary">
-        <span>
-          <Clock size={16} weight="duotone" />
-          Selected time
-        </span>
-        <strong>{selectedSlotSummary}</strong>
-        {fieldErrors.slot && <small className="booking-form__error">{fieldErrors.slot}</small>}
+    <div className="booking-form-panel">
+      {onBack && (
+        <button className="booking-form-panel__back" type="button" onClick={onBack}>
+          <ArrowLeft size={15} weight="bold" />
+          Back
+        </button>
+      )}
+
+      <div className="booking-form-panel__slot-badge">
+        <Clock size={14} weight="duotone" />
+        {selectedSlotSummary}
       </div>
 
       <form className="booking-form" onSubmit={handleSubmit} noValidate>
@@ -100,7 +99,7 @@ const BookingForm = ({ selectedSlot, mutation, onSuccess }) => {
 
         {errors && (
           <div className="booking-form__alert" role="alert">
-            <WarningCircle size={18} weight="duotone" />
+            <WarningCircle size={17} weight="duotone" />
             <span>{errors}</span>
           </div>
         )}
@@ -146,7 +145,9 @@ const BookingForm = ({ selectedSlot, mutation, onSuccess }) => {
         </div>
 
         <div className="booking-form__field">
-          <label htmlFor="booking-company">Company</label>
+          <label htmlFor="booking-company">
+            Company <span className="booking-form__optional">Optional</span>
+          </label>
           <input
             id="booking-company"
             name="company"
@@ -155,47 +156,51 @@ const BookingForm = ({ selectedSlot, mutation, onSuccess }) => {
             onChange={handleChange}
             autoComplete="organization"
           />
-          <span className="booking-form__helper">Optional</span>
         </div>
 
         <div className="booking-form__field">
-          <label htmlFor="booking-message">Project context</label>
+          <label htmlFor="booking-message">
+            Project context <span className="booking-form__optional">Optional</span>
+          </label>
           <textarea
             id="booking-message"
             name="message"
             value={form.message}
             onChange={handleChange}
-            rows={5}
+            rows={4}
+            placeholder="Tell me what you'd like to discuss…"
           />
-          <span className="booking-form__helper">Optional, but useful before the call.</span>
         </div>
 
         <button className="booking-form__submit" type="submit" disabled={isSubmitDisabled}>
           {mutation.isPending ? (
-            "Booking..."
+            "Booking…"
           ) : (
             <>
-              Book this call
-              <ArrowRight size={17} weight="bold" />
+              Confirm booking
+              <ArrowRight size={16} weight="bold" />
             </>
           )}
         </button>
       </form>
-    </aside>
+    </div>
   );
 };
 
 export const BookingConfirmation = ({ booking, onReset }) => (
-  <aside className="booking-form-panel booking-form-panel--success" role="status">
-    <div className="booking-form-panel__success-icon">
-      <CheckCircle size={38} weight="duotone" />
+  <div className="booking-confirmation" role="status">
+    <div className="booking-confirmation__icon">
+      <CheckCircle size={34} weight="duotone" />
     </div>
-    <h2>Call booked.</h2>
-    <p>{formatSlotSummary(booking)}</p>
+    <h2>You&apos;re booked!</h2>
+    <p className="booking-confirmation__time">{formatSlotSummary(booking)}</p>
+    <p className="booking-confirmation__note">
+      Check your inbox — a confirmation email is on its way.
+    </p>
     <button type="button" onClick={onReset}>
       Book another time
     </button>
-  </aside>
+  </div>
 );
 
 export default BookingForm;
