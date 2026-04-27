@@ -46,16 +46,9 @@ const STATS = [
   { icon: Users, value: "AI", label: "Workflow-first training" },
 ];
 
-const HERO_ROTATING_PHRASES = [
-  "AI agents",
-  "Claude Code",
-  "Codex workflows",
-  "spec-to-deploy",
-];
-
-const LONGEST_HERO_PHRASE = HERO_ROTATING_PHRASES.reduce((longest, phrase) =>
-  phrase.length > longest.length ? phrase : longest,
-);
+const VERBS = ["Build", "Ship", "Launch", "Deploy"];
+const NOUNS = ["production software", "full-stack products", "MERN applications", "AI-powered apps", "scalable systems"];
+const SUFFIXES = ["spec-to-deploy", "AI agents", "Claude Code", "Codex workflows"];
 
 const HERO_DESCRIPTION_PHRASES = [
   "Learn AI engineering through production-focused mentorship.",
@@ -68,32 +61,30 @@ const LONGEST_HERO_DESCRIPTION = HERO_DESCRIPTION_PHRASES.reduce(
   (longest, phrase) => (phrase.length > longest.length ? phrase : longest),
 );
 
-const HeroRotatingText = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const ease = [0.16, 1, 0.3, 1];
+
+const RotatingWord = ({ phrases, interval }) => {
+  const [index, setIndex] = useState(0);
+  const longest = phrases.reduce((a, b) => (b.length > a.length ? b : a));
 
   useEffect(() => {
-    const interval = window.setInterval(() => {
-      setCurrentIndex((index) => (index + 1) % HERO_ROTATING_PHRASES.length);
-    }, 3000);
-
-    return () => window.clearInterval(interval);
-  }, []);
+    const id = window.setInterval(() => setIndex((i) => (i + 1) % phrases.length), interval);
+    return () => window.clearInterval(id);
+  }, [phrases.length, interval]);
 
   return (
     <span className="hero-rotating-text">
-      <span className="hero-rotating-text__measure">
-        {LONGEST_HERO_PHRASE}
-      </span>
+      <span className="hero-rotating-text__measure">{longest}</span>
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
-          key={HERO_ROTATING_PHRASES[currentIndex]}
+          key={phrases[index]}
           className="hero-rotating-text__item"
-          initial={{ opacity: 0.42, y: "0.32em" }}
+          initial={{ opacity: 0.2, y: "0.38em" }}
           animate={{ opacity: 1, y: "0em" }}
-          exit={{ opacity: 0.42, y: "-0.32em" }}
-          transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+          exit={{ opacity: 0.2, y: "-0.38em" }}
+          transition={{ duration: 0.44, ease }}
         >
-          {HERO_ROTATING_PHRASES[currentIndex]}
+          {phrases[index]}
         </motion.span>
       </AnimatePresence>
     </span>
@@ -103,25 +94,12 @@ const HeroRotatingText = () => {
 const HeroAnimatedHeadline = () => (
   <>
     <span className="hero-title-line hero-title-line--primary">
-      {"Build production software".split(" ").map((word, index) => (
-        <motion.span
-          className="hero-title-word"
-          key={word}
-          initial={{ opacity: 0, y: "0.42em" }}
-          animate={{ opacity: 1, y: "0em" }}
-          transition={{
-            duration: 0.46,
-            delay: 0.2 + index * 0.07,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-        >
-          {word}
-        </motion.span>
-      ))}
+      <RotatingWord phrases={VERBS} interval={4200} />
+      <RotatingWord phrases={NOUNS} interval={3600} />
     </span>
     <span className="hero-title-line hero-title-line--rotating">
       <span className="hero-title-prefix">with</span>
-      <HeroRotatingText />
+      <RotatingWord phrases={SUFFIXES} interval={3000} />
     </span>
   </>
 );

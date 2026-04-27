@@ -5,6 +5,7 @@ import "./pricing.styles.scss";
 import { baseUrl } from "../../constants/constants";
 import { Check, ShieldCheck, ChatCircleText, Headset, Users } from "@phosphor-icons/react";
 import Newsletter from "../Newsletter/Newsletter";
+import HomeFAQ from "../HomeFAQ/HomeFAQ";
 
 const spring = { type: "spring", stiffness: 100, damping: 20 };
 
@@ -294,6 +295,7 @@ const Pricing = () => {
       )}
 
       <Newsletter />
+      <HomeFAQ />
     </section>
   );
 };
