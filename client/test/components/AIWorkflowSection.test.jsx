@@ -15,7 +15,7 @@ describe("AIWorkflowSection", () => {
   it("renders the section", () => {
     renderSection();
     expect(
-      screen.getByRole("region", { name: /the agentic ai workflow i teach/i })
+      screen.getByRole("region", { name: /the ai engineering workflow i teach/i })
     ).toBeInTheDocument();
   });
 
@@ -24,7 +24,7 @@ describe("AIWorkflowSection", () => {
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: /the agentic ai workflow i teach/i,
+        name: /the ai engineering workflow i teach/i,
       })
     ).toBeInTheDocument();
   });
@@ -33,20 +33,20 @@ describe("AIWorkflowSection", () => {
     renderSection();
     expect(
       screen.getByRole("heading", {
-        name: /build inside a real ai engineering workflow/i,
+        name: /build inside a real production workflow/i,
       })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /ai-powered system design/i })
+      screen.getByRole("heading", { name: /turn ideas into specs and architecture/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /agentic coding with claude code/i })
+      screen.getByRole("heading", { name: /code with agents without losing control/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /eliminate ai hallucinations/i })
+      screen.getByRole("heading", { name: /verify outputs before they reach production/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /ship full-stack applications faster/i })
+      screen.getByRole("heading", { name: /ship full-stack apps with tests and deployment/i })
     ).toBeInTheDocument();
   });
 
@@ -54,16 +54,16 @@ describe("AIWorkflowSection", () => {
     renderSection();
     expect(screen.getAllByText(/claude code/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/codex/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/agentic workflows/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/agent workflows/i).length).toBeGreaterThan(0);
   });
 
   it("renders section CTAs linking to contact", () => {
     renderSection();
     const labels = [
-      /start this workflow/i,
+      /start the workflow/i,
       /plan my system/i,
       /build with ai agents/i,
-      /make my code reliable/i,
+      /make code reliable/i,
       /ship my full-stack app/i,
     ];
 

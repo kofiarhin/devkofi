@@ -47,6 +47,7 @@ const tagVariants = {
 const BLOCKS = [
   {
     id: "01",
+    isPrimary: true,
     title: "Build inside a real production workflow",
     description:
       "Use Claude Code, Codex, and agent workflows to plan, implement, review, and ship real application features.",
@@ -163,7 +164,10 @@ const WorkflowBlock = ({ block, index }) => {
           ))}
         </motion.ul>
 
-        <Link to="/contact" className="ai-workflow-block__cta">
+        <Link
+          to="/contact"
+          className={`ai-workflow-block__cta${block.isPrimary ? "" : " ai-workflow-block__cta--ghost"}`}
+        >
           {block.cta}
         </Link>
       </div>
@@ -222,9 +226,8 @@ const AIWorkflowSection = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.55, duration: 0.6, ease: "easeOut" }}
         >
-          The page starts with the promise. This is the operating system:
-          scope the work, guide the agents, verify the output, and deploy with
-          confidence.
+          Scope the work, guide the agents, verify the output, and deploy with
+          confidence. Five steps, one repeatable system.
         </motion.p>
       </div>
 
