@@ -35,9 +35,9 @@ const Header = () => {
     <header className="main-header">
       <div className="container header-content">
         <Link to="/" className="logo-container">
-          <h1 className="logo">
+          <span className="logo">
             Dev<span>Kofi</span>
-          </h1>
+          </span>
         </Link>
 
         <nav className="nav-links" aria-label="Primary navigation">

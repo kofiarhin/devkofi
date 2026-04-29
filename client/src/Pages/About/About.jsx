@@ -4,41 +4,65 @@ import "./about.styles.scss";
 import { profileImage } from "../../constants/constants";
 
 const trustStats = [
-  { label: "Apps Shipped", value: "12+" },
-  { label: "Years Mentoring", value: "5+" },
-  { label: "Workflow Focus", value: "AI" },
+  { label: "Apps shipped", value: "12+" },
+  { label: "Years mentoring", value: "5+" },
+  { label: "Workflow focus", value: "AI" },
 ];
 
-const credibilityCards = [
+const methodSteps = [
   {
-    title: "Production AI Engineering",
-    body: "Learn how to turn prompts into specs, architecture, tests, and working software without losing technical judgment.",
+    number: "01",
+    title: "Scope the product",
+    body: "Clarify the user, constraints, risks, and acceptance criteria before any agent starts writing code.",
   },
   {
-    title: "Claude Code and Codex Workflows",
-    body: "Use modern coding agents inside a disciplined build loop for planning, implementation, debugging, and review.",
+    number: "02",
+    title: "Write the implementation spec",
+    body: "Turn the idea into a buildable plan with files, data flow, states, tests, and deployment requirements.",
   },
   {
-    title: "MERN Systems That Ship",
-    body: "Build React, Node, Express, and MongoDB projects with validation, API structure, deployment, and maintainability in mind.",
+    number: "03",
+    title: "Build with agent discipline",
+    body: "Use Claude Code, Codex, and review loops without outsourcing your architecture or judgment.",
   },
   {
-    title: "Code Review as a Habit",
-    body: "Develop the review instincts to question generated code, reduce rework, and make stronger engineering decisions.",
+    number: "04",
+    title: "Review, test, and deploy",
+    body: "Tighten generated work through code review, targeted tests, production checks, and iteration.",
   },
 ];
 
-const processSteps = [
-  "Define the product goal, constraints, and acceptance criteria",
-  "Convert the idea into a practical spec and implementation plan",
-  "Build with Claude Code, Codex, and agent-assisted review loops",
-  "Test, deploy, and tighten the system based on real feedback",
+const capabilities = [
+  {
+    label: "AI coding workflows",
+    title: "From prompts to controlled delivery",
+    body: "Structure agent sessions around specs, acceptance criteria, diffs, and review instead of loose chat.",
+    evidence: "Codex, Claude Code, review loops",
+  },
+  {
+    label: "MERN architecture",
+    title: "Systems that can be explained",
+    body: "Design React, Express, and MongoDB flows with clear ownership, validation, and maintainable boundaries.",
+    evidence: "React, Node, Express, MongoDB",
+  },
+  {
+    label: "Review and debugging",
+    title: "Sharper judgment over generated code",
+    body: "Learn to inspect assumptions, find brittle logic, reduce rework, and defend technical decisions.",
+    evidence: "Diff review, test strategy, risk checks",
+  },
+  {
+    label: "Deployment readiness",
+    title: "Local demos become production paths",
+    body: "Prepare apps for real environments with configuration, API discipline, secure data handling, and release checks.",
+    evidence: "Heroku backend, Namecheap frontend",
+  },
 ];
 
 const outcomes = [
-  "From prompt experiments to repeatable AI engineering workflows",
-  "From generated snippets to architecture you can explain and maintain",
-  "From local demos to production-ready MERN applications",
+  { from: "Prompt experiments", to: "Repeatable build workflow" },
+  { from: "Generated snippets", to: "Maintainable architecture" },
+  { from: "Local demo", to: "Production deployment path" },
 ];
 
 const AboutMe = () => {
@@ -50,7 +74,7 @@ const AboutMe = () => {
       ([entry]) => {
         if (entry.isIntersecting) setIsVisible(true);
       },
-      { threshold: 0.15 },
+      { threshold: 0.12 },
     );
 
     if (sectionRef.current) observer.observe(sectionRef.current);
@@ -63,33 +87,16 @@ const AboutMe = () => {
   return (
     <section className={`about-page ${revealClass}`} ref={sectionRef} aria-label="About Kofi">
       <div className="about-page__container">
-        <nav className="about-page__jump-links" aria-label="About section quick links">
-          <a href="#about-philosophy">Philosophy</a>
-          <a href="#about-process">How We Work</a>
-          <a href="#about-outcomes">Outcomes</a>
-          <a href="#about-cta">Apply</a>
-        </nav>
-
         <header className="about-page__hero">
-          <div className="about-page__visual">
-            <div className="about-page__image-glow" aria-hidden="true"></div>
-            <img
-              className="about-page__profile-img"
-              src={profileImage}
-              alt="Kofi, AI engineering mentor and full-stack engineer"
-              loading="lazy"
-            />
-          </div>
-
-          <div className="about-page__hero-content">
+          <div className="about-page__hero-copy">
             <p className="about-page__eyebrow">About DevKofi</p>
-            <h2 className="about-page__title">Mentorship for Developers Building With AI Agents</h2>
+            <h1 className="about-page__title">Build software with AI without losing engineering judgment</h1>
             <p className="about-page__lead">
-              I am <strong>Kofi</strong>, a senior MERN engineer helping developers use Claude Code,
-              Codex, and agentic workflows to plan, build, review, and ship production software.
+              I am <strong>Kofi</strong>, a senior MERN engineer helping developers use AI coding agents
+              to plan, build, review, and ship production software with discipline.
             </p>
 
-            <div className="about-page__cta-group">
+            <div className="about-page__cta-group" aria-label="About page actions">
               <Link className="about-page__btn about-page__btn--primary" to="/contact">
                 Start Mentorship
               </Link>
@@ -107,65 +114,129 @@ const AboutMe = () => {
               ))}
             </ul>
           </div>
+
+          <figure className="about-page__portrait-panel">
+            <img
+              className="about-page__profile-img"
+              src={profileImage}
+              alt="Kofi, AI engineering mentor and full-stack engineer"
+              loading="eager"
+            />
+            <figcaption className="about-page__proof-strip">
+              MERN systems, AI coding agents, code review, deployment
+            </figcaption>
+          </figure>
         </header>
 
-        <section className="about-page__section" aria-label="Credibility highlights">
-          <div className="about-page__cards-grid">
-            {credibilityCards.map((card) => (
-              <article className="about-page__card" key={card.title}>
-                <h3>{card.title}</h3>
-                <p>{card.body}</p>
+        <section className="about-page__belief" id="about-philosophy" aria-labelledby="about-belief-title">
+          <p className="about-page__section-kicker">Mentorship philosophy</p>
+          <h2 className="about-page__belief-title" id="about-belief-title">
+            AI can accelerate delivery, but senior engineering still comes from{" "}
+            <span>scope, architecture, review, testing, and ownership.</span>
+          </h2>
+        </section>
+
+        <section className="about-page__method" id="about-process" aria-labelledby="about-method-title">
+          <div className="about-page__section-heading">
+            <p className="about-page__section-kicker">From prompt to production</p>
+            <h2 className="about-page__section-title" id="about-method-title">
+              How we work
+            </h2>
+            <p>
+              The work is practical: define the target, write the spec, use agents inside a controlled
+              build loop, then review and ship the result.
+            </p>
+          </div>
+
+          <ol className="about-page__method-list">
+            {methodSteps.map((step) => (
+              <li className="about-page__method-item" key={step.number}>
+                <span className="about-page__method-number">{step.number}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className="about-page__capabilities" aria-labelledby="about-capabilities-title">
+          <div className="about-page__section-heading">
+            <p className="about-page__section-kicker">Capabilities</p>
+            <h2 className="about-page__section-title" id="about-capabilities-title">
+              The technical range behind the mentorship
+            </h2>
+          </div>
+
+          <div className="about-page__capability-grid">
+            {capabilities.map((capability) => (
+              <article className="about-page__capability" key={capability.label}>
+                <p className="about-page__capability-label">{capability.label}</p>
+                <h3>{capability.title}</h3>
+                <p>{capability.body}</p>
+                <span>{capability.evidence}</span>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="about-page__section" id="about-philosophy">
-          <h3 className="about-page__section-title">My Mentorship Philosophy</h3>
-          <p>
-            I teach an <span className="about-page__highlight">engineering-first, AI-assisted</span> approach:
-            use AI to move faster, but keep specs, architecture, debugging discipline, tests, and
-            production judgment at the center of every decision.
-          </p>
-        </section>
+        <section className="about-page__outcomes" id="about-outcomes" aria-labelledby="about-outcomes-title">
+          <div className="about-page__section-heading">
+            <p className="about-page__section-kicker">What changes</p>
+            <h2 className="about-page__section-title" id="about-outcomes-title">
+              What you learn to do
+            </h2>
+          </div>
 
-        <section className="about-page__section" id="about-process">
-          <h3 className="about-page__section-title">How We Work</h3>
-          <ol className="about-page__timeline">
-            {processSteps.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
-          </ol>
-        </section>
-
-        <section className="about-page__section" id="about-outcomes">
-          <h3 className="about-page__section-title">What You Learn to Do</h3>
-          <ul className="about-page__outcomes">
+          <div className="about-page__outcome-list">
             {outcomes.map((outcome) => (
-              <li key={outcome}>{outcome}</li>
+              <div className="about-page__outcome-row" key={outcome.from}>
+                <div>
+                  <span>From</span>
+                  <strong>{outcome.from}</strong>
+                </div>
+                <div>
+                  <span>To</span>
+                  <strong>{outcome.to}</strong>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         </section>
 
-        <section className="about-page__section about-page__story" aria-label="Personal story">
-          <h3 className="about-page__section-title">Why I Mentor</h3>
-          <p>
-            I built DevKofi for developers who want more than AI-generated snippets. The goal is to
-            become the engineer who can guide the tool, evaluate the output, and own the system.
-          </p>
-          <p>
-            We work through the full delivery path: scoping, technical planning, agent-assisted builds,
-            code review, test strategy, deployment, and iteration.
-          </p>
-          <p>
-            If your goal is to build production MERN apps with AI as part of your engineering workflow,
-            this mentorship is designed for that.
-          </p>
+        <section className="about-page__story" aria-labelledby="about-story-title">
+          <div className="about-page__section-heading">
+            <p className="about-page__section-kicker">Why I mentor</p>
+            <h2 className="about-page__section-title" id="about-story-title">
+              Developers need more than generated code.
+            </h2>
+          </div>
+
+          <div className="about-page__story-copy">
+            <p className="about-page__story-lead">
+              I built DevKofi for developers who want to become the engineer who can guide the tool,
+              evaluate the output, and own the system.
+            </p>
+            <p>
+              We work through the full delivery path: scoping, technical planning, agent-assisted builds,
+              code review, test strategy, deployment, and iteration.
+            </p>
+            <p>
+              If your goal is to build production MERN apps with AI as part of your engineering workflow,
+              the mentorship is designed for that path.
+            </p>
+          </div>
         </section>
 
         <section className="about-page__final-cta" id="about-cta" aria-label="Apply for mentorship">
-          <h3>Ready to Build With AI Like an Engineer?</h3>
-          <p>Turn your ideas into shipped software with a structured spec, build, review, and deploy workflow.</p>
+          <div>
+            <p className="about-page__section-kicker">Start the work</p>
+            <h2>Ready to build with AI like an engineer?</h2>
+            <p>
+              Bring a product idea, codebase, or workflow problem. We will turn it into a practical build plan.
+            </p>
+          </div>
           <div className="about-page__cta-group">
             <Link className="about-page__btn about-page__btn--primary" to="/contact">
               Start Mentorship
