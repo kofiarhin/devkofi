@@ -1,0 +1,24 @@
+DEPRECATION WARNING [global-builtin]: Global built-in functions are deprecated and will be removed in Dart Sass 3.0.0.
+Use color.adjust instead.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+    ╷
+241 │     background: lighten(#a3e635, 6%);
+    │                 ^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\components\Landing\landing.styles.scss 241:17  root stylesheet
+
+DEPRECATION WARNING [color-functions]: lighten() is deprecated. Suggestions:
+
+color.scale($color, $lightness: 13.4801762115%)
+color.adjust($color, $lightness: 6%)
+
+More info: https://sass-lang.com/d/color-functions
+
+    ╷
+241 │     background: lighten(#a3e635, 6%);
+    │                 ^^^^^^^^^^^^^^^^^^^^
+    ╵
+    src\components\Landing\landing.styles.scss 241:17  root stylesheet
+

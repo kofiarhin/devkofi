@@ -1,138 +1,87 @@
-import { useRef, useEffect, useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
-import { profileImage } from "../../constants/constants";
-import "./landing.styles.scss";
+import { useEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion as Motion,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  Brain,
+  CaretRight,
+  CheckCircle,
+  Lightning,
+  RocketLaunch,
+  StackSimple,
   Star,
   Users,
-  StackSimple,
-  Lightning,
-  Brain,
 } from "@phosphor-icons/react";
+import { profileImage } from "../../constants/constants";
+import "./landing.styles.scss";
 
 const spring = { type: "spring", stiffness: 100, damping: 20 };
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.08 },
-  },
-};
+const PROCESS_STEPS = ["Spec", "Architecture", "AI Build", "Review", "Deploy"];
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { ...spring, duration: 0.6 },
-  },
-};
-
-const imageVariants = {
-  hidden: { opacity: 0, scale: 0.94 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { ...spring, duration: 0.7, delay: 0.25 },
-  },
-};
+const HEADLINE_ROTATIONS = [
+  "AI engineering.",
+  "agent workflows.",
+  "AI review loops.",
+  "AI build agents.",
+];
 
 const STATS = [
-  { icon: StackSimple, value: "12+", label: "Apps shipped" },
-  { icon: Star, value: "5+", label: "Years guiding builds" },
-  { icon: Users, value: "AI", label: "Workflow-first training" },
+  { icon: <StackSimple size={17} weight="duotone" aria-hidden="true" />, value: "12+", label: "Apps shipped" },
+  { icon: <Star size={17} weight="duotone" aria-hidden="true" />, value: "5+", label: "Years mentoring" },
+  { icon: <Users size={17} weight="duotone" aria-hidden="true" />, value: "AI", label: "Spec-to-deploy workflow" },
 ];
 
-const VERBS = ["Build", "Ship", "Launch", "Deploy"];
-const NOUNS = ["production software", "full-stack products", "MERN applications", "AI-powered apps", "scalable systems"];
-const SUFFIXES = ["spec-to-deploy", "AI agents", "Claude Code", "Codex workflows"];
-
-const HERO_DESCRIPTION_PHRASES = [
-  "Learn AI engineering through production-focused mentorship.",
-  "Turn rough ideas into specs, architecture, tests, and working systems.",
-  "Use Claude Code, Codex, and agents inside a disciplined build workflow.",
-  "Ship MERN apps with validation, review, and deployment built in.",
+const WORKFLOW_ITEMS = [
+  { icon: <Brain size={15} weight="duotone" />, label: "Review queue", value: "3 builds" },
+  { icon: <CheckCircle size={15} weight="duotone" />, label: "Tests passing", value: "Green" },
+  { icon: <RocketLaunch size={15} weight="duotone" />, label: "Deploy ready", value: "Heroku" },
 ];
 
-const LONGEST_HERO_DESCRIPTION = HERO_DESCRIPTION_PHRASES.reduce(
-  (longest, phrase) => (phrase.length > longest.length ? phrase : longest),
-);
-
-const ease = [0.16, 1, 0.3, 1];
-
-const RotatingWord = ({ phrases, interval }) => {
+const RotatingHeadlineText = ({ shouldReduceMotion }) => {
   const [index, setIndex] = useState(0);
-  const longest = phrases.reduce((a, b) => (b.length > a.length ? b : a));
-
-  useEffect(() => {
-    const id = window.setInterval(() => setIndex((i) => (i + 1) % phrases.length), interval);
-    return () => window.clearInterval(id);
-  }, [phrases.length, interval]);
-
-  return (
-    <span className="hero-rotating-text">
-      <span className="hero-rotating-text__measure">{longest}</span>
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={phrases[index]}
-          className="hero-rotating-text__item"
-          initial={{ opacity: 0.2, y: "0.38em" }}
-          animate={{ opacity: 1, y: "0em" }}
-          exit={{ opacity: 0.2, y: "-0.38em" }}
-          transition={{ duration: 0.44, ease }}
-        >
-          {phrases[index]}
-        </motion.span>
-      </AnimatePresence>
-    </span>
+  const longest = HEADLINE_ROTATIONS.reduce((current, phrase) =>
+    phrase.length > current.length ? phrase : current,
   );
-};
-
-const HeroAnimatedHeadline = () => (
-  <>
-    <span className="hero-title-line hero-title-line--primary">
-      <RotatingWord phrases={VERBS} interval={4200} />
-      <RotatingWord phrases={NOUNS} interval={3600} />
-    </span>
-    <span className="hero-title-line hero-title-line--rotating">
-      <span className="hero-title-prefix">with</span>
-      <RotatingWord phrases={SUFFIXES} interval={3000} />
-    </span>
-  </>
-);
-
-const HeroRotatingDescription = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    if (shouldReduceMotion) return undefined;
+
     const interval = window.setInterval(() => {
-      setCurrentIndex(
-        (index) => (index + 1) % HERO_DESCRIPTION_PHRASES.length,
-      );
-    }, 3600);
+      setIndex((currentIndex) => (currentIndex + 1) % HEADLINE_ROTATIONS.length);
+    }, 3200);
 
     return () => window.clearInterval(interval);
-  }, []);
+  }, [shouldReduceMotion]);
+
+  if (shouldReduceMotion) {
+    return <span>{HEADLINE_ROTATIONS[0]}</span>;
+  }
 
   return (
-    <span className="hero-rotating-description">
-      <span className="hero-rotating-description__measure">
-        {LONGEST_HERO_DESCRIPTION}
+    <span className="hero-rotating-headline">
+      <span className="hero-rotating-headline__measure" aria-hidden="true">
+        {longest}
       </span>
       <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={HERO_DESCRIPTION_PHRASES[currentIndex]}
-          className="hero-rotating-description__item"
-          initial={{ opacity: 0.34, y: "0.7em" }}
+        <Motion.span
+          key={HEADLINE_ROTATIONS[index]}
+          className="hero-rotating-headline__item"
+          initial={{ opacity: 0, y: "0.36em" }}
           animate={{ opacity: 1, y: "0em" }}
-          exit={{ opacity: 0.34, y: "-0.7em" }}
-          transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
+          exit={{ opacity: 0, y: "-0.36em" }}
+          transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
         >
-          {HERO_DESCRIPTION_PHRASES[currentIndex]}
-        </motion.span>
+          {HEADLINE_ROTATIONS[index]}
+        </Motion.span>
       </AnimatePresence>
     </span>
   );
@@ -141,26 +90,61 @@ const HeroRotatingDescription = () => {
 const Landing = () => {
   const heroRef = useRef(null);
   const frameRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], [0, 32]);
-  const badgeY = useTransform(scrollYProgress, [0, 1], [0, -18]);
-
-  // 3-D tilt tracking
+  const imageY = useTransform(scrollYProgress, [0, 1], [0, 24]);
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
-  const tiltX = useSpring(useTransform(rawY, [-1, 1], [12, -12]), { stiffness: 180, damping: 28 });
-  const tiltY = useSpring(useTransform(rawX, [-1, 1], [-12, 12]), { stiffness: 180, damping: 28 });
+  const tiltX = useSpring(useTransform(rawY, [-1, 1], [9, -9]), {
+    stiffness: 180,
+    damping: 28,
+  });
+  const tiltY = useSpring(useTransform(rawX, [-1, 1], [-9, 9]), {
+    stiffness: 180,
+    damping: 28,
+  });
+
+  const containerVariants = {
+    hidden: { opacity: shouldReduceMotion ? 1 : 0 },
+    visible: {
+      opacity: 1,
+      transition: shouldReduceMotion
+        ? { duration: 0 }
+        : { staggerChildren: 0.08, delayChildren: 0.06 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: shouldReduceMotion ? 1 : 0, y: shouldReduceMotion ? 0 : 18 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: shouldReduceMotion ? { duration: 0 } : { ...spring, duration: 0.5 },
+    },
+  };
+
+  const imageVariants = {
+    hidden: { opacity: shouldReduceMotion ? 1 : 0, scale: shouldReduceMotion ? 1 : 0.96 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: shouldReduceMotion ? { duration: 0 } : { ...spring, duration: 0.65, delay: 0.18 },
+    },
+  };
 
   const handleMouseMove = (e) => {
+    if (shouldReduceMotion) return;
+
     const rect = frameRef.current?.getBoundingClientRect();
     if (!rect) return;
-    rawX.set((e.clientX - rect.left) / rect.width * 2 - 1);
-    rawY.set((e.clientY - rect.top) / rect.height * 2 - 1);
+
+    rawX.set(((e.clientX - rect.left) / rect.width) * 2 - 1);
+    rawY.set(((e.clientY - rect.top) / rect.height) * 2 - 1);
   };
 
   const handleMouseLeave = () => {
@@ -168,160 +152,166 @@ const Landing = () => {
     rawY.set(0);
   };
 
+  const imageAnimate = shouldReduceMotion
+    ? { opacity: 1, scale: 1, y: 0 }
+    : {
+        opacity: 1,
+        scale: [1, 1.025, 1],
+        y: [0, -10, 0],
+      };
+
+  const imageTransition = shouldReduceMotion
+    ? { duration: 0 }
+    : {
+        opacity: { duration: 0.65, delay: 0.25 },
+        scale: { duration: 9, repeat: Infinity, ease: "easeInOut", delay: 0.25 },
+        y: { duration: 9, repeat: Infinity, ease: "easeInOut", delay: 0.25 },
+      };
+
+  const overlayAnimate = shouldReduceMotion
+    ? { opacity: 1, x: 0, y: 0 }
+    : { opacity: 1, x: 0, y: [0, -6, 0] };
+
+  const overlayTransition = shouldReduceMotion
+    ? { duration: 0 }
+    : {
+        opacity: { delay: 0.65, duration: 0.4 },
+        x: { delay: 0.65, duration: 0.4 },
+        y: { duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 },
+      };
+
   return (
     <section id="landing" ref={heroRef}>
       <div className="hero-grain" aria-hidden="true" />
       <div className="hero-gradient-orb hero-gradient-orb--1" aria-hidden="true" />
-      <div className="hero-gradient-orb hero-gradient-orb--2" aria-hidden="true" />
 
       <div className="landing-grid">
-        <motion.div
+        <Motion.div
           className="landing-content"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.div className="hero-chip" variants={itemVariants}>
+          <Motion.div className="hero-chip" variants={itemVariants}>
             <span className="chip-dot" aria-hidden="true" />
             <Lightning size={12} weight="fill" aria-hidden="true" />
             AI Engineering Mentorship
-          </motion.div>
+          </Motion.div>
 
-          <motion.h1 className="hero-title" variants={itemVariants}>
-            <HeroAnimatedHeadline />
-          </motion.h1>
+          <Motion.h1 className="hero-title" variants={itemVariants}>
+            <span className="hero-title-line">Build production software</span>
+            <span className="hero-title-line hero-title-line--accent">
+              with <RotatingHeadlineText shouldReduceMotion={shouldReduceMotion} />
+            </span>
+          </Motion.h1>
 
-          <motion.p className="hero-description" variants={itemVariants}>
-            <HeroRotatingDescription />
-          </motion.p>
+          <Motion.p className="hero-description" variants={itemVariants}>
+            Mentorship for developers building MERN apps with AI tools, tests,
+            review loops, and deployment discipline.
+          </Motion.p>
 
-          <motion.div className="hero-proof" variants={itemVariants}>
-            <span>Spec</span>
-            <span>Architecture</span>
-            <span>AI Build</span>
-            <span>Review</span>
-            <span>Deploy</span>
-          </motion.div>
+          <Motion.div
+            className="hero-process"
+            variants={itemVariants}
+            aria-label="Mentorship workflow"
+          >
+            {PROCESS_STEPS.map((step, index) => (
+              <span className="hero-process__item" key={step}>
+                <span>{step}</span>
+                {index < PROCESS_STEPS.length - 1 && (
+                  <CaretRight size={14} weight="bold" aria-hidden="true" />
+                )}
+              </span>
+            ))}
+          </Motion.div>
 
-          <motion.div className="cta-group" variants={itemVariants}>
+          <Motion.div className="cta-group" variants={itemVariants}>
             <Link to="/contact" className="btn-primary">
               Start mentorship
-              <ArrowRight size={18} weight="bold" />
+              <ArrowRight size={18} weight="bold" aria-hidden="true" />
             </Link>
             <Link to="/projects" className="btn-ghost">
               See the work
-              <ArrowRight size={16} weight="bold" />
+              <ArrowRight size={16} weight="bold" aria-hidden="true" />
             </Link>
-          </motion.div>
+          </Motion.div>
 
-          <motion.p className="hero-supporting" variants={itemVariants}>
-            A structured path for developers who want to build production
-            software with AI tools while keeping engineering judgment in the loop.
-          </motion.p>
-
-          <motion.div className="hero-stats" variants={itemVariants}>
-            {STATS.map(({ icon: Icon, value, label }) => (
+          <Motion.div className="hero-stats" variants={itemVariants}>
+            {STATS.map(({ icon, value, label }) => (
               <div className="stat-item" key={label}>
-                <Icon size={16} weight="duotone" aria-hidden="true" />
+                {icon}
                 <strong>{value}</strong>
                 <span>{label}</span>
               </div>
             ))}
-          </motion.div>
-        </motion.div>
+          </Motion.div>
+        </Motion.div>
 
-        <motion.div
+        <Motion.div
           className="landing-visual"
           variants={imageVariants}
           initial="hidden"
           animate="visible"
-          style={{ y: imageY }}
+          style={{ y: shouldReduceMotion ? 0 : imageY }}
         >
-          {/* 3-D tilt wrapper */}
-          <motion.div
+          <Motion.div
             ref={frameRef}
             className="image-frame-wrapper"
-            style={{ rotateX: tiltX, rotateY: tiltY, transformPerspective: 700 }}
+            style={{
+              rotateX: shouldReduceMotion ? 0 : tiltX,
+              rotateY: shouldReduceMotion ? 0 : tiltY,
+              transformPerspective: 700,
+            }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
             <div className="image-frame">
-              <motion.img
+              <Motion.img
                 src={profileImage}
-                alt="DevKofi - Senior MERN Engineer"
-                initial={{ opacity: 0, scale: 1.08 }}
-                animate={{
-                  opacity: 1,
-                  scale: [1, 1.04, 1],
-                  y: [0, -18, 0],
-                }}
-                transition={{
-                  opacity: { duration: 0.7, delay: 0.35 },
-                  scale: {
-                    duration: 9,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.35,
-                  },
-                  y: {
-                    duration: 9,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.35,
-                  },
-                }}
+                alt="DevKofi portrait"
+                initial={{ opacity: shouldReduceMotion ? 1 : 0, scale: shouldReduceMotion ? 1 : 1.04 }}
+                animate={imageAnimate}
+                transition={imageTransition}
               />
               <div className="frame-shine" aria-hidden="true" />
               <div className="frame-border-glow" aria-hidden="true" />
             </div>
 
-            <motion.div
+            <Motion.div
               className="experience-badge"
-              initial={{ opacity: 0, scale: 0.7 }}
+              initial={{ opacity: shouldReduceMotion ? 1 : 0, scale: shouldReduceMotion ? 1 : 0.78 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ ...spring, delay: 0.75 }}
-              style={{ y: badgeY }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...spring, delay: 0.5 }}
+              aria-hidden="true"
             >
-              <motion.div
-                className="experience-badge__ring"
-                animate={{ scale: [1, 1.35, 1], opacity: [0.6, 0, 0.6] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut" }}
-                aria-hidden="true"
-              />
-              5+<span>Years</span>
-            </motion.div>
-          </motion.div>
+              <span className="experience-badge__value">5+</span>
+              <span>Years</span>
+            </Motion.div>
+          </Motion.div>
 
-          <motion.div
-            className="floating-tag floating-tag--top"
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0, y: [0, -9, 0] }}
-            transition={{
-              opacity: { delay: 0.9, duration: 0.5 },
-              x: { delay: 0.9, duration: 0.5 },
-              y: { duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 },
-            }}
+          <Motion.div
+            className="workflow-panel"
+            initial={{ opacity: shouldReduceMotion ? 1 : 0, x: shouldReduceMotion ? 0 : -12 }}
+            animate={overlayAnimate}
+            transition={overlayTransition}
             aria-hidden="true"
           >
-            <StackSimple size={14} weight="duotone" />
-            MERN Stack
-          </motion.div>
+            <div className="workflow-panel__header">
+              <span className="workflow-panel__dot" />
+              Build review
+            </div>
 
-          <motion.div
-            className="floating-tag floating-tag--bottom"
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0, y: [0, 9, 0] }}
-            transition={{
-              opacity: { delay: 1.05, duration: 0.5 },
-              x: { delay: 1.05, duration: 0.5 },
-              y: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.2 },
-            }}
-            aria-hidden="true"
-          >
-            <Brain size={14} weight="duotone" />
-            AI Workflow
-          </motion.div>
-        </motion.div>
+            <div className="workflow-panel__list">
+              {WORKFLOW_ITEMS.map(({ icon, label, value }) => (
+                <div className="workflow-panel__item" key={label}>
+                  {icon}
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                </div>
+              ))}
+            </div>
+          </Motion.div>
+        </Motion.div>
       </div>
     </section>
   );
