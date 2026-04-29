@@ -27,3 +27,8 @@ export const AiImage =
 
 export const codeImage =
   "https://res.cloudinary.com/dlsiabgiw/image/upload/v1753763160/devkofi/f2bycwqmitsvfzzfyptp.png";
+
+export const heroVideoMp4 =
+  "https://res.cloudinary.com/dlsiabgiw/video/upload/q_auto/code_background_dev_kofi_qhgwxb.mp4";
+export const heroVideoWebm =
+  "https://res.cloudinary.com/dlsiabgiw/video/upload/q_auto,f_webm/code_background_dev_kofi_qhgwxb.webm";

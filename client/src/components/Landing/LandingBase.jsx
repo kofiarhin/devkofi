@@ -20,7 +20,7 @@ import {
   Star,
   Users,
 } from "@phosphor-icons/react";
-import { profileImage } from "../../constants/constants";
+import { profileImage, heroVideoMp4, heroVideoWebm } from "../../constants/constants";
 import "./landing.styles.scss";
 
 const spring = { type: "spring", stiffness: 100, damping: 20 };
@@ -90,6 +90,7 @@ const RotatingHeadlineText = ({ shouldReduceMotion }) => {
 const Landing = () => {
   const heroRef = useRef(null);
   const frameRef = useRef(null);
+  const videoRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
@@ -108,6 +109,16 @@ const Landing = () => {
     stiffness: 180,
     damping: 28,
   });
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (shouldReduceMotion) {
+      video.pause();
+    } else {
+      video.play().catch(() => {});
+    }
+  }, [shouldReduceMotion]);
 
   const containerVariants = {
     hidden: { opacity: shouldReduceMotion ? 1 : 0 },
@@ -182,6 +193,21 @@ const Landing = () => {
 
   return (
     <section id="landing" ref={heroRef}>
+      <video
+        ref={videoRef}
+        className="hero-bg-video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+        tabIndex={-1}
+      >
+        <source src={heroVideoWebm} type="video/webm" />
+        <source src={heroVideoMp4} type="video/mp4" />
+      </video>
+      <div className="hero-video-overlay" aria-hidden="true" />
       <div className="hero-grain" aria-hidden="true" />
       <div className="hero-gradient-orb hero-gradient-orb--1" aria-hidden="true" />
 
