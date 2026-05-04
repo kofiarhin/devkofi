@@ -196,8 +196,8 @@
       "Queue management system"
     ],
     "status": "Building",
-    "demoUrl": "https://taxify-sooty.vercel.app",
+    "demoUrl": "https://taxify-sooty.vercel.app/login",
     "repoUrl": "https://github.com/kofiarhin/taxify",
-    "thumbnailUrl": ""
+    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1777938337/taxify-app-dev-kofi-thumbnail_ycylph.png"
   }
 ]
