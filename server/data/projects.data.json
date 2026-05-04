@@ -183,5 +183,21 @@
     "demoUrl": "https://trading-bot-three-cyan.vercel.app/dashboard",
     "repoUrl": "https://github.com/kofiarhin/trading-bot",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1776726248/trading-bot-thumbnail_fsppr0.png"
+  },
+  {
+    "id": 24,
+    "name": "Taxify",
+    "description": "Taxi dispatch platform for booking intake, driver readiness, queue management, and cash-trip closure.",
+    "features": [
+      "Backend env validation and auth shell",
+      "Role-aware frontend routing",
+      "Admin access lane",
+      "Driver readiness workflow",
+      "Queue management system"
+    ],
+    "status": "Building",
+    "demoUrl": "https://taxify-sooty.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/taxify",
+    "thumbnailUrl": ""
   }
 ]
