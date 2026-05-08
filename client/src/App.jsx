@@ -22,6 +22,7 @@ import AdminLogin from "./Pages/Login/AdminLogin";
 import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 import AdminMessageDetails from "./Pages/AdminMessageDetails/AdminMessageDetails";
 import useAdminSession from "./hooks/queries/useAdminSession";
+import Templates from "./Pages/Templates/Templates";
 
 export const AppRoutes = () => {
   useAdminSession();
@@ -32,6 +33,7 @@ export const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/templates" element={<Templates />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/book-a-call" element={<BookCall />} />
         <Route path="*" element={<NotFound />} />
@@ -41,7 +43,10 @@ export const AppRoutes = () => {
       <Route element={<AdminRoute />}>
         <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/messages/:messageId" element={<AdminMessageDetails />} />
+          <Route
+            path="/admin/messages/:messageId"
+            element={<AdminMessageDetails />}
+          />
         </Route>
       </Route>
     </Routes>

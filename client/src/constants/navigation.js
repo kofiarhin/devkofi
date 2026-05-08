@@ -2,6 +2,7 @@ export const publicNavItems = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
   { label: "Projects", to: "/projects" },
+  { label: "Templates", to: "/templates" },
   { label: "Contact", to: "/contact" },
 ];
 

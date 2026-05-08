@@ -10,14 +10,29 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const escapeHtml = (value) =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const sanitizeHeaderText = (value) =>
+  String(value ?? "").replace(/[\r\n"]/g, " ").trim();
+
 async function sendContactEmail({ name, email, subject, message }) {
+  const safeFromName = sanitizeHeaderText(name) || "Contact form";
+  const safeSubject = sanitizeHeaderText(subject);
+  const safeReplyTo = sanitizeHeaderText(email);
+
   await transporter.sendMail({
-    from: `"${name}" <${process.env.EMAIL_USER}>`,
+    from: `"${safeFromName}" <${process.env.EMAIL_USER}>`,
     to: process.env.CONTACT_TO_EMAIL,
-    replyTo: email,
-    subject: `[Contact] ${subject}`,
+    replyTo: safeReplyTo,
+    subject: `[Contact] ${safeSubject}`,
     text: `From: ${name} <${email}>\n\n${message}`,
-    html: `<p><strong>From:</strong> ${name} &lt;${email}&gt;</p><p>${message.replace(/\n/g, "<br>")}</p>`,
+    html: `<p><strong>From:</strong> ${escapeHtml(name)} &lt;${escapeHtml(email)}&gt;</p><p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>`,
   });
 }
 
