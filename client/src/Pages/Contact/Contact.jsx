@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   CheckCircle,
+  ChatCenteredText,
   Clock,
   Envelope,
   GithubLogo,
@@ -63,6 +64,7 @@ const Contact = () => {
   const { mutate, isPending, isSuccess, isError, error, reset } = useContactMutation();
 
   const mailtoHref = useMemo(() => `mailto:${contactEmail}?subject=Project%20inquiry`, []);
+  const isFormEmpty = Object.values(form).every((value) => !value.trim());
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -179,6 +181,15 @@ const Contact = () => {
                 <span>Start here</span>
                 <strong>Project inquiry</strong>
               </div>
+
+              {isFormEmpty && (
+                <div className="contact-empty-state" aria-live="polite">
+                  <span className="contact-empty-state__icon" aria-hidden="true">
+                    <ChatCenteredText size={20} weight="duotone" />
+                  </span>
+                  <p>Start by entering your details and message.</p>
+                </div>
+              )}
 
               {isError && (
                 <div className="contact-feedback contact-feedback--error" role="alert">
