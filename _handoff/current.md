@@ -4,11 +4,11 @@ This file is the live resume state for the active workflow. Keep it current afte
 
 ## Current Request
 
-Build the Templates data flow: create `server/data/templates.json`, expose `GET /api/templates`, and update the Templates page to fetch and render templates with loading and error states.
+Add email verification to the newsletter signup: persist new subscribers as unverified, email a tokenized link, and mark them verified on click. 24-hour token TTL; resubmit while pending rotates the token; already-verified resubmit responds with `alreadySubscribed`.
 
 ## Request ID
 
-`build-templates-data-flow`
+`newsletter-email-verification`
 
 ## Current Phase
 
@@ -16,31 +16,31 @@ Build the Templates data flow: create `server/data/templates.json`, expose `GET 
 
 ## Execution Mode
 
-`parallel-workflow`
+`complete-workflow`
 
 ## Current Spec File
 
-`_spec/2026-05-15-build-templates-data-flow.md`
+`_spec/2026-05-13-newsletter-email-verification.md`
 
 ## Current Task Plan File
 
-`_task/2026-05-15-build-templates-data-flow.md`
+`_task/2026-05-13-newsletter-email-verification.md`
 
 ## Current Review File
 
-`_review/2026-05-15-build-templates-data-flow.md`
+`_review/2026-05-13-newsletter-email-verification.md`
 
 ## Current Release Notes File
 
-`_release/build-templates-data-flow.md`
+`_release/newsletter-email-verification.md`
 
 ## Current Summary File
 
-`_summary/2026-05-15-build-templates-data-flow.md`
+`_summary/2026-05-13-newsletter-email-verification.md`
 
 ## Last Completed Task
 
-`TASK-003 (orchestrator merge review and final workflow artifacts)`
+`TASK-002 (frontend verification flow)`
 
 ## Current Task
 
@@ -48,47 +48,47 @@ Build the Templates data flow: create `server/data/templates.json`, expose `GET 
 
 ## Current Iteration
 
-`none — TASK-003 Iteration 3 - Polish complete`
+`none — TASK-002 Iteration 3 - Polish complete`
 
 ## Next Task
 
-`none — request fully delivered. Optional follow-ups recorded in review.`
+`none — request fully delivered. Optional follow-ups recorded in review and release notes.`
 
 ## Dirty Worktree Status
 
-`git status --short` shows only `?? CLAUDE.md` (untracked IDE file, unrelated to this workflow). All implementation files are already committed in `24831f5 add multi agent workflow, backend support for templates page`. Workflow artifact files updated during orchestrator pass are tracked changes ready for a follow-up commit if desired.
+`git status --short` shows the workflow's modifications (13 tracked files) plus new files (spec, task plan, review, release, summary, NewsletterVerify page + styles + hook + test). No unrelated files touched. Ready for a single follow-up commit if desired (suggested message in `_release/newsletter-email-verification.md`).
 
 ## Parallel Queue Status
 
-`complete`
+`n/a` (sequential complete-workflow)
 
 ## Parallel Worker Count
 
-`requested default 3; actual 2 implementation workers plus orchestrator because only two parallel-safe non-overlapping implementation slices exist`
+`n/a`
 
 ## Parallel Claims Status
 
-`_parallel/claims.md`: `TASK-001` `done`; `TASK-002` `done`; `TASK-003` `done`. All claims released.
+`n/a`
 
 ## Parallel Locks Status
 
-`_parallel/locks.md`: no active locks; all worker and orchestrator locks released to the Released Locks table.
+`n/a`
 
 ## Parallel Agent Status
 
-`_parallel/agent-status.md`: all agents final status `done`; merge review verdict `passed`.
+`n/a`
 
 ## Parallel Merge Review Status
 
-`passed`
+`n/a`
 
 ## Acceptance Status
 
-`all criteria [x] (see _summary/2026-05-15-build-templates-data-flow.md)`
+`all criteria [x] (see _summary/2026-05-13-newsletter-email-verification.md)`
 
 ## Iteration Evidence Status
 
-`TASK-001` Build/Refine/Polish complete; `TASK-002` Build/Refine/Polish complete; `TASK-003` Build/Refine/Polish complete.
+`TASK-001` Build/Refine/Polish complete; `TASK-002` Build/Refine/Polish complete.
 
 ## Blockers
 
@@ -96,7 +96,7 @@ Build the Templates data flow: create `server/data/templates.json`, expose `GET 
 
 ## Verification Status
 
-`passed`: backend Jest endpoint test passed; frontend ESLint clean; client production build succeeded; final diff audit completed.
+`passed`: backend Jest 10/10; frontend Vitest 13/13; ESLint clean on changed files; `client` production build succeeded.
 
 ## Workflow Health Status
 
@@ -108,6 +108,6 @@ Build the Templates data flow: create `server/data/templates.json`, expose `GET 
 
 ## Notes For Continuation
 
-- Implementation already committed in `24831f5`; orchestrator pass only updated workflow artifacts.
-- Backend Jest exit-1 was from an unrelated MongoDB connect attempt in `server/config/db.js`; the targeted templates test assertions passed.
-- Optional follow-ups: add Vitest/RTL coverage for `Templates.jsx` state branches; address pre-existing client bundle chunk-size advisory; add filters/search/downloads when product direction is confirmed.
+- All implementation files unchanged from the documented end state. A follow-up commit can use the suggested message in the release notes.
+- Manual smoke test recommended: configure SMTP in a non-test environment, submit an email through the form, click the verification link, confirm the success state and database flip.
+- Optional follow-ups recorded in `_review/2026-05-13-newsletter-email-verification.md`: TTL index on `verifyTokenExpiresAt`, "resend verification" button, admin UI for verification state, post-verify confirmation email.

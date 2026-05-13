@@ -5,6 +5,21 @@ export const subscribeToNewsletter = async ({ email }) => {
   return response.data;
 };
 
+export const verifyNewsletter = async ({ token }) => {
+  try {
+    const response = await api.get("/api/newsletter/verify", {
+      params: { token },
+    });
+    return response.data;
+  } catch (error) {
+    const body = error?.response?.data;
+    if (body && typeof body === "object" && body.status) {
+      return body;
+    }
+    throw error;
+  }
+};
+
 export const getNewsletterErrorMessage = (error) => {
   return (
     error?.response?.data?.error ||

@@ -8,6 +8,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  tls: {
+    rejectUnauthorized: process.env.SMTP_ALLOW_SELF_SIGNED !== "true",
+  },
 });
 
 const escapeHtml = (value) =>
@@ -36,4 +39,24 @@ async function sendContactEmail({ name, email, subject, message }) {
   });
 }
 
-module.exports = { sendContactEmail };
+async function sendNewsletterVerificationEmail({ email, verifyUrl }) {
+  const safeTo = sanitizeHeaderText(email);
+  const safeUrl = escapeHtml(verifyUrl);
+
+  await transporter.sendMail({
+    from: `"DevKofi" <${process.env.EMAIL_USER}>`,
+    to: safeTo,
+    subject: "Confirm your DevKofi newsletter subscription",
+    text:
+      `Thanks for subscribing to the DevKofi newsletter.\n\n` +
+      `Confirm your email to start receiving updates:\n${verifyUrl}\n\n` +
+      `This link expires in 24 hours. If you did not request this, you can ignore the email.`,
+    html:
+      `<p>Thanks for subscribing to the DevKofi newsletter.</p>` +
+      `<p>Confirm your email to start receiving updates:</p>` +
+      `<p><a href="${safeUrl}">Confirm my subscription</a></p>` +
+      `<p>This link expires in 24 hours. If you did not request this, you can ignore the email.</p>`,
+  });
+}
+
+module.exports = { sendContactEmail, sendNewsletterVerificationEmail };

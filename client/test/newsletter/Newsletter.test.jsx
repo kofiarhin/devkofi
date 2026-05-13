@@ -50,9 +50,9 @@ describe('Newsletter', () => {
 
     expect(screen.getByText(/dev signal/i)).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: /build smarter\. ship faster\./i })
+      screen.getByRole('heading', { name: /keep your build moving/i })
     ).toBeInTheDocument();
-    expect(screen.getByText(/mern tactics, ai workflows/i)).toBeInTheDocument();
+    expect(screen.getByText(/mern tactics, ai workflow notes/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /join/i })).toBeInTheDocument();
   });
 
@@ -89,18 +89,25 @@ describe('Newsletter', () => {
 
     expect(screen.getByRole('button', { name: /joining/i })).toBeDisabled();
 
-    deferred.resolve({ success: true, message: 'Thanks for subscribing!' });
+    deferred.resolve({
+      success: true,
+      pendingVerification: true,
+      message: 'Check your email to confirm your subscription.',
+    });
 
     await waitFor(() => {
-      expect(screen.getByRole('status')).toHaveTextContent('Thanks for subscribing!');
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Check your email to confirm your subscription.'
+      );
     });
   });
 
-  it('shows a success message after a valid submission', async () => {
+  it('shows the check-your-email message after a valid submission', async () => {
     const user = userEvent.setup();
     subscribeToNewsletter.mockResolvedValueOnce({
       success: true,
-      message: 'Thanks for subscribing!',
+      pendingVerification: true,
+      message: 'Check your email to confirm your subscription.',
     });
 
     renderNewsletter();
@@ -109,7 +116,25 @@ describe('Newsletter', () => {
     await user.click(screen.getByRole('button', { name: /^join$/i }));
 
     await waitFor(() => {
-      expect(screen.getByRole('status')).toHaveTextContent('Thanks for subscribing!');
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Check your email to confirm your subscription.'
+      );
+    });
+  });
+
+  it('falls back to the default verification copy when the server omits a message', async () => {
+    const user = userEvent.setup();
+    subscribeToNewsletter.mockResolvedValueOnce({ success: true });
+
+    renderNewsletter();
+
+    await user.type(screen.getByLabelText(/email address/i), 'builder@test.com');
+    await user.click(screen.getByRole('button', { name: /^join$/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'Check your email to confirm your subscription.'
+      );
     });
   });
 

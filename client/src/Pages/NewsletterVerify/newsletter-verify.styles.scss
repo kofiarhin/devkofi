@@ -1,0 +1,95 @@
+.newsletter-verify {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 5vw, 64px) clamp(16px, 4vw, 32px);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(148, 255, 43, 0.12), transparent 30%),
+    linear-gradient(180deg, #0f1012 0%, #09090b 100%);
+  color: #fafafa;
+
+  &__card {
+    width: min(100%, 520px);
+    background: rgba(20, 21, 24, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: clamp(24px, 4vw, 36px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+    display: grid;
+    gap: 20px;
+    text-align: center;
+  }
+
+  &__eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(148, 255, 43, 0.85);
+    margin: 0;
+  }
+
+  &__title {
+    font-size: clamp(24px, 4vw, 30px);
+    margin: 0;
+  }
+
+  &__state {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  &__icon {
+    &.is-success { color: #94ff2b; }
+    &.is-warning { color: #ffb547; }
+    &.is-error { color: #ff6f70; }
+  }
+
+  &__headline {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  &__body {
+    font-size: 15px;
+    line-height: 1.55;
+    color: rgba(250, 250, 250, 0.72);
+    margin: 0;
+    max-width: 38ch;
+  }
+
+  &__spinner {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    border-top-color: #94ff2b;
+    animation: newsletter-verify-spin 0.9s linear infinite;
+  }
+
+  &__home-link {
+    justify-self: center;
+    color: rgba(250, 250, 250, 0.78);
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(250, 250, 250, 0.18);
+    padding-bottom: 2px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+      color: #94ff2b;
+      border-color: #94ff2b;
+    }
+  }
+}
+
+@keyframes newsletter-verify-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .newsletter-verify__spinner { animation: none; }
+}

@@ -23,6 +23,7 @@ import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 import AdminMessageDetails from "./Pages/AdminMessageDetails/AdminMessageDetails";
 import useAdminSession from "./hooks/queries/useAdminSession";
 import Templates from "./Pages/Templates/Templates";
+import NewsletterVerify from "./Pages/NewsletterVerify/NewsletterVerify";
 
 export const AppRoutes = () => {
   useAdminSession();
@@ -36,6 +37,7 @@ export const AppRoutes = () => {
         <Route path="/templates" element={<Templates />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/book-a-call" element={<BookCall />} />
+        <Route path="/newsletter/verify" element={<NewsletterVerify />} />
         <Route path="*" element={<NotFound />} />
       </Route>
 

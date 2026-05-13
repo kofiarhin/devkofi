@@ -134,3 +134,57 @@ After appending each task entry, update `_handoff/current.md` with the latest cu
 - Review result: Reviewed; no in-scope issues.
 - Blockers: None
 - Next step: Final response with workflow health `Passed`.
+
+### `2026-05-13 08:10` - `TASK-001` (newsletter-email-verification)
+
+- Status: `Done`
+- Lifecycle transition reached: `Planned -> Ready -> In Progress -> Verified -> Reviewed -> Done`
+- Files changed: `server/models/NewsletterSubscriber.js`, `server/controllers/newsletterController.js`, `server/routes/newsletterRoutes.js`, `server/utils/emailService.js`, `server/tests/newsletter.test.js`, `.env.example`
+- Dirty worktree protection: Initial `git status --short` showed only the workflow's own `WORK_REQUEST.md` edit. Planned backend implementation files were not dirty before editing. No overlap risk.
+- Parallel metadata: Sequential `complete-workflow` mode; parallel fields not applicable.
+- Parallel claim/lock status: not applicable.
+- Worker status: not applicable.
+- Merge review status: not applicable.
+- Iteration evidence:
+  - Iteration 1 - Build: Goal=minimum working slice (schema fields, subscribe rewrite, verify endpoint, email sender, baseline coverage). Changes=added `verified`, `verifyToken` (sparse index), `verifyTokenExpiresAt`, `verifiedAt` to NewsletterSubscriber; rewrote subscribe to generate a 32-byte hex token, persist its SHA-256 hash with a 24h expiry, rotate on pending resubmit, return friendly already-subscribed on verified resubmit, dispatch email via `emailService` (best-effort); added verify controller branching on found/expired/already-verified/clear-token-on-success; added `sendNewsletterVerificationEmail` to `emailService.js`; mounted `GET /verify` with its own rate limiter (default 30/hr). Verification=`npx jest server/tests/newsletter.test.js --runInBand --forceExit` first run timed out on a 5s `beforeAll` Mongoose cold-start; second run after raising hook timeout to 30s passed all 10 assertions. Review=controller mirrors `contactController` DB-first + best-effort-email pattern. Acceptance=met for create-pending and verify-success. Remaining=tighten messaging and test names. Next=Iteration 2 Refine.
+  - Iteration 2 - Refine: Goal=harden token-reuse messaging and clarify idempotency semantics. Changes=updated invalid-status message to "Verification link is invalid or has already been used."; renamed re-click test to reflect single-use behaviour and asserted the friendly message. Verification=`npx jest server/tests/newsletter.test.js --runInBand --forceExit` -> 10 passed, 1 suite. Review=behaviour and copy now match (tokens are single-use; `already_verified` only fires on race where a verified row still holds a token). Acceptance=met. Remaining=document the optional env var. Next=Iteration 3 Polish.
+  - Iteration 3 - Polish: Goal=document new optional env vars, run final verification. Changes=added `NEWSLETTER_RATE_LIMIT` (existing default) and `NEWSLETTER_VERIFY_RATE_LIMIT` (new) entries to `.env.example`. Verification=`npx jest server/tests/newsletter.test.js --runInBand --forceExit` -> 10 passed, 1 suite. Review=no new dependencies; mirrors existing controller patterns; tokens stored hashed; no plaintext logging. Acceptance=met. Remaining=none. Final verdict=Done.
+- Acceptance result:
+  - [x] Schema fields present
+  - [x] Subscribe pending response shape
+  - [x] Pending resubmit rotates token + resends
+  - [x] Verified resubmit returns alreadySubscribed (no mail)
+  - [x] GET /verify returns verified/expired/invalid/already_verified
+  - [x] Email dispatched via emailService with CLIENT_URL link
+  - [x] Backend tests pass (10/10)
+- Verification result: `npx jest server/tests/newsletter.test.js --runInBand --forceExit` from repo root -> Test Suites: 1 passed, 1 total; Tests: 10 passed, 10 total. Time ~7.5s.
+- Failure recovery notes: First Iteration-1 run failed because Jest's default 5s `beforeAll` timeout was shorter than the Atlas cold-start connect end-to-end (~7s including model setup). Classified in-scope (test ergonomics). Targeted fix: added `jest.setTimeout(30000)` and a 30s timeout argument to `beforeAll`. Rerun: all 10 tests passed.
+- Review result: Reviewed; no in-scope defects. Tokens are 32 random bytes, SHA-256 hashed at rest, never logged.
+- Blockers: None.
+- Next step: TASK-002 (frontend) Iteration 1 - Build.
+
+### `2026-05-13 08:35` - `TASK-002` (newsletter-email-verification)
+
+- Status: `Done`
+- Lifecycle transition reached: `Planned -> Ready -> In Progress -> Verified -> Reviewed -> Done`
+- Files changed: `client/src/services/newsletterService.js`, `client/src/hooks/queries/useVerifyNewsletter.js` (new), `client/src/Pages/NewsletterVerify/NewsletterVerify.jsx` (new), `client/src/Pages/NewsletterVerify/newsletter-verify.styles.scss` (new), `client/src/App.jsx`, `client/src/components/Newsletter/NewsletterSignupForm.jsx`, `client/test/newsletter/Newsletter.test.jsx`, `client/test/newsletter/NewsletterVerify.test.jsx` (new)
+- Dirty worktree protection: Only `WORK_REQUEST.md` and TASK-001 backend files were dirty before TASK-002 started. No overlap with planned frontend files.
+- Parallel metadata: Sequential `complete-workflow` mode; parallel fields not applicable.
+- Parallel claim/lock status: not applicable.
+- Worker status: not applicable.
+- Merge review status: not applicable.
+- Iteration evidence:
+  - Iteration 1 - Build: Goal=success-copy update, new page, route, service, query hook, baseline tests. Changes=added `verifyNewsletter` to `newsletterService.js` (returns the JSON body for API-shaped errors instead of re-throwing); added `useVerifyNewsletter` query hook (`enabled` gated on token, `retry: false`, `staleTime: Infinity`); created `NewsletterVerify` page with success/expired/invalid/already-verified/loading states and styles; mounted `/newsletter/verify` under the public layout in `App.jsx`; updated `NewsletterSignupForm` success-copy fallback to "Check your email to confirm your subscription."; updated existing `Newsletter.test.jsx` for new copy; added `NewsletterVerify.test.jsx`. Verification=`npx vitest run test/newsletter/Newsletter.test.jsx test/newsletter/NewsletterVerify.test.jsx` initial run: 10 passed / 3 failed in verify page (regex matched headline + body text); 1 pre-existing failure in `renders the redesigned newsletter content` because headline copy and body copy in `newsletter.constants.js` had drifted from the assertion. Review=loading and four terminal states render; route reachable. Acceptance=met for primary success path. Remaining=disambiguate test queries, refresh stale assertions. Next=Iteration 2 Refine.
+  - Iteration 2 - Refine: Goal=resolve in-scope test failures and tighten page logic. Changes=switched verify-page assertions to a headline-class selector to avoid double matches; updated the pre-existing assertion to current constants (`Keep your build moving`, `MERN tactics, AI workflow notes`); simplified `resolveStatus` (no double `invalid` return) and replaced `isLoading || isFetching` with plain `isLoading` (combined with `staleTime: Infinity` there is no background refetch). Verification=`npx vitest run test/newsletter/Newsletter.test.jsx test/newsletter/NewsletterVerify.test.jsx` -> Tests: 13 passed, 0 failed; Test Files: 2 passed. Review=all six verify-page scenarios pass, including the network-error fallback. Acceptance=met. Remaining=lint + build. Next=Iteration 3 Polish.
+  - Iteration 3 - Polish: Goal=lint and production build. Changes=none beyond polish review. Verification=`npx eslint <changed files>` -> no output (clean); `npm run build` -> built in 8.82s, 0 errors (pre-existing chunk-size advisory only, unrelated). Review=no regressions; new page renders with semantic landmarks (`<main>` + `aria-labelledby`); icons hidden from screen readers; loading and result regions announce via `role="status"` / `role="alert"`. Acceptance=met. Remaining=none. Final verdict=Done.
+- Acceptance result:
+  - [x] Signup success copy updated
+  - [x] `/newsletter/verify` route renders loading / success / expired / invalid / already-verified states
+  - [x] Vitest passes (13/13)
+  - [x] ESLint clean on changed files
+  - [x] `npm run build` succeeds
+- Verification result: Vitest 13/13 pass; ESLint clean; production build OK (8.82s).
+- Failure recovery notes: Two in-scope adjustments — disambiguated DOM queries in `NewsletterVerify.test.jsx` (test assertions matched both headline and body) and refreshed two assertions in `Newsletter.test.jsx` that had drifted from `newsletter.constants.js`. Both fixes are inside files this task already owns; classified as in-scope hygiene rather than scope creep.
+- Review result: Reviewed; no in-scope defects.
+- Blockers: None.
+- Next step: Final diff audit, review, release notes, summary.

@@ -32,7 +32,8 @@ const NewsletterSignupForm = () => {
     : "";
 
   const showError = Boolean(fieldError || serverError);
-  const successMessage = subscribeMutation.data?.message || "Thanks for subscribing!";
+  const successMessage =
+    subscribeMutation.data?.message || "Check your email to confirm your subscription.";
 
   const resetMutationState = () => {
     if (subscribeMutation.isError || subscribeMutation.isSuccess) {

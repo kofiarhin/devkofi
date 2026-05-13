@@ -8,27 +8,19 @@ The workflow will ask clarifying questions, run dirty worktree protection, gener
 
 ## Request
 
-Build the Templates data flow:
+Add email verification when a user submits their email for the newsletter.
 
-Create a templates JSON data source and expose it through a backend endpoint, then update the Templates page to fetch and render templates from that endpoint.
+Requirements (clarified):
+- Store the new subscriber immediately with `verified=false`, a verification token, and an expiry; flip `verified=true` when the user clicks the link.
+- Verification link points to a frontend route (`/newsletter/verify?token=...`) that calls a backend verify endpoint and shows success / expired / invalid states.
+- On re-submit: if the address is pending, rotate the token and re-send the verification email. If the address is already verified, return a friendly `alreadySubscribed` response.
+- Verification token TTL: 24 hours.
 
-Requirements:
-- Create a templates.json file with at least 3 template objects.
-- Each template should include id, title, description, category, and tags.
-- Create a backend GET endpoint for templates, likely GET /api/templates.
-- The endpoint should read from templates.json and return the template list as JSON.
-- Update client/src/Pages/Templates/Templates.jsx to fetch templates from the endpoint.
-- Render responsive template cards.
-- Include loading and error states.
-- Keep it small and clean.
-
-Execution mode: parallel-workflow
-Default worker count: 3
+Execution mode: complete-workflow
 
 Follow the workflow exactly:
 - detailed spec
 - task plan
-- parallel safety/claims/locks if safe
 - Build -> Refine -> Polish for each task
 - progress
 - handoff
@@ -48,7 +40,7 @@ Default: `ask questions`
 
 Clarifying handling:
 
-- No follow-up questions were asked because the direct prompt gave concrete API, data, UI, and workflow requirements and explicitly requested execution. Remaining minor choices are recorded as assumptions in the spec.
+- Four focused questions were asked and answered (subscriber state, verification UX, duplicate behavior, token TTL). Remaining minor choices recorded as assumptions in the spec.
 
 ## Optional Execution Preference
 
@@ -60,27 +52,27 @@ Choose one:
 
 Default: `complete-workflow`
 
-Selected: `parallel-workflow`
+Selected: `complete-workflow`
 
 ## Optional Context
 
-- User or business goal: Templates should come from the backend instead of local placeholder component data.
-- Target users: Visitors browsing the Templates page and developers maintaining the template list.
-- Expected behavior: `GET /api/templates` returns JSON template objects; the Templates page fetches them and renders responsive cards.
-- UI expectations: Responsive cards, loading state, error state, clean small implementation.
-- API expectations: Public unauthenticated `GET /api/templates`, JSON response from `server/data/templates.json`.
-- Data model expectations: Each template has `id`, `title`, `description`, `category`, and `tags`.
-- Edge cases: Empty data should not crash the page; failed fetch should show an error state.
-- Constraints: No hard-coded frontend API URL; use the shared frontend API client and existing React Query pattern; preserve unrelated dirty files.
-- Success criteria: Endpoint returns at least 3 templates and Templates page renders fetched cards with loading and error states.
-- Preferred verification: Targeted backend endpoint test if practical, targeted frontend lint, client build, and final diff audit.
-- Dirty worktree notes: Initial status had pre-existing dirty workflow files: `RUN_WORKFLOW.md`, `WORK_REQUEST.md`, `_handoff/current.md`, `_progress/progress.md`, `_task/README.md`, `docs/PROMPTS.md`, and untracked `_parallel/`. Implementation files planned for this request were not dirty before editing.
-- Release notes expectations: Note new `/api/templates` endpoint and frontend data-flow change.
+- User or business goal: Stop accepting unverified emails into the newsletter list and confirm intent before delivery.
+- Target users: Visitors who submit their email through the newsletter form; site owner who maintains the subscriber list.
+- Expected behavior: Submitting an email stores the subscriber as unverified, sends a verification email, and the link confirms the subscription.
+- UI expectations: The signup form should communicate the new pending state ("Check your email to confirm"). A new `/newsletter/verify` route renders success / expired / invalid states.
+- API expectations: `POST /api/newsletter/subscribe` issues a token and sends an email. New `GET /api/newsletter/verify?token=...` marks the subscriber as verified.
+- Data model expectations: `NewsletterSubscriber` gains `verified`, `verifyToken`, `verifyTokenExpiresAt`, and `verifiedAt`.
+- Edge cases: expired token, unknown token, already-verified subscriber clicking again, duplicate submission while pending, missing SMTP config.
+- Constraints: Use existing `nodemailer`-based `server/utils/emailService.js` and `CLIENT_URL` env var. No hard-coded URLs. Rate limit must still cover the new verify route.
+- Success criteria: Subscriber row starts with `verified=false`, verification email is dispatched, clicking a valid token within 24h flips `verified=true`, expired/invalid tokens show a clear state, duplicate submission paths behave correctly.
+- Preferred verification: Backend Jest tests against the new flow; frontend lint + build; targeted Vitest for the signup state change and verify page.
+- Dirty worktree notes: To be captured from `git status --short` at the start of this workflow.
+- Release notes expectations: New verify endpoint, new frontend route, new model fields, no new dependencies.
 
 ## Out Of Scope
 
-- Deployment changes.
-- Database/schema changes.
-- New dependencies.
-- Large UI redesign outside the Templates page.
-- Refactoring unrelated API routes or frontend pages.
+- Replacing nodemailer / SMTP with a different email provider.
+- Adding unsubscribe / preference-center flows.
+- Admin UI surface for managing verification state.
+- Re-architecting the existing rate limiter.
+- Database migrations for historical subscribers (treat existing rows as legacy; new behavior applies from change forward).

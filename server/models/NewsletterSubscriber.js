@@ -9,6 +9,21 @@ const newsletterSubscriberSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    verified: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+    verifyToken: {
+      type: String,
+      index: { sparse: true },
+    },
+    verifyTokenExpiresAt: {
+      type: Date,
+    },
+    verifiedAt: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

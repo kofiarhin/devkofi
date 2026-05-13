@@ -1,0 +1,135 @@
+# Task Plan: Newsletter Email Verification
+
+- Spec file used: `_spec/2026-05-13-newsletter-email-verification.md`
+- Planning date: 2026-05-13
+- Progress and summary files read: `_progress/progress.md` (latest entries through TASK-003 of templates flow), `_summary/2026-05-15-build-templates-data-flow.md`, `_handoff/current.md`.
+- Detailed spec sections used: 5 (Current State), 6 (Desired End State), 11 (Affected Surfaces), 12 (Dependency Map), 13 (Data and State Impact), 14 (UX/API expectations), 15 (Execution Strategy), 16 (Verification Strategy), 17 (Acceptance Criteria), 18 (Edge Cases), 19 (Risks), 20 (Assumptions), 22 (Task Extraction Notes).
+
+## Task List
+
+### TASK-001: Backend verification flow
+
+- Task ID: `TASK-001`
+- Status: `Planned`
+- Priority: `P0`
+- Parallel safe: `no` (frontend depends on the contract)
+- Depends on: none
+- Blocks: `TASK-002`
+- File locks: `server/models/NewsletterSubscriber.js`, `server/controllers/newsletterController.js`, `server/routes/newsletterRoutes.js`, `server/utils/emailService.js`, `server/tests/newsletter.test.js`
+- Claim status: `unclaimed`
+- Claimed by: `n/a` (sequential mode)
+- Agent role: `complete-workflow`
+- Merge risk: `medium`
+- Objective: Add token-based verification to the subscribe flow and expose a verify endpoint that flips `verified` once the user clicks the emailed link.
+- Files likely affected: see file locks; tests in `server/tests/newsletter.test.js`.
+- Checklist:
+  - [ ] Extend `NewsletterSubscriber` schema with `verified`, `verifyToken`, `verifyTokenExpiresAt`, `verifiedAt`; sparse index on `verifyToken`.
+  - [ ] Rewrite `subscribe` controller: generate token (32-byte hex), store SHA-256 hash, set 24h expiry, upsert behavior (new row, pending-rotate, already-verified), fire-and-log email send via `emailService`.
+  - [ ] Add `verify` controller: hash incoming token, look up, branch on found/expired/already-verified, clear token fields on success.
+  - [ ] Add `sendNewsletterVerificationEmail({ email, verifyUrl })` to `emailService.js`.
+  - [ ] Mount `GET /verify` on the newsletter router; ensure rate limiter covers it.
+  - [ ] Update `server/tests/newsletter.test.js` to cover: pending create, pending rotate-on-resubmit, already-verified resubmit, verify success, verify expired (manipulate `verifyTokenExpiresAt`), verify invalid token, verify idempotent already-verified.
+  - [ ] Stub `sendNewsletterVerificationEmail` in tests so they do not require live SMTP.
+- Iteration plan:
+  - Iteration 1 - Build:
+    - Goal: minimum working slice — schema, subscribe rewrite, verify endpoint, email sender, baseline tests for create-pending and verify-success.
+    - Changes made: TBD.
+    - Verification command/result: `cd server && npx jest tests/newsletter.test.js --runInBand`.
+    - Review findings: TBD.
+    - Acceptance status: TBD.
+    - Remaining issues: TBD.
+    - Next action: Move to Iteration 2.
+  - Iteration 2 - Refine:
+    - Goal: cover rotate-on-resubmit, already-verified resubmit, verify expired, verify invalid, verify idempotent.
+    - Changes made: TBD.
+    - Verification command/result: `cd server && npx jest tests/newsletter.test.js --runInBand`.
+    - Review findings: TBD.
+    - Acceptance status: TBD.
+    - Remaining issues: TBD.
+    - Next action: Move to Iteration 3.
+  - Iteration 3 - Polish:
+    - Goal: clean up logging, naming, comments; confirm no regressions; final verification.
+    - Changes made: TBD.
+    - Verification command/result: `cd server && npx jest tests/newsletter.test.js --runInBand`.
+    - Review findings: TBD.
+    - Acceptance status: TBD.
+    - Remaining issues: TBD.
+    - Final verdict: TBD.
+- Acceptance criteria:
+  - [ ] Subscribing new email creates row with `verified=false`, hashed `verifyToken`, 24h `verifyTokenExpiresAt`.
+  - [ ] Resubmitting a pending email rotates the token and resends the email.
+  - [ ] Resubmitting a verified email returns `alreadySubscribed: true` and does not send mail.
+  - [ ] `GET /api/newsletter/verify` returns `status: "verified"` for a valid token and clears the token fields.
+  - [ ] `GET /api/newsletter/verify` returns `status: "expired"` (410) for expired tokens.
+  - [ ] `GET /api/newsletter/verify` returns `status: "invalid"` (400) for unknown/missing tokens.
+  - [ ] `GET /api/newsletter/verify` returns `status: "already_verified"` for an idempotent re-click.
+  - [ ] Backend test suite passes.
+- Acceptance result: TBD.
+- Verification commands:
+  - `cd server && npx jest tests/newsletter.test.js --runInBand`
+- Stop condition: Stop and ask for help if Mongoose schema-level constraints (e.g., the existing `unique` index on `email`) conflict with the upsert behavior in a way that requires a destructive index drop.
+- Out-of-scope items: Admin UI, unsubscribe, frontend changes, switching email provider, populating legacy rows.
+
+---
+
+### TASK-002: Frontend verification flow
+
+- Task ID: `TASK-002`
+- Status: `Planned`
+- Priority: `P0`
+- Parallel safe: `no` (must run after TASK-001)
+- Depends on: `TASK-001`
+- Blocks: none
+- File locks: `client/src/components/Newsletter/NewsletterSignupForm.jsx`, `client/src/services/newsletterService.js`, `client/src/hooks/queries/useVerifyNewsletter.js` (new), `client/src/Pages/NewsletterVerify/NewsletterVerify.jsx` (new), `client/src/Pages/NewsletterVerify/newsletter-verify.styles.scss` (new), `client/src/App.jsx`, `client/test/newsletter/Newsletter.test.jsx`, `client/test/newsletter/NewsletterVerify.test.jsx` (new)
+- Claim status: `unclaimed`
+- Claimed by: `n/a`
+- Agent role: `complete-workflow`
+- Merge risk: `medium`
+- Objective: Inform users they must check their inbox, and add a verify page that consumes the new endpoint.
+- Files likely affected: see file locks.
+- Checklist:
+  - [ ] Update `NewsletterSignupForm.jsx` success message to "Check your email to confirm your subscription." (use `mutation.data.message` when present; fall back to the new copy).
+  - [ ] Add `verifyNewsletter(token)` to `newsletterService.js`.
+  - [ ] Add `useVerifyNewsletter` query hook in `client/src/hooks/queries/`.
+  - [ ] Create `NewsletterVerify` page that reads `?token=` and renders loading / success / expired / invalid / already-verified states.
+  - [ ] Register `/newsletter/verify` under the public layout in `App.jsx`.
+  - [ ] Update `client/test/newsletter/Newsletter.test.jsx` for new success copy.
+  - [ ] Add `client/test/newsletter/NewsletterVerify.test.jsx` covering loading → success path with a mocked service.
+- Iteration plan:
+  - Iteration 1 - Build:
+    - Goal: success-copy update, new page, route, service, hook; baseline test for success path.
+    - Changes made: TBD.
+    - Verification command/result: `cd client && npx vitest run test/newsletter/Newsletter.test.jsx test/newsletter/NewsletterVerify.test.jsx`.
+    - Review findings: TBD.
+    - Acceptance status: TBD.
+    - Remaining issues: TBD.
+    - Next action: Move to Iteration 2.
+  - Iteration 2 - Refine:
+    - Goal: handle expired / invalid / already-verified states with appropriate UI affordances.
+    - Changes made: TBD.
+    - Verification command/result: `cd client && npx vitest run test/newsletter/Newsletter.test.jsx test/newsletter/NewsletterVerify.test.jsx`.
+    - Review findings: TBD.
+    - Acceptance status: TBD.
+    - Remaining issues: TBD.
+    - Next action: Move to Iteration 3.
+  - Iteration 3 - Polish:
+    - Goal: lint, build, accessibility passes, copy review.
+    - Changes made: TBD.
+    - Verification command/result: `cd client && npm run lint`, `cd client && npm run build`.
+    - Review findings: TBD.
+    - Acceptance status: TBD.
+    - Remaining issues: TBD.
+    - Final verdict: TBD.
+- Acceptance criteria:
+  - [ ] Signup form displays "Check your email to confirm your subscription." (or the server-supplied message) after a successful submit.
+  - [ ] `/newsletter/verify` route renders loading / success / expired / invalid / already-verified states.
+  - [ ] Tests pass under Vitest.
+  - [ ] `cd client && npm run lint` is clean.
+  - [ ] `cd client && npm run build` succeeds.
+- Acceptance result: TBD.
+- Verification commands:
+  - `cd client && npx vitest run test/newsletter/Newsletter.test.jsx test/newsletter/NewsletterVerify.test.jsx`
+  - `cd client && npm run lint`
+  - `cd client && npm run build`
+- Stop condition: Stop and ask for help if React Router version or build configuration blocks adding a new route, or if the existing Vitest config rejects the new test file location.
+- Out-of-scope items: Visual redesign of the newsletter card, admin UI, telemetry events, internationalization.
