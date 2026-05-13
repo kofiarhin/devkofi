@@ -6,24 +6,25 @@ This is the master orchestration prompt for a reusable AI engineering workflow. 
 
 Use the latest direct user prompt as the primary request source when it looks like project work. Sync it into `WORK_REQUEST.md`, then execute this workflow exactly.
 
-Before touching code, ask focused clarifying questions until you reach about 90% understanding. If the user explicitly says `skip questions`, generate a best-effort spec and record assumptions.
+Before touching code, ask focused clarifying questions until you reach about 90% understanding. If the user explicitly says `skip questions`, generate a best-effort detailed spec and record assumptions.
 
 Default execution mode is `complete-workflow`. Do not stop after `TASK-001` unless the user explicitly selected `single-task` or a stop condition is reached.
 
 Execution modes:
 
 - `plan-only`: ask questions, write spec, write task plan, then stop.
-- `single-task`: execute only the next ready task, verify and review it, update artifacts, then stop.
-- `complete-workflow`: execute all generated tasks sequentially until the request/spec is complete or a stop condition is reached.
+- `single-task`: execute only the next ready task through the full 3-pass hardening loop, update artifacts, then stop.
+- `complete-workflow`: execute all generated tasks sequentially until the request/spec is complete or a stop condition is reached; each executable task must complete the full 3-pass hardening loop before the next task starts.
 
 Do not implement without:
 
-1. A saved spec in `_spec/`.
+1. A saved detailed spec in `_spec/`.
 2. A saved vertical task plan in `_task/`.
 3. A current read of `_handoff/current.md`.
 4. A current read of `_progress/progress.md`.
 5. A current read of the latest relevant `_summary/` entry.
 6. Task status transitions that follow `Planned -> Ready -> In Progress -> Verified -> Reviewed -> Done`.
+7. Documented iteration evidence for Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish for each executable task.
 
 ## Pipeline
 
@@ -36,8 +37,8 @@ direct user prompt or WORK_REQUEST
 -> read or create _handoff/current.md
 -> vertical plan in _task
 -> execute every task in order by default
--> verify each task
--> critique/fix and review each task
+-> run each executable task through Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish
+-> verify, review, and record evidence inside each iteration
 -> update _progress after each task
 -> update _handoff/current.md after each task
 -> final diff audit
@@ -84,11 +85,11 @@ If the active user prompt is exactly or primarily `continue workflow`, resume in
 5. Read the latest relevant file in `_summary/`, if any.
 6. Read the task plan referenced by `_handoff/current.md`, or the latest file in `_task/` if handoff has no task plan.
 7. Read the spec referenced by that task plan.
-8. Find the next task whose status is not `Done`.
-9. Continue from that task.
+8. Find the next task whose status is not `Done` and the current iteration recorded in `_handoff/current.md`.
+9. Continue from that task and iteration.
 10. Do not ask the original intake questions again unless a current ambiguity blocks safe continuation.
 11. Do not regenerate the entire spec unless the request changed.
-12. Continue executing remaining tasks sequentially until all tasks are complete or a stop condition is reached.
+12. Continue executing remaining tasks sequentially until all tasks are complete or a stop condition is reached, preserving the Build -> Refine -> Polish loop for each executable task.
 13. If all tasks are `Done`, complete any missing `_review/`, `_summary/`, handoff update, workflow health check, or final response step.
 
 ## 2. Intake And Questioning
@@ -173,7 +174,7 @@ Dirty worktree rules:
 
 ## 5. Spec Phase
 
-Generate a detailed spec from the active request, the answers, and repo context.
+Generate a detailed, implementation-aware execution blueprint from the active request, intake answers, repo intake, dirty worktree status, handoff/progress context, latest relevant summary, and durable project docs.
 
 Save the spec in `_spec/` using a timestamped or slugged filename:
 
@@ -181,25 +182,142 @@ Save the spec in `_spec/` using a timestamped or slugged filename:
 _spec/2026-05-10-add-dark-theme.md
 ```
 
-The spec must include:
+The spec must be detailed but not padded. Use `Not applicable` for irrelevant sections instead of deleting them.
 
-- Request summary.
-- Date.
-- Source prompt.
-- Questions asked and answers received.
-- Assumptions.
-- Goal.
-- Non-goals.
-- Users.
-- Functional requirements.
-- UI expectations, when relevant.
-- API expectations, when relevant.
-- Data model expectations, when relevant.
-- Edge cases.
-- Constraints.
-- Success criteria.
-- Out-of-scope items.
-- Open questions.
+Detailed spec required sections:
+
+1. Metadata:
+   - Spec filename.
+   - Date.
+   - Request ID / slug.
+   - Request source.
+   - Execution mode.
+   - Request classification.
+   - Scope level.
+   - Risk level.
+2. Original Request:
+   - Raw user request.
+   - Normalized request.
+   - Source prompt / WORK_REQUEST reference.
+3. Questions And Answers:
+   - Questions asked.
+   - Answers received.
+   - Questions skipped.
+   - Remaining open questions.
+4. Problem Definition:
+   - Problem being solved.
+   - Why it matters.
+   - Current pain point.
+   - Expected value.
+5. Current State Analysis:
+   - Existing behavior.
+   - Existing architecture/components.
+   - Existing files/modules likely involved.
+   - Existing data flow.
+   - Existing API/UI/CLI/workflow behavior.
+   - Existing tests or verification coverage.
+6. Desired End State:
+   - Expected final behavior.
+   - User-facing outcome.
+   - Developer-facing outcome.
+   - System/workflow outcome.
+   - Backward compatibility expectations.
+7. Scope:
+   - In scope.
+   - Out of scope.
+   - Non-goals.
+   - Explicit boundaries.
+8. Users And Use Cases:
+   - Primary users.
+   - Secondary users.
+   - Main use cases.
+   - Edge use cases.
+9. Functional Requirements:
+   - Required behaviors.
+   - Inputs.
+   - Outputs.
+   - State changes.
+   - Error states.
+   - Permissions/auth expectations.
+10. Non-Functional Requirements:
+   - Performance expectations.
+   - Reliability expectations.
+   - Security/privacy expectations.
+   - Accessibility expectations.
+   - Maintainability expectations.
+   - DX expectations.
+11. Affected Surfaces:
+   - Files likely affected.
+   - Directories likely affected.
+   - UI surfaces.
+   - API routes.
+   - Components.
+   - Services.
+   - Database/schema.
+   - Config/env vars.
+   - Tests.
+   - Docs.
+   - Workflow artifacts.
+12. Dependency And Integration Map:
+   - Internal dependencies.
+   - External packages/services.
+   - Integration points.
+   - Ordering constraints.
+   - Migration/setup requirements.
+13. Data And State Impact:
+   - Data models.
+   - Database changes.
+   - State management changes.
+   - Cache/session/local storage impact.
+   - Backward compatibility impact.
+14. UX / API / Workflow Expectations:
+   - UX expectations.
+   - API contract expectations.
+   - CLI/workflow behavior.
+   - Error handling expectations.
+   - Empty/loading/success/failure states.
+15. Execution Strategy:
+   - Recommended implementation approach.
+   - Suggested sequencing.
+   - Safe rollout/migration approach.
+   - Files to inspect before editing.
+   - Decisions to avoid until more evidence exists.
+16. Verification Strategy:
+   - Required automated checks.
+   - Required manual checks.
+   - Test types needed.
+   - Build/lint/typecheck expectations.
+   - Acceptance evidence required.
+   - Proof of completion.
+17. Acceptance Criteria:
+   - Checklist format only.
+   - Concrete, measurable, verifiable items.
+   - Behavior and artifact/documentation criteria when relevant.
+18. Edge Cases And Failure Modes:
+   - Edge cases.
+   - Failure modes.
+   - Regression risks.
+   - Recovery expectations.
+19. Risks And Mitigations:
+   - Technical risks.
+   - Product/UX risks.
+   - Security risks.
+   - Scope risks.
+   - Mitigation plan.
+20. Assumptions:
+   - Explicit assumptions.
+   - Confidence level.
+   - What to revisit if assumptions are wrong.
+21. Open Questions:
+   - Blocking questions.
+   - Non-blocking questions.
+   - Execution impact.
+22. Task Extraction Notes:
+   - Suggested vertical task boundaries.
+   - Suggested first task.
+   - Suggested task ordering.
+   - Areas that should not become separate tasks.
+   - How the 3-pass Build -> Refine -> Polish loop should apply.
 
 No implementation may happen until this file exists.
 
@@ -210,10 +328,10 @@ Before planning, read:
 - `_handoff/current.md`, if it exists.
 - `_progress/progress.md`.
 - The latest relevant `_summary/` entry.
-- The saved spec in `_spec/`.
+- The saved detailed spec in `_spec/`.
 - Relevant durable docs in `docs/`.
 
-Generate a vertical implementation plan from the saved spec.
+Generate a vertical implementation plan from the saved detailed spec. Derive tasks from the spec's affected surfaces, dependency/integration map, data/state impact, UX/API/workflow expectations, execution strategy, verification strategy, acceptance criteria, edge cases, risks, assumptions, open questions, and task extraction notes.
 
 Save the task breakdown in `_task/` using a timestamped or slugged filename that matches the spec when practical:
 
@@ -230,11 +348,22 @@ Each task must include:
 - Objective.
 - Files likely affected.
 - Checklist.
+- Iteration plan for Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish.
 - Acceptance criteria.
 - Acceptance result.
 - Verification commands.
 - Stop condition.
 - Out-of-scope items.
+
+Each task's Iteration plan must include these fields for every iteration:
+
+- Goal.
+- Changes made.
+- Verification command/result.
+- Review findings.
+- Acceptance status.
+- Remaining issues.
+- Next action.
 
 Each task status must follow this lifecycle:
 
@@ -250,11 +379,12 @@ Allowed terminal states:
 
 Status rules:
 
-- A task cannot be `Done` unless verification was attempted and the task was reviewed.
+- A task cannot be `Done` unless all three iterations are complete, verification was attempted in each iteration, the task was reviewed in each iteration, and final acceptance is complete.
 - A task cannot move to `Reviewed` unless verification was attempted.
 - If verification cannot run, the task can be `Needs Human Review`, not `Done`.
 - A task cannot be `Done` unless every required acceptance criterion is checked `[x]`.
 - If any required acceptance result is `[ ]` or `[~]`, the task must be `Blocked` or `Needs Human Review`.
+- Missing iteration evidence makes the task incomplete and the workflow health `Partial` or `Failed`.
 
 Acceptance results must use this format:
 
@@ -274,14 +404,30 @@ No implementation may happen until this file exists.
 After task plan creation:
 
 - If execution mode is `plan-only`, stop after saving the spec and task plan.
-- If execution mode is `single-task`, execute only the next ready task, verify and review it, update artifacts, then stop.
+- If execution mode is `single-task`, execute only the next ready task through the full 3-pass hardening loop, update artifacts, then stop.
 - If execution mode is omitted, use `complete-workflow`.
-- In `complete-workflow`, execute every task in order by default.
+- In `complete-workflow`, execute every task in order by default; each task must complete the full 3-pass hardening loop before the next task starts.
 - Do not create the final summary until all executable tasks are completed or a stop condition is reached.
 
 ## 7. Execution Phase
 
 Execute one task at a time, and in the default `complete-workflow` mode continue through every task in order until the full request/spec is complete or a stop condition is reached.
+
+Every executable task must run through this required 3-pass task hardening loop:
+
+1. Iteration 1 - Build: implement the smallest working vertical slice, run verification, review against acceptance criteria, and record issues, gaps, failed checks, and the next refinement target.
+2. Iteration 2 - Refine: fix issues found in Iteration 1, improve correctness, edge cases, tests, structure, naming, typing, reliability, and project consistency, run verification again, review again, and record what improved and what remains.
+3. Iteration 3 - Polish: perform final cleanup and hardening, remove rough edges, tighten tests, docs, types, and error handling where relevant, confirm no regressions, run final task verification, and produce the final task verdict.
+
+Do not blindly repeat work. Every iteration must have a clear purpose and documented evidence. Each iteration must include:
+
+- Goal.
+- Changes made.
+- Verification command/result.
+- Review findings.
+- Acceptance status.
+- Remaining issues.
+- Next action.
 
 Each task must complete this lifecycle before the next task starts:
 
@@ -297,19 +443,21 @@ For each task:
 4. Read the saved spec and task plan.
 5. If `_handoff/current.md` conflicts with `_progress/progress.md`, trust `_progress/progress.md` for completed task history and update handoff.
 6. Inspect only the relevant codebase area.
-7. Implement only the current task.
-8. Run verification commands or record why they could not run.
-9. If verification fails, follow the failure recovery protocol in section 8A.
-10. Move the task to `Verified` when verification was attempted and results are documented.
-11. Record acceptance results for every acceptance criterion.
-12. Critique and review the result.
-13. Move the task to `Reviewed` after review.
-14. Fix only in-scope defects.
-15. Re-run relevant verification if fixes were made.
-16. Move the task to `Done` only after verification, review, and all required acceptance results are complete and checked `[x]`.
-17. Append progress to `_progress/progress.md`, including acceptance results and failure recovery notes.
-18. Update `_handoff/current.md` with the last completed task, current task, next task, blockers, dirty worktree status, acceptance status, verification status, workflow health status, and suggested next prompt.
-19. Continue to the next task automatically only when the current task is `Done`.
+7. Move the task to `In Progress` and set `_handoff/current.md` to the current task and current iteration.
+8. Run Iteration 1 - Build.
+9. Run Iteration 2 - Refine.
+10. Run Iteration 3 - Polish.
+11. In every iteration, run verification commands or record why they could not run.
+12. If verification fails during any iteration, follow the failure recovery protocol in section 8A inside that iteration.
+13. In every iteration, record acceptance status for every relevant acceptance criterion.
+14. In every iteration, critique and review the result.
+15. Fix only in-scope defects for the current iteration.
+16. Move the task to `Verified` only after final task verification is attempted and all iteration verification results are documented.
+17. Move the task to `Reviewed` only after the Iteration 3 final review is complete and all iteration review findings are documented.
+18. Move the task to `Done` only after all three iterations are complete, final verification and review are documented, and all required acceptance results are checked `[x]`.
+19. Append progress to `_progress/progress.md`, including separate evidence for each iteration, acceptance results, and failure recovery notes.
+20. Update `_handoff/current.md` with the last completed task, current task, current iteration, next task, blockers, dirty worktree status, acceptance status, verification status, iteration evidence status, workflow health status, and suggested next prompt.
+21. Continue to the next task automatically only when the current task is `Done`.
 
 Do not start the next task if the current task is `Blocked`, `Needs Human Review`, risky, unclear, unverified, outside scope, has unresolved in-scope defects, fails verification, or requires external access.
 
@@ -317,15 +465,15 @@ Stop if:
 
 - A task is `Blocked`.
 - A task is `Needs Human Review`.
-- Verification fails.
+- Verification remains failed after iteration-level failure recovery.
 - Scope becomes unclear.
 - Risk increases beyond the saved spec and task plan.
 - External access or credentials are needed.
-- The active execution mode is explicit `single-task` and the current task has been verified, reviewed, documented, and stopped.
+- The active execution mode is explicit `single-task` and the current task has completed the full 3-pass hardening loop, been verified, reviewed, documented, and stopped.
 
 ## 8. Verification
 
-Verification should match the task risk.
+Verification should match the task risk and must run, or be explicitly documented as unable to run, in each task iteration.
 
 Use available commands such as:
 
@@ -346,11 +494,11 @@ cd server && npm test
 
 If commands are missing or cannot run, document the reason in `_progress/progress.md` and the final `_summary/` entry. Provide the best manual verification available.
 
-If verification cannot run, do not mark the task `Done`. Mark it `Needs Human Review` and stop unless the user explicitly directs a different safe path.
+If verification cannot run in any required iteration, do not mark the task `Done`. Mark it `Needs Human Review` and stop unless the user explicitly directs a different safe path.
 
 ## 8A. Failure Recovery Protocol
 
-When verification fails, follow this fixed recovery protocol:
+When verification fails during any iteration, follow this fixed recovery protocol inside that iteration:
 
 1. Identify the failing command.
 2. Capture the failing test or error.
@@ -359,7 +507,7 @@ When verification fails, follow this fixed recovery protocol:
 5. Re-run the exact failing command.
 6. If fixed, continue.
 7. If still failing after a reasonable targeted fix, mark the task `Needs Human Review`.
-8. Update `_progress/progress.md` with the failure, fix attempt, and final result.
+8. Update the iteration evidence and `_progress/progress.md` with the failure, fix attempt, and final result.
 
 Failure recovery rules:
 
@@ -367,7 +515,7 @@ Failure recovery rules:
 - Do not change unrelated code to make tests pass.
 - If the failure is unrelated, document it and continue only if the active task is verified another way.
 - If verification cannot prove the task, stop with `Needs Human Review`.
-- Add failure recovery notes to `_progress/progress.md`, `_review/<request-id>.md`, and `_summary/<request-id>.md`.
+- Add failure recovery notes to the iteration evidence, `_progress/progress.md`, `_review/<request-id>.md`, and `_summary/<request-id>.md`.
 
 ## 9. Progress Tracking
 
@@ -383,6 +531,7 @@ After each task, append:
 - Status.
 - Lifecycle transition reached.
 - Files changed.
+- Iteration evidence for Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish.
 - Acceptance result.
 - Verification result.
 - Failure recovery notes, if any.
@@ -392,7 +541,7 @@ After each task, append:
 
 Do not rewrite previous progress entries except to correct factual errors.
 
-After each task, update `_handoff/current.md`. Do not leave handoff stale after task execution.
+After each task and before any stop, update `_handoff/current.md` with the current task and current iteration. Do not leave handoff stale after task execution.
 
 ## 10. Final Diff Audit
 
@@ -419,7 +568,7 @@ Add final diff audit results to `_review/<request-id>.md`, `_summary/<request-id
 
 ## 11. Review Phase
 
-After implementation and before the final summary, create a review file in `_review/`.
+After implementation, required iteration evidence, and before the final summary, create a review file in `_review/`.
 
 Use a timestamped or slugged filename:
 
@@ -433,6 +582,7 @@ The review must include:
 - Spec file used.
 - Task plan used.
 - Tasks reviewed.
+- Iteration evidence reviewed for every executable task.
 - Bugs found.
 - Scope creep check.
 - Final diff audit.
@@ -486,6 +636,7 @@ The summary should include:
 - Task plan used.
 - Review file used.
 - Tasks completed.
+- Iteration evidence summary.
 - Files changed.
 - Verification run.
 - Acceptance results.
@@ -543,11 +694,13 @@ Before the final response, check:
 - Did `WORK_REQUEST.md` sync?
 - Did `_handoff/current.md` exist and reflect the latest live resume state?
 - Did the spec file exist?
+- Did the spec include every required detailed spec section, or was any missing section repaired before planning?
 - Did the task plan exist?
 - Was progress updated?
 - Was the review created?
 - Was the summary created?
 - Were release notes created?
+- Was required iteration evidence recorded for every executable task?
 - Was the final diff audit completed or documented?
 - Was the dirty worktree checked?
 - Were acceptance results completed?
@@ -557,11 +710,11 @@ Before the final response, check:
 
 Final health status:
 
-- `Passed`: all required artifacts exist, all executable tasks are complete, release notes exist, final diff audit is complete or documented, dirty worktree protection was checked, acceptance results are complete, verification was run or documented, scope was respected, and decisions were handled correctly.
+- `Passed`: all required artifacts exist, the detailed spec exists with all required sections, all executable tasks are complete, all required iteration evidence is present, release notes exist, final diff audit is complete or documented, dirty worktree protection was checked, acceptance results are complete, verification was run or documented, scope was respected, and decisions were handled correctly.
 - `Partial`: artifacts exist, but some tasks remain because of a documented blocker, human-review need, verification gap, or follow-up risk.
-- `Failed`: any required artifact is missing, scope was not respected, or required verification/review/summary documentation is absent.
+- `Failed`: any required artifact is missing, the detailed spec is missing required sections and planning proceeded anyway, scope was not respected, or required verification/review/summary documentation is absent.
 
-If release notes, final diff audit, dirty worktree check, or acceptance results are missing, health should be `Partial` or `Failed` depending on severity. If any required artifact is missing, mark workflow health as `Failed`.
+If release notes, final diff audit, dirty worktree check, required detailed spec sections, iteration evidence, or acceptance results are missing, health should be `Partial` or `Failed` depending on severity. If any required artifact is missing, mark workflow health as `Failed`.
 
 ## 17. Final Response
 
@@ -571,6 +724,7 @@ End with:
 - Spec file used.
 - Task plan used.
 - Tasks completed.
+- Iteration evidence summary.
 - Files changed.
 - Verification commands and results.
 - Progress update location.

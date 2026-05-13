@@ -8,7 +8,7 @@ The workflow will ask clarifying questions, run dirty worktree protection, gener
 
 ## Request
 
-`workflow add a contact form empty state`
+Add placeholder content to the Templates page using three sample template cards.
 
 ## Question Preference
 
@@ -18,6 +18,10 @@ Choose one:
 - `skip questions`: do not ask questions; generate a best-effort spec and record assumptions.
 
 Default: `ask questions`
+
+Clarifying answer received:
+
+- Use three sample template cards.
 
 ## Optional Execution Preference
 
@@ -31,19 +35,22 @@ Default: `complete-workflow`
 
 ## Optional Context
 
-- User or business goal: Add a helpful empty state to the contact form before users begin typing.
-- Target users: Visitors using the current contact form/page.
-- Expected behavior: Use the current contact form/page in the app. If no contact form exists, create a small UI-only contact section where it naturally fits. Show the empty state before the user types anything.
-- UI expectations: Display the exact message: "Start by entering your details and message."
-- API expectations: UI-only for now. Do not connect new backend/contact submission behavior.
-- Data model expectations: No data model changes.
+- User or business goal: `<Why this matters>`
+- Target users: `<Who uses this>`
+- Expected behavior: `<What should happen>`
+- UI expectations: Add responsive, accessible placeholder cards to `client/src/Pages/Templates/Templates.jsx`.
+- API expectations: `<Endpoints, payloads, errors, auth, permissions>`
+- Data model expectations: `<Fields, relationships, migrations, defaults>`
 - Edge cases: `<Failure states, empty states, permissions, limits>`
-- Constraints: `<Do not change X / must use Y / no new dependencies>`
-- Success criteria: The current contact page shows the empty state before any contact form input is entered, and hides it once the user types or uses a prompt chip.
-- Preferred verification: Frontend test and build where practical.
-- Dirty worktree notes: `<Existing dirty files, planned files, overlap risk>`
-- Release notes expectations: Document the contact form empty state and that there are no backend changes.
+- Constraints: Preserve existing dirty files and workflow artifacts; only update required workflow artifacts plus `client/src/Pages/Templates/Templates.jsx` for this workflow test.
+- Success criteria: `/templates` renders three sample template cards with polished placeholder content and no backend/API changes.
+- Preferred verification: `<Test command, manual check, build command>`
+- Dirty worktree notes: Pre-existing dirty files were present before this workflow. User explicitly approved proceeding carefully while preserving existing dirty files and only editing required workflow artifacts plus `client/src/Pages/Templates/Templates.jsx`.
+- Release notes expectations: `<User-facing changes, developer changes, known limitations>`
 
 ## Out Of Scope
 
-- `<File, feature, API, behavior, or area that should stay untouched>`
+- Backend/API changes.
+- Deployment changes.
+- New dependencies.
+- Editing files outside required workflow artifacts and `client/src/Pages/Templates/Templates.jsx`.

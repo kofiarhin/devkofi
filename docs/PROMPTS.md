@@ -9,7 +9,7 @@ Read RUN_WORKFLOW.md and execute it using WORK_REQUEST.md.
 
 Follow AGENTS.md.
 Ask clarifying questions until about 90% understanding before touching code unless the request says "skip questions".
-Generate a saved spec in _spec/, generate a vertical task plan in _task/, execute one Ralph Wiggum-style task at a time, verify, critique/fix, update _progress/progress.md, write a final summary in _summary/, then provide a final response and suggested commit message.
+Generate a saved detailed spec in _spec/, generate a vertical task plan in _task/ from that spec with an Iteration plan, execute one Ralph Wiggum-style task at a time through Build -> Refine -> Polish, record iteration evidence in _progress/progress.md, write a final summary in _summary/, then provide a final response and suggested commit message.
 ```
 
 ## Direct Request With Questions
@@ -20,7 +20,7 @@ Use this as the active request:
 
 Follow RUN_WORKFLOW.md.
 First ask focused clarifying questions about goal, users, exact behavior, edge cases, UI/API expectations, data model, constraints, success criteria, and out-of-scope work.
-Do not touch code until questions are answered, a spec is saved in _spec/, and a task plan is saved in _task/.
+Do not touch code until questions are answered, a detailed spec is saved in _spec/, and a task plan derived from it is saved in _task/.
 ```
 
 ## Direct Request That Skips Questions
@@ -32,10 +32,10 @@ Use this as the active request:
 skip questions
 
 Follow RUN_WORKFLOW.md.
-Generate a best-effort spec in _spec/ and clearly list assumptions.
-Generate a vertical task plan in _task/.
+Generate a best-effort detailed spec in _spec/ and clearly list assumptions.
+Generate a vertical task plan in _task/ from that spec.
 Before implementation, read _progress/progress.md and the latest relevant _summary/ entry.
-Then execute tasks one at a time only if safe.
+Then execute tasks one at a time through the full Build -> Refine -> Polish hardening loop only if safe.
 ```
 
 ## Intake Questions
@@ -63,31 +63,169 @@ Do not inspect or edit implementation code yet.
 ## Spec Generation
 
 ```txt
-Using the active request and the answers so far, generate a detailed spec.
+Using the active request, intake answers, repo intake, dirty worktree status, _handoff/current.md, _progress/progress.md, the latest relevant _summary/ entry, and durable project docs, generate a detailed, implementation-aware execution blueprint.
 
 Save it in _spec/ with a timestamped or slugged filename, for example:
 _spec/2026-05-10-add-dark-theme.md
 
-Include:
-- Request summary
-- Date
-- Source prompt
-- Questions asked and answers received
-- Assumptions
-- Goal
-- Non-goals
-- Users
-- Functional requirements
-- UI expectations, if relevant
-- API expectations, if relevant
-- Data model expectations, if relevant
-- Edge cases
-- Constraints
-- Success criteria
-- Out-of-scope items
-- Open questions
+The spec must be detailed but not padded. Use "Not applicable" for irrelevant sections instead of deleting them.
+
+Include these required sections:
+1. Metadata
+   - Spec filename
+   - Date
+   - Request ID / slug
+   - Request source
+   - Execution mode
+   - Request classification
+   - Scope level
+   - Risk level
+2. Original Request
+   - Raw user request
+   - Normalized request
+   - Source prompt / WORK_REQUEST reference
+3. Questions And Answers
+   - Questions asked
+   - Answers received
+   - Questions skipped
+   - Remaining open questions
+4. Problem Definition
+   - Problem being solved
+   - Why it matters
+   - Current pain point
+   - Expected value
+5. Current State Analysis
+   - Existing behavior
+   - Existing architecture/components
+   - Existing files/modules likely involved
+   - Existing data flow
+   - Existing API/UI/CLI/workflow behavior
+   - Existing tests or verification coverage
+6. Desired End State
+   - Expected final behavior
+   - User-facing outcome
+   - Developer-facing outcome
+   - System/workflow outcome
+   - Backward compatibility expectations
+7. Scope
+   - In scope
+   - Out of scope
+   - Non-goals
+   - Explicit boundaries
+8. Users And Use Cases
+   - Primary users
+   - Secondary users
+   - Main use cases
+   - Edge use cases
+9. Functional Requirements
+   - Required behaviors
+   - Inputs
+   - Outputs
+   - State changes
+   - Error states
+   - Permissions/auth expectations
+10. Non-Functional Requirements
+   - Performance expectations
+   - Reliability expectations
+   - Security/privacy expectations
+   - Accessibility expectations
+   - Maintainability expectations
+   - DX expectations
+11. Affected Surfaces
+   - Files likely affected
+   - Directories likely affected
+   - UI surfaces
+   - API routes
+   - Components
+   - Services
+   - Database/schema
+   - Config/env vars
+   - Tests
+   - Docs
+   - Workflow artifacts
+12. Dependency And Integration Map
+   - Internal dependencies
+   - External packages/services
+   - Integration points
+   - Ordering constraints
+   - Migration/setup requirements
+13. Data And State Impact
+   - Data models
+   - Database changes
+   - State management changes
+   - Cache/session/local storage impact
+   - Backward compatibility impact
+14. UX / API / Workflow Expectations
+   - UX expectations
+   - API contract expectations
+   - CLI/workflow behavior
+   - Error handling expectations
+   - Empty/loading/success/failure states
+15. Execution Strategy
+   - Recommended implementation approach
+   - Suggested sequencing
+   - Safe rollout/migration approach
+   - Files to inspect before editing
+   - Decisions to avoid until more evidence exists
+16. Verification Strategy
+   - Required automated checks
+   - Required manual checks
+   - Test types needed
+   - Build/lint/typecheck expectations
+   - Acceptance evidence required
+   - Proof of completion
+17. Acceptance Criteria
+   - [ ] Concrete measurable criterion 1
+   - [ ] Concrete measurable criterion 2
+   - [ ] Concrete measurable criterion 3
+18. Edge Cases And Failure Modes
+   - Edge cases
+   - Failure modes
+   - Regression risks
+   - Recovery expectations
+19. Risks And Mitigations
+   - Technical risks
+   - Product/UX risks
+   - Security risks
+   - Scope risks
+   - Mitigation plan
+20. Assumptions
+   - Explicit assumptions
+   - Confidence level
+   - What to revisit if assumptions are wrong
+21. Open Questions
+   - Blocking questions
+   - Non-blocking questions
+   - Execution impact
+22. Task Extraction Notes
+   - Suggested vertical task boundaries
+   - Suggested first task
+   - Suggested task ordering
+   - Areas that should not become separate tasks
+   - How the 3-pass Build -> Refine -> Polish loop should apply
+
+If the user said skip questions, generate the best possible detailed spec and clearly record assumptions and open questions.
 
 Do not implement code.
+```
+
+## Spec Quality Review
+
+```txt
+Review the saved _spec/ file before task planning.
+
+Confirm:
+1. All 22 required detailed spec sections are present.
+2. Irrelevant sections say "Not applicable" instead of being deleted.
+3. The spec is based on the active request, intake answers, repo intake, dirty worktree status, handoff/progress context, latest relevant summary, and durable project docs.
+4. Current State Analysis explains existing behavior, affected files/modules, data flow, workflow/API/UI behavior when relevant, and known verification coverage.
+5. Desired End State, Scope, Functional Requirements, Non-Functional Requirements, Affected Surfaces, Dependency And Integration Map, Data And State Impact, UX/API/Workflow Expectations, Execution Strategy, Verification Strategy, Acceptance Criteria, Edge Cases, Risks, Assumptions, Open Questions, and Task Extraction Notes are specific enough for planning.
+6. Acceptance Criteria are checklist-only, concrete, measurable, and verifiable.
+7. Task Extraction Notes identify likely vertical task boundaries, suggested first task, ordering, areas not to split out, and how Build -> Refine -> Polish applies.
+8. No open question blocks safe planning.
+
+If required sections are missing or too vague, repair the spec before generating _task/.
+If planning proceeds with missing required sections, workflow health must be Partial or Failed depending on severity.
 ```
 
 ## Request Classification
@@ -137,7 +275,22 @@ Do not implement the request yet.
 ## Vertical Task Generation
 
 ```txt
-Using WORK_REQUEST.md, the saved _spec/ file, _progress/progress.md, the latest relevant _summary/ entry, and durable docs, generate a vertical task plan in _task/.
+Using WORK_REQUEST.md, the saved detailed _spec/ file, _progress/progress.md, the latest relevant _summary/ entry, _handoff/current.md, and durable docs, generate a vertical task plan in _task/.
+
+Before writing tasks, extract task boundaries from the detailed spec, especially:
+1. Affected Surfaces.
+2. Dependency And Integration Map.
+3. Data And State Impact.
+4. UX / API / Workflow Expectations.
+5. Execution Strategy.
+6. Verification Strategy.
+7. Acceptance Criteria.
+8. Edge Cases And Failure Modes.
+9. Risks And Mitigations.
+10. Assumptions and Open Questions.
+11. Task Extraction Notes.
+
+Do not plan from the raw request alone. If the detailed spec is missing required sections or is not complete enough to plan from, repair the spec or stop before task planning.
 
 Each task must include:
 - Task ID
@@ -145,15 +298,123 @@ Each task must include:
 - Objective
 - Files likely affected
 - Checklist
+- Iteration plan for Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish
 - Acceptance criteria
+- Acceptance result
 - Verification commands
 - Stop condition
 - Out-of-scope items
 
+Each iteration plan must include:
+- Goal
+- Changes made
+- Verification command/result
+- Review findings
+- Acceptance status
+- Remaining issues
+- Next action
+
 Tasks must be vertical slices, not vague layers.
 Use Ralph Wiggum-style task phrasing: small, literal, concrete, sequential.
+Do not split out areas the detailed spec says should not become separate tasks.
 
 Do not implement code.
+```
+
+## 3-Pass Task Hardening Loop
+
+```txt
+Follow AGENTS.md and RUN_WORKFLOW.md.
+
+Run the active executable task through the required 3-pass hardening loop:
+
+1. Iteration 1 - Build: implement the smallest working vertical slice, run verification, review against acceptance criteria, and record issues, gaps, failed checks, and the next refinement target.
+2. Iteration 2 - Refine: fix issues found in Build, improve correctness, edge cases, tests, structure, naming, typing, reliability, and project consistency, run verification again, review again, and record what improved and what remains.
+3. Iteration 3 - Polish: perform final cleanup and hardening, remove rough edges, tighten tests/docs/types/error handling where relevant, confirm no regressions, run final verification, and produce the final task verdict.
+
+For each iteration, record:
+- Goal
+- Changes made
+- Verification command/result
+- Review findings
+- Acceptance status
+- Remaining issues
+- Next action
+
+Do not mark the task Done until all three iterations are complete and all required acceptance criteria are checked [x], unless a documented stop condition forces Blocked or Needs Human Review.
+```
+
+## Iteration 1 Build Pass
+
+```txt
+Run Iteration 1 - Build for the active task.
+
+Goal:
+Implement the smallest working vertical slice that satisfies the core task intent.
+
+Required evidence:
+- Changes made
+- Verification command/result
+- Review findings against acceptance criteria
+- Acceptance status
+- Issues, gaps, or failed checks
+- Next refinement target
+
+If verification fails, run the failure recovery protocol inside this iteration and document the result.
+```
+
+## Iteration 2 Refine Pass
+
+```txt
+Run Iteration 2 - Refine for the active task.
+
+Goal:
+Fix issues found in Iteration 1 and improve correctness, edge cases, tests, structure, naming, typing, reliability, and project consistency.
+
+Required evidence:
+- Changes made
+- Verification command/result
+- Review findings
+- Acceptance status
+- What improved
+- What remains
+- Next action for Polish
+
+If verification fails, run the failure recovery protocol inside this iteration and document the result.
+```
+
+## Iteration 3 Polish Pass
+
+```txt
+Run Iteration 3 - Polish for the active task.
+
+Goal:
+Complete final cleanup and hardening, remove rough edges, tighten tests/docs/types/error handling where relevant, confirm no regressions, and produce the final task verdict.
+
+Required evidence:
+- Changes made
+- Final verification command/result
+- Final review findings
+- Final acceptance status
+- Remaining issues, or none
+- Final task verdict
+
+Do not mark the task Done unless all required acceptance criteria are checked [x].
+```
+
+## Iteration Evidence Review
+
+```txt
+Review iteration evidence for the active task.
+
+Confirm:
+1. Iteration 1 Build has goal, changes, verification, review findings, acceptance status, remaining issues, and next action.
+2. Iteration 2 Refine has goal, changes, verification, review findings, acceptance status, remaining issues, and next action.
+3. Iteration 3 Polish has goal, changes, verification, review findings, acceptance status, remaining issues, and final verdict.
+4. Failure recovery, if used, is documented inside the iteration where verification failed.
+5. Final acceptance criteria are all checked [x], or the task is Blocked/Needs Human Review.
+
+Report missing evidence before the task is marked Done.
 ```
 
 ## Single-Task Execution
@@ -161,7 +422,7 @@ Do not implement code.
 ```txt
 Follow AGENTS.md and RUN_WORKFLOW.md.
 
-Execute exactly one task:
+Execute exactly one task through the full 3-pass hardening loop:
 <TASK-ID> - <TASK_TITLE>
 
 Before editing:
@@ -173,10 +434,11 @@ Before editing:
 - Inspect only relevant files.
 
 After editing:
-- Run or recommend verification commands.
-- Critique the result.
+- Complete Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish.
+- Run or recommend verification commands in each iteration.
+- Critique the result in each iteration.
 - Fix only in-scope defects.
-- Append to _progress/progress.md with task ID, status, files changed, verification result, blockers, and next step.
+- Append to _progress/progress.md with task ID, status, files changed, iteration evidence, verification result, blockers, and next step.
 - Create or append the relevant _summary/ entry if the workflow stops here.
 - Check git status again.
 
@@ -192,17 +454,18 @@ For each checklist item:
 1. Say what file or behavior you are checking.
 2. Make only the change needed for the current item.
 3. Stop if the next action would expand scope.
-4. Verify the task acceptance criteria.
-5. Update _progress/progress.md before moving on.
+4. Verify the task acceptance criteria inside the current iteration.
+5. Record iteration evidence before moving on.
+6. Update _progress/progress.md before moving on.
 
 No bundled refactors.
-No second task until this task is verified, critiqued, and logged.
+No second task until this task completes Build -> Refine -> Polish and the iteration evidence is logged.
 ```
 
 ## Critique Loop
 
 ```txt
-Review the active task result as a senior engineer.
+Review the active task result and iteration evidence as a senior engineer.
 
 Use the saved _spec/ file, saved _task/ plan, _progress/progress.md, and the current diff.
 
@@ -214,6 +477,7 @@ Prioritize:
 5. Test gaps.
 6. Scope creep.
 7. Unnecessary complexity.
+8. Missing Build, Refine, or Polish evidence.
 
 Return findings with file and line references where possible.
 Fix only defects inside the current task scope.
@@ -224,7 +488,7 @@ Fix only defects inside the current task scope.
 ```txt
 Follow AGENTS.md.
 
-The verification for the active task failed:
+The verification for the active task failed during this iteration:
 <COMMAND>
 
 Failure summary:
@@ -236,7 +500,7 @@ Do not refactor unrelated code.
 After the fix:
 - Re-run the failing command if possible.
 - Run directly related tests.
-- Append the result to _progress/progress.md.
+- Append the result to the current iteration evidence and _progress/progress.md.
 - Update the final _summary/ entry if the workflow is complete.
 - Summarize the root cause and fix.
 ```
@@ -249,13 +513,15 @@ Produce the final workflow summary and create or append it in _summary/.
 Include:
 1. Original work request.
 2. Spec file used.
-3. Task plan used.
-4. Tasks completed.
-5. Files changed.
-6. Verification commands and results.
-7. Unresolved issues or blockers.
-8. Recommended next work.
-9. Suggested commit message.
+3. Whether the detailed spec was complete or had gaps, including any missing required sections and whether they were repaired before planning.
+4. Task plan used.
+5. Tasks completed.
+6. Iteration evidence summary.
+7. Files changed.
+8. Verification commands and results.
+9. Unresolved issues or blockers.
+10. Recommended next work.
+11. Suggested commit message.
 
 Do not claim a commit was made unless one was actually created.
 ```

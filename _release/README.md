@@ -13,6 +13,7 @@ Each release note must include:
 - Request.
 - User-facing changes.
 - Developer changes.
+- Iteration evidence summary.
 - New routes/APIs.
 - New env vars.
 - Database/schema changes.

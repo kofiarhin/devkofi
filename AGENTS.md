@@ -40,8 +40,8 @@ Customize placeholders before using this in a production project. MERN is the de
 4. Default execution mode is `complete-workflow`.
 5. Execution modes:
    - `plan-only`: ask questions, write spec, write task plan, then stop.
-   - `single-task`: execute only the next ready task, verify and review it, update artifacts, then stop.
-   - `complete-workflow`: execute all generated tasks sequentially until the request/spec is complete or a stop condition is reached.
+   - `single-task`: execute only the next ready task through the full 3-pass hardening loop, update artifacts, then stop.
+   - `complete-workflow`: execute all generated tasks sequentially until the request/spec is complete or a stop condition is reached; each executable task must complete the full 3-pass hardening loop before the next task starts.
 6. Agents must not stop after `TASK-001` unless execution mode is explicitly `single-task` or a stop condition is reached.
 7. Agents must continue through `TASK-002`, `TASK-003`, and later tasks automatically when the current task is `Done` and safe to continue.
 8. Ask focused clarifying questions before implementation unless the prompt explicitly says `skip questions`.
@@ -64,28 +64,30 @@ Customize placeholders before using this in a production project. MERN is the de
 25. Keep changes scoped to the active task.
 26. Never implement unrelated work.
 27. Every task must move through `Planned -> Ready -> In Progress -> Verified -> Reviewed -> Done`.
-28. Allowed terminal task states are `Done`, `Blocked`, and `Needs Human Review`.
-29. A task cannot be `Done` unless verification was attempted and the task was reviewed.
-30. A task cannot move to `Reviewed` unless verification was attempted.
-31. If verification cannot run, the task can be `Needs Human Review`, not `Done`.
-32. Never skip verification. If verification cannot run, document the reason and the best available manual check.
-33. Record acceptance results for every task. A task cannot be `Done` unless every required acceptance criterion is checked `[x]`; `[ ]` or `[~]` means `Blocked` or `Needs Human Review`.
-34. If verification fails, follow the failure recovery protocol: identify the failing command, capture the error, classify the failure, fix only in-scope issues, rerun the exact failing command, and stop with `Needs Human Review` if targeted recovery does not prove the task.
-35. After each task, append progress to `_progress/progress.md`, including acceptance results and any failure recovery notes.
-36. After each task, update `_handoff/current.md` so it reflects the latest completed task, current phase, blockers, dirty worktree status, verification status, acceptance status, and next step.
-37. Always keep `_handoff/current.md` current; do not leave handoff stale after task execution.
-38. The handoff file should allow another agent/session to resume without rereading the entire conversation.
-39. `continue workflow` must start from `_handoff/current.md`.
-40. If `_handoff/current.md` conflicts with `_progress/progress.md`, trust `_progress/progress.md` for completed task history and update handoff accordingly.
-41. Before final review and summary, run or document the final diff audit with `git diff --stat` and `git diff` when available.
-42. After all executable tasks are complete or a stop condition is reached, create a review file in `_review/`.
-43. After review, create release notes in `_release/<request-id>.md`.
-44. After release notes are complete, create or append a summary in `_summary/` and update `_handoff/current.md`.
-45. Record meaningful architecture or product decisions in `_decisions/`; do not create decision files for routine edits.
-46. Before the final response, run the workflow health check.
-47. Continue to the next task only when the current task is implemented, verified, reviewed, documented, all required acceptance criteria are met, and safe to continue.
-48. Stop if scope is unclear, risky, destructive, unverified, blocked, or requires unavailable access.
-49. Final review, release notes, and summary must represent the full completed request or documented stop state, not only the first task.
+28. Every executable task must run through Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish before it can be marked `Done`.
+29. Each iteration must include documented goal, changes made, verification command/result, review findings, acceptance status, remaining issues, and next action.
+30. Allowed terminal task states are `Done`, `Blocked`, and `Needs Human Review`.
+31. A task cannot be `Done` unless all three iterations are complete, verification was attempted in each iteration, the task was reviewed in each iteration, and final acceptance is complete.
+32. A task cannot move to `Reviewed` unless verification was attempted.
+33. If verification cannot run, the task can be `Needs Human Review`, not `Done`.
+34. Never skip verification. If verification cannot run, document the reason and the best available manual check.
+35. Record acceptance results for every task. A task cannot be `Done` unless every required acceptance criterion is checked `[x]`; `[ ]` or `[~]` means `Blocked` or `Needs Human Review`.
+36. If verification fails during any iteration, follow the failure recovery protocol inside that iteration: identify the failing command, capture the error, classify the failure, fix only in-scope issues, rerun the exact failing command, and stop with `Needs Human Review` if targeted recovery does not prove the task.
+37. After each task, append progress to `_progress/progress.md`, including separate iteration evidence, acceptance results, and any failure recovery notes.
+38. After each task, update `_handoff/current.md` so it reflects the latest completed task, current task, current iteration, current phase, blockers, dirty worktree status, verification status, acceptance status, iteration evidence status, and next step.
+39. Always keep `_handoff/current.md` current; do not leave handoff stale after task execution.
+40. The handoff file should allow another agent/session to resume without rereading the entire conversation.
+41. `continue workflow` must start from `_handoff/current.md`.
+42. If `_handoff/current.md` conflicts with `_progress/progress.md`, trust `_progress/progress.md` for completed task history and update handoff accordingly.
+43. Before final review and summary, run or document the final diff audit with `git diff --stat` and `git diff` when available.
+44. After all executable tasks are complete or a stop condition is reached, create a review file in `_review/`.
+45. After review, create release notes in `_release/<request-id>.md`.
+46. After release notes are complete, create or append a summary in `_summary/` and update `_handoff/current.md`.
+47. Record meaningful architecture or product decisions in `_decisions/`; do not create decision files for routine edits.
+48. Before the final response, run the workflow health check.
+49. Continue to the next task only when the current task completed Build -> Refine -> Polish, is verified, reviewed, documented, all required acceptance criteria are met, and safe to continue.
+50. Stop if scope is unclear, risky, destructive, unverified, blocked, or requires unavailable access.
+51. Final review, release notes, and summary must represent the full completed request or documented stop state, not only the first task.
 
 ## Required Workflow
 
@@ -104,20 +106,20 @@ For a work request:
 
    Document existing dirty files, files planned for this workflow, and overlap risk. If dirty files overlap with planned files, stop and ask before editing. If dirty files are unrelated, continue but document them. Never overwrite user changes and never clean/reset files unless explicitly instructed.
 7. Read `_handoff/current.md` if it exists, `_progress/progress.md`, the latest relevant `_summary/` entry, and durable supporting docs.
-8. Generate a detailed spec in `_spec/`.
-9. Generate a vertical task plan in `_task/`.
+8. Generate a detailed spec in `_spec/` using the required detailed spec template.
+9. Generate a vertical task plan in `_task/` from the saved detailed spec.
 10. If execution mode is `plan-only`, stop after saving the spec and task plan.
-11. If execution mode is `single-task`, execute only the next ready task, verify and review it, update artifacts, then stop.
+11. If execution mode is `single-task`, execute only the next ready task through the full 3-pass hardening loop, update artifacts, then stop.
 12. If execution mode is omitted, use `complete-workflow`.
-13. In `complete-workflow`, execute every task in order until all tasks are complete or a stop condition is reached.
+13. In `complete-workflow`, execute every task in order until all tasks are complete or a stop condition is reached; each executable task must complete Build -> Refine -> Polish before the next task starts.
 14. For each task:
     - read latest `_progress/progress.md`
     - read relevant `_summary/`
     - inspect the codebase for the current task
-    - implement only the current task
-    - verify
-    - critique the result
-    - fix only in-scope defects
+    - implement only the current task through Iteration 1 Build
+    - refine only in-scope issues through Iteration 2 Refine
+    - polish and harden through Iteration 3 Polish
+    - verify, critique, and record evidence inside each iteration
     - append progress to `_progress/progress.md`
     - update `_handoff/current.md`
     - continue to the next task automatically only when the current task is `Done` and safe
@@ -151,9 +153,9 @@ If the user says `continue workflow`:
 4. Read the latest relevant file in `_summary/`, if any.
 5. Read the task plan referenced by `_handoff/current.md`, or the latest file in `_task/` if handoff has no task plan.
 6. Read the spec referenced by that task plan.
-7. Find the next task whose status is not `Done`.
-8. Continue from that task without asking the original intake questions again unless the request, scope, or acceptance criteria are unclear.
-9. Continue executing remaining tasks sequentially until all tasks are complete or a stop condition is reached.
+7. Find the next task whose status is not `Done` and the current iteration recorded in `_handoff/current.md`.
+8. Continue from that task and iteration without asking the original intake questions again unless the request, scope, or acceptance criteria are unclear.
+9. Continue executing remaining tasks sequentially until all tasks are complete or a stop condition is reached; each executable task must complete the full 3-pass hardening loop before the next task starts.
 10. Do not regenerate the entire spec unless the request changed.
 11. If every task is `Done`, continue with any missing `_review/`, `_summary/`, handoff update, workflow health check, or final response steps.
 
@@ -176,24 +178,163 @@ Stop questioning when the remaining unknowns are minor enough to document as ass
 
 ## Spec Rules
 
-Each spec in `_spec/` must include:
+Each spec in `_spec/` must be a detailed, implementation-aware execution blueprint. Use `Not applicable` for irrelevant sections. Do not delete required sections.
 
-- Request summary.
-- Date.
-- Source prompt.
-- Questions asked and answers received.
-- Assumptions.
-- Goal and non-goals.
-- Users.
-- Functional requirements.
-- UI expectations, when relevant.
-- API expectations, when relevant.
-- Data model expectations, when relevant.
-- Edge cases.
-- Constraints.
-- Success criteria.
-- Out-of-scope items.
-- Open questions.
+# Detailed Spec Template
+
+## 1. Metadata
+- Spec filename:
+- Date:
+- Request ID / slug:
+- Request source:
+- Execution mode:
+- Request classification:
+- Scope level:
+- Risk level:
+
+## 2. Original Request
+- Raw user request:
+- Normalized request:
+- Source prompt / WORK_REQUEST reference:
+
+## 3. Questions And Answers
+- Questions asked:
+- Answers received:
+- Questions skipped:
+- Remaining open questions:
+
+## 4. Problem Definition
+- Problem being solved:
+- Why it matters:
+- Current pain point:
+- Expected value:
+
+## 5. Current State Analysis
+- Existing behavior:
+- Existing architecture/components:
+- Existing files/modules likely involved:
+- Existing data flow:
+- Existing API/UI/CLI/workflow behavior:
+- Existing tests or verification coverage:
+
+## 6. Desired End State
+- Expected final behavior:
+- User-facing outcome:
+- Developer-facing outcome:
+- System/workflow outcome:
+- Backward compatibility expectations:
+
+## 7. Scope
+- In scope:
+- Out of scope:
+- Non-goals:
+- Explicit boundaries:
+
+## 8. Users And Use Cases
+- Primary users:
+- Secondary users:
+- Main use cases:
+- Edge use cases:
+
+## 9. Functional Requirements
+- Required behaviors:
+- Inputs:
+- Outputs:
+- State changes:
+- Error states:
+- Permissions/auth expectations:
+
+## 10. Non-Functional Requirements
+- Performance expectations:
+- Reliability expectations:
+- Security/privacy expectations:
+- Accessibility expectations:
+- Maintainability expectations:
+- DX expectations:
+
+## 11. Affected Surfaces
+- Files likely affected:
+- Directories likely affected:
+- UI surfaces:
+- API routes:
+- Components:
+- Services:
+- Database/schema:
+- Config/env vars:
+- Tests:
+- Docs:
+- Workflow artifacts:
+
+## 12. Dependency And Integration Map
+- Internal dependencies:
+- External packages/services:
+- Integration points:
+- Ordering constraints:
+- Migration/setup requirements:
+
+## 13. Data And State Impact
+- Data models:
+- Database changes:
+- State management changes:
+- Cache/session/local storage impact:
+- Backward compatibility impact:
+
+## 14. UX / API / Workflow Expectations
+- UX expectations:
+- API contract expectations:
+- CLI/workflow behavior:
+- Error handling expectations:
+- Empty/loading/success/failure states:
+
+## 15. Execution Strategy
+- Recommended implementation approach:
+- Suggested sequencing:
+- Safe rollout/migration approach:
+- Files to inspect before editing:
+- Decisions to avoid until more evidence exists:
+
+## 16. Verification Strategy
+- Required automated checks:
+- Required manual checks:
+- Test types needed:
+- Build/lint/typecheck expectations:
+- Acceptance evidence required:
+- Proof of completion:
+
+## 17. Acceptance Criteria
+- [ ] Concrete measurable criterion 1
+- [ ] Concrete measurable criterion 2
+- [ ] Concrete measurable criterion 3
+
+## 18. Edge Cases And Failure Modes
+- Edge cases:
+- Failure modes:
+- Regression risks:
+- Recovery expectations:
+
+## 19. Risks And Mitigations
+- Technical risks:
+- Product/UX risks:
+- Security risks:
+- Scope risks:
+- Mitigation plan:
+
+## 20. Assumptions
+- Explicit assumptions:
+- Confidence level:
+- What to revisit if assumptions are wrong:
+
+## 21. Open Questions
+- Blocking questions:
+- Non-blocking questions:
+- Execution impact:
+
+## 22. Task Extraction Notes
+- Suggested vertical task boundaries:
+- Suggested first task:
+- Suggested task ordering:
+- Areas that should not become separate tasks:
+- How the 3-pass Build -> Refine -> Polish loop should apply:
 
 Use timestamped or slugged filenames, such as:
 
@@ -208,7 +349,10 @@ Each task plan in `_task/` must include:
 - Spec file used.
 - Planning date.
 - Progress and summary files read.
+- Detailed spec sections used to derive or justify the task plan.
 - Task list.
+
+Task planning must be derived from the saved detailed spec, not from the raw request alone. The plan must cite or reference the detailed spec sections it used, especially affected surfaces, dependency and integration map, data and state impact, UX/API/workflow expectations, execution strategy, verification strategy, acceptance criteria, edge cases, risks and mitigations, assumptions, open questions, and task extraction notes.
 
 Each task must include:
 
@@ -217,11 +361,22 @@ Each task must include:
 - Objective.
 - Files likely affected.
 - Checklist.
+- Iteration plan for Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish.
 - Acceptance criteria.
 - Acceptance result.
 - Verification commands.
 - Stop condition.
 - Out-of-scope items.
+
+Each iteration plan must include:
+
+- Goal.
+- Changes made.
+- Verification command/result.
+- Review findings.
+- Acceptance status.
+- Remaining issues.
+- Next action.
 
 Task statuses must follow this lifecycle:
 
@@ -237,11 +392,12 @@ Allowed terminal states:
 
 Rules:
 
-- A task cannot be `Done` unless verification was attempted and the task was reviewed.
+- A task cannot be `Done` unless all three iterations are complete, verification was attempted in each iteration, the task was reviewed in each iteration, and final acceptance is complete.
 - A task cannot move to `Reviewed` unless verification was attempted.
 - If verification cannot run, the task can be `Needs Human Review`, not `Done`.
 - A task cannot be `Done` unless every required acceptance criterion is checked `[x]`.
 - If any acceptance result is `[ ]` or `[~]`, the task must be `Blocked` or `Needs Human Review`.
+- If required iteration evidence is missing, the task cannot be `Done` and workflow health must be `Partial` or `Failed`.
 
 Acceptance results use:
 
@@ -287,6 +443,7 @@ After each task, append:
 - Status.
 - Lifecycle transition reached.
 - Files changed.
+- Iteration evidence for Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish.
 - Acceptance result.
 - Verification result.
 - Failure recovery notes, if verification failed.
@@ -340,9 +497,11 @@ The summary must include:
 
 - Request.
 - Spec file used.
+- Whether the detailed spec was complete or had gaps, including any missing required sections and whether they were repaired before planning.
 - Task plan used.
 - Review file used.
 - Tasks completed.
+- Iteration evidence summary.
 - Files changed.
 - Verification run.
 - Acceptance results.
@@ -359,11 +518,13 @@ Before the final response, check:
 - Did `WORK_REQUEST.md` sync?
 - Did `_handoff/current.md` exist and reflect the latest workflow state?
 - Did the spec file exist?
+- Did the spec include every required detailed spec section, or was any missing section repaired before planning?
 - Did the task plan exist?
 - Was progress updated?
 - Was the review created?
 - Was the summary created?
 - Were release notes created?
+- Was required iteration evidence recorded for every executable task?
 - Was the final diff audit completed or documented?
 - Was the dirty worktree checked?
 - Were acceptance results completed?
@@ -377,9 +538,9 @@ Final health status must be one of:
 - `Partial`
 - `Failed`
 
-`Passed` requires a synced work request, spec, task plan, progress, handoff, review, summary, release notes, final diff audit completed or documented, dirty worktree checked, acceptance results completed, verification run or documented, scope respected, and decisions recorded if needed.
+`Passed` requires a synced work request, a detailed spec with every required section, a task plan derived from and citing or referencing the detailed spec, progress, handoff, review, summary, release notes, required iteration evidence for every executable task, final diff audit completed or documented, dirty worktree checked, acceptance results completed, verification run or documented, scope respected, and decisions recorded if needed.
 
-If release notes, final diff audit, dirty worktree check, or acceptance results are missing, health must be `Partial` or `Failed` depending on severity. If any required artifact is missing, mark workflow health as `Failed`.
+If release notes, final diff audit, dirty worktree check, required detailed spec sections, iteration evidence, or acceptance results are missing, health must be `Partial` or `Failed` depending on severity. If any required artifact is missing, mark workflow health as `Failed`.
 
 ## Implementation Boundaries
 
@@ -507,8 +668,10 @@ At the end of a workflow run, report:
 
 - Request classification.
 - Spec file used.
+- Whether the detailed spec was complete or had gaps.
 - Task plan used.
 - Tasks completed.
+- Iteration evidence summary.
 - Files changed.
 - Verification commands and results.
 - Progress updated in `_progress/progress.md`.

@@ -24,6 +24,7 @@ Each summary should include:
 - Review file used.
 - Release notes file used.
 - Tasks completed.
+- Iteration evidence summary.
 - Files changed.
 - Acceptance results.
 - Verification run.
@@ -36,4 +37,4 @@ Each summary should include:
 
 After writing a summary, agents must update `_handoff/current.md` with the summary path, final or current workflow health status, unresolved issues, and suggested next prompt.
 
-Workflow health is `Passed` only when the work request synced, spec exists, task plan exists, progress updated, handoff updated, review created, summary created, release notes created, final diff audit completed or documented, dirty worktree checked, acceptance results completed, verification run or documented, scope respected, and decisions recorded if needed.
+Workflow health is `Passed` only when the work request synced, spec exists, task plan exists, progress updated, handoff updated, review created, summary created, release notes created, required iteration evidence exists for every executable task, final diff audit completed or documented, dirty worktree checked, acceptance results completed, verification run or documented, scope respected, and decisions recorded if needed.
