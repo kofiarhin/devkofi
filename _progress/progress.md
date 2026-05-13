@@ -72,6 +72,36 @@ After appending each task entry, update `_handoff/current.md` with the latest cu
 
 ## Task Entries
 
+### `2026-05-16 00:00` - `TASK-001` (github-template-actions)
+
+- Status: `Done`
+- Lifecycle transition reached: `Planned -> Ready -> In Progress -> Verified -> Reviewed -> Done`
+- Files changed: `server/data/templates.json`, `client/src/Pages/Templates/Templates.jsx`, `WORK_REQUEST.md`, `_spec/2026-05-16-github-template-actions.md`, `_task/2026-05-16-github-template-actions.md`, `_handoff/current.md`
+- Dirty worktree protection: Initial `git status --short` returned no entries. Planned implementation files were `server/data/templates.json` and `client/src/Pages/Templates/Templates.jsx`; no overlap risk.
+- Parallel metadata: Priority=P0; Parallel safe=no; Depends on=none; Blocks=final review/release/summary; File locks=`server/data/templates.json`, `client/src/Pages/Templates/Templates.jsx`, workflow artifacts; Claim status=done; Claimed by=codex; Agent role=orchestrator; Merge risk=low
+- Parallel claim/lock status: not applicable for sequential complete-workflow mode.
+- Worker status: not applicable.
+- Merge review status: not applicable.
+- Iteration evidence:
+  - Iteration 1 - Build: Goal=implement smallest working data/UI slice. Changes=added `codex-workflow-kit` object to `server/data/templates.json`; destructured `githubUrl`, `templateUrl`, and `releaseUrl`; added conditional primary/fallback action rendering; added secondary GitHub/Download actions; added requested action wrapper and secondary CSS. Verification=`node -e "JSON.parse(require('fs').readFileSync('server/data/templates.json','utf8')); console.log('templates json ok')"` passed; `npx eslint client/src/Pages/Templates/Templates.jsx` passed; `npx jest server/tests/templates.test.js --runInBand --forceExit` passed 1/1. Review=service/hook/controller changes are unnecessary because the static JSON response is returned as-is. Acceptance=met. Remaining=run production build and broad checks. Next=Iteration 2.
+  - Iteration 2 - Refine: Goal=run broader validation and classify failures. Changes=none. Verification=`npm run build --prefix client` passed; `npm run lint --prefix client` failed with unrelated pre-existing lint errors in `BookCall.jsx`, `Contact.jsx`, `AIWorkflowSection.jsx`, `Pricing.jsx`, `client/test/BookCall.test.jsx`, and `client/tests/data.js`. Review=Vite build proves JSX syntax and production compilation; full lint failures do not involve edited files. Acceptance=met for in-scope behavior. Remaining=unrelated repo lint debt. Next=Iteration 3.
+  - Iteration 3 - Polish: Goal=final targeted lint, design pre-flight, and diff audit. Changes=none. Verification=`npx eslint src/Pages/Templates/Templates.jsx` from `client/` passed; `git diff -- server/data/templates.json client/src/Pages/Templates/Templates.jsx` reviewed; `git diff --stat` reviewed. Review=implementation diff matches saved spec; loading/error/empty branches unchanged; external links include `target="_blank"` and `rel="noreferrer"`; actions flex-wrap for small widths; no new dependencies or backend controller changes. Acceptance=all criteria met. Remaining=unrelated full-client lint failures. Final verdict=Done.
+- Acceptance result:
+  - [x] Added exact `codex-workflow-kit` template with all requested URLs.
+  - [x] Destructured optional GitHub URL fields.
+  - [x] Template URL renders "Use Template" external primary CTA.
+  - [x] Missing template URL preserves "Request this template" `/contact` fallback.
+  - [x] GitHub URL renders "GitHub" external secondary CTA.
+  - [x] Release URL renders "Download" external secondary CTA.
+  - [x] Requested CSS added.
+  - [x] Loading/error/empty states preserved.
+  - [x] JSON, Vite build, JSX syntax, and backend route checks attempted and documented.
+- Verification result: JSON parse passed; backend template route test passed 1/1; target Templates.jsx lint passed; Vite build passed; full client lint attempted and failed only on unrelated existing files.
+- Failure recovery notes: Full client lint failure classified as unrelated because no reported file is part of this workflow. No in-scope fix needed; targeted lint for the edited page passes.
+- Review result: Reviewed; no in-scope issues found.
+- Blockers: None.
+- Next step: Final review, release notes, summary, health check, final response.
+
 ### `2026-05-15 13:30` - `TASK-001`
 
 - Status: `Done`

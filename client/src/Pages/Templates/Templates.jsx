@@ -172,6 +172,12 @@ const Templates = () => {
           font-size: 0.86rem;
         }
 
+        .template-card__actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
         .template-card__action {
           display: inline-flex;
           width: fit-content;
@@ -194,6 +200,16 @@ const Templates = () => {
         .template-card__action:hover {
           background: #94ff2b;
           transform: translateY(-2px);
+        }
+
+        .template-card__action--secondary {
+          background: transparent;
+          color: #fafafa;
+          border-color: rgba(255, 255, 255, 0.14);
+        }
+
+        .template-card__action--secondary:hover {
+          background: rgba(255, 255, 255, 0.08);
         }
 
         .template-card__action:active {
@@ -431,48 +447,99 @@ const Templates = () => {
           </section>
         ) : (
           <section className="templates-grid" aria-label="Available templates">
-            {templates.map(({ id, title, description, category, tags }, index) => {
-              const Icon = getTemplateIcon(index);
-              const templateTitle = getTemplateTitle(title, index);
-              const visibleTags = Array.isArray(tags) ? tags : [];
+            {templates.map(
+              (
+                {
+                  id,
+                  title,
+                  description,
+                  category,
+                  tags,
+                  githubUrl,
+                  templateUrl,
+                  releaseUrl,
+                },
+                index
+              ) => {
+                const Icon = getTemplateIcon(index);
+                const templateTitle = getTemplateTitle(title, index);
+                const visibleTags = Array.isArray(tags) ? tags : [];
 
-              return (
-                <article className="template-card" key={id || templateTitle}>
-                  <div className="template-card__top">
-                    <span className="template-card__icon" aria-hidden="true">
-                      {createElement(Icon, { size: 28, weight: "duotone" })}
-                    </span>
-                    <span className="template-card__status">Available</span>
-                  </div>
+                return (
+                  <article className="template-card" key={id || templateTitle}>
+                    <div className="template-card__top">
+                      <span className="template-card__icon" aria-hidden="true">
+                        {createElement(Icon, { size: 28, weight: "duotone" })}
+                      </span>
+                      <span className="template-card__status">Available</span>
+                    </div>
 
-                  <div className="template-card__body">
-                    <p className="template-card__eyebrow">
-                      {category || "Template"}
-                    </p>
-                    <h2>{templateTitle}</h2>
-                    <p>{description || "Template details are coming soon."}</p>
+                    <div className="template-card__body">
+                      <p className="template-card__eyebrow">
+                        {category || "Template"}
+                      </p>
+                      <h2>{templateTitle}</h2>
+                      <p>
+                        {description || "Template details are coming soon."}
+                      </p>
 
-                    {visibleTags.length > 0 && (
-                      <ul
-                        className="template-card__detail"
-                        aria-label={`${templateTitle} tags`}
-                      >
-                        {visibleTags.map((tag) => (
-                          <li className="template-card__tag" key={tag}>
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+                      {visibleTags.length > 0 && (
+                        <ul
+                          className="template-card__detail"
+                          aria-label={`${templateTitle} tags`}
+                        >
+                          {visibleTags.map((tag) => (
+                            <li className="template-card__tag" key={tag}>
+                              {tag}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
 
-                  <a className="template-card__action" href="/contact">
-                    Request this template{" "}
-                    <ArrowUpRight size={16} weight="bold" />
-                  </a>
-                </article>
-              );
-            })}
+                    <div className="template-card__actions">
+                      {templateUrl ? (
+                        <a
+                          className="template-card__action"
+                          href={templateUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Use Template <ArrowUpRight size={16} weight="bold" />
+                        </a>
+                      ) : (
+                        <a className="template-card__action" href="/contact">
+                          Request this template{" "}
+                          <ArrowUpRight size={16} weight="bold" />
+                        </a>
+                      )}
+
+                      {githubUrl && (
+                        <a
+                          className="template-card__action template-card__action--secondary"
+                          href={githubUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          GitHub <ArrowUpRight size={16} weight="bold" />
+                        </a>
+                      )}
+
+                      {releaseUrl && (
+                        <a
+                          className="template-card__action template-card__action--secondary"
+                          href={releaseUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Download <ArrowUpRight size={16} weight="bold" />
+                        </a>
+                      )}
+                    </div>
+                  </article>
+                );
+              }
+            )}
           </section>
         )}
 
