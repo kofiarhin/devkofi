@@ -16,16 +16,16 @@ Use this file to track orchestrator and worker status in parallel execution mode
 
 | Agent | Role | Current task | Claim status | File locks | Iteration | Verification | Final status | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `orchestrator` | `parallel-orchestrator` | `TASK-003` | `claimed` | workflow artifacts | `planning` | `not run` | `active` | Owns queue, merge review, final artifacts, and health check. |
-| `backend-worker` | `parallel-worker` | `TASK-001` | `claimed` | backend templates files | `pending` | `not run` | `active` | Add JSON-backed endpoint and targeted backend test. |
-| `frontend-worker` | `parallel-worker` | `TASK-002` | `claimed` | frontend templates files | `pending` | `not run` | `active` | Add service/query hook and Templates page rendering states. |
+| `orchestrator` | `parallel-orchestrator` | `TASK-003` | `done` | released | `Iteration 3 - Polish complete` | `passed` | `done` | Final merge review and workflow artifacts complete. |
+| `backend-worker` | `parallel-worker` | `TASK-001` | `done` | released | `Iteration 3 - Polish complete` | `passed` | `done` | Endpoint Jest test passed; targeted shape contract enforced. |
+| `frontend-worker` | `parallel-worker` | `TASK-002` | `done` | released | `Iteration 3 - Polish complete` | `passed` | `done` | ESLint clean; client build succeeded. |
 
 ## Merge Review Status
 
-- Claims reviewed: `pending`
-- Locks reviewed: `pending`
-- Worker outputs reviewed: `pending`
-- Overlapping active file locks: `none declared`
-- Build -> Refine -> Polish evidence complete for worker tasks: `pending`
-- Final verification: `not run`
-- Merge review verdict: `pending`
+- Claims reviewed: `passed`
+- Locks reviewed: `passed`
+- Worker outputs reviewed: `passed`
+- Overlapping active file locks: `none`
+- Build -> Refine -> Polish evidence complete for worker tasks: `yes`
+- Final verification: `passed`
+- Merge review verdict: `passed`
