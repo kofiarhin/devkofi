@@ -445,6 +445,134 @@ After editing:
 Do not implement any other task.
 ```
 
+## Parallel Orchestrator Planning
+
+```txt
+Follow AGENTS.md and RUN_WORKFLOW.md.
+
+Execution mode: parallel-workflow.
+
+Act as the orchestrator. Own intake, the detailed spec, and the task plan.
+
+Before assigning workers:
+1. Read WORK_REQUEST.md, AGENTS.md, RUN_WORKFLOW.md, _handoff/current.md, _progress/progress.md, the latest relevant _summary/ entry, and durable docs.
+2. Save or verify the detailed spec in _spec/.
+3. Save or verify the task plan in _task/.
+4. Add required metadata to every task: Priority, Parallel safe, Depends on, Blocks, File locks, Claim status, Claimed by, Agent role, Merge risk.
+5. Rank P0 before P1 before P2.
+6. Mark tasks parallel-safe only when dependencies and file locks do not conflict.
+7. Create or update _parallel/claims.md, _parallel/locks.md, and _parallel/agent-status.md.
+8. Use default worker agents: 3.
+9. Use minimum parallel workers: 2 when 2 or more parallel-safe unblocked tasks exist.
+10. Use maximum worker agents: 5.
+11. Fall back to 1 worker only when dependency or file-lock safety requires sequential execution.
+
+Do not assign two workers to overlapping file locks.
+Update _handoff/current.md with queue, claim, lock, worker, and merge-review status.
+```
+
+## Parallel Worker Claim Task
+
+```txt
+Follow AGENTS.md and RUN_WORKFLOW.md.
+
+Execution mode: parallel-worker.
+
+Read AGENTS.md, RUN_WORKFLOW.md, the saved spec, the saved task plan, _parallel/claims.md, _parallel/locks.md, _parallel/agent-status.md, _progress/progress.md, and _handoff/current.md.
+
+Claim exactly one task:
+1. Select the highest-priority unclaimed task where Parallel safe is yes and dependencies are unblocked.
+2. Prefer P0 before P1 before P2.
+3. Among same-priority tasks, pick the lowest dependency risk and lowest merge risk.
+4. Confirm the task's file locks do not overlap active locks in _parallel/locks.md.
+5. Record Claim status=claimed, Claimed by=<agent-id>, Agent role=parallel-worker, and file locks before editing.
+6. Update _parallel/agent-status.md and _handoff/current.md.
+
+If no safe task exists, do not edit files. Record the reason and stop.
+```
+
+## Parallel Worker Execute Claimed Task
+
+```txt
+Follow AGENTS.md and RUN_WORKFLOW.md.
+
+Execution mode: parallel-worker.
+
+Execute only the task already claimed by this worker.
+
+Required loop:
+1. Mark the claim in-progress.
+2. Run Iteration 1 - Build, verify, review, and record evidence.
+3. Run Iteration 2 - Refine, verify, review, and record evidence.
+4. Run Iteration 3 - Polish, verify, review, and record final verdict.
+5. Append _progress/progress.md with claim status, file locks, worker status, iteration evidence, acceptance results, verification, and final task status.
+6. Mark the claim done, blocked, or needs-review.
+7. Release locks only after final task status is recorded.
+8. Stop after this one task.
+
+Do not run global review, release notes, summary, or health check unless acting as the orchestrator.
+```
+
+## Parallel Lock Conflict Review
+
+```txt
+Follow AGENTS.md and RUN_WORKFLOW.md.
+
+Review a parallel lock conflict.
+
+Read _parallel/claims.md, _parallel/locks.md, _parallel/agent-status.md, _progress/progress.md, _handoff/current.md, the saved task plan, and the current diff.
+
+Report:
+1. Tasks involved.
+2. Overlapping file locks.
+3. Current claim owners.
+4. Whether any edits already overlap.
+5. Safest resolution: stop one worker, reassign one task, serialize the tasks, or mark needs-review.
+
+Do not continue parallel execution until no overlapping active file locks remain.
+```
+
+## Parallel Merge Review
+
+```txt
+Follow AGENTS.md and RUN_WORKFLOW.md.
+
+Execution mode: parallel-orchestrator.
+
+After workers finish, perform merge review:
+1. Read all worker progress entries.
+2. Read _parallel/claims.md, _parallel/locks.md, and _parallel/agent-status.md.
+3. Confirm every worker task has Build -> Refine -> Polish evidence.
+4. Confirm every claimed task is done, blocked, or needs-review.
+5. Confirm no overlapping active file locks remain.
+6. Run git diff --stat and git diff.
+7. Resolve safe in-scope conflicts or create follow-up tasks.
+8. Run final verification.
+9. Write _review/, _release/, _summary/, update _handoff/current.md, and complete the health check.
+
+Health must be Partial or Failed if claims, locks, worker status, iteration evidence, merge review, or final verification are missing.
+```
+
+## Parallel Health Check
+
+```txt
+Follow AGENTS.md and RUN_WORKFLOW.md.
+
+Run the parallel workflow health check.
+
+Validate:
+1. Every task has Priority, Parallel safe, Depends on, Blocks, File locks, Claim status, Claimed by, Agent role, and Merge risk.
+2. _parallel/claims.md exists and reflects all worker tasks.
+3. _parallel/locks.md exists and has no overlapping active file locks.
+4. _parallel/agent-status.md exists and reflects all active or completed workers.
+5. Every worker task has Build -> Refine -> Polish evidence.
+6. Claims are done, blocked, or needs-review before locks are released.
+7. Orchestrator merge review exists.
+8. Final verification ran or was documented.
+
+Return Passed, Partial, or Failed with concrete missing evidence.
+```
+
 ## Ralph Wiggum Task Execution
 
 ```txt

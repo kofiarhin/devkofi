@@ -15,8 +15,13 @@ Execution modes:
 - `plan-only`: ask questions, write the detailed spec, write the task plan derived from it, then stop.
 - `single-task`: execute only the next ready task through the full 3-pass hardening loop, update artifacts, then stop.
 - `complete-workflow`: execute all generated tasks sequentially until the request/spec is complete or a stop condition is reached.
+- `parallel-workflow`: orchestrator plans tasks, creates queue/claims/locks, assigns safe tasks to worker agents, then performs merge review and final artifacts.
+- `parallel-worker`: worker claims and executes exactly one eligible parallel-safe task, records final status, releases locks, and stops.
+- `parallel-orchestrator`: orchestrator manages queue, validates claims/locks, reviews worker outputs, runs final verification, and completes final artifacts.
 
 Use `single-task` only when the user explicitly asks for controlled one-task execution.
+
+Sequential `complete-workflow` remains the fallback. Use parallel modes only when dependencies and file locks show tasks can run safely.
 
 Task plans must be derived from the saved detailed spec, not from the raw request alone. Each task plan must cite or reference the detailed spec sections used to derive the plan, especially:
 
@@ -38,6 +43,15 @@ Each task must include:
 
 - Task ID.
 - Status.
+- Priority: `P0`, `P1`, or `P2`.
+- Parallel safe: `yes` or `no`.
+- Depends on.
+- Blocks.
+- File locks.
+- Claim status: `unclaimed`, `claimed`, `in-progress`, `done`, `blocked`, or `needs-review`.
+- Claimed by.
+- Agent role: `orchestrator`, `parallel-worker`, or another explicit role.
+- Merge risk: `low`, `medium`, or `high`.
 - Objective.
 - Detailed spec sections used or referenced.
 - Files likely affected.
@@ -96,6 +110,21 @@ Copy or summarize acceptance results in `_progress/progress.md`.
 Tasks should be Ralph Wiggum-style: small, literal, sequential, and easy to verify.
 
 Continue to the next task automatically only when the current task is `Done` after Build -> Refine -> Polish. Stop if a task is `Blocked`, `Needs Human Review`, remains failed after iteration-level failure recovery, becomes risky or unclear, or requires external access.
+
+## Parallel Task Rules
+
+When planning for `parallel-workflow`, the orchestrator must rank tasks by priority and mark each task as parallel-safe or not. P0 tasks are claimed before P1 tasks, and P1 tasks are claimed before P2 tasks. Among same-priority tasks, choose the task with the lowest dependency risk and lowest merge risk first.
+
+Every parallel-safe task must declare file locks before any worker edits files. No two workers may claim tasks with overlapping file locks. If file overlap appears unexpectedly, the worker stops, marks the task `needs-review`, and records the conflict in `_parallel/claims.md`, `_parallel/locks.md`, `_progress/progress.md`, and `_handoff/current.md`.
+
+Worker count rules:
+
+- Default worker agents: 3.
+- Minimum parallel workers: 2 when 2 or more parallel-safe unblocked tasks exist.
+- Maximum worker agents: 5.
+- Fallback worker count: 1 only when dependency or file-lock safety requires sequential execution.
+
+Each `parallel-worker` claims exactly one task, completes Build -> Refine -> Polish, records final status, releases locks only after final status is recorded, and stops.
 
 ## Dirty Worktree Protection
 

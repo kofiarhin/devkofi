@@ -5,38 +5,18 @@ import {
   ClipboardText,
   RocketLaunch,
 } from "@phosphor-icons/react";
+import useTemplates from "../../hooks/queries/useTemplates";
+import { getTemplatesErrorMessage } from "../../services/templateService";
 
-const templateCards = [
-  {
-    title: "Launch Brief",
-    eyebrow: "Planning",
-    description:
-      "A focused product brief for shaping a build before the first agent session starts.",
-    detail: "Scope, users, risks, acceptance checks",
-    status: "Sample",
-    Icon: ClipboardText,
-  },
-  {
-    title: "MERN Feature Slice",
-    eyebrow: "Implementation",
-    description:
-      "A practical feature scaffold for moving from route to API contract without losing review points.",
-    detail: "React page, service hook, Express route",
-    status: "Sample",
-    Icon: BracketsCurly,
-  },
-  {
-    title: "Release Readiness",
-    eyebrow: "Shipping",
-    description:
-      "A final-pass checklist for verification, notes, deployment handoff, and follow-up work.",
-    detail: "Diff audit, tests, known limits",
-    status: "Sample",
-    Icon: RocketLaunch,
-  },
-];
+const templateIcons = [ClipboardText, BracketsCurly, RocketLaunch];
+
+const getTemplateIcon = (index) => templateIcons[index % templateIcons.length];
+
+const getTemplateTitle = (title, index) => title || `Template ${index + 1}`;
 
 const Templates = () => {
+  const { data: templates = [], error, isError, isLoading } = useTemplates();
+
   return (
     <main className="templates-page" aria-labelledby="templates-title">
       <style>{`
@@ -172,9 +152,18 @@ const Templates = () => {
         }
 
         .template-card__detail {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .template-card__tag {
           display: inline-flex;
-          width: fit-content;
           max-width: 100%;
+          overflow-wrap: anywhere;
           border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 999px;
           padding: 8px 12px;
@@ -223,6 +212,108 @@ const Templates = () => {
           line-height: 1.65;
         }
 
+        .templates-visually-hidden {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+        }
+
+        .templates-state {
+          display: grid;
+          min-height: 280px;
+          align-content: center;
+          gap: 14px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 24px;
+          background: rgba(17, 17, 19, 0.78);
+          padding: clamp(22px, 4vw, 34px);
+        }
+
+        .templates-state h2 {
+          margin: 0;
+          color: #fafafa;
+          font-size: clamp(1.7rem, 4vw, 2.6rem);
+          line-height: 1;
+          letter-spacing: -0.04em;
+        }
+
+        .templates-state p {
+          margin: 0;
+          max-width: 52ch;
+          color: #a1a1aa;
+          line-height: 1.65;
+        }
+
+        .templates-state--error {
+          border-color: rgba(255, 116, 116, 0.28);
+        }
+
+        .template-card--loading {
+          pointer-events: none;
+        }
+
+        .template-skeleton {
+          position: relative;
+          overflow: hidden;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .template-skeleton::after {
+          position: absolute;
+          inset: 0;
+          content: "";
+          transform: translateX(-100%);
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+          animation: template-shimmer 1.4s infinite;
+        }
+
+        .template-skeleton--icon {
+          width: 52px;
+          height: 52px;
+          border-radius: 16px;
+        }
+
+        .template-skeleton--status {
+          width: 76px;
+          height: 14px;
+        }
+
+        .template-skeleton--eyebrow {
+          width: 112px;
+          height: 12px;
+        }
+
+        .template-skeleton--title {
+          width: min(100%, 340px);
+          height: 54px;
+          border-radius: 18px;
+        }
+
+        .template-skeleton--copy {
+          width: min(100%, 440px);
+          height: 18px;
+        }
+
+        .template-skeleton--copy-short {
+          width: min(72%, 310px);
+        }
+
+        .template-skeleton--button {
+          width: 174px;
+          height: 46px;
+          border-radius: 12px;
+        }
+
+        @keyframes template-shimmer {
+          100% {
+            transform: translateX(100%);
+          }
+        }
+
         @media (max-width: 900px) {
           .templates-hero,
           .templates-grid {
@@ -264,8 +355,10 @@ const Templates = () => {
 
         @media (prefers-reduced-motion: reduce) {
           .template-card,
-          .template-card__action {
+          .template-card__action,
+          .template-skeleton::after {
             transition: none;
+            animation: none;
           }
 
           .template-card:hover,
@@ -283,43 +376,110 @@ const Templates = () => {
             <h1 id="templates-title">Starter systems for cleaner builds.</h1>
           </div>
           <p className="templates-hero__copy">
-            Sample placeholders for the upcoming template library: practical
-            documents and code-starting guides for planning, building, and
-            shipping with AI-assisted workflows.
+            Practical documents and code-starting guides for planning,
+            building, and shipping with AI-assisted workflows.
           </p>
         </section>
 
-        <section className="templates-grid" aria-label="Sample templates">
-          {templateCards.map(
-            ({ title, eyebrow, description, detail, status, Icon }) => (
-              <article className="template-card" key={title}>
+        {isLoading ? (
+          <section
+            className="templates-grid"
+            aria-label="Loading templates"
+            aria-busy="true"
+            aria-live="polite"
+          >
+            <span className="templates-visually-hidden">
+              Loading templates.
+            </span>
+            {[0, 1, 2].map((item) => (
+              <article
+                className="template-card template-card--loading"
+                key={item}
+              >
                 <div className="template-card__top">
-                  <span className="template-card__icon" aria-hidden="true">
-                    {createElement(Icon, { size: 28, weight: "duotone" })}
-                  </span>
-                  <span className="template-card__status">{status}</span>
+                  <span className="template-skeleton template-skeleton--icon" />
+                  <span className="template-skeleton template-skeleton--status" />
                 </div>
 
                 <div className="template-card__body">
-                  <p className="template-card__eyebrow">{eyebrow}</p>
-                  <h2>{title}</h2>
-                  <p>{description}</p>
-                  <span className="template-card__detail">{detail}</span>
+                  <span className="template-skeleton template-skeleton--eyebrow" />
+                  <span className="template-skeleton template-skeleton--title" />
+                  <span className="template-skeleton template-skeleton--copy" />
+                  <span className="template-skeleton template-skeleton--copy template-skeleton--copy-short" />
                 </div>
 
-                <a className="template-card__action" href="/contact">
-                  Request this template{" "}
-                  <ArrowUpRight size={16} weight="bold" />
-                </a>
+                <span className="template-skeleton template-skeleton--button" />
               </article>
-            ),
-          )}
-        </section>
+            ))}
+          </section>
+        ) : isError ? (
+          <section
+            className="templates-state templates-state--error"
+            aria-live="polite"
+          >
+            <p className="templates-kicker">Template library</p>
+            <h2>Templates are unavailable.</h2>
+            <p>{getTemplatesErrorMessage(error)}</p>
+          </section>
+        ) : templates.length === 0 ? (
+          <section className="templates-state" aria-live="polite">
+            <p className="templates-kicker">Template library</p>
+            <h2>No templates are listed yet.</h2>
+            <p>
+              New template systems will appear here when the library is ready.
+            </p>
+          </section>
+        ) : (
+          <section className="templates-grid" aria-label="Available templates">
+            {templates.map(({ id, title, description, category, tags }, index) => {
+              const Icon = getTemplateIcon(index);
+              const templateTitle = getTemplateTitle(title, index);
+              const visibleTags = Array.isArray(tags) ? tags : [];
+
+              return (
+                <article className="template-card" key={id || templateTitle}>
+                  <div className="template-card__top">
+                    <span className="template-card__icon" aria-hidden="true">
+                      {createElement(Icon, { size: 28, weight: "duotone" })}
+                    </span>
+                    <span className="template-card__status">Available</span>
+                  </div>
+
+                  <div className="template-card__body">
+                    <p className="template-card__eyebrow">
+                      {category || "Template"}
+                    </p>
+                    <h2>{templateTitle}</h2>
+                    <p>{description || "Template details are coming soon."}</p>
+
+                    {visibleTags.length > 0 && (
+                      <ul
+                        className="template-card__detail"
+                        aria-label={`${templateTitle} tags`}
+                      >
+                        {visibleTags.map((tag) => (
+                          <li className="template-card__tag" key={tag}>
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+
+                  <a className="template-card__action" href="/contact">
+                    Request this template{" "}
+                    <ArrowUpRight size={16} weight="bold" />
+                  </a>
+                </article>
+              );
+            })}
+          </section>
+        )}
 
         <p className="templates-note">
-          These cards are placeholder content for previewing the page structure.
-          Final template downloads, pricing, and filtering can be added when the
-          template product details are ready.
+          Templates are loaded from the library endpoint so the catalog can
+          change without rewriting the page. Downloads, pricing, and filtering
+          can be added when the template product details are ready.
         </p>
       </div>
     </main>

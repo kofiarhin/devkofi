@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 require("./config/env"); // fail fast on missing required env vars
 const connectDB = require("./config/db");
 const projectRoutes = require("./routes/projectRoutes");
+const templateRoutes = require("./routes/templateRoutes");
 const pricingRoutes = require("./routes/pricingRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const newsletterRoutes = require("./routes/newsletterRoutes");
@@ -60,6 +61,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/projects", projectRoutes);
+app.use("/api/templates", templateRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/newsletter", newsletterRoutes);

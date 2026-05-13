@@ -15,6 +15,11 @@ Execution modes:
 - `plan-only`: ask questions, write spec, write task plan, then stop.
 - `single-task`: execute only the next ready task through the full 3-pass hardening loop, update artifacts, then stop.
 - `complete-workflow`: execute all generated tasks sequentially until the request/spec is complete or a stop condition is reached; each executable task must complete the full 3-pass hardening loop before the next task starts.
+- `parallel-workflow`: orchestrator plans tasks, marks parallel safety, creates queue/claims/locks, assigns worker agents when safe, then performs merge review, final verification, review, release notes, summary, handoff, and health check.
+- `parallel-worker`: worker reads the saved workflow context, claims exactly one eligible parallel-safe task, records claims and file locks before editing, completes Build -> Refine -> Polish for that task, records final task status, releases locks, and stops.
+- `parallel-orchestrator`: orchestrator manages the task queue, validates claims and locks, reviews worker outputs, resolves conflicts or creates follow-up tasks, runs final verification, and completes final artifacts.
+
+Sequential `complete-workflow` remains the fallback. Use 1 worker only when dependency or file-lock safety requires sequential execution.
 
 Do not implement without:
 
@@ -36,11 +41,12 @@ direct user prompt or WORK_REQUEST
 -> read _progress and _summary
 -> read or create _handoff/current.md
 -> vertical plan in _task
--> execute every task in order by default
+-> execute every task in order by default, or prepare _parallel queue/claims/locks when parallel mode is selected and safe
 -> run each executable task through Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish
 -> verify, review, and record evidence inside each iteration
 -> update _progress after each task
 -> update _handoff/current.md after each task
+-> in parallel modes, orchestrator validates claims, locks, worker status, and merge review
 -> final diff audit
 -> review in _review
 -> release notes in _release
@@ -61,7 +67,7 @@ Read:
 - `_progress/progress.md`, creating it if missing.
 - The latest relevant file in `_summary/`, if any.
 
-If `_handoff/`, `_spec/`, `_task/`, `_progress/`, `_review/`, `_summary/`, `_release/`, or `_decisions/` is missing, create it before continuing. If `_handoff/current.md` is missing, create it from the handoff template. If `_progress/progress.md` is missing, create it with an initial heading.
+If `_handoff/`, `_spec/`, `_task/`, `_progress/`, `_review/`, `_summary/`, `_release/`, `_decisions/`, or `_parallel/` is missing, create it before continuing. If `_handoff/current.md` is missing, create it from the handoff template. If `_progress/progress.md` is missing, create it with an initial heading. If parallel mode is selected and `_parallel/claims.md`, `_parallel/locks.md`, or `_parallel/agent-status.md` is missing, create it from the parallel templates before workers claim tasks.
 
 Request source rules:
 
@@ -345,6 +351,15 @@ Each task must include:
 
 - Task ID.
 - Status.
+- Priority: `P0`, `P1`, or `P2`.
+- Parallel safe: `yes` or `no`.
+- Depends on.
+- Blocks.
+- File locks.
+- Claim status: `unclaimed`, `claimed`, `in-progress`, `done`, `blocked`, or `needs-review`.
+- Claimed by.
+- Agent role.
+- Merge risk: `low`, `medium`, or `high`.
 - Objective.
 - Files likely affected.
 - Checklist.
@@ -407,11 +422,14 @@ After task plan creation:
 - If execution mode is `single-task`, execute only the next ready task through the full 3-pass hardening loop, update artifacts, then stop.
 - If execution mode is omitted, use `complete-workflow`.
 - In `complete-workflow`, execute every task in order by default; each task must complete the full 3-pass hardening loop before the next task starts.
+- If execution mode is `parallel-workflow`, the orchestrator must rank tasks by priority, mark tasks as parallel-safe or not, detect dependencies and file overlap, create or update `_parallel/claims.md`, `_parallel/locks.md`, `_parallel/agent-status.md`, update `_handoff/current.md`, then assign workers only for unblocked tasks with non-overlapping file locks.
+- If execution mode is `parallel-worker`, do not plan or run final workflow artifacts. Claim exactly one eligible task, complete that task, record final task status, release locks, and stop.
+- If execution mode is `parallel-orchestrator`, manage queue/claim/lock validation, merge review, final verification, review, release notes, summary, handoff, and health check.
 - Do not create the final summary until all executable tasks are completed or a stop condition is reached.
 
 ## 7. Execution Phase
 
-Execute one task at a time, and in the default `complete-workflow` mode continue through every task in order until the full request/spec is complete or a stop condition is reached.
+Execute one task at a time in the default sequential `complete-workflow` mode, continuing through every task in order until the full request/spec is complete or a stop condition is reached. Sequential behavior is always the fallback when dependencies, file locks, or merge risk make parallel execution unsafe.
 
 Every executable task must run through this required 3-pass task hardening loop:
 
@@ -470,6 +488,72 @@ Stop if:
 - Risk increases beyond the saved spec and task plan.
 - External access or credentials are needed.
 - The active execution mode is explicit `single-task` and the current task has completed the full 3-pass hardening loop, been verified, reviewed, documented, and stopped.
+
+## 7A. Parallel Orchestrator Phase
+
+In `parallel-workflow` or `parallel-orchestrator` mode, the orchestrator owns intake, detailed spec creation, and task planning. Worker agents must not create or replace the saved spec or task plan.
+
+The orchestrator must:
+
+1. Rank all tasks by priority: `P0` before `P1` before `P2`.
+2. Mark every task as parallel-safe `yes` or `no`.
+3. Document dependencies in `Depends on` and `Blocks`.
+4. Declare expected file locks for each task before any worker edits files.
+5. Classify merge risk as `low`, `medium`, or `high`.
+6. Create or update `_parallel/claims.md`, `_parallel/locks.md`, and `_parallel/agent-status.md`.
+7. Update `_handoff/current.md` with queue status, active worker count, claim status, lock status, and merge-review status.
+8. Default worker agents: 3 when enough safe work exists.
+9. Minimum parallel workers: use at least 2 workers when there are 2 or more parallel-safe unblocked tasks with non-overlapping file locks.
+10. Maximum worker agents: 5.
+11. Use fewer workers when tasks conflict, share files, depend on each other, or have elevated merge risk.
+12. Fallback worker count: use 1 worker only when dependency safety or file-lock safety requires sequential execution.
+
+Among same-priority tasks, assign the task with the lowest dependency risk and lowest merge risk first.
+
+## 7B. Parallel Worker Phase
+
+In `parallel-worker` mode, each worker must read:
+
+- `AGENTS.md`
+- `RUN_WORKFLOW.md`
+- the saved spec in `_spec/`
+- the saved task plan in `_task/`
+- `_parallel/claims.md`
+- `_parallel/locks.md`
+- `_parallel/agent-status.md`
+- `_progress/progress.md`
+- `_handoff/current.md`
+
+Each worker must:
+
+1. Claim exactly one unclaimed, highest-priority, parallel-safe, unblocked task.
+2. Confirm the task's file locks do not overlap with active locks in `_parallel/locks.md`.
+3. Record the claim and file locks before editing.
+4. Mark the task `in-progress` in claims and agent status.
+5. Run the claimed task through Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish.
+6. Update `_progress/progress.md` with separate iteration evidence, acceptance results, claim status, file locks, worker identity, verification, review, and final status.
+7. Mark the task `done`, `blocked`, or `needs-review`.
+8. Release locks only after final task status is recorded.
+9. Stop after one claimed task.
+
+Workers must not run final global review, release notes, summary, or health check unless explicitly acting as the orchestrator.
+
+## 7C. Parallel Locking And Merge Review
+
+File locks must be declared before editing. No two workers may claim tasks with overlapping file locks. If a worker needs a file locked by another active worker, the worker must stop or choose another eligible task. If unexpected file overlap appears after a claim, the worker must stop, mark the task `needs-review`, record the overlap in `_parallel/claims.md` and `_parallel/locks.md`, and update `_handoff/current.md`.
+
+After workers finish, the orchestrator must:
+
+1. Read all worker progress entries and task outputs.
+2. Check `_parallel/claims.md`, `_parallel/locks.md`, and `_parallel/agent-status.md`.
+3. Confirm no overlapping active file locks remain.
+4. Confirm every worker task has Build -> Refine -> Polish evidence.
+5. Run the final diff audit.
+6. Resolve conflicts or create follow-up tasks.
+7. Run final verification.
+8. Write review, release notes, summary, final handoff, and health check.
+
+Workflow health must be `Partial` or `Failed` if claims, locks, worker status, iteration evidence, merge review, or final verification are missing for parallel execution.
 
 ## 8. Verification
 
@@ -707,14 +791,19 @@ Before the final response, check:
 - Were verification commands run or documented?
 - Was scope respected?
 - Were decisions recorded if needed?
+- For parallel modes, did every task include priority, parallel-safe flag, dependencies, file locks, claim status, claimed by, agent role, and merge risk?
+- For parallel modes, were `_parallel/claims.md`, `_parallel/locks.md`, and `_parallel/agent-status.md` updated?
+- For parallel modes, were there no overlapping active file locks?
+- For parallel modes, did every worker task record Build -> Refine -> Polish evidence?
+- For parallel modes, did the orchestrator complete merge review and final verification?
 
 Final health status:
 
 - `Passed`: all required artifacts exist, the detailed spec exists with all required sections, all executable tasks are complete, all required iteration evidence is present, release notes exist, final diff audit is complete or documented, dirty worktree protection was checked, acceptance results are complete, verification was run or documented, scope was respected, and decisions were handled correctly.
-- `Partial`: artifacts exist, but some tasks remain because of a documented blocker, human-review need, verification gap, or follow-up risk.
-- `Failed`: any required artifact is missing, the detailed spec is missing required sections and planning proceeded anyway, scope was not respected, or required verification/review/summary documentation is absent.
+- `Partial`: artifacts exist, but some tasks remain because of a documented blocker, human-review need, verification gap, follow-up risk, missing parallel merge review, or incomplete claim/lock evidence.
+- `Failed`: any required artifact is missing, the detailed spec is missing required sections and planning proceeded anyway, scope was not respected, required verification/review/summary documentation is absent, or parallel execution proceeded with overlapping active file locks.
 
-If release notes, final diff audit, dirty worktree check, required detailed spec sections, iteration evidence, or acceptance results are missing, health should be `Partial` or `Failed` depending on severity. If any required artifact is missing, mark workflow health as `Failed`.
+If release notes, final diff audit, dirty worktree check, required detailed spec sections, iteration evidence, acceptance results, claims, locks, worker status, or parallel merge review are missing when required, health should be `Partial` or `Failed` depending on severity. If any required artifact is missing, mark workflow health as `Failed`.
 
 ## 17. Final Response
 

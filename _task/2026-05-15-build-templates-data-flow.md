@@ -1,0 +1,198 @@
+# Build Templates Data Flow Task Plan
+
+- Spec file used: `_spec/2026-05-15-build-templates-data-flow.md`
+- Planning date: 2026-05-15
+- Execution mode: `parallel-workflow`
+- Progress files read: `_progress/progress.md`
+- Summary files read: `_summary/2026-05-15-add-template-placeholder-cards.md`
+- Handoff file read: `_handoff/current.md`
+- Detailed spec sections used: Current State Analysis, Desired End State, Affected Surfaces, Dependency And Integration Map, Data And State Impact, UX / API / Workflow Expectations, Execution Strategy, Verification Strategy, Acceptance Criteria, Edge Cases And Failure Modes, Risks And Mitigations, Assumptions, Open Questions, Task Extraction Notes.
+
+## Parallel Safety Summary
+
+- Default worker count requested: 3.
+- Safe worker count selected: 2 implementation workers plus orchestrator review.
+- Reason: Only two independent implementation slices have non-overlapping file locks. A third worker would either overlap workflow artifacts or create a fake split.
+- Shared workflow artifact ownership: orchestrator only.
+- Backend and frontend tasks can proceed in parallel because the API contract is fixed in the spec as a plain array from `GET /api/templates`.
+
+## TASK-001: Add the templates JSON endpoint
+
+- Task ID: `TASK-001`
+- Status: `Ready`
+- Priority: `P0`
+- Parallel safe: `yes`
+- Depends on: `none`
+- Blocks: final merge review
+- File locks: `server/data/templates.json`, `server/controllers/templatesController.js`, `server/routes/templateRoutes.js`, `server/app.js`, `server/tests/templates.test.js`
+- Claim status: `unclaimed`
+- Claimed by: `none`
+- Agent role: `parallel-worker`
+- Merge risk: `low`
+- Objective: Add a public `GET /api/templates` endpoint backed by `server/data/templates.json`.
+- Detailed spec sections used or referenced: Sections 5, 6, 9, 11, 12, 13, 15, 16, 17, 18, 19, 20.
+- Files likely affected: `server/data/templates.json`, `server/controllers/templatesController.js`, `server/routes/templateRoutes.js`, `server/app.js`, `server/tests/templates.test.js`.
+- Checklist:
+  - [ ] Create `server/data/templates.json` with at least three template objects.
+  - [ ] Add a controller that returns the templates list.
+  - [ ] Add a route for `GET /api/templates`.
+  - [ ] Mount the route in `server/app.js`.
+  - [ ] Add a targeted backend test for status and object shape.
+- Iteration plan:
+  - Iteration 1 - Build:
+    - Goal: Add the smallest working JSON-backed endpoint.
+    - Changes made: Pending.
+    - Verification command/result: Pending.
+    - Review findings: Pending.
+    - Acceptance status: Pending.
+    - Remaining issues: Pending.
+    - Next action: Pending.
+  - Iteration 2 - Refine:
+    - Goal: Add or tighten endpoint verification and shape expectations.
+    - Changes made: Pending.
+    - Verification command/result: Pending.
+    - Review findings: Pending.
+    - Acceptance status: Pending.
+    - Remaining issues: Pending.
+    - Next action: Pending.
+  - Iteration 3 - Polish:
+    - Goal: Final route/data cleanup and targeted verification.
+    - Changes made: Pending.
+    - Verification command/result: Pending.
+    - Review findings: Pending.
+    - Acceptance status: Pending.
+    - Remaining issues: Pending.
+    - Next action: Pending.
+- Acceptance criteria:
+  - [ ] `server/data/templates.json` exists with at least three objects.
+  - [ ] Every object includes `id`, `title`, `description`, `category`, and `tags`.
+  - [ ] `GET /api/templates` returns the list as JSON.
+  - [ ] A targeted backend endpoint check is attempted and documented.
+- Acceptance result:
+  - [ ] Pending.
+- Verification commands:
+  - `npm test -- --runTestsByPath server/tests/templates.test.js`
+  - Fallback if Jest cannot connect to MongoDB: document the failure and run targeted static checks where practical.
+- Stop condition: Stop if the endpoint cannot be mounted safely, app import breaks, or verification fails for in-scope reasons after targeted recovery.
+- Out-of-scope items: Database models, auth, admin CRUD, deployment config, unrelated route refactors.
+
+## TASK-002: Fetch and render templates on the Templates page
+
+- Task ID: `TASK-002`
+- Status: `Ready`
+- Priority: `P0`
+- Parallel safe: `yes`
+- Depends on: `none` after API contract is defined in spec
+- Blocks: final merge review
+- File locks: `client/src/services/templateService.js`, `client/src/hooks/queries/useTemplates.js`, `client/src/Pages/Templates/Templates.jsx`
+- Claim status: `unclaimed`
+- Claimed by: `none`
+- Agent role: `parallel-worker`
+- Merge risk: `low`
+- Objective: Replace local Templates page card data with a React Query fetch from the templates endpoint and render loading, error, empty, and success states.
+- Detailed spec sections used or referenced: Sections 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20.
+- Files likely affected: `client/src/services/templateService.js`, `client/src/hooks/queries/useTemplates.js`, `client/src/Pages/Templates/Templates.jsx`.
+- Checklist:
+  - [ ] Add a template service that uses `client/src/lib/api.js`.
+  - [ ] Add a `useTemplates` query hook.
+  - [ ] Update `Templates.jsx` to call the hook and render endpoint data.
+  - [ ] Render loading, error, empty, and success states.
+  - [ ] Preserve responsive card behavior and accessibility.
+- Iteration plan:
+  - Iteration 1 - Build:
+    - Goal: Wire the page to fetched template data with basic states.
+    - Changes made: Pending.
+    - Verification command/result: Pending.
+    - Review findings: Pending.
+    - Acceptance status: Pending.
+    - Remaining issues: Pending.
+    - Next action: Pending.
+  - Iteration 2 - Refine:
+    - Goal: Tighten service error handling, data normalization, responsive card rendering, and accessibility.
+    - Changes made: Pending.
+    - Verification command/result: Pending.
+    - Review findings: Pending.
+    - Acceptance status: Pending.
+    - Remaining issues: Pending.
+    - Next action: Pending.
+  - Iteration 3 - Polish:
+    - Goal: Final lint/build verification and design pre-flight.
+    - Changes made: Pending.
+    - Verification command/result: Pending.
+    - Review findings: Pending.
+    - Acceptance status: Pending.
+    - Remaining issues: Pending.
+    - Next action: Pending.
+- Acceptance criteria:
+  - [ ] Frontend API logic uses the shared `api` client.
+  - [ ] Templates server state uses a custom React Query hook.
+  - [ ] `Templates.jsx` renders cards from fetched data.
+  - [ ] Loading, error, and empty states are present.
+  - [ ] Cards are responsive and accessible.
+- Acceptance result:
+  - [ ] Pending.
+- Verification commands:
+  - `cd client; npx eslint src/Pages/Templates/Templates.jsx src/services/templateService.js src/hooks/queries/useTemplates.js`
+  - `npm run build --prefix client`
+- Stop condition: Stop if the page cannot fetch through the shared client, build fails for in-scope reasons after targeted recovery, or the UI states cannot be verified.
+- Out-of-scope items: New dependencies, filters, downloads, major visual redesign, Redux changes.
+
+## TASK-003: Orchestrate merge review and final workflow artifacts
+
+- Task ID: `TASK-003`
+- Status: `Ready`
+- Priority: `P1`
+- Parallel safe: `no`
+- Depends on: `TASK-001`, `TASK-002`
+- Blocks: final response
+- File locks: `_parallel/claims.md`, `_parallel/locks.md`, `_parallel/agent-status.md`, `_progress/progress.md`, `_handoff/current.md`, `_review/2026-05-15-build-templates-data-flow.md`, `_release/build-templates-data-flow.md`, `_summary/2026-05-15-build-templates-data-flow.md`
+- Claim status: `claimed`
+- Claimed by: `orchestrator`
+- Agent role: `orchestrator`
+- Merge risk: `medium`
+- Objective: Validate worker outputs, run final verification/diff audit, and complete required workflow artifacts.
+- Detailed spec sections used or referenced: Sections 15, 16, 17, 22 plus workflow parallel sections.
+- Files likely affected: workflow artifacts only.
+- Checklist:
+  - [ ] Confirm claims and locks have no active overlap.
+  - [ ] Confirm TASK-001 and TASK-002 have Build -> Refine -> Polish evidence.
+  - [ ] Run final verification and diff audit.
+  - [ ] Create review, release notes, and summary.
+  - [ ] Update handoff and health check.
+- Iteration plan:
+  - Iteration 1 - Build:
+    - Goal: Collect worker outputs and run initial merge review.
+    - Changes made: Pending.
+    - Verification command/result: Pending.
+    - Review findings: Pending.
+    - Acceptance status: Pending.
+    - Remaining issues: Pending.
+    - Next action: Pending.
+  - Iteration 2 - Refine:
+    - Goal: Resolve any in-scope integration defects and rerun targeted verification.
+    - Changes made: Pending.
+    - Verification command/result: Pending.
+    - Review findings: Pending.
+    - Acceptance status: Pending.
+    - Remaining issues: Pending.
+    - Next action: Pending.
+  - Iteration 3 - Polish:
+    - Goal: Final artifact completion and workflow health check.
+    - Changes made: Pending.
+    - Verification command/result: Pending.
+    - Review findings: Pending.
+    - Acceptance status: Pending.
+    - Remaining issues: Pending.
+    - Next action: Pending.
+- Acceptance criteria:
+  - [ ] Parallel claims, locks, and agent status are complete.
+  - [ ] Final diff audit is documented.
+  - [ ] Review, release notes, summary, progress, handoff, and health check are complete.
+- Acceptance result:
+  - [ ] Pending.
+- Verification commands:
+  - `git diff --stat`
+  - `git diff`
+  - Final targeted checks selected from TASK-001 and TASK-002 results.
+- Stop condition: Stop if worker changes conflict, active locks overlap, or final verification fails for in-scope reasons after targeted recovery.
+- Out-of-scope items: Additional product features or unrelated lint cleanup.

@@ -4,67 +4,91 @@ This file is the live resume state for the active workflow. Keep it current afte
 
 ## Current Request
 
-Add placeholder content to the Templates page using three sample template cards.
+Build the Templates data flow: create `server/data/templates.json`, expose `GET /api/templates`, and update the Templates page to fetch and render templates with loading and error states.
 
 ## Request ID
 
-`add-template-placeholder-cards`
+`build-templates-data-flow`
 
 ## Current Phase
 
-`Complete`
+`Execution`
 
 ## Execution Mode
 
-`complete-workflow`
+`parallel-workflow`
 
 ## Current Spec File
 
-`_spec/2026-05-15-add-template-placeholder-cards.md`
+`_spec/2026-05-15-build-templates-data-flow.md`
 
 ## Current Task Plan File
 
-`_task/2026-05-15-add-template-placeholder-cards.md`
+`_task/2026-05-15-build-templates-data-flow.md`
 
 ## Current Review File
 
-`_review/2026-05-15-add-template-placeholder-cards.md`
+`none`
 
 ## Current Release Notes File
 
-`_release/add-template-placeholder-cards.md`
+`none`
 
 ## Current Summary File
 
-`_summary/2026-05-15-add-template-placeholder-cards.md`
+`none`
 
 ## Last Completed Task
 
-`TASK-001: Add three sample cards to the Templates page`
+`none`
 
 ## Current Task
 
-`none`
+`TASK-001 and TASK-002 claimed for parallel implementation; TASK-003 claimed by orchestrator`
 
 ## Current Iteration
 
-`none`
+`Iteration 1 - Build pending for TASK-001 and TASK-002`
 
 ## Next Task
 
-`none`
+`Run parallel workers, then orchestrator merge review`
 
 ## Dirty Worktree Status
 
-Initial `git status --short` showed pre-existing dirty files: `AGENTS.md`, `RUN_WORKFLOW.md`, `WORK_REQUEST.md`, `_handoff/current.md`, `_progress/progress.md`, `_release/README.md`, `_review/README.md`, `_spec/README.md`, `_summary/README.md`, `_task/README.md`, and `docs/PROMPTS.md`. User approved proceeding while preserving dirty files. This workflow updated required workflow artifacts and `client/src/Pages/Templates/Templates.jsx`; no pre-existing dirty implementation overlap was observed for the Templates file. Final status still includes pre-existing dirty files plus this workflow's artifacts.
+Initial `git status --short` showed pre-existing dirty workflow files: `RUN_WORKFLOW.md`, `WORK_REQUEST.md`, `_handoff/current.md`, `_progress/progress.md`, `_task/README.md`, `docs/PROMPTS.md`, and untracked `_parallel/`. Planned implementation files were not dirty before editing. This workflow updates required workflow artifacts, `docs/PROJECT_CONTEXT.md`, backend templates files, and frontend Templates data-flow files. Existing dirty workflow-mode/template changes are preserved.
+
+## Parallel Queue Status
+
+`queue ready`
+
+## Parallel Worker Count
+
+`requested default 3; actual 2 implementation workers plus orchestrator because only two parallel-safe non-overlapping implementation slices exist`
+
+## Parallel Claims Status
+
+`_parallel/claims.md`: `TASK-001` claimed by `backend-worker`; `TASK-002` claimed by `frontend-worker`; `TASK-003` claimed by `orchestrator`.
+
+## Parallel Locks Status
+
+`_parallel/locks.md`: active locks declared for backend files, frontend files, and orchestrator workflow artifacts. No overlapping active implementation locks declared.
+
+## Parallel Agent Status
+
+`_parallel/agent-status.md`: orchestrator active; backend-worker active/pending; frontend-worker active/pending.
+
+## Parallel Merge Review Status
+
+`pending`
 
 ## Acceptance Status
 
-`all required criteria met`
+`not started`
 
 ## Iteration Evidence Status
 
-`TASK-001 Build / Refine / Polish evidence recorded in _progress/progress.md and _task/2026-05-15-add-template-placeholder-cards.md.`
+`TASK-001` pending Build / Refine / Polish; `TASK-002` pending Build / Refine / Polish; `TASK-003` pending merge review Build / Refine / Polish.
 
 ## Blockers
 
@@ -72,26 +96,22 @@ Initial `git status --short` showed pre-existing dirty files: `AGENTS.md`, `RUN_
 
 ## Verification Status
 
-`passed for in-scope code: cd client && npm run build passed twice with a non-failing chunk warning; cd client && npx eslint src/Pages/Templates/Templates.jsx passed. Repo-wide cd client && npm run lint still fails on unrelated files.`
+`not run for implementation yet`
 
 ## Workflow Health Status
 
-`Passed`
+`Pending`
 
 ## Suggested Next Prompt
 
-`No active workflow. Suggested next prompt: review the Templates page in browser or commit changes.`
+`continue workflow`
 
 ## Notes For Continuation
 
-- Default execution mode is `complete-workflow`.
-- If the next task is not `Done`, continue executing remaining tasks sequentially until all tasks are complete or a stop condition is reached.
-- Use `single-task` only when the user explicitly requested one-task execution.
-- Resume from the current task and current iteration.
-- Every executable task must complete Build -> Refine -> Polish with documented goal, changes made, verification command/result, review findings, acceptance status, remaining issues, and next action before `Done`.
-- Preserve dirty worktree protection: stop before editing if dirty files overlap with planned files.
-- Preserve acceptance results: no task is `Done` unless every required criterion is checked `[x]`.
-- If verification fails, follow the failure recovery protocol inside the current iteration and record the result in progress, review, and summary.
-- Before final review and summary, run or document the final diff audit.
-- Completed workflows must include `_release/<request-id>.md`.
-- Workflow completed. Pre-existing dirty files remain untouched outside the approved workflow artifact updates. Repo-wide lint is not clean because of unrelated files, but Templates targeted lint and client build passed.
+- Active spec: `_spec/2026-05-15-build-templates-data-flow.md`.
+- Active task plan: `_task/2026-05-15-build-templates-data-flow.md`.
+- Backend worker owns only `server/data/templates.json`, `server/controllers/templatesController.js`, `server/routes/templateRoutes.js`, `server/app.js`, and `server/tests/templates.test.js`.
+- Frontend worker owns only `client/src/services/templateService.js`, `client/src/hooks/queries/useTemplates.js`, and `client/src/Pages/Templates/Templates.jsx`.
+- Orchestrator owns workflow artifacts and final merge review.
+- Preserve pre-existing dirty changes in `RUN_WORKFLOW.md`, `_task/README.md`, and `docs/PROMPTS.md`.
+- Every executable task must record Build -> Refine -> Polish evidence, verification, review, and acceptance results before `Done`.

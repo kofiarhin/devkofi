@@ -1,0 +1,23 @@
+[
+  {
+    "id": "portfolio-starter",
+    "title": "Portfolio Starter",
+    "description": "A clean personal portfolio layout for showcasing projects, services, and contact details.",
+    "category": "Portfolio",
+    "tags": ["React", "Tailwind", "Portfolio"]
+  },
+  {
+    "id": "saas-dashboard",
+    "title": "SaaS Dashboard",
+    "description": "A product dashboard template with summary metrics, activity panels, and account-ready sections.",
+    "category": "Dashboard",
+    "tags": ["SaaS", "Analytics", "Admin"]
+  },
+  {
+    "id": "booking-landing",
+    "title": "Booking Landing Page",
+    "description": "A conversion-focused landing page for consultants, studios, and service booking workflows.",
+    "category": "Landing Page",
+    "tags": ["Bookings", "Services", "Marketing"]
+  }
+]
