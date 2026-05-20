@@ -9,11 +9,17 @@ export const logoutAdmin = () =>
 export const getAdminSession = () =>
   api.get('/api/admin/auth/me');
 
-export const getContactMessages = (page = 1, limit = 20) =>
-  api.get('/api/admin/contact-messages', { params: { page, limit } });
+export const getContactMessages = (params = {}) =>
+  api.get('/api/admin/contact-messages', { params });
 
 export const getContactMessageById = (messageId) =>
   api.get(`/api/admin/contact-messages/${messageId}`);
+
+export const updateContactMessage = (messageId, payload) =>
+  api.patch(`/api/admin/contact-messages/${messageId}`, payload);
+
+export const deleteContactMessage = (messageId) =>
+  api.delete(`/api/admin/contact-messages/${messageId}`);
 
 export const getBookings = (params = {}) =>
   api.get('/api/admin/bookings', { params });
@@ -30,8 +36,14 @@ export const cancelBooking = (bookingId) =>
 export const deleteBooking = (bookingId) =>
   api.delete(`/api/admin/bookings/${bookingId}`);
 
-export const getNewsletterSubscribers = (page = 1, limit = 20) =>
-  api.get('/api/admin/newsletter-subscribers', { params: { page, limit } });
+export const getNewsletterSubscribers = (params = {}) =>
+  api.get('/api/admin/newsletter-subscribers', { params });
+
+export const updateNewsletterSubscriber = (subscriberId, payload) =>
+  api.patch(`/api/admin/newsletter-subscribers/${subscriberId}`, payload);
+
+export const deleteNewsletterSubscriber = (subscriberId) =>
+  api.delete(`/api/admin/newsletter-subscribers/${subscriberId}`);
 
 export const exportNewsletterSubscribersCsv = () =>
   api.get('/api/admin/newsletter/export/csv', { responseType: 'blob' });
