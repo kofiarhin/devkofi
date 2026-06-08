@@ -1,12 +1,5 @@
 [
   {
-    "id": "booking-landing",
-    "title": "Booking Landing Page",
-    "description": "A conversion-focused landing page for consultants, studios, and service booking workflows.",
-    "category": "Landing Page",
-    "tags": ["Bookings", "Services", "Marketing"]
-  },
-  {
     "id": "codex-workflow-kit",
     "title": "Codex Workflow Kit",
     "description": "A reusable workflow system for AI-assisted software development using Codex-style agents.",
