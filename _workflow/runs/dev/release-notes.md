@@ -1,13 +1,17 @@
 # Release Notes
 
-- Request: Restore the missing Projects page list.
-- User-facing changes: Projects load during local development; API failures show a `Try again` action.
-- Developer changes: Added deterministic API URL normalization and a Vite `/api` proxy to the local Express server.
+- Request: Upgrade `devkofi-api` from Heroku-22 to Heroku-24.
+- User-facing changes: None; existing API remains available.
+- Developer changes: Heroku stack changed to Heroku-24; empty deployment commit
+  `ee6093b` created on main.
 - New routes/APIs: none
 - New env vars: none
 - Database/schema changes: none
 - Dependencies added/removed: none
-- Test commands run: Focused Vitest suites, full client suite, client build, scoped and repository-wide lint, live API/browser verification.
-- Known limitations: Exact deployed site was not supplied, so live deployment verification was not performed. Existing unrelated lint and test failures remain.
-- Follow-up work: Repair stale unrelated repository tests/lint.
-- Suggested commit message: `fix projects API loading and retry state`
+- Test commands run: Heroku stack/release/ps/log/runtime checks, HTTP smoke
+  request, Git ancestry/status/diff checks.
+- Known limitations: Node 20.20.2 is EOL; npm audit reports 8 vulnerabilities.
+- Follow-up work: Upgrade Node to a supported LTS and review dependency
+  vulnerabilities in a separate change.
+- Suggested commit message: Already created as
+  `chore: upgrade Heroku stack to heroku-24`.

@@ -1,13 +1,11 @@
 # Workflow Handoff
 
-- Request: Fix the Projects page so project records load and display locally and in configured deployments.
-- Request ID: `fix-project-list-loading`
-- Current branch: `dev`
-- Current worktree path: `C:/Users/laura.bolas/projects/devkofi/dev`
-- Run id: `dev`
+- Request: Upgrade `devkofi-api` to Heroku-24 and verify deployment.
+- Request ID: `upgrade-heroku-24`
+- Current branch: `dev`; deployment executed from main worktree.
+- Main commit/deployed commit: `ee6093b`
 - Artifact root: `_workflow/runs/dev/`
 - Execution mode: `complete-workflow`
-- Spec: `_workflow/runs/dev/spec.md`
 - Spec approval: Approved by user on 2026-06-08
 - Task plan: `_workflow/runs/dev/tasks.md`
 - Last completed task: `TASK-001`
@@ -15,21 +13,30 @@
 - Current iteration: Complete
 - Current phase: Workflow complete
 - Blockers: None
-- Dirty worktree status: Intended project-loading code/tests are modified, `client/tests/ProjectsPage.test.jsx` and run-scoped workflow artifacts are untracked.
-- Verification status: Passed for scoped fix; unrelated baseline failures documented
+- Verification status: Passed
 - Acceptance status: Complete
-- Iteration evidence status: All three iterations complete
+- Iteration evidence status: Complete
 - Workflow health status: Passed
-- Suggested next prompt: None; workflow is complete.
+- Suggested next prompt: Upgrade Node to a supported LTS.
+
+## Deployment State
+
+- Previous stack: `heroku-22`
+- Current stack: `heroku-24`
+- Release: `v200`
+- Dyno: `web.1 up`
+- HTTP health: 200
+- Application code changes: None
 
 ## Token / Resume State
 
 - Current phase: Complete.
 - Current task: None.
 - Current iteration: Complete.
-- Last completed safe checkpoint: Final review, release notes, summary, and verification saved.
-- Files already changed: Application files listed in summary plus `_workflow/runs/dev/`.
+- Last completed safe checkpoint: Final verification and artifacts written.
+- Files already changed: Run-scoped workflow artifacts; main has commit
+  `ee6093b`.
 - Files planned next: None.
 - Tests already run: See `_workflow/runs/dev/verification.md`.
-- Exact next command/action: Review and commit the scoped changes.
-- Safe to continue automatically: No further workflow work remains.
+- Exact next command/action: None required.
+- Safe to continue automatically: No further work remains.

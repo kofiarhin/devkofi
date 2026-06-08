@@ -1,5 +1,57 @@
 # Progress
 
+## 2026-06-08 - TASK-001 Heroku-24 Upgrade Complete
+
+- Status: Done
+- Lifecycle: Ready -> In Progress -> Verified -> Reviewed -> Done
+- Main worktree was clean.
+- `main` already contained `dev`; `git merge dev` returned `Already up to date`.
+- Previous stack: `heroku-22`.
+- Stack set to `heroku-24`.
+- Empty deployment commit created: `ee6093b chore: upgrade Heroku stack to heroku-24`.
+- Deployment: `git push heroku main` passed.
+- Heroku build: Passed on Heroku-24 with `heroku/nodejs`.
+- Release: `v200`, commit `ee6093b5`.
+- Dyno: `web.1 up`.
+- Startup: Server started, MongoDB connected, state changed to up.
+- Runtime: Node `v20.20.2`, npm `10.9.8`.
+- HTTP: `/api/projects` returned 200 and 7,106 bytes.
+- Config check: Config variable names were present; values were not printed.
+- Application code changes: None.
+- Iteration 1 Build: Passed; infrastructure-only TDD exception.
+- Iteration 2 Refine: Passed; infrastructure-only TDD exception.
+- Iteration 3 Polish: Passed; infrastructure-only TDD exception.
+- Failure recovery:
+  - Concurrent Node/npm one-off dynos hit the Eco limit; serial Node retry passed.
+  - Initial bounded Start-Job log tail timed out locally; finite tail and
+    bounded log commands succeeded.
+  - Parallel Git audit commands timed out; serial retries passed.
+- Warnings:
+  - Node 20.20.2 is EOL and Heroku warns future buildpacks will reject it.
+  - npm audit reported 8 vulnerabilities: 4 moderate and 4 high.
+- Acceptance: All criteria met.
+- Next step: Final artifacts and health check.
+
+## 2026-06-08 - Heroku-24 Upgrade Planning
+
+- Explicit spec approval received from the user.
+- Task plan saved at `_workflow/runs/dev/tasks.md`.
+- `TASK-001` moved from Planned to Ready.
+- Next step: Iteration 1 Build from the existing main worktree.
+
+## 2026-06-08 - Heroku-24 Upgrade Intake
+
+- New active request: Merge `dev` into `main`, upgrade `devkofi-api` from
+  Heroku-22 to Heroku-24, deploy, and verify health.
+- Shared Understanding Handoff completed.
+- Read-only Heroku checks confirmed stack `heroku-22`, buildpack
+  `heroku/nodejs`, and one web dyno.
+- Git checks confirmed a clean `dev` worktree and that `main` already contains
+  `dev`.
+- Detailed spec saved at `_workflow/runs/dev/spec.md`.
+- Status: Waiting at the mandatory spec approval gate.
+- No merge, Heroku mutation, commit, or deployment has been performed.
+
 ## 2026-06-08 - Planning
 
 - Request synced to `_workflow/runs/dev/request.md`.

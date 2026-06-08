@@ -1,96 +1,101 @@
-# Task Plan: Fix Project List Loading
+# Task Plan
 
 - Spec file used: `_workflow/runs/dev/spec.md`
 - Planning date: 2026-06-08
-- Explicit spec approval: User replied `approve spec`
-- Progress and summary files read: No prior run-scoped progress or summary existed.
-- Spec sections used: Current State Analysis, Affected Surfaces, Dependency And Integration Map, UX/API/Workflow Expectations, Execution Strategy, Verification Strategy, Acceptance Criteria, Edge Cases And Failure Modes, Risks And Mitigations, Assumptions, Open Questions, and Task Extraction Notes.
+- Explicit spec approval: User approved on 2026-06-08
+- Execution mode: `complete-workflow`
+- Progress read: `_workflow/runs/dev/progress.md`
+- Summary read: `_workflow/runs/dev/summary.md`
+- Spec sections used: Sections 5-22, including affected surfaces,
+  dependencies, execution strategy, verification, acceptance criteria, risks,
+  assumptions, and task extraction.
 
-## TASK-001: Restore project records from API to gallery
+## TASK-001: Upgrade and verify devkofi-api on Heroku-24
 
 - Status: Done
-- Objective: Make local and configured deployed project requests resolve correctly and prove that successful data renders while failures remain explicit.
-- Files likely affected:
-  - `client/src/hooks/useProjects.js`
-  - `client/vite.config.js`
-  - `client/tests/projects.test.js` or a focused new client test
-  - `server/tests/projects.test.js` if backend contract coverage is required
-- Checklist:
-  - Add a failing endpoint-resolution/request regression test.
-  - Add local Vite `/api` proxy behavior.
-  - Normalize configured API base URLs.
-  - Preserve TanStack Query and UI state behavior.
-  - Verify project rendering and error handling.
-  - Run client tests, build, and relevant server verification.
-- Applied skill: design-taste-frontend
+- Lifecycle: Planned -> Ready -> In Progress -> Verified -> Reviewed -> Done
+- Objective: Ensure `main` contains `dev`, deploy `main` to `devkofi-api` on
+  Heroku-24, and prove the release and application are healthy.
+- Files affected: Git history on `main` and run-scoped workflow artifacts only.
+- Application code changed: No.
 
 ### Iteration 1 Build
-- Goal: Reproduce and fix the local request-routing failure.
-- Changes made: Added a testable project URL builder and Vite `/api` proxy to port 5000.
-- Test plan: Add endpoint-resolution assertions and verify Vite proxy configuration.
-- Red phase evidence: Focused suite failed because `getProjectsUrl` and the proxy were absent.
-- Green phase evidence: Focused suite passed 8 of 8 after implementation.
-- Refactor phase evidence: Minimal implementation retained; focused suite passed again.
-- Test commands run: `npm run test -- --run tests/projects.test.js` three times.
-- Verification command/result: Passed.
-- Review findings: Existing query behavior and API contract preserved.
-- Acceptance status: Local routing and endpoint construction accepted.
-- Remaining issues: Request and rendered-state proof remained.
-- Next action: Iteration 2.
+
+- Goal: Integrate branches, set Heroku-24, and deploy main.
+- Changes made: Confirmed main already contained dev; `git merge dev` returned
+  `Already up to date`; set stack to Heroku-24; created empty commit `ee6093b`;
+  pushed main to Heroku.
+- Test plan: Git ancestry, stack output, and deployment exit code.
+- Red phase evidence: Pre-change stack was `heroku-22`.
+- Green phase evidence: Build succeeded on Heroku-24 and released `v200`.
+- Refactor phase evidence: Infrastructure-only exception; no code changed.
+- Test commands run: Git status/ancestry/log; Heroku stack; Git push.
+- Verification command/result: `git push heroku main` exited 0 and Heroku
+  reported `Verifying deploy... done`.
+- Review findings: Node 20.20.2 EOL and 8 npm audit vulnerabilities were
+  warnings, not deployment failures.
+- Acceptance status: Passed.
+- Remaining issues: Runtime and HTTP stability checks.
+- Next action: Iteration 2 Refine.
 
 ### Iteration 2 Refine
-- Goal: Harden configured deployment URLs and request failures.
-- Changes made: Exported the request function, added explicit base URL support, and prevented React Query context from being treated as a URL.
-- Test plan: Cover trailing slash, non-2xx response, and returned payload.
-- Red phase evidence: Two tests failed because `getProjects` was not exported.
-- Green phase evidence: Focused suite passed 10 of 10 after export and callback wrapper.
-- Refactor phase evidence: Nullish/non-string base handling added; focused suite passed again.
-- Test commands run: `npm run test -- --run tests/projects.test.js` three times.
-- Verification command/result: Passed.
-- Review findings: Success payload and server error text are preserved.
-- Acceptance status: Configured URL and request behavior accepted.
-- Remaining issues: Rendered-state and full verification remained.
-- Next action: Iteration 3.
+
+- Goal: Validate release, dyno startup, and runtime compatibility.
+- Changes made: None.
+- Test plan: Inspect release, dyno, logs, runtime versions, and config names.
+- Red phase evidence: Infrastructure-only exception.
+- Green phase evidence: Release `v200`; web.1 `up`; server started, connected to
+  MongoDB, and reached `starting -> up`; Node `v20.20.2`; npm `10.9.8`.
+- Refactor phase evidence: Infrastructure-only exception; no code changed.
+- Test commands run: Heroku releases, ps, logs, run node/npm versions, and
+  config-name listing.
+- Verification command/result: Passed. No startup, dependency-load,
+  Node-execution, or missing-environment error was observed.
+- Review findings: First Node version check collided with a concurrent Eco
+  one-off dyno; serial retry passed.
+- Acceptance status: Passed.
+- Remaining issues: HTTP and final audit.
+- Next action: Iteration 3 Polish.
 
 ### Iteration 3 Polish
-- Goal: Prove rendered project records and complete full verification.
-- Changes made: Added page-level success/error tests and a `Try again` action wired to `refetch`.
-- Test plan: Component/integration coverage plus full client test/build and relevant server route check.
-- Red phase evidence: Retry control was absent; one initial success assertion was also corrected after identifying ambiguous test data.
-- Green phase evidence: Page tests passed 2 of 2 after adding retry behavior.
-- Refactor phase evidence: Simplified `onClick` to use `refetch` directly; combined focused suite passed 12 of 12.
-- Test commands run: Page test Red/Green, combined focused suite, client build, scoped lint, full client suite, live API/browser checks.
-- Verification command/result: Focused tests, build, scoped lint, live proxy, rendered page, and browser console passed.
-- Review findings: 13 unrelated legacy full-suite failures and 36 unrelated repository-wide lint errors remain.
-- Acceptance status: Complete.
-- Remaining issues: Exact deployed URL was not provided; live deployment was not checked.
-- Next action: Final workflow artifacts.
 
-### Test Plan
-- Focused Vitest tests for project endpoint construction and request behavior.
-- Projects page render/error state coverage where feasible.
-- Full client test suite.
-- Client production build.
-- Relevant server project endpoint verification.
-
-### Acceptance Criteria
-- [x] Local Vite development routes `/api/projects` to the Express backend.
-- [x] Configured API bases with or without a trailing slash resolve correctly.
-- [x] Successful project data renders on the Projects page.
-- [x] Request failures render the existing explicit error state and retry action.
-- [x] Relevant focused tests and client build pass.
-- [x] No unrelated behavior or files are changed.
+- Goal: Confirm stable HTTP health and audit the final deployment.
+- Changes made: None.
+- Test plan: HTTP request, newest logs, final stack/release/ps, deployed Git
+  ref, Git status, and diff.
+- Red phase evidence: Infrastructure-only exception.
+- Green phase evidence: `/api/projects` returned HTTP 200 with 7,106 bytes;
+  repeated router logs returned 200; web.1 remained up; Heroku remote and local
+  main both resolve to `ee6093b`.
+- Refactor phase evidence: Infrastructure-only exception; no code changed.
+- Test commands run: Bounded `heroku logs --tail`, `Invoke-WebRequest`, final
+  Heroku checks, `git ls-remote`, `git status`, and diff audit.
+- Verification command/result: Passed.
+- Review findings: Initial Start-Job tail wrapper timed out locally; finite
+  pipeline and bounded logs succeeded. Parallel Git audit commands timed out;
+  serial retries passed.
+- Acceptance status: Passed.
+- Remaining issues: Node 20 should be upgraded before Heroku makes the warning
+  a build error; dependency vulnerabilities require separate review.
+- Next action: Workflow complete.
 
 ### Acceptance Result
-- [x] All criteria met.
 
-### Verification Commands
-- `npm run test:client -- --run`
-- `npm run build --prefix client`
-- Relevant focused test commands identified during implementation.
+- [x] Main contains current dev without losing main-only work.
+- [x] Active stack is `heroku-24`.
+- [x] Heroku Git deployment succeeded.
+- [x] Successful release `v200` recorded.
+- [x] Web dyno is up.
+- [x] No startup, dependency-load, Node-execution, or missing-environment
+  failure exists.
+- [x] Deployed application responds successfully over HTTP.
+- [x] Command output, errors, and fixes are documented.
 
 ### Stop Condition
-- Stop as `Needs Human Review` if project loading cannot be proven or verification remains failed after targeted recovery.
+
+- Not reached. Deployment succeeded on the first push.
 
 ### Out Of Scope
-- Project page redesign, project content edits, database changes, auth changes, and broad API-client refactoring.
+
+- Node major-version upgrade, dependency remediation, feature changes, and
+  unrelated cleanup.

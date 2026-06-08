@@ -1,23 +1,23 @@
 # Workflow Summary
 
-- Request: Fix the Projects page list not showing.
+- Request: Merge dev into main, upgrade Heroku-22 to Heroku-24, deploy, and
+  verify health.
 - Spec file used: `_workflow/runs/dev/spec.md`
 - Detailed spec completeness: Complete; all 22 required sections present.
 - Task plan used: `_workflow/runs/dev/tasks.md`
 - Review file used: `_workflow/runs/dev/review.md`
 - Tasks completed: `TASK-001`
-- Iteration evidence summary: Three iterations completed with Red -> Green -> Refactor evidence.
-- Files changed:
-  - `client/src/hooks/useProjects.js`
-  - `client/vite.config.js`
-  - `client/src/Pages/Projects/Projects.jsx`
-  - `client/tests/projects.test.js`
-  - `client/tests/ProjectsPage.test.jsx`
-  - Run-scoped workflow artifacts.
-- Verification run: Focused tests, build, scoped lint, full suite, live API, browser rendering/network/console, and diff audit.
-- Acceptance results: All criteria met.
-- Failure recovery notes: Corrected one ambiguous test assertion; unrelated baseline failures documented.
-- Final diff audit: Scoped, clean, no secrets or generated junk.
+- Iteration evidence: Three infrastructure iterations completed; TDD exception
+  justified because no application code changed.
+- Files changed: Main Git history gained empty commit `ee6093b`; run-scoped
+  workflow artifacts updated. No application files changed.
+- Verification run: Stack, deployment, release, dyno, logs, Node/npm runtime,
+  config-name presence, HTTP endpoint, remote Git ref, status, and diff.
+- Acceptance results: All criteria passed.
+- Failure recovery: Eco one-off concurrency, bounded tail wrapper, and parallel
+  Git audit command-control issues were retried successfully.
+- Final diff audit: Main clean with no uncommitted diff; no secrets or generated
+  junk added.
 - Release notes file used: `_workflow/runs/dev/release-notes.md`
-- Unresolved issues: Existing unrelated repository-wide lint and stale test failures; deployed URL not verified.
-- Next recommended work: Commit the scoped fix, then address baseline test/lint debt separately.
+- Unresolved issues: Node 20 EOL warning and 8 npm audit vulnerabilities.
+- Next recommended work: Upgrade Node LTS in a separate tested deployment.

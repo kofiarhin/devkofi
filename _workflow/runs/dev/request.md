@@ -1,75 +1,53 @@
 # Active Request
 
-Fix the Projects page so the repository's project list loads and displays in both local development and deployed environments.
+Merge the `dev` branch into `main`, upgrade the Heroku application `devkofi-api`
+from `heroku-22` to `heroku-24`, deploy `main`, and verify that the application
+is healthy.
 
 ## Source
 
-- Raw user request: "the list of projects are not showing please fix it."
-- Follow-up: "ok proceed"
-- Assumption accepted for specification: the issue should be fixed for both local and deployed use.
+- Original request: Upgrade the Heroku app from Heroku-22 to Heroku-24 and
+  verify the deployment.
+- Clarification: Merge the `dev` branch with `main` and push to Heroku.
+- Execution mode: `complete-workflow`
+
+## Constraints
+
+- Show every command before executing it.
+- Do not modify application code unless a verified Heroku-24 compatibility
+  failure requires the smallest safe fix.
+- Stop deployment verification immediately if a deployment fails, diagnose
+  the exact failure, and resume only after applying an in-scope fix.
+- Capture command output in run-scoped workflow evidence.
+- Continue until the app runs successfully on Heroku-24 or a blocking issue is
+  fully diagnosed and documented.
 
 ## Shared Understanding Handoff
 
-### Original Request
+- Current branch/worktree: `dev` at
+  `C:/Users/laura.bolas/projects/devkofi/dev`.
+- `main` is checked out in `C:/Users/laura.bolas/projects/devkofi/main`.
+- Current `main` commit: `b9081af`.
+- Current `dev` commit: `c731f58`.
+- Git history shows `main` already contains `dev`; merging `dev` into `main`
+  should currently be a no-op.
+- Heroku app currently uses `heroku-22`.
+- Heroku buildpack is `heroku/nodejs`.
+- The app declares Node `20.x` and npm `10.x`.
+- The current worktree was clean at intake.
 
-The list of projects is not showing and needs to be fixed.
+## In Scope
 
-### Confirmed Understanding
+- Confirm and, if necessary, merge `dev` into `main`.
+- Set the Heroku stack to `heroku-24`.
+- Create the requested empty deployment commit on `main`.
+- Push `main` to the `heroku` remote.
+- Verify release, dyno, logs, runtime compatibility, configuration errors, and
+  deployed HTTP health.
+- Apply only a minimal compatibility fix if the deployment proves one is
+  required.
 
-- The backend already exposes `GET /api/projects`.
-- The backend controller returns 15 records from `server/data/projects.data.json`.
-- The Projects page fetches data through `client/src/hooks/useProjects.js`.
-- The hook uses `VITE_API_URL` when configured and otherwise requests the relative path `/api/projects`.
-- `client/vite.config.js` currently has no development proxy, so a missing `VITE_API_URL` sends the request to the frontend origin rather than the local Express server.
-- The fix should restore the existing project gallery rather than redesign it.
+## Out Of Scope
 
-### Decisions Made
-
-- Support both local development and deployed environments.
-- Preserve the existing backend response contract and project data.
-- Add focused automated coverage for project API URL resolution/loading behavior.
-- Preserve the existing loading, error, empty, filtering, and project display states.
-
-### Assumptions
-
-- The deployed frontend supplies `VITE_API_URL`, or same-origin deployment intentionally serves `/api`.
-- Local frontend development runs on Vite and the backend runs on port 5000.
-- No authentication is required for `GET /api/projects`.
-- The report concerns data loading, not project filtering or visual layout.
-
-### In Scope
-
-- Diagnose and fix frontend-to-backend project request routing.
-- Add or update tests that reproduce the missing-list failure.
-- Verify the project API and client build/tests.
-- Make only minimal UI error-state changes if required to expose a retry path or actionable failure.
-
-### Out Of Scope
-
-- Projects page redesign.
-- Changes to project content.
-- Database migration or replacing the JSON data source.
-- Unrelated API, authentication, navigation, or deployment work.
-
-### Acceptance Criteria
-
-- The Projects page receives and renders the existing project records during local development without requiring a manually hard-coded URL.
-- A configured deployed API base URL continues to work.
-- Failed project requests retain a clear error state and do not appear as an empty successful list.
-- Relevant automated tests and the client production build pass.
-- No unrelated files or behavior are changed.
-
-### Risks And Edge Cases
-
-- Trailing slashes in `VITE_API_URL` can produce malformed double-slash paths.
-- CORS must allow the deployed frontend origin when the API is cross-origin.
-- A same-origin production deployment must continue to use `/api/projects`.
-- Backend/database startup behavior may affect broad server tests even though project data is file-backed.
-
-### Remaining Open Questions
-
-- The exact affected deployed URL was not provided. Deployment-specific verification may be limited to configuration behavior and local automated checks.
-
-### Normalized Workflow Request
-
-Fix project list loading end to end by making project API URL resolution reliable in local and deployed environments, preserving the existing project gallery behavior, adding regression tests, and verifying the relevant client and server paths.
+- Feature work, UI changes, refactoring, dependency upgrades without evidence,
+  and unrelated cleanup.

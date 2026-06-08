@@ -1,164 +1,218 @@
-# Fix Project List Loading
+# Heroku-24 Upgrade And Deployment Spec
 
 ## 1. Metadata
 - Spec filename: `_workflow/runs/dev/spec.md`
 - Date: 2026-06-08
-- Request ID / slug: `fix-project-list-loading`
-- Request source: Direct user prompt and `_workflow/runs/dev/request.md`
+- Request ID / slug: `upgrade-heroku-24`
+- Request source: Direct user request and follow-up
 - Execution mode: `complete-workflow`
-- Request classification: Bug fix
-- Scope level: Narrow cross-environment frontend/API integration
-- Risk level: Low to medium
+- Request classification: `ops`
+- Scope level: `small`
+- Risk level: `medium`
 
 ## 2. Original Request
-- Raw user request: "the list of projects are not showing please fix it."
-- Normalized request: Fix project list loading end to end by making project API URL resolution reliable in local and deployed environments, preserving the existing gallery, adding regression tests, and verifying the relevant client and server paths.
+- Raw user request: Upgrade `devkofi-api` from Heroku-22 to Heroku-24, deploy,
+  verify health, and merge `dev` with `main`.
+- Normalized request: Ensure `main` contains `dev`, change the app stack to
+  `heroku-24`, deploy `main`, and prove the web process and application are
+  healthy without unrelated code changes.
 - Source prompt / request reference: `_workflow/runs/dev/request.md`
 
 ## 3. Questions And Answers
-- Questions asked: Whether projects are missing on the deployed site, local development, or both.
-- Answers received: "ok proceed"
-- Questions skipped: Exact affected URL and visible error details were not supplied.
-- Remaining open questions: The exact deployment and its environment values are unknown.
+- Questions asked: Which revision should be deployed?
+- Answers received: Merge `dev` with `main` and push to Heroku.
+- Questions skipped: None.
+- Remaining open questions: None blocking.
 
 ## 4. Problem Definition
-- Problem being solved: The Projects page does not receive project records.
-- Why it matters: Projects are a primary portfolio surface and currently appear unavailable.
-- Current pain point: The frontend request can resolve to the Vite frontend origin when `VITE_API_URL` is absent because no Vite API proxy exists.
-- Expected value: Reliable loading of the existing 15 project records locally and in supported deployments.
+- Problem being solved: The app remains on the `heroku-22` stack and needs a
+  verified upgrade to `heroku-24`.
+- Why it matters: The deployment must remain on a supported, current stack.
+- Current pain point: Runtime compatibility and process health on Heroku-24
+  have not been proven.
+- Expected value: A successful Heroku-24 release with recorded evidence.
 
 ## 5. Current State Analysis
-- Existing behavior: `useProjects` calls `${VITE_API_URL || ""}/api/projects`.
-- Existing architecture/components: React/Vite frontend, TanStack Query hook, Express route/controller, JSON-backed project data.
-- Existing files/modules likely involved: `client/src/hooks/useProjects.js`, `client/vite.config.js`, client tests, and potentially environment examples.
-- Existing data flow: Projects page -> `useProjects` -> fetch -> Express `GET /api/projects` -> JSON array.
-- Existing API/UI/CLI/workflow behavior: The UI already has loading, error, empty, grid, case-study, search, sort, and filter states.
-- Existing tests or verification coverage: Project filtering utilities are tested, but request URL resolution and API integration are not.
+- Existing behavior: Heroku reports one web dyno on `heroku-22`.
+- Existing architecture/components: Node/Express server started by Procfile
+  command `npm run start:server`.
+- Existing files/modules likely involved: `package.json`, `package-lock.json`,
+  `Procfile`, and server startup/config only if compatibility fails.
+- Existing data flow: Heroku Node buildpack installs dependencies and starts
+  `node server/server.js`.
+- Existing API/UI/CLI/workflow behavior: Deployment is Git-based through the
+  `heroku` remote.
+- Existing tests or verification coverage: Repository tests exist, but this
+  operation is primarily verified by Heroku build/release/process/log/HTTP
+  evidence.
 
 ## 6. Desired End State
-- Expected final behavior: Local Vite requests reach the Express backend; configured deployed API URLs and intentional same-origin `/api` deployments continue to work.
-- User-facing outcome: Project cards render from the existing project dataset.
-- Developer-facing outcome: API base resolution is deterministic and regression-tested.
-- System/workflow outcome: No backend response-contract change.
-- Backward compatibility expectations: Existing `VITE_API_URL` deployments remain supported.
+- Expected final behavior: `devkofi-api` runs on `heroku-24`.
+- User-facing outcome: The deployed API remains reachable.
+- Developer-facing outcome: A successful release and documented runtime state.
+- System/workflow outcome: Main contains dev and the Heroku release is sourced
+  from main.
+- Backward compatibility expectations: Existing application behavior remains
+  unchanged.
 
 ## 7. Scope
-- In scope: Project API request construction, local Vite proxy configuration, focused regression coverage, relevant verification, and minimal error-state improvement only if needed.
-- Out of scope: Redesign, project content edits, database migration, unrelated routes, auth changes, and broad API-client refactoring.
-- Non-goals: Replacing TanStack Query or moving project data into MongoDB.
-- Explicit boundaries: Do not alter filters, sorting, drawer behavior, or project card design unless required by the loading fix.
+- In scope: Branch integration, stack update, empty deployment commit, Heroku
+  deployment, release/dyno/log/HTTP verification, and minimal proven fixes.
+- Out of scope: Unrelated application changes, broad upgrades, refactors, and
+  deployment platform changes.
+- Non-goals: Modernizing dependencies or changing product behavior.
+- Explicit boundaries: Do not edit code preemptively.
 
 ## 8. Users And Use Cases
-- Primary users: Portfolio visitors.
-- Secondary users: Developers running the application locally.
-- Main use cases: Open `/projects` and view the project gallery.
-- Edge use cases: Cross-origin deployed API, same-origin deployment, absent environment variable, and API failure.
+- Primary users: Application owner and deployed API consumers.
+- Secondary users: Developers deploying the repository.
+- Main use cases: Deploy the current main revision on Heroku-24 and confirm
+  availability.
+- Edge use cases: Build succeeds but dyno crashes; runtime starts but config is
+  missing; HTTP endpoint returns an unhealthy response.
 
 ## 9. Functional Requirements
-- Required behaviors: Fetch `GET /api/projects` from the correct origin and render a returned array.
-- Inputs: Optional `VITE_API_URL`; local Vite proxy target.
-- Outputs: Existing project records or the existing explicit error state.
-- State changes: TanStack Query transitions through loading, success, or error.
-- Error states: Non-2xx responses remain errors and expose a useful message.
-- Permissions/auth expectations: Public endpoint; credentials behavior remains unchanged.
+- Required behaviors: Main includes dev; stack is Heroku-24; deployment creates
+  a successful release; web dyno is up; deployed HTTP service responds.
+- Inputs: Local branches, Heroku app configuration, buildpack, and environment.
+- Outputs: Git merge/commit, Heroku release, command evidence, final report.
+- State changes: Main may gain a merge and empty deployment commit; Heroku stack
+  changes to Heroku-24; a new release is created.
+- Error states: Merge conflict, build failure, release failure, crash loop,
+  dependency/runtime mismatch, missing config, or unhealthy HTTP response.
+- Permissions/auth expectations: Existing authenticated Git and Heroku CLI
+  access is required.
 
 ## 10. Non-Functional Requirements
-- Performance expectations: No additional network round trips.
-- Reliability expectations: Avoid malformed URLs and environment-specific local failures.
-- Security/privacy expectations: No secrets or private data added; CORS behavior is not broadened without evidence.
-- Accessibility expectations: Preserve existing semantic loading/error content.
-- Maintainability expectations: Keep URL resolution small, explicit, and testable.
-- DX expectations: `npm run dev` should support the standard Vite frontend plus Express backend workflow.
+- Performance expectations: Not applicable beyond normal startup.
+- Reliability expectations: All web processes reach a stable healthy state.
+- Security/privacy expectations: Do not print config values or secrets.
+- Accessibility expectations: Not applicable.
+- Maintainability expectations: Keep changes minimal and auditable.
+- DX expectations: Show each command before execution and capture results.
 
 ## 11. Affected Surfaces
-- Files likely affected: `client/src/hooks/useProjects.js`, `client/vite.config.js`, client test files, and possibly `.env.example`.
-- Directories likely affected: `client/src/hooks`, `client/tests`, `client`.
-- UI surfaces: Projects page data states only.
-- API routes: Existing `GET /api/projects`; no contract change.
-- Components: `Projects` only if retry/error behavior needs adjustment.
-- Services: Project query function/hook.
-- Database/schema: Not applicable.
-- Config/env vars: Existing `VITE_API_URL`; local Vite proxy target.
-- Tests: Client unit/integration tests and existing server API tests where practical.
+- Files likely affected: Git history and run-scoped workflow artifacts;
+  application files only after a proven compatibility failure.
+- Directories likely affected: `_workflow/runs/dev/`.
+- UI surfaces: None.
+- API routes: Existing deployed routes only for health validation.
+- Components: None planned.
+- Services: Heroku app `devkofi-api`.
+- Database/schema: None.
+- Config/env vars: Validate presence-related failures without exposing values.
+- Tests: Deployment and HTTP smoke checks; targeted tests only if code changes.
 - Docs: Run-scoped workflow artifacts.
-- Workflow artifacts: All files under `_workflow/runs/dev/`.
+- Workflow artifacts: request, spec, tasks, progress, handoff, verification,
+  review, release notes, and summary.
 
 ## 12. Dependency And Integration Map
-- Internal dependencies: Projects page depends on `useProjects`; hook depends on browser fetch; Vite dev server may proxy `/api`; Express mounts project routes.
-- External packages/services: TanStack Query, Vite, Express.
-- Integration points: Browser/frontend origin to Express backend origin.
-- Ordering constraints: Add failing regression test before implementation; fix URL/proxy behavior; verify page behavior.
-- Migration/setup requirements: None expected.
+- Internal dependencies: Procfile -> npm script -> Express server.
+- External packages/services: Heroku Node buildpack and application add-ons.
+- Integration points: Git remote `heroku`, Heroku stack, dyno manager, app URL.
+- Ordering constraints: Approve spec; plan; merge; set stack; commit; deploy;
+  verify release; verify dyno/logs; verify HTTP.
+- Migration/setup requirements: Stack change triggers rebuild.
 
 ## 13. Data And State Impact
-- Data models: Unchanged project JSON objects.
+- Data models: No change.
 - Database changes: None.
-- State management changes: None beyond existing query state.
-- Cache/session/local storage impact: Existing TanStack Query key remains `["projects"]`.
-- Backward compatibility impact: Preserve configured API base URLs and same-origin API support.
+- State management changes: None.
+- Cache/session/local storage impact: None expected.
+- Backward compatibility impact: None expected.
 
 ## 14. UX / API / Workflow Expectations
-- UX expectations: Existing loading skeleton transitions to project content; failures remain clearly distinguishable from empty results.
-- API contract expectations: `GET /api/projects` returns the existing JSON array.
-- CLI/workflow behavior: Root `npm run dev` should make local frontend API requests functional.
-- Error handling expectations: Preserve non-2xx failure handling and readable messages.
-- Empty/loading/success/failure states: Preserve all current states; add retry only if tests or reproduction show it is needed.
+- UX expectations: Not applicable.
+- API contract expectations: Existing deployed API remains available.
+- CLI/workflow behavior: Every command is announced before execution and its
+  output is retained in evidence.
+- Error handling expectations: Stop immediately after a failed deployment,
+  diagnose, propose the smallest fix, and redeploy only after the failure is
+  understood.
+- Empty/loading/success/failure states: Success requires release, dyno, logs,
+  and HTTP evidence; otherwise report the exact blocked/failure state.
 
 ## 15. Execution Strategy
-- Recommended implementation approach: Extract or expose deterministic project endpoint construction for testing, normalize configured base URLs, and add a Vite `/api` proxy to the local Express server.
-- Suggested sequencing: Reproduce with a focused failing test, implement the smallest routing fix, verify hook/page behavior, then harden trailing-slash and failure cases.
-- Safe rollout/migration approach: No API contract or data migration; retain environment override semantics.
-- Files to inspect before editing: Hook, Vite config, project tests, server route/controller, environment examples.
-- Decisions to avoid until more evidence exists: Broad shared API-client migration and CORS expansion.
+- Recommended implementation approach: Operate from the existing main
+  worktree; merge dev (expected no-op), set stack, create an empty commit, push
+  main, and perform bounded verification.
+- Suggested sequencing: Git verification -> merge -> stack set -> deployment
+  commit -> push -> release/dyno/log checks -> HTTP smoke check.
+- Safe rollout/migration approach: Record the previous stack and release before
+  mutation; avoid application edits unless deployment evidence requires them.
+- Files to inspect before editing: `package.json`, `Procfile`, server startup
+  and environment validation code only if logs indicate a problem.
+- Decisions to avoid until more evidence exists: Dependency or Node version
+  changes.
 
 ## 16. Verification Strategy
-- Required automated checks: Focused client tests, full client tests, client production build, and relevant project API test or direct server-route verification.
-- Required manual checks: Load `/projects` with frontend and backend running and confirm project cards appear; inspect browser console/network for request errors.
-- Test types needed: Unit test for endpoint resolution and integration/component coverage for successful project rendering where feasible.
-- Build/lint/typecheck expectations: Client build must pass; run lint if scoped changes do not expose unrelated failures.
-- Acceptance evidence required: Red/Green/Refactor results in each workflow iteration and visible project records in browser verification.
-- Proof of completion: Passing tests/build plus local browser verification.
+- Required automated checks: Heroku release status, dyno status, bounded logs,
+  current stack, and HTTP request to the deployed URL or health endpoint.
+- Required manual checks: Inspect output for startup, dependency, Node runtime,
+  and environment failures.
+- Test types needed: Deployment smoke verification; targeted repository tests
+  only if code changes.
+- Build/lint/typecheck expectations: Heroku build must pass. Local checks are
+  required for any compatibility code fix.
+- Acceptance evidence required: Commands, exit codes, release ID, process
+  state, relevant logs, and HTTP status.
+- Proof of completion: App reports Heroku-24 and stable web dyno health.
 
 ## 17. Acceptance Criteria
-- [ ] Local Vite development routes project requests to the Express `GET /api/projects` endpoint.
-- [ ] A configured `VITE_API_URL`, including one with a trailing slash, produces a valid project endpoint.
-- [ ] The Projects page renders the existing project records after a successful request.
-- [ ] Failed requests remain a visible error state rather than an empty successful state.
-- [ ] Relevant tests and the client production build pass.
-- [ ] No unrelated application behavior or files are changed.
+- [ ] `main` contains the current `dev` revision without losing main-only work.
+- [ ] Heroku reports `heroku-24` as the active stack.
+- [ ] `git push heroku main` completes successfully.
+- [ ] The resulting Heroku release is successful and its release ID is recorded.
+- [ ] The web dyno is `up` and remains free of startup crash evidence.
+- [ ] Logs show no dependency, Node-version, or missing-environment failure.
+- [ ] The deployed application responds successfully over HTTP.
+- [ ] All commands, outputs, failures, and fixes are summarized.
 
 ## 18. Edge Cases And Failure Modes
-- Edge cases: Empty base URL, base URL with trailing slash, same-origin production, cross-origin API, empty array response.
-- Failure modes: 404 from frontend origin, CORS rejection, malformed double slash, non-JSON error response, unavailable backend.
-- Regression risks: Breaking configured deployments or changing query caching behavior.
-- Recovery expectations: Keep a clear error state; local developers can verify backend availability independently.
+- Edge cases: Main already contains dev; stack update creates a release before
+  code deployment; logs contain historical errors unrelated to the new release.
+- Failure modes: Merge conflict, rejected Git push, buildpack failure,
+  unsupported native dependency, wrong Node/npm runtime, absent config, crash.
+- Regression risks: Deploying an unintended branch or changing code without
+  evidence.
+- Recovery expectations: Stop on deployment failure, isolate the exact stage,
+  apply only an in-scope fix, and repeat deployment verification.
 
 ## 19. Risks And Mitigations
-- Technical risks: Proxy-only fixes can hide production misconfiguration. Mitigation: retain explicit environment override and test both paths.
-- Product/UX risks: A failed API may still show no projects. Mitigation: preserve explicit error rendering.
-- Security risks: Broadening CORS unnecessarily. Mitigation: do not change CORS unless reproduction proves it is required.
-- Scope risks: Turning a loading fix into a redesign or shared-client rewrite. Mitigation: keep changes limited to the project request path.
-- Mitigation plan: TDD-first focused tests and final diff audit.
+- Technical risks: Heroku-24 system library changes. Mitigation: inspect build
+  and runtime output before changing dependencies.
+- Product/UX risks: API downtime. Mitigation: verify release and process state
+  immediately.
+- Security risks: Accidental secret disclosure. Mitigation: inspect config
+  names/status only, never values.
+- Scope risks: Broad dependency churn. Mitigation: require failure evidence.
+- Mitigation plan: Use exact command evidence and bounded fixes.
 
 ## 20. Assumptions
-- Explicit assumptions: Local backend uses port 5000; project endpoint is public; deployed API base is supplied when cross-origin.
-- Confidence level: High for the local proxy defect; medium for the unobserved deployed environment.
-- What to revisit if assumptions are wrong: Deployment environment variables, frontend host rewrites, and backend CORS allowlist.
+- Explicit assumptions: Existing credentials authorize Git and Heroku actions;
+  current main-only commits are intentional; the app URL is suitable for an
+  HTTP smoke check.
+- Confidence level: High.
+- What to revisit if assumptions are wrong: Stop and document authentication,
+  branch, or endpoint blockers.
 
 ## 21. Open Questions
-- Blocking questions: None for the local and configuration-level fix.
-- Non-blocking questions: Exact deployed URL and observed browser/network error.
-- Execution impact: Live deployment verification may remain unperformed without the URL.
+- Blocking questions: None.
+- Non-blocking questions: Whether a dedicated health endpoint exists.
+- Execution impact: If absent, validate the root or known API endpoint.
 
 ## 22. Task Extraction Notes
-- Suggested vertical task boundaries: One vertical task to restore and verify project loading from request construction through rendered UI.
-- Suggested first task: Add regression coverage and make local/configured project endpoint routing reliable.
-- Suggested task ordering: Test reproduction -> endpoint/proxy fix -> UI/API verification -> hardening.
-- Areas that should not become separate tasks: Backend data refactor, page redesign, and broad API-client consolidation.
-- How the 3-pass Build -> Refine -> Polish loop should apply: Build the minimal tested routing fix; refine environment/trailing-slash/error cases; polish with full verification, browser check, and scope audit.
+- Suggested vertical task boundaries: One ops task covering merge, upgrade,
+  deployment, and health verification because each step is sequential.
+- Suggested first task: Upgrade and verify `devkofi-api` on Heroku-24.
+- Suggested task ordering: Git integration, mutation/deploy, verification,
+  documentation.
+- Areas that should not become separate tasks: Application code fixes unless a
+  concrete deployment failure occurs.
+- How the 3-pass Build -> Refine -> Polish loop should apply: Build performs the
+  merge/stack/deploy; Refine validates release/process/logs and resolves proven
+  compatibility failures; Polish performs final HTTP/runtime checks and audits
+  evidence. TDD is not applicable to pure infrastructure commands; any code
+  change must use targeted Red -> Green -> Refactor evidence.
 
-## Frontend Skill Routing
-
-Applied skill: design-taste-frontend
-
-The skill applies only to preserving and reviewing the Projects page loading/error/success UI states. No visual redesign is planned.
+Frontend Taste Application: Not applicable.
