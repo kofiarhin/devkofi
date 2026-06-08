@@ -1,5 +1,19 @@
 [
   {
+    "id": 25,
+    "name": "KareBraids",
+    "description": "Birmingham-based hair braiding brand platform for showcasing services, pricing, gallery content, and client enquiries.",
+    "features": [
+      "Service catalogue + pricing structure",
+      "Mobile-first brand experience",
+      "Client enquiry and booking-ready flow"
+    ],
+    "status": "Building",
+    "demoUrl": "",
+    "repoUrl": "https://github.com/kofiarhin/karebraids",
+    "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/karebraids"
+  },
+  {
     "id": 10,
     "name": "PromptHive",
     "description": "Community-driven platform for sharing, discovering, and organizing prompts and skills for your favorite AI tools.",
@@ -199,19 +213,5 @@
     "demoUrl": "https://taxify-sooty.vercel.app/login",
     "repoUrl": "https://github.com/kofiarhin/taxify",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1777938337/taxify-app-dev-kofi-thumbnail_ycylph.png"
-  },
-  {
-    "id": 25,
-    "name": "KareBraids",
-    "description": "Birmingham-based hair braiding brand platform for showcasing services, pricing, gallery content, and client enquiries.",
-    "features": [
-      "Service catalogue + pricing structure",
-      "Mobile-first brand experience",
-      "Client enquiry and booking-ready flow"
-    ],
-    "status": "Building",
-    "demoUrl": "",
-    "repoUrl": "https://github.com/kofiarhin/karebraids",
-    "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/karebraids"
   }
 ]
