@@ -1,57 +1,51 @@
 # Work Request
 
-This file is auto-managed by the workflow. It stores the latest active work request, usually copied from the user's direct Codex prompt.
+This file is optional/manual compatibility input. It is no longer auto-managed during normal worktree-safe workflow runs.
+
+Active request state belongs in `_workflow/runs/<run-id>/request.md`, where `<run-id>` is derived from the current branch/worktree or `CODEX_WORKFLOW_RUN_ID`.
+
+Users do not need to edit this file manually. You may edit it when you want to stage a request for an older workflow or for a new run before the agent has created `_workflow/runs/<run-id>/request.md`.
+
+The workflow will invoke the grill-me skill at `.agents/skills/grill-me/SKILL.md` to build shared understanding, sync the active request to `_workflow/runs/<run-id>/request.md`, run dirty worktree protection, generate a saved spec in `_workflow/runs/<run-id>/spec.md`, stop for explicit user approval, create a vertical task plan in `_workflow/runs/<run-id>/tasks.md` only after approval, execute tasks one by one until the request is complete or stopped, record acceptance results, update run-scoped progress and handoff after each task, run a final diff audit, write a workflow review, create release notes, and write a final summary in the same run directory.
 
 ## Request
 
-Implement GitHub-backed template actions on the DevKofi templates page.
-
-Repository: `kofiarhin/devkofi`
-
-Goal:
-Update the existing templates system so templates can optionally link to GitHub, GitHub template generation, and release downloads instead of only showing "Request this template".
-
-Requested files to inspect first:
-- `server/data/templates.json`
-- `client/src/Pages/Templates/Templates.jsx`
-- `client/src/services/templateService.js`
-- `client/src/hooks/queries/useTemplates.js`
-
-Requirements:
-- Add a `codex-workflow-kit` template object to `server/data/templates.json` with GitHub, template generation, and latest release URLs.
-- In `Templates.jsx`, destructure optional `githubUrl`, `templateUrl`, and `releaseUrl` from each template.
-- Show "Use Template" as the primary external CTA when `templateUrl` exists.
-- Keep "Request this template" linking to `/contact` when `templateUrl` does not exist.
-- Show "GitHub" as a secondary external CTA when `githubUrl` exists.
-- Show "Download" as a secondary external CTA when `releaseUrl` exists.
-- Add `.template-card__actions` and secondary action styles in the existing inline style block.
-- Preserve loading, error, and empty states.
-- Existing templates without GitHub fields must still show "Request this template".
-- Do not change the backend controller unless required.
-- Do not add a database.
-- Do not introduce Axios or new dependencies.
-
-Validation:
-- Ensure JSON is valid.
-- Ensure Vite build passes.
-- Ensure no JSX syntax errors.
-- Run existing frontend/backend checks available in the repo where practical.
-
-Expected result:
-- The Codex Workflow Kit card appears on `/templates` with "Use Template", "GitHub", and "Download".
-- Existing template cards still show "Request this template".
+`<Optional manually staged request, e.g. Add dark theme to the app.>`
 
 ## Question Preference
 
-Clarifying questions were not asked because the request includes the exact data, UI behavior, constraints, and validation expectations needed to proceed safely. Remaining minor assumptions are recorded in the saved spec.
+Choose one:
 
-## Execution Preference
+- `grill-me intake`: default. Use the grill-me skill at `.agents/skills/grill-me/SKILL.md` to create shared understanding before writing the spec.
+- `skip questions`: do not ask questions; generate a best-effort spec and record assumptions.
 
-Selected: `complete-workflow`
+Default: `grill-me intake`
+
+## Optional Execution Preference
+
+Choose one:
+
+- `plan-only`: run grill-me intake, write spec, wait for approval, write task plan, then stop.
+- `single-task`: run grill-me intake, write spec, wait for approval, write task plan, execute only the next ready task, verify and review it, update artifacts, then stop.
+- `complete-workflow`: run grill-me intake, write spec, wait for approval, write task plan, then execute all generated tasks sequentially until the request/spec is complete or a stop condition is reached.
+
+Default: `complete-workflow`
+
+## Optional Context
+
+- User or business goal: `<Why this matters>`
+- Target users: `<Who uses this>`
+- Expected behavior: `<What should happen>`
+- UI expectations: `<Screens, components, states, accessibility, responsive behavior>`
+- API expectations: `<Endpoints, payloads, errors, auth, permissions>`
+- Data model expectations: `<Fields, relationships, migrations, defaults>`
+- Edge cases: `<Failure states, empty states, permissions, limits>`
+- Constraints: `<Do not change X / must use Y / no new dependencies>`
+- Success criteria: `<How we know this is done>`
+- Preferred verification: `<Test command, manual check, build command>`
+- Dirty worktree notes: `<Existing dirty files, planned files, overlap risk>`
+- Release notes expectations: `<User-facing changes, developer changes, known limitations>`
 
 ## Out Of Scope
 
-- Backend controller changes unless verification reveals they are required.
-- Database persistence for templates.
-- New dependencies.
-- Deployment configuration changes.
+- `<File, feature, API, behavior, or area that should stay untouched>`
