@@ -1,8 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 
-const getProjects = async () => {
-  const base = import.meta.env.VITE_API_URL || "";
-  const res = await fetch(`${base}/api/projects`, {
+export const getProjectsUrl = (baseUrl = "") => {
+  const normalizedBaseUrl = String(baseUrl || "")
+    .trim()
+    .replace(/\/+$/, "");
+  return `${normalizedBaseUrl}/api/projects`;
+};
+
+export const getProjects = async (
+  baseUrl = import.meta.env.VITE_API_URL || "",
+) => {
+  const res = await fetch(getProjectsUrl(baseUrl), {
     method: "GET",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -19,7 +27,7 @@ const getProjects = async () => {
 const useProjects = () => {
   return useQuery({
     queryKey: ["projects"],
-    queryFn: getProjects,
+    queryFn: () => getProjects(),
 
     // always fresh
     staleTime: 0,

@@ -1,0 +1,23 @@
+# Workflow Summary
+
+- Request: Fix the Projects page list not showing.
+- Spec file used: `_workflow/runs/dev/spec.md`
+- Detailed spec completeness: Complete; all 22 required sections present.
+- Task plan used: `_workflow/runs/dev/tasks.md`
+- Review file used: `_workflow/runs/dev/review.md`
+- Tasks completed: `TASK-001`
+- Iteration evidence summary: Three iterations completed with Red -> Green -> Refactor evidence.
+- Files changed:
+  - `client/src/hooks/useProjects.js`
+  - `client/vite.config.js`
+  - `client/src/Pages/Projects/Projects.jsx`
+  - `client/tests/projects.test.js`
+  - `client/tests/ProjectsPage.test.jsx`
+  - Run-scoped workflow artifacts.
+- Verification run: Focused tests, build, scoped lint, full suite, live API, browser rendering/network/console, and diff audit.
+- Acceptance results: All criteria met.
+- Failure recovery notes: Corrected one ambiguous test assertion; unrelated baseline failures documented.
+- Final diff audit: Scoped, clean, no secrets or generated junk.
+- Release notes file used: `_workflow/runs/dev/release-notes.md`
+- Unresolved issues: Existing unrelated repository-wide lint and stale test failures; deployed URL not verified.
+- Next recommended work: Commit the scoped fix, then address baseline test/lint debt separately.

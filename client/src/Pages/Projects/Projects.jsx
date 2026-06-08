@@ -204,7 +204,7 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  const { data, isLoading, isError, error } = useProjects();
+  const { data, isLoading, isError, error, refetch } = useProjects();
   const projects = useMemo(
     () => (Array.isArray(data) ? data : data?.data || []),
     [data],
@@ -454,6 +454,9 @@ const Projects = () => {
             <p className="state-label">Could not load projects</p>
             <h2>Something blocked the gallery.</h2>
             <p>{error?.message || "Failed to load projects."}</p>
+            <button type="button" onClick={refetch}>
+              Try again
+            </button>
           </section>
         )}
 
