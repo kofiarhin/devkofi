@@ -1,19 +1,5 @@
 [
   {
-    "id": 25,
-    "name": "KareBraids",
-    "description": "Birmingham-based hair braiding brand platform for showcasing services, pricing, gallery content, and client enquiries.",
-    "features": [
-      "Service catalogue + pricing structure",
-      "Mobile-first brand experience",
-      "Client enquiry and booking-ready flow"
-    ],
-    "status": "Building",
-    "demoUrl": "https://karebraids.vercel.app/",
-    "repoUrl": "https://github.com/kofiarhin/karebraids",
-    "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/karebraids"
-  },
-  {
     "id": 10,
     "name": "PromptHive",
     "description": "Community-driven platform for sharing, discovering, and organizing prompts and skills for your favorite AI tools.",
@@ -26,34 +12,6 @@
     "demoUrl": "https://prompt-hive-ebon.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/prompt-hive",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1775590326/prompt-hive_wnotaw.png"
-  },
-  {
-    "id": 22,
-    "name": "SnapSell",
-    "description": "Image-led premium marketplace for discovering and selling products across tech, home, fashion, and more.",
-    "features": [
-      "Image-based product listings",
-      "Marketplace search + browsing",
-      "Dashboard + user account system"
-    ],
-    "status": "Building",
-    "demoUrl": "https://snap-sell-beta.vercel.app",
-    "repoUrl": "https://github.com/kofiarhin/snap-sell",
-    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1775706595/snap-sell_j8w2y4.png"
-  },
-  {
-    "id": 13,
-    "name": "PregChat",
-    "description": "AI pregnancy companion chat app for daily baby + mother updates.",
-    "features": [
-      "Daily pregnancy updates",
-      "Chat experience UI",
-      "Fast, mobile-first UX"
-    ],
-    "status": "Building",
-    "demoUrl": "https://pregchat-tan.vercel.app",
-    "repoUrl": "https://github.com/kofiarhin/pregchat",
-    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760930663/devkofi/pdfij4zqjkosttlcezp2.jpg"
   },
   {
     "id": 11,
@@ -82,6 +40,20 @@
     "demoUrl": "https://agendaboys.com",
     "repoUrl": "https://github.com/kofiarhin/agenda-boys",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1770431956/agenda-boys_x1fs7l.png"
+  },
+  {
+    "id": 13,
+    "name": "PregChat",
+    "description": "AI pregnancy companion chat app for daily baby + mother updates.",
+    "features": [
+      "Daily pregnancy updates",
+      "Chat experience UI",
+      "Fast, mobile-first UX"
+    ],
+    "status": "Building",
+    "demoUrl": "https://pregchat-tan.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/pregchat",
+    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1760930663/devkofi/pdfij4zqjkosttlcezp2.jpg"
   },
   {
     "id": 14,
@@ -184,6 +156,20 @@
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1775796780/friends-show-down_uuvebp.png"
   },
   {
+    "id": 22,
+    "name": "SnapSell",
+    "description": "Image-led premium marketplace for discovering and selling products across tech, home, fashion, and more.",
+    "features": [
+      "Image-based product listings",
+      "Marketplace search + browsing",
+      "Dashboard + user account system"
+    ],
+    "status": "Building",
+    "demoUrl": "https://snap-sell-beta.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/snap-sell",
+    "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1775706595/snap-sell_j8w2y4.png"
+  },
+  {
     "id": 23,
     "name": "Trading Bot",
     "description": "Automated trading bot dashboard with real-time cycle monitoring, signal scanning, and paper trading execution.",
@@ -213,5 +199,35 @@
     "demoUrl": "https://taxify-sooty.vercel.app/login",
     "repoUrl": "https://github.com/kofiarhin/taxify",
     "thumbnailUrl": "https://res.cloudinary.com/dlsiabgiw/image/upload/v1777938337/taxify-app-dev-kofi-thumbnail_ycylph.png"
+  },
+  {
+    "id": 25,
+    "name": "KareBraids",
+    "description": "Birmingham-based hair braiding brand platform for showcasing services, pricing, gallery content, and client enquiries.",
+    "features": [
+      "Service catalogue + pricing structure",
+      "Mobile-first brand experience",
+      "Client enquiry and booking-ready flow"
+    ],
+    "status": "Building",
+    "demoUrl": "https://karebraids.vercel.app/",
+    "repoUrl": "https://github.com/kofiarhin/karebraids",
+    "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/karebraids"
+  },
+  {
+    "id": 26,
+    "name": "CupPulse",
+    "description": "Football intelligence platform delivering live fixtures, scores, standings, player insights, match predictions, and post-match stories in a unified experience.",
+    "features": [
+      "Live matches + fixture tracking",
+      "Standings, scores, and team data",
+      "Match predictions",
+      "Post-match stories",
+      "Cached football data synchronization"
+    ],
+    "status": "Building",
+    "demoUrl": "https://cup-pulse.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/cup-pulse",
+    "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/cup-pulse"
   }
 ]
