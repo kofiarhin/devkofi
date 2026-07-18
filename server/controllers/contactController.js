@@ -1,4 +1,5 @@
 const { sendContactEmail } = require("../utils/emailService");
+const { sendContactTelegramNotification } = require("../utils/telegramService");
 const ContactMessage = require("../models/ContactMessage");
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,14 +37,18 @@ async function postContact(req, res, next) {
     }
 
     // Save to DB first — this is the source of truth
-    await ContactMessage.create({ name, email, subject, message });
-
-    // Email is best-effort — don't fail the request if SMTP is misconfigured
-    sendContactEmail({ name, email, subject, message }).catch((err) => {
-      console.error("[contact] email send failed:", err.message);
-    });
+    const contact = await ContactMessage.create({ name, email, subject, message });
 
     res.status(200).json({ success: true, message: "Message sent." });
+
+    // Notifications are best-effort and never affect the successful response.
+    sendContactEmail({ name, email, subject, message }).catch((err) => {
+      console.error("[contact] email:", err.message);
+    });
+
+    sendContactTelegramNotification(contact).catch((err) => {
+      console.error("[telegram] contact:", err.message);
+    });
   } catch (err) {
     next(err);
   }
