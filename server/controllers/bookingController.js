@@ -1,4 +1,5 @@
 const Booking = require("../models/Booking");
+const { sendBookingTelegramNotification } = require("../utils/telegramService");
 const {
   SLOT_DURATION_MINUTES,
   generateWeekSlots,
@@ -100,9 +101,14 @@ const createBooking = async (req, res, next) => {
       slotEnd,
     });
 
-    return res.status(201).json({
+    res.status(201).json({
       success: true,
       booking: toBookingResponse(booking),
+    });
+
+    // Telegram is best-effort and never affects the successful response.
+    sendBookingTelegramNotification(booking).catch((error) => {
+      console.error("[telegram] booking:", error.message);
     });
   } catch (error) {
     if (isDuplicateKeyError(error)) {
