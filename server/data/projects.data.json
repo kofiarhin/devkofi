@@ -229,5 +229,80 @@
     "demoUrl": "https://cup-pulse.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/cup-pulse",
     "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/cup-pulse"
+  },
+  {
+    "id": 27,
+    "name": "Brain",
+    "description": "AI-powered personal knowledge workspace for capturing ideas, organizing context, and retrieving useful information through an intelligent interface.",
+    "features": [
+      "AI-assisted knowledge capture",
+      "Context-aware search and retrieval",
+      "Organized personal workspace",
+      "Responsive dashboard experience"
+    ],
+    "status": "Active",
+    "demoUrl": "https://brain-pi-black.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/brain",
+    "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/brain"
+  },
+  {
+    "id": 28,
+    "name": "CharmSnap",
+    "description": "AI image analysis experience that turns uploaded photos into personalized charm-inspired insights while keeping image handling privacy-conscious.",
+    "features": [
+      "Image upload and AI analysis",
+      "Personalized charm insights",
+      "Privacy-conscious image handling",
+      "Mobile-friendly results experience"
+    ],
+    "status": "Active",
+    "demoUrl": "https://charmsnap.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/charmsnap",
+    "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/charmsnap"
+  },
+  {
+    "id": 29,
+    "name": "Memory Game",
+    "description": "Interactive card-matching game designed to test memory, reward quick completion, and provide a polished casual gaming experience.",
+    "features": [
+      "Card matching gameplay",
+      "Move and completion tracking",
+      "Responsive game board",
+      "Replayable casual experience"
+    ],
+    "status": "Active",
+    "demoUrl": "https://memory-game-liart-eight.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/memory-game",
+    "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/memory-game"
+  },
+  {
+    "id": 30,
+    "name": "Piano360",
+    "description": "Interactive piano learning and practice platform combining a browser-based keyboard experience with structured musical exploration.",
+    "features": [
+      "Interactive virtual piano",
+      "Keyboard-based note controls",
+      "Practice-focused user experience",
+      "Responsive music interface"
+    ],
+    "status": "Active",
+    "demoUrl": "https://piano360-client.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/piano360",
+    "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/piano360"
+  },
+  {
+    "id": 31,
+    "name": "Ama's Kitchen",
+    "description": "Modern food ordering and restaurant experience for browsing meals, exploring menu options, and connecting customers with Ama's Kitchen online.",
+    "features": [
+      "Menu browsing experience",
+      "Food ordering journey",
+      "Responsive restaurant storefront",
+      "Full-stack client and API deployment"
+    ],
+    "status": "Active",
+    "demoUrl": "https://amas-kitchen.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/amas-kitchen",
+    "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/amas-kitchen"
   }
 ]
