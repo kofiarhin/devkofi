@@ -18,6 +18,20 @@ export const normalizeStatus = (status) => {
 
 const statusPriority = { active: 0, building: 1, archived: 2 };
 
+const featuredProjectPriority = new Map([
+  ["PromptHive", 0],
+  ["Brain", 1],
+  ["CharmSnap", 2],
+  ["Memory Game", 3],
+  ["Piano360", 4],
+  ["Ama's Kitchen", 5],
+]);
+
+const getFeaturedPriority = (project) => {
+  if (project?.featured) return -1;
+  return featuredProjectPriority.get(project?.name) ?? Number.MAX_SAFE_INTEGER;
+};
+
 export const getProjectTags = (projects = []) => {
   return [...new Set(projects.flatMap((project) => project?.features || []))]
     .filter(Boolean)
@@ -67,11 +81,7 @@ export const applyProjectFilters = ({
         statusPriority[normalizeStatus(a.status)] - statusPriority[normalizeStatus(b.status)],
     );
   } else {
-    filtered.sort((a, b) => {
-      if (a.featured && !b.featured) return -1;
-      if (!a.featured && b.featured) return 1;
-      return 0;
-    });
+    filtered.sort((a, b) => getFeaturedPriority(a) - getFeaturedPriority(b));
   }
 
   return filtered;
