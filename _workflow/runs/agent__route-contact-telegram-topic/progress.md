@@ -8,6 +8,12 @@
 - Dirty worktree protection: not directly inspectable through the GitHub connector; branch was created from the exact remote `main` commit and no user worktree files were overwritten.
 - Frontend Taste Application: Not applicable.
 - Detailed spec saved at `_workflow/runs/agent__route-contact-telegram-topic/spec.md`.
-- Status: Waiting at the mandatory spec approval gate.
-- No application code, tests, environment configuration, deployment, or secrets have been changed.
-- Next step: user replies `approve spec`.
+- No application code, tests, environment configuration, deployment, or secrets were changed during intake.
+
+## 2026-08-19 - Spec approved and planning complete
+
+- Explicit approval received: `implement the full spec`.
+- Task plan saved at `_workflow/runs/agent__route-contact-telegram-topic/tasks.md`.
+- `TASK-001` moved from Planned to Ready and was claimed for sequential execution.
+- Current iteration: Iteration 1 Build — tests first.
+- Next step: commit the Telegram service tests before implementation.
