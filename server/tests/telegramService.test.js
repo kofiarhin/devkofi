@@ -157,9 +157,6 @@ describe("telegramService", () => {
     payloads.forEach((payload) => {
       expect(payload.chat_id).toBe("123456");
       expect(payload.message_thread_id).toBe(2);
-      expect(Array.from(payload.text)).toHaveLength(
-        expect.any(Number)
-      );
       expect(Array.from(payload.text).length).toBeLessThanOrEqual(
         TELEGRAM_MAX_MESSAGE_LENGTH
       );
