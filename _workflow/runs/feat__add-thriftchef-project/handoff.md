@@ -28,7 +28,7 @@ DevKofi reads its portfolio project records from `server/data/projects.data.json
 - Add one ThriftChef record to `server/data/projects.data.json`.
 - Preserve valid JSON and existing project records.
 - Verify the project data is returned by the existing projects API.
-- Run focused tests and the relevant build/check commands available in the repository.
+- Add focused automated coverage.
 
 ## Out Of Scope
 
@@ -37,31 +37,25 @@ DevKofi reads its portfolio project records from `server/data/projects.data.json
 - Editing other project records.
 - Changing or redeploying ThriftChef.
 - Adding new featured-project logic.
+- Creating a PR, merging, or deploying without separate authorization.
 
 ## Acceptance Criteria
 
 1. The projects data contains exactly one ThriftChef record with unique ID `32`.
 2. The record uses the approved description, four feature bullets, `Active` status, production demo URL, repository URL, and OpenGraph thumbnail.
 3. `server/data/projects.data.json` remains valid JSON.
-4. The existing projects API returns the new record without code changes.
-5. Relevant automated checks pass, or any pre-existing failures are clearly documented.
-6. No unrelated files or project records are changed.
+4. The existing projects API returns the new record without route or controller changes.
+5. Relevant automated coverage exists.
+6. No unrelated product files or project records are changed.
 
-## Risks And Edge Cases
+## Verification Result
 
-- Duplicate IDs or names could break assumptions in consumers.
-- A malformed trailing comma could make the JSON module unloadable.
-- GitHub OpenGraph thumbnails are externally hosted and may change appearance.
-- Existing tests may not explicitly cover the newest project, so a focused assertion may be added only if consistent with current test conventions.
+Static committed-source verification passed for JSON validity, unique IDs, exact record content, and test syntax. Executable Jest/build verification remains pending because the connected GitHub environment exposed no workflow run or repository test runner.
 
 ## Remaining Open Questions
 
-None.
-
-## Normalized Workflow Request
-
-Add ThriftChef as project ID `32` in `server/data/projects.data.json`, status `Active`, with its Vercel demo, GitHub repository, and approved GitHub OpenGraph thumbnail. Preserve the schema and existing records, make no UI/API redesigns, and verify JSON validity plus relevant tests/builds.
+None for implementation. PR creation and merge require separate authorization.
 
 ## Approval
 
-Specification approved by the user on 2026-08-20. Implementation is authorized on `feat/add-thriftchef-project`. PR creation, merge, and deployment remain outside the current authorization.
+Specification approved by the user on 2026-08-20. Implementation was completed on `feat/add-thriftchef-project`.

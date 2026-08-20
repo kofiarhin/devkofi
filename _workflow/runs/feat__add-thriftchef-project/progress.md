@@ -2,7 +2,7 @@
 
 ## Current phase
 
-Implementation in progress.
+Implementation complete; executable verification pending.
 
 ## Completed
 
@@ -12,9 +12,18 @@ Implementation in progress.
 - Locked the GitHub OpenGraph thumbnail recommendation.
 - Recorded the shared understanding and implementation specification.
 - Received explicit specification approval on 2026-08-20.
-- Created the approved implementation task plan.
-- Added a focused Jest endpoint test defining the expected ThriftChef record and ID uniqueness.
+- Added a focused Jest endpoint test for the ThriftChef record and project-ID uniqueness.
+- Added the approved ThriftChef record without changing existing project formatting.
+- Parsed the committed JSON successfully.
+- Verified exactly one ThriftChef record, unique IDs, and an exact match for all approved fields.
+- Parsed the committed Jest test source successfully.
+- Reviewed the main-to-branch diff: the product change is limited to one data file and one test file.
+- Checked the latest commit for GitHub workflow runs; none are configured or available for this branch.
 
-## Next
+## Pending verification
 
-Add the approved data record, run verification, review the diff, and prepare the GitHub delivery. No PR, merge, or deployment is authorized yet.
+Run `npm test -- --runInBand server/tests/projects.test.js` and the repository's client production build in a local checkout before PR merge.
+
+## Authorization boundary
+
+No pull request, merge, or deployment has been performed or authorized.
