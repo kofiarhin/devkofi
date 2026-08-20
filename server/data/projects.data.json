@@ -129,11 +129,7 @@
     "id": 19,
     "name": "Kflix",
     "description": "Movie discovery app with auth and protected routes.",
-    "features": [
-      "JWT auth flow",
-      "Protected routes",
-      "Cinematic UI"
-    ],
+    "features": ["JWT auth flow", "Protected routes", "Cinematic UI"],
     "status": "Building",
     "demoUrl": "https://kflix-six.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/kflix",
@@ -143,11 +139,7 @@
     "id": 20,
     "name": "Crypto Pulse Pro",
     "description": "Crypto market tracking app.",
-    "features": [
-      "Market table",
-      "Coin details",
-      "Auth-ready structure"
-    ],
+    "features": ["Market table", "Coin details", "Auth-ready structure"],
     "status": "Building",
     "demoUrl": "https://crypto-pulse-pro.vercel.app/",
     "repoUrl": "https://github.com/kofiarhin/crypto-pulse-pro",
@@ -157,11 +149,7 @@
     "id": 21,
     "name": "Friends Showdown",
     "description": "Real-time multiplayer trivia app.",
-    "features": [
-      "Room-based gameplay",
-      "Join via code",
-      "Leaderboard"
-    ],
+    "features": ["Room-based gameplay", "Join via code", "Leaderboard"],
     "status": "Building",
     "demoUrl": "https://friends-show-down.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/friends-show-down",
