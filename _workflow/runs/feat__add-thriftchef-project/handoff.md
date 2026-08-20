@@ -61,3 +61,7 @@ None.
 ## Normalized Workflow Request
 
 Add ThriftChef as project ID `32` in `server/data/projects.data.json`, status `Active`, with its Vercel demo, GitHub repository, and approved GitHub OpenGraph thumbnail. Preserve the schema and existing records, make no UI/API redesigns, and verify JSON validity plus relevant tests/builds.
+
+## Approval
+
+Specification approved by the user on 2026-08-20. Implementation is authorized on `feat/add-thriftchef-project`. PR creation, merge, and deployment remain outside the current authorization.
