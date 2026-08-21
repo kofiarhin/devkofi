@@ -9,8 +9,26 @@ describe("GET /api/templates", () => {
     expect(response.status).toBe(200);
     expect(response.headers["content-type"]).toMatch(/application\/json/);
     expect(Array.isArray(response.body)).toBe(true);
-    expect(response.body.length).toBeGreaterThanOrEqual(3);
     expect(response.body).toEqual(templates);
+
+    const setupPrdWorkspace = response.body.filter(
+      ({ id }) => id === "setup-prd-workspace"
+    );
+
+    expect(setupPrdWorkspace).toHaveLength(1);
+    expect(setupPrdWorkspace[0]).toEqual({
+      id: "setup-prd-workspace",
+      title: "Setup PRD Workspace",
+      description:
+        "Turn a PRD into an AI-ready Claude Code project workspace with reusable planning, review, demo, and routine documentation.",
+      category: "AI Workflow",
+      tags: ["Claude Code", "PRD", "AI Workflow"],
+      templateUrl: "https://github.com/kofiarhin/setup-prd-workspace",
+    });
+
+    const templateIds = response.body.map(({ id }) => id);
+    expect(new Set(templateIds).size).toBe(templateIds.length);
+    expect(setupPrdWorkspace[0]).not.toHaveProperty("githubUrl");
 
     response.body.forEach((template) => {
       expect(template).toEqual(
