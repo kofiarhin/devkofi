@@ -14,7 +14,7 @@
 
 ## Current phase
 
-Implementation complete — draft PR preparation.
+Implementation complete — draft PR review.
 
 ## Approval state
 
@@ -34,7 +34,7 @@ Implementation complete — draft PR preparation.
 
 ## Current task
 
-TASK-006 complete — commit, push, and draft PR remain.
+TASK-006 complete — draft PR #30 is open, unmerged, and undeployed.
 
 ## Verification status
 
@@ -42,9 +42,10 @@ Production build, changed-file lint, and 17 scoped tests pass. Broad-suite legac
 
 ## Token / Resume State
 
-- Current phase: Delivery.
-- Current task: Push verified commits and open a draft PR.
+- Current phase: Draft review.
+- Draft PR: https://github.com/kofiarhin/devkofi/pull/30
+- Current task: Human desktop/mobile review and product review.
 - Last safe checkpoint: TASK-006 verified and reviewed.
 - Tests already run: 17 scoped tests pass; changed-file lint passes; production build passes.
-- Exact next action: Commit the redesign/workflow artifacts, push the branch, and create a draft PR.
-- Safe to continue automatically: Yes; merge and deployment are explicitly prohibited.
+- Exact next action: Review draft PR #30 and complete the browser checklist before any merge decision.
+- Safe to continue automatically: No; merge and deployment require separate explicit approval.
