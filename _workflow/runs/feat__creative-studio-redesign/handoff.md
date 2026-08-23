@@ -14,40 +14,37 @@
 
 ## Current phase
 
-Saved-spec approval gate.
+Implementation complete — draft PR preparation.
 
 ## Approval state
 
 - Grill: Complete.
 - Shared Understanding: Presented.
 - Package/execution route: Approved through `@GitHub`.
-- Saved spec: Awaiting explicit review approval.
-- Task plan: Not created.
-- Implementation: Not started.
+- Saved spec: Approved by the user on 2026-08-23.
+- Task plan: Created from the approved spec.
+- Implementation: Complete on the local feature branch.
 
 ## Repository state
 
 - Remote GitHub branch created from verified `main`.
 - No competing open redesign PR found.
-- Dirty worktree check: Not applicable to GitHub API execution; no local worktree is being mutated.
+- Local worktree contains the verified redesign and final workflow artifacts.
 - Branch overlap risk: None detected from open PR search.
 
 ## Current task
 
-None. Planning is blocked until the saved spec is approved.
+TASK-006 complete — commit, push, and draft PR remain.
 
 ## Verification status
 
-Read-only repository and Ideas Hub evidence inspected. No application checks run because implementation has not started.
+Production build, changed-file lint, and 17 scoped tests pass. Broad-suite legacy failures and unavailable automated browser evidence are recorded in verification.md.
 
 ## Token / Resume State
 
-- Current phase: Saved-spec approval.
-- Current task: None.
-- Current iteration: None.
-- Last safe checkpoint: Feature branch and run-scoped planning artifacts created.
-- Files already changed: `_workflow/runs/feat__creative-studio-redesign/request.md`, `_workflow/runs/feat__creative-studio-redesign/handoff.md`, `_workflow/runs/feat__creative-studio-redesign/progress.md`, `_workflow/runs/feat__creative-studio-redesign/spec.md`.
-- Files planned next: `_workflow/runs/feat__creative-studio-redesign/tasks.md`, PRD workspace documents, public frontend routes/components/styles/tests, aligned admin tokens, and final workflow evidence.
-- Tests already run: None.
-- Exact next action: Wait for `approve spec`, then create the vertical task plan.
-- Safe to continue automatically: No.
+- Current phase: Delivery.
+- Current task: Push verified commits and open a draft PR.
+- Last safe checkpoint: TASK-006 verified and reviewed.
+- Tests already run: 17 scoped tests pass; changed-file lint passes; production build passes.
+- Exact next action: Commit the redesign/workflow artifacts, push the branch, and create a draft PR.
+- Safe to continue automatically: Yes; merge and deployment are explicitly prohibited.

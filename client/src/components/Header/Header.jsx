@@ -1,7 +1,7 @@
 import "./header.styles.scss";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { FaBars } from "react-icons/fa";
+import { List } from "@phosphor-icons/react";
 import { toggleSideNav } from "../../redux/navigation/navigationSlice";
 import useLogoutAdmin from "../../hooks/mutations/useLogoutAdmin";
 import {
@@ -86,7 +86,7 @@ const Header = () => {
             aria-label="Open navigation"
             onClick={() => dispatch(toggleSideNav())}
           >
-            <FaBars className="menu-icon" aria-hidden="true" />
+            <List className="menu-icon" size={24} weight="regular" aria-hidden="true" />
           </button>
         </div>
       </div>

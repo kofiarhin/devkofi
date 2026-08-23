@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   Outlet,
+  Navigate,
 } from "react-router-dom";
 
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
@@ -16,7 +17,6 @@ import SideNav from "./components/SideNav/SideNav";
 import Projects from "./Pages/Projects/Projects";
 import About from "./Pages/About/About";
 import Contact from "./Pages/Contact/Contact";
-import BookCall from "./Pages/BookCall/BookCall";
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 import AdminLogin from "./Pages/Login/AdminLogin";
 import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
@@ -24,6 +24,8 @@ import AdminMessageDetails from "./Pages/AdminMessageDetails/AdminMessageDetails
 import useAdminSession from "./hooks/queries/useAdminSession";
 import Templates from "./Pages/Templates/Templates";
 import NewsletterVerify from "./Pages/NewsletterVerify/NewsletterVerify";
+import Services from "./Pages/Services/Services";
+import Journal from "./Pages/Journal/Journal";
 
 export const AppRoutes = () => {
   useAdminSession();
@@ -32,11 +34,16 @@ export const AppRoutes = () => {
     <Routes>
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/work" element={<Projects />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/about" element={<About />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/templates" element={<Templates />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/book-a-call" element={<BookCall />} />
+        <Route path="/lab" element={<Templates />} />
+        <Route path="/journal" element={<Journal />} />
+        <Route path="/start-a-project" element={<Contact />} />
+        <Route path="/projects" element={<Navigate to="/work" replace />} />
+        <Route path="/templates" element={<Navigate to="/lab" replace />} />
+        <Route path="/contact" element={<Navigate to="/start-a-project" replace />} />
+        <Route path="/book-a-call" element={<Navigate to="/start-a-project" replace />} />
         <Route path="/newsletter/verify" element={<NewsletterVerify />} />
         <Route path="*" element={<NotFound />} />
       </Route>

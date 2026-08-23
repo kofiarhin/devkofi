@@ -1,0 +1,6 @@
+import { ArrowUpRight } from "@phosphor-icons/react";
+import { Link } from "react-router-dom";
+import "../Home/home.styles.scss";
+const notes = [["Field note 001", "Why product clarity beats prompt volume", "A working principle for using AI without turning delivery into noise."], ["Field note 002", "The case for a smaller first release", "How constraint creates a more useful, more legible product."], ["Studio log", "Building Hibachi in public", "Decisions, reversals, and what the product is teaching us as it takes shape."]];
+const Journal = () => <main className="studio-inner"><header className="studio-page-hero"><p className="studio-kicker"><span /> Journal</p><h1>Notes from the <em>workbench.</em></h1><p>Product decisions, technical field notes, and honest observations from building digital products.</p></header><section className="studio-journal">{notes.map(([meta,title,body], i)=><article key={title}><span>{String(i+1).padStart(2,"0")}</span><div><p>{meta}</p><h2>{title}</h2><p>{body}</p></div><span className="studio-journal__status">Publishing soon</span></article>)}</section><section className="studio-inline-cta"><h2>Prefer the work itself?</h2><Link to="/work">Explore selected work <ArrowUpRight /></Link></section></main>;
+export default Journal;

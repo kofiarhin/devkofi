@@ -1,12 +1,12 @@
-$primary: #a3e635;
-$bg: #09090b;
-$surface: #111113;
-$surface-strong: #18181b;
+$primary: #bd6845;
+$bg: #11100e;
+$surface: #1a1815;
+$surface-strong: #24211d;
 $border: rgba(255, 255, 255, 0.12);
 $border-soft: rgba(255, 255, 255, 0.08);
-$text: #fafafa;
-$text-sub: #b7bbc4;
-$text-muted: #7d8490;
+$text: #eee9df;
+$text-sub: #c9c0b3;
+$text-muted: #91887d;
 $danger: #f87171;
 
 @keyframes contact-shimmer {
@@ -24,8 +24,8 @@ $danger: #f87171;
   min-height: 100dvh;
   overflow: hidden;
   background:
-    radial-gradient(circle at 78% 12%, rgba(163, 230, 53, 0.1), transparent 24rem),
-    linear-gradient(180deg, #0d0f10 0%, $bg 54%, #07080a 100%);
+    radial-gradient(circle at 78% 12%, rgba(189, 104, 69, 0.14), transparent 24rem),
+    linear-gradient(180deg, #171411 0%, $bg 54%, #0b0a09 100%);
   color: $text;
   padding: clamp(3.35rem, 10vw, 6rem) 1rem 2.5rem;
 

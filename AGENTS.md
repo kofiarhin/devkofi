@@ -6,13 +6,13 @@ Customize placeholders before using this in a production project. MERN is the de
 
 ## Project Context
 
-- Project name: `<PROJECT_NAME>`
-- Product summary: `<ONE_SENTENCE_PRODUCT_SUMMARY>`
+- Project name: `DevKofi`
+- Product summary: Kofi Arhin's creative technology studio for product engineering, creative development, photography, content, and selected product work.
 - Primary stack: MERN by default unless changed
   - Frontend: React, Vite, Tailwind CSS
   - Backend: Node.js, Express, MongoDB, Mongoose
   - Testing: Vitest/React Testing Library for frontend, Jest/Supertest for backend
-- Deployment: `<DEPLOYMENT_TARGETS>`
+- Deployment: Vercel client and Heroku API; deployment requires separate approval.
 - Workflow entrypoints:
   - `<artifact-root>/request.md` (active run-scoped request state)
   - `WORK_REQUEST.md` (optional/manual compatibility input)
@@ -45,11 +45,26 @@ Customize placeholders before using this in a production project. MERN is the de
   - Record `Applied skill: design-taste-frontend` whenever the taste skill is applied.
   - Do not force screenshots when browser automation is unavailable; use code-surface review as the fallback.
 - Supporting docs:
+  - `PRD.md`
+  - `roadmap.md`
+  - `review.md`
+  - `context/product.md`
+  - `context/architecture.md`
+  - `context/decisions.md`
+  - `context/current-state.md`
   - `docs/PROJECT_CONTEXT.md`
   - `docs/ARCHITECTURE.md`
   - `docs/VERIFY.md`
   - `docs/DECISIONS.md`
   - `docs/PROMPTS.md`
+
+## Product Direction
+
+- The intended product is the DevKofi creative technology studio defined in `PRD.md`.
+- Mentorship is historical/deprecated product context, not the active public direction.
+- Preserve current mentorship-related runtime behavior and records until a separate approved audit authorizes changes.
+- Keep intended, implemented, verified, merged, and deployed states distinct.
+- The Setup PRD Workspace skill is installed at `.claude/skills/setup-prd-workspace/`.
 
 ## Operating Rules
 

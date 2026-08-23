@@ -1,4 +1,4 @@
-import { FaTimes } from "react-icons/fa";
+import { X } from "@phosphor-icons/react";
 import { closeSideNav } from "../../redux/navigation/navigationSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
@@ -39,7 +39,7 @@ const SideNav = () => {
   return (
     <div id="sideNav" role="dialog" aria-modal="true" aria-label="Navigation menu">
       <button type="button" onClick={closeNav} className="close-button" aria-label="Close navigation">
-        <FaTimes className="close-icon" aria-hidden="true" />
+        <X className="close-icon" size={32} weight="regular" aria-hidden="true" />
       </button>
 
       <nav className="nav-content" aria-label="Mobile navigation">

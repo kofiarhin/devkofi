@@ -4,7 +4,7 @@
   place-items: center;
   padding: clamp(24px, 5vw, 64px) clamp(16px, 4vw, 32px);
   background:
-    radial-gradient(circle at 18% 12%, rgba(148, 255, 43, 0.12), transparent 30%),
+    radial-gradient(circle at 18% 12%, rgba(189, 104, 69, 0.12), transparent 30%),
     linear-gradient(180deg, #0f1012 0%, #09090b 100%);
   color: #fafafa;
 
@@ -25,7 +25,7 @@
     font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(148, 255, 43, 0.85);
+    color: rgba(189, 104, 69, 0.85);
     margin: 0;
   }
 
@@ -42,7 +42,7 @@
   }
 
   &__icon {
-    &.is-success { color: #94ff2b; }
+    &.is-success { color: #bd6845; }
     &.is-warning { color: #ffb547; }
     &.is-error { color: #ff6f70; }
   }
@@ -66,7 +66,7 @@
     height: 36px;
     border-radius: 50%;
     border: 3px solid rgba(255, 255, 255, 0.15);
-    border-top-color: #94ff2b;
+    border-top-color: #bd6845;
     animation: newsletter-verify-spin 0.9s linear infinite;
   }
 
@@ -80,8 +80,8 @@
     transition: color 0.15s ease, border-color 0.15s ease;
 
     &:hover {
-      color: #94ff2b;
-      border-color: #94ff2b;
+      color: #bd6845;
+      border-color: #bd6845;
     }
   }
 }

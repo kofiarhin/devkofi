@@ -2,7 +2,6 @@ import { createElement } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
-  CalendarBlank,
   EnvelopeSimple,
   GithubLogo,
   LinkedinLogo,
@@ -13,16 +12,17 @@ import "./footer.styles.scss";
 
 const navigationLinks = [
   { label: "Home", to: "/" },
+  { label: "Work", to: "/work" },
+  { label: "Services", to: "/services" },
   { label: "About", to: "/about" },
-  { label: "Projects", to: "/projects" },
-  { label: "Templates", to: "/templates" },
-  { label: "Contact", to: "/contact" },
+  { label: "Lab", to: "/lab" },
+  { label: "Journal", to: "/journal" },
 ];
 
 const actionLinks = [
-  { label: "Book a call", to: "/book-a-call" },
-  { label: "View projects", to: "/projects" },
-  { label: "Send a brief", to: "/contact" },
+  { label: "Start a project", to: "/start-a-project" },
+  { label: "View work", to: "/work" },
+  { label: "Explore the lab", to: "/lab" },
 ];
 
 const socialLinks = [
@@ -52,20 +52,19 @@ const Footer = () => {
         <section className="footer-cta" aria-label="Start a project">
           <div className="footer-cta__signal">
             <span className="footer-status-dot" aria-hidden="true" />
-            Selected mentorship builds
+            Booking selected projects
           </div>
 
           <div className="footer-cta__content">
-            <h2>Build with AI. Ship with engineering discipline.</h2>
+            <h2>Good products start with an honest conversation.</h2>
             <p>
-              Bring the project, repo, or messy idea. Leave with a cleaner plan,
-              tighter implementation, and a deployable path forward.
+              Bring the ambitious idea, the stuck product, or the next release.
+              We will find the clearest path from here to useful.
             </p>
           </div>
 
-          <Link to="/book-a-call" className="footer-cta__button">
-            <CalendarBlank size={18} weight="duotone" aria-hidden="true" />
-            Book a call
+          <Link to="/start-a-project" className="footer-cta__button">
+            Start a project
             <ArrowRight size={16} weight="bold" aria-hidden="true" />
           </Link>
         </section>
@@ -76,8 +75,8 @@ const Footer = () => {
               Dev<span>Kofi</span>
             </Link>
             <p className="footer-tagline">
-              MERN development mentorship for builders using AI tools without
-              losing engineering judgment.
+              A Kofi-led creative technology studio shaping, designing, and
+              building useful digital products.
             </p>
 
             <a className="footer-email" href="mailto:kofiarhin69@gmail.com">
@@ -99,7 +98,7 @@ const Footer = () => {
             </div>
 
             <div className="footer-column">
-              <h3 className="column-title">Workflows</h3>
+              <h3 className="column-title">Explore</h3>
               <ul className="column-list">
                 {actionLinks.map((link) => (
                   <li key={link.to}>
@@ -114,7 +113,7 @@ const Footer = () => {
         <div className="footer-bottom">
           <div className="footer-mark" aria-hidden="true">
             <StackSimple size={17} weight="duotone" />
-            Spec to deploy
+            Shape · Design · Build
           </div>
 
           <p className="copyright-text">

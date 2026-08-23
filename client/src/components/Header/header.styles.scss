@@ -1,155 +1,18 @@
-// Variables for consistency
-$primary-neon: #adff2f; // Matches your submit button
-$bg-dark: #0a0a0a;
-$glass-bg: rgba(10, 10, 10, 0.8);
-
-.main-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: $glass-bg;
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-  .header-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 0;
-    min-height: 78px;
-  }
-
-  .logo {
-    font-size: 1.7rem;
-    font-weight: 800;
-    letter-spacing: -1px;
-    margin: 0;
-    color: var(--main-color);
-
-    span {
-      color: white;
-    }
-  }
-
-  .nav-links {
-    display: none; // Mobile first: hidden
-  }
-
-  .menu-button {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    color: white;
-    cursor: pointer;
-    display: inline-flex;
-    height: 44px;
-    justify-content: center;
-    padding: 0;
-    width: 44px;
-
-    &:focus-visible {
-      outline: 2px solid $primary-neon;
-      outline-offset: 4px;
-    }
-  }
-
-  .menu-icon {
-    font-size: 1.5rem;
-    color: white;
-    transition: transform 0.2s ease;
-
-    &:active {
-      transform: scale(0.9);
-    }
-  }
-}
-
-// Tablet & Desktop
-@media (min-width: 800px) {
-  .main-header {
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.65rem;
-    }
-
-    .nav-item {
-      color: rgba(255, 255, 255, 0.7);
-      font-weight: 500;
-      transition: color 0.3s ease;
-
-      &:hover,
-      &.active {
-        color: $primary-neon;
-      }
-
-      &:focus-visible {
-        outline: 2px solid $primary-neon;
-        outline-offset: 6px;
-      }
-    }
-
-    .btn-cta,
-    .btn-admin,
-    .btn-logout {
-      align-items: center;
-      border-radius: 8px;
-      display: inline-flex;
-      font-weight: 600;
-      min-height: 42px;
-      padding: 0.75rem 1.1rem;
-      transition: background-color 0.3s ease, border-color 0.3s ease,
-        color 0.3s ease, opacity 0.3s ease, transform 0.2s ease;
-
-      &:active {
-        transform: translateY(1px);
-      }
-
-      &:focus-visible {
-        outline: 2px solid $primary-neon;
-        outline-offset: 4px;
-      }
-    }
-
-    .btn-cta {
-      background: $primary-neon;
-      color: #111;
-
-      &:hover {
-        opacity: 0.9;
-      }
-    }
-
-    .btn-admin {
-      border: 1px solid rgba(173, 255, 47, 0.45);
-      color: rgba(255, 255, 255, 0.82);
-
-      &:hover,
-      &.active {
-        border-color: $primary-neon;
-        color: $primary-neon;
-      }
-    }
-
-    .btn-logout {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: white;
-      cursor: pointer;
-
-      &:hover {
-        border-color: #ff4d4d;
-        color: #ff4d4d;
-      }
-
-      &:disabled {
-        cursor: not-allowed;
-        opacity: 0.55;
-      }
-    }
-
-    .mobile-actions {
-      display: none;
-    }
-  }
+.main-header { position:sticky; top:0; z-index:1000; color:#eee9df; background:rgba(17,16,14,.92); backdrop-filter:blur(18px); border-bottom:1px solid rgba(238,233,223,.13); }
+.main-header .header-content { min-height:82px; display:flex; align-items:center; justify-content:space-between; }
+.logo-container { display:flex; align-items:center; }
+.main-header .logo { font-family:var(--font-display); font-size:1.75rem; font-weight:600; letter-spacing:-.04em; color:#bd6845; }
+.main-header .logo span { color:#eee9df; }
+.main-header .nav-links { display:none; }
+.menu-button { width:44px; height:44px; display:grid; place-items:center; border:0; background:transparent; color:#eee9df; }
+.menu-button:focus-visible { outline:1px solid #bd6845; outline-offset:3px; }
+@media(min-width:960px){
+  .main-header .nav-links { display:flex; align-items:center; gap:clamp(.8rem,1.45vw,1.5rem); }
+  .main-header .nav-item { color:rgba(238,233,223,.64); font-size:.72rem; font-weight:600; letter-spacing:.04em; transition:color .2s ease; }
+  .main-header .nav-item:hover,.main-header .nav-item.active { color:#eee9df; }
+  .main-header .btn-cta,.main-header .btn-admin,.main-header .btn-logout { min-height:42px; display:inline-flex; align-items:center; padding:0 .9rem; border:1px solid rgba(238,233,223,.24); background:transparent; color:#eee9df; font-size:.72rem; font-weight:700; }
+  .main-header .btn-cta { background:#bd6845; border-color:#bd6845; color:#11100e; }
+  .main-header .btn-logout { cursor:pointer; }
+  .main-header .btn-cta:focus-visible,.main-header .btn-admin:focus-visible,.main-header .btn-logout:focus-visible,.main-header .nav-item:focus-visible { outline:1px solid #d98763; outline-offset:4px; }
+  .main-header .mobile-actions { display:none; }
 }

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import {
   ArrowRight,
   CheckCircle,
@@ -119,28 +119,28 @@ const Contact = () => {
       <div className="contact-page__grain" aria-hidden="true" />
 
       <div className="contact-inner">
-        <motion.section
+        <Motion.section
           className="contact-hero"
           variants={container}
           initial="hidden"
           animate="visible"
           aria-labelledby="contact-title"
         >
-          <motion.div className="contact-eyebrow" variants={item}>
+          <Motion.div className="contact-eyebrow" variants={item}>
             <span className="eyebrow-dot" aria-hidden="true" />
             Open for selected builds
-          </motion.div>
+          </Motion.div>
 
-          <motion.h1 id="contact-title" className="contact-heading" variants={item}>
-            Tell me what you need built.
-          </motion.h1>
+          <Motion.h1 id="contact-title" className="contact-heading" variants={item}>
+            Tell us what should exist next.
+          </Motion.h1>
 
-          <motion.p className="contact-desc" variants={item}>
-            Send the project context, budget range, and timeline. I will reply with
-            the clearest next step within 24 hours.
-          </motion.p>
+          <Motion.p className="contact-desc" variants={item}>
+            Share the context, ambition, budget range, and timeline. Kofi will reply
+            with the clearest next step within 24 hours.
+          </Motion.p>
 
-          <motion.div className="contact-actions" variants={item} aria-label="Fast contact options">
+          <Motion.div className="contact-actions" variants={item} aria-label="Fast contact options">
             <a href={mailtoHref} className="contact-action contact-action--primary">
               <Envelope size={18} weight="duotone" />
               Email directly
@@ -149,15 +149,15 @@ const Contact = () => {
               <Clock size={18} weight="duotone" />
               24 hour reply
             </span>
-          </motion.div>
+          </Motion.div>
 
-          <motion.div className="contact-signal" variants={item}>
+          <Motion.div className="contact-signal" variants={item}>
             <PaperPlaneTilt size={18} weight="duotone" />
-            <span>Best fit: launch pages, product interfaces, dashboards, and full-stack MVPs.</span>
-          </motion.div>
-        </motion.section>
+            <span>Best fit: focused products, distinctive interfaces, and full-stack MVPs.</span>
+          </Motion.div>
+        </Motion.section>
 
-        <motion.section
+        <Motion.section
           className="contact-card"
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -300,7 +300,7 @@ const Contact = () => {
               </button>
             </form>
           )}
-        </motion.section>
+        </Motion.section>
 
         <aside className="contact-proof" aria-label="More contact links">
           <div className="contact-proof__item">
