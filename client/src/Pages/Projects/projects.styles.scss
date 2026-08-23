@@ -1,15 +1,15 @@
-$accent: #bd6845;
-$accent-strong: #d98763;
-$accent-ink: #11100e;
-$bg-main: #11100e;
-$bg-surface: #1a1815;
-$bg-card: #24211d;
-$bg-elevated: #2d2924;
-$text-main: #eee9df;
-$text-soft: #d6cec2;
-$text-muted: #aaa196;
-$border: #38332d;
-$border-strong: rgba(189, 104, 69, 0.28);
+$accent: #94ff2b;
+$accent-strong: #adff2f;
+$accent-ink: #09090b;
+$bg-main: #09090b;
+$bg-surface: #111113;
+$bg-card: #18181b;
+$bg-elevated: #202024;
+$text-main: #fafafa;
+$text-soft: #e4e4e7;
+$text-muted: #a1a1aa;
+$border: #27272a;
+$border-strong: rgba(148, 255, 43, 0.22);
 $surface-border: rgba(255, 255, 255, 0.08);
 $surface-hover: rgba(255, 255, 255, 0.06);
 $shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
@@ -19,8 +19,8 @@ $shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
   min-height: 100dvh;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at top right, rgba(189, 104, 69, 0.13), transparent 26%),
-    linear-gradient(180deg, #171411 0%, $bg-main 58%, #0b0a09 100%);
+    radial-gradient(circle at top right, rgba(148, 255, 43, 0.08), transparent 26%),
+    linear-gradient(180deg, #0d0d10 0%, $bg-main 58%, #08080a 100%);
   color: $text-main;
   padding: clamp(22px, 5vw, 40px) clamp(16px, 4vw, 32px) 72px;
 }
@@ -109,8 +109,8 @@ $shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
 .projects-state-panel button:focus-visible,
 .search-control:focus-within {
   outline: none;
-  border-color: rgba(189, 104, 69, 0.48);
-  box-shadow: 0 0 0 4px rgba(189, 104, 69, 0.12);
+  border-color: rgba(148, 255, 43, 0.48);
+  box-shadow: 0 0 0 4px rgba(148, 255, 43, 0.12);
 }
 
 .projects-nav-trigger {
@@ -295,9 +295,9 @@ $shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
 .filters-drawer button.active,
 .projects-state-panel button {
   background: $accent-strong;
-  border-color: rgba(189, 104, 69, 0.46);
+  border-color: rgba(173, 255, 47, 0.46);
   color: $accent-ink;
-  box-shadow: 0 16px 38px rgba(189, 104, 69, 0.12);
+  box-shadow: 0 16px 38px rgba(148, 255, 43, 0.12);
 }
 
 .featured-actions button:hover,
@@ -308,7 +308,7 @@ $shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
 .filters-drawer button.active:hover,
 .projects-state-panel button:hover {
   background: $accent;
-  border-color: rgba(189, 104, 69, 0.56);
+  border-color: rgba(148, 255, 43, 0.56);
   color: $accent-ink;
 }
 
@@ -475,8 +475,8 @@ $shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
 
 .status-chip.active {
   color: $accent;
-  border-color: rgba(189, 104, 69, 0.3);
-  background: rgba(189, 104, 69, 0.11);
+  border-color: rgba(148, 255, 43, 0.3);
+  background: rgba(148, 255, 43, 0.11);
 }
 
 .status-chip.building {
@@ -511,8 +511,8 @@ $shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
 
 .card-tags span,
 .drawer-tags span {
-  border: 1px solid rgba(189, 104, 69, 0.18);
-  background: rgba(189, 104, 69, 0.07);
+  border: 1px solid rgba(148, 255, 43, 0.18);
+  background: rgba(148, 255, 43, 0.07);
   border-radius: 999px;
   font-size: 0.75rem;
   padding: 6px 10px;
@@ -839,7 +839,7 @@ $shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
   }
 
   .project-count {
-    color: rgba(189, 104, 69, 0.7);
+    color: rgba(148, 255, 43, 0.7);
   }
 
   .projects-drawer-overlay {

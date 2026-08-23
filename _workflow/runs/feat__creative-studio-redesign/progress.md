@@ -56,3 +56,11 @@
 - Browser checkpoint: Preview starts; automated review unavailable because the required executable is not installed
 - Status: Ready to commit, push, and open a draft PR; merge and deployment remain out of scope
 - Applied skill: design-taste-frontend
+
+## 2026-08-23 — Manual theme correction
+
+- Feedback: Keep the editorial redesign, remove the light canvas, and restore the original DevKofi color theme.
+- Implemented: Dark-only off-black/zinc surfaces and original lime accent across public, supporting, and private presentation styles.
+- TDD: Added a theme regression suite, observed both assertions fail, then passed 2/2 after implementation.
+- Verification: Theme/navigation/contact/projects pass 19/19; changed-file ESLint passes; production build passes.
+- Applied skill: design-taste-frontend

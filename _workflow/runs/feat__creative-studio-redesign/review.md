@@ -24,7 +24,13 @@ Ready for a draft pull request. The active public experience now represents DevK
 
 Applied skill: design-taste-frontend
 
-- One muted copper accent replaces neon green on active surfaces.
+- The original DevKofi lime is retained as the single accent across dark off-black/zinc surfaces.
 - Editorial serif display typography, compact sans-serif utility copy, asymmetric composition, and deliberate rules create the studio system.
 - Phosphor icons are used in changed navigation surfaces.
 - Motion remains restrained and respects the existing reduced-motion handling.
+
+## Manual review amendment
+
+- Kofi approved the structure but rejected the warm ivory/copper treatment.
+- All redesigned/shared surfaces now use dark layers; no copper/ivory tokens remain.
+- Full accent-color section fills were replaced with restrained lime borders, labels, actions, and focus states.

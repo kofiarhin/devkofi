@@ -1,18 +1,18 @@
-.main-header { position:sticky; top:0; z-index:1000; color:#eee9df; background:rgba(17,16,14,.92); backdrop-filter:blur(18px); border-bottom:1px solid rgba(238,233,223,.13); }
+.main-header { position:sticky; top:0; z-index:1000; color:#fafafa; background:rgba(9,9,11,.92); backdrop-filter:blur(18px); border-bottom:1px solid rgba(255,255,255,.1); }
 .main-header .header-content { min-height:82px; display:flex; align-items:center; justify-content:space-between; }
 .logo-container { display:flex; align-items:center; }
-.main-header .logo { font-family:var(--font-display); font-size:1.75rem; font-weight:600; letter-spacing:-.04em; color:#bd6845; }
-.main-header .logo span { color:#eee9df; }
+.main-header .logo { font-family:var(--font-display); font-size:1.75rem; font-weight:600; letter-spacing:-.04em; color:#94ff2b; }
+.main-header .logo span { color:#fafafa; }
 .main-header .nav-links { display:none; }
-.menu-button { width:44px; height:44px; display:grid; place-items:center; border:0; background:transparent; color:#eee9df; }
-.menu-button:focus-visible { outline:1px solid #bd6845; outline-offset:3px; }
+.menu-button { width:44px; height:44px; display:grid; place-items:center; border:0; background:transparent; color:#fafafa; }
+.menu-button:focus-visible { outline:1px solid #94ff2b; outline-offset:3px; }
 @media(min-width:960px){
   .main-header .nav-links { display:flex; align-items:center; gap:clamp(.8rem,1.45vw,1.5rem); }
-  .main-header .nav-item { color:rgba(238,233,223,.64); font-size:.72rem; font-weight:600; letter-spacing:.04em; transition:color .2s ease; }
-  .main-header .nav-item:hover,.main-header .nav-item.active { color:#eee9df; }
-  .main-header .btn-cta,.main-header .btn-admin,.main-header .btn-logout { min-height:42px; display:inline-flex; align-items:center; padding:0 .9rem; border:1px solid rgba(238,233,223,.24); background:transparent; color:#eee9df; font-size:.72rem; font-weight:700; }
-  .main-header .btn-cta { background:#bd6845; border-color:#bd6845; color:#11100e; }
+  .main-header .nav-item { color:rgba(250,250,250,.64); font-size:.72rem; font-weight:600; letter-spacing:.04em; transition:color .2s ease; }
+  .main-header .nav-item:hover,.main-header .nav-item.active { color:#94ff2b; }
+  .main-header .btn-cta,.main-header .btn-admin,.main-header .btn-logout { min-height:42px; display:inline-flex; align-items:center; padding:0 .9rem; border:1px solid rgba(255,255,255,.2); background:transparent; color:#fafafa; font-size:.72rem; font-weight:700; }
+  .main-header .btn-cta { background:#94ff2b; border-color:#94ff2b; color:#09090b; }
   .main-header .btn-logout { cursor:pointer; }
-  .main-header .btn-cta:focus-visible,.main-header .btn-admin:focus-visible,.main-header .btn-logout:focus-visible,.main-header .nav-item:focus-visible { outline:1px solid #d98763; outline-offset:4px; }
+  .main-header .btn-cta:focus-visible,.main-header .btn-admin:focus-visible,.main-header .btn-logout:focus-visible,.main-header .nav-item:focus-visible { outline:1px solid #94ff2b; outline-offset:4px; }
   .main-header .mobile-actions { display:none; }
 }

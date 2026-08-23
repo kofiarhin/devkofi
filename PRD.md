@@ -77,8 +77,8 @@ Legacy route intent is preserved through redirects:
 
 ## Design direction
 
-- Signature dark presentation using off-black and warm ivory.
-- One muted copper/amber accent.
+- Dark-only presentation using off-black and layered zinc surfaces.
+- The original DevKofi lime is the single accent for actions, status, and focus.
 - Asymmetric editorial layouts with strong negative space.
 - Characterful sans-serif typography with a restrained monospace companion.
 - Authentic photography, product interface evidence, code fragments, and tactile materiality.

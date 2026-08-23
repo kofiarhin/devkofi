@@ -2,9 +2,9 @@
 
 :root {
   /* Brand */
-  --primary-color: #bd6845;
-  --primary-accent: #d98763;
-  --main-color: #bd6845;
+  --primary-color: #4caf50;
+  --primary-accent: #7cff00;
+  --main-color: #94ff2b;
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Manrope", system-ui, sans-serif;
   --layout-max: 1400px;
@@ -12,21 +12,21 @@
   --layout-gutter: clamp(1.25rem, 2.4vw, 2.5rem);
 
   /* Backgrounds — no pure black */
-  --bg-main: #11100e;
-  --bg-surface: #1a1815;
-  --bg-card: #24211d;
+  --bg-main: #09090b;
+  --bg-surface: #111113;
+  --bg-card: #18181b;
 
   /* Text */
-  --text-main: #eee9df;
-  --text-muted: #aaa196;
+  --text-main: #fafafa;
+  --text-muted: #a1a1aa;
 
   /* UI */
-  --border-color: #38332d;
+  --border-color: #27272a;
   --radius-lg: 16px;
   --radius-md: 12px;
 
   /* Effects */
-  --glow-primary: 0 0 20px rgba(189, 104, 69, 0.24);
+  --glow-primary: 0 0 20px rgba(148, 255, 43, 0.18);
 }
 
 /* Global reset */
@@ -91,7 +91,7 @@ select {
 
 /* Selection */
 ::selection {
-  background: rgba(189, 104, 69, 0.28);
+  background: rgba(148, 255, 43, 0.2);
   color: #fff;
 }
 
@@ -113,7 +113,7 @@ select {
 
 // general form styling
 // Brand Colors
-$lime: #bd6845;
+$lime: #a3e635;
 $bg-dark: #0a0a0a;
 $card-bg: #1a1a1a;
 $border-green: #4d7c0f;

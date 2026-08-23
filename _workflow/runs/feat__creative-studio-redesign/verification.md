@@ -3,12 +3,13 @@
 ## Passing evidence
 
 - Navigation suite: Pass — 12 tests.
-- Scoped client suite (navigation, contact, projects): Pass — 3 files, 17 tests.
+- Scoped client suite (theme, navigation, contact, projects): Pass — 4 files, 19 tests.
 - Changed-file ESLint gate: Pass — App, redesigned pages, shell, navigation constants, and route tests.
 - Production client build: Pass — 5,144 modules transformed.
 - Diff whitespace check: Pass.
 - Dependency/deployment/server changed-path scan: Pass — none.
 - Active public mentorship-copy scan: Pass — historical references remain only in governed documentation and deprecated inactive modules.
+- Theme regression: Pass — dark canvas and original lime are required; copper/ivory tokens are rejected on shared studio surfaces.
 
 ## Broad-suite disclosure
 

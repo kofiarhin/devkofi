@@ -152,9 +152,9 @@ DevKofi's current public experience and durable documentation describe a mentors
 
 ## 14. UX / API / Workflow Expectations
 
-- UX: editorial, asymmetric, tactile, fast, and clear; dark signature with warm-light counterpart if theme support is retained.
+- UX: editorial, asymmetric, tactile, fast, and clear; dark-only layered surfaces with no light-theme counterpart in this release.
 - Typography: characterful sans display plus restrained mono; no Inter.
-- Palette: zinc/off-black, warm ivory, one muted copper/amber accent.
+- Palette: off-black and zinc surfaces, soft white text, and the original DevKofi lime as the single accent.
 - Motion: fluid CSS/Framer transitions, staggered reveals, and reduced-motion fallbacks.
 - API contracts: unchanged unless evidence proves a copy-only adaptation requires no contract change.
 - Loading: shape-matched skeletons.
@@ -259,3 +259,11 @@ DevKofi's current public experience and durable documentation describe a mentors
 - Applied skill: design-taste-frontend.
 - Required propagation: tasks, implementation evidence, polish-ui audit, final taste review, verification, review, release notes, summary, and workflow health.
 - Baseline: design variance 8, motion intensity 6, visual density 4.
+
+## 24. Approved Visual Amendment
+
+- Date: 2026-08-23
+- Source: Manual review feedback from Kofi.
+- Replace the warm ivory/copper treatment with a dark-only off-black/zinc canvas and the original DevKofi lime accent.
+- Preserve the approved editorial structure, typography, content, routes, and behavior.
+- This amendment supersedes only the palette/theme statements in sections 3, 6, 10, 14, 17, and 23.

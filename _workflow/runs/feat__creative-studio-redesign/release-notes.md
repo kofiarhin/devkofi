@@ -8,7 +8,7 @@
 
 ## Experience
 
-- Introduces a cinematic editorial system using warm ivory, off-black, muted copper, serif display type, and asymmetric layouts.
+- Introduces a dark cinematic editorial system using off-black, layered zinc, the original DevKofi lime, serif display type, and asymmetric layouts.
 - Presents Hibachi as “Building now” alongside ThriftChef and KareBraids without inventing outcomes.
 - Adds concrete Shape, Make, and Sharpen engagement models.
 - Keeps the existing live project, template, contact, newsletter, and admin data paths.

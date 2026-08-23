@@ -24,8 +24,8 @@ const Templates = () => {
           min-height: 100dvh;
           overflow-x: hidden;
           background:
-            radial-gradient(circle at 82% 12%, rgba(189, 104, 69, 0.14), transparent 25%),
-            linear-gradient(180deg, #171411 0%, #11100e 58%, #0b0a09 100%);
+            radial-gradient(circle at 82% 12%, rgba(148, 255, 43, 0.08), transparent 25%),
+            linear-gradient(180deg, #101113 0%, #09090b 58%, #0c0d0f 100%);
           color: #fafafa;
           padding: clamp(24px, 5vw, 48px) clamp(16px, 4vw, 32px) 76px;
         }
@@ -49,7 +49,7 @@ const Templates = () => {
         .template-card__eyebrow,
         .template-card__status {
           margin: 0;
-          color: #d98763;
+          color: #94ff2b;
           font-size: 0.78rem;
           font-weight: 700;
           letter-spacing: 0.12em;
@@ -104,13 +104,13 @@ const Templates = () => {
 
         .template-card:hover {
           transform: translateY(-4px);
-          border-color: rgba(189, 104, 69, 0.32);
+          border-color: rgba(148, 255, 43, 0.28);
           box-shadow: 0 32px 88px rgba(0, 0, 0, 0.34);
         }
 
         .template-card:focus-within {
-          border-color: rgba(189, 104, 69, 0.5);
-          box-shadow: 0 0 0 4px rgba(189, 104, 69, 0.12);
+          border-color: rgba(148, 255, 43, 0.46);
+          box-shadow: 0 0 0 4px rgba(148, 255, 43, 0.12);
         }
 
         .template-card__top {
@@ -126,9 +126,9 @@ const Templates = () => {
           height: 52px;
           align-items: center;
           justify-content: center;
-          border: 1px solid rgba(189, 104, 69, 0.28);
+          border: 1px solid rgba(148, 255, 43, 0.22);
           border-radius: 16px;
-          background: rgba(189, 104, 69, 0.1);
+          background: rgba(148, 255, 43, 0.08);
           color: #c9ff8a;
         }
 
@@ -185,9 +185,9 @@ const Templates = () => {
           align-items: center;
           justify-content: center;
           gap: 8px;
-          border: 1px solid rgba(189, 104, 69, 0.5);
+          border: 1px solid rgba(173, 255, 47, 0.46);
           border-radius: 12px;
-          background: #bd6845;
+          background: #adff2f;
           color: #09090b;
           padding: 10px 15px;
           font-weight: 800;
@@ -198,7 +198,7 @@ const Templates = () => {
         }
 
         .template-card__action:hover {
-          background: #d98763;
+          background: #94ff2b;
           transform: translateY(-2px);
         }
 
@@ -218,7 +218,7 @@ const Templates = () => {
 
         .template-card__action:focus-visible {
           outline: none;
-          box-shadow: 0 0 0 4px rgba(189, 104, 69, 0.18);
+          box-shadow: 0 0 0 4px rgba(148, 255, 43, 0.18);
         }
 
         .templates-note {

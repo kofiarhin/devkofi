@@ -47,7 +47,7 @@
 - Acceptance result: Approved routes render; four legacy paths redirect; admin authorization survives; desktop and mobile navigation share one source.
 - Iteration 1 Build: Added failing navigation expectations, then implemented canonical routes, redirects, navigation, and shell.
 - Iteration 2 Refine: Preserved admin links/auth guards and replaced Font Awesome menu icons with Phosphor.
-- Iteration 3 Polish: Applied the editorial typography, off-black/ivory/copper palette, focus states, and responsive overlay menu.
+- Iteration 3 Polish: Applied editorial typography, then incorporated review feedback with a dark-only off-black/zinc canvas, original lime accent, focus states, and responsive overlay menu.
 - Stop condition: Route work requires backend/auth contract changes.
 
 ## TASK-003 — Deliver Home, Work, and Start a Project
@@ -100,7 +100,7 @@
 - Objective: Apply the design system without changing private business logic.
 - Iterations: Build token alignment; refine focus/error/mobile states; polish visual consistency.
 - Test plan: Run existing admin/newsletter tests first and after changes.
-- Acceptance result: Admin/login/message and newsletter accents align to copper; auth, backend, and data contracts are unchanged.
+- Acceptance result: Admin/login/message and newsletter accents align to the original DevKofi lime; auth, backend, and data contracts are unchanged.
 - Iterations: Applied tokens, audited unchanged logic, and verified admin-aware navigation tests.
 - Stop condition: Visual alignment requires logic rewrites.
 

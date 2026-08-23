@@ -4,7 +4,7 @@ The approved creative studio redesign is implemented on feat/creative-studio-red
 
 The Setup PRD Workspace is installed and populated inside the repository. Existing contact persistence, API-backed work/templates, newsletter verification, admin authorization, and private business logic remain intact. Legacy public paths redirect to the new IA; mentorship-era operations remain present but inactive in public navigation pending a separate removal audit.
 
-Verification passes for the production build, changed-file lint, 17 scoped tests, diff hygiene, and scope/dependency scans. Automated visual inspection is unavailable because the required browser executable is not installed; a human browser checkpoint remains required before merge. The broad test suite also exposes 13 unrelated legacy failures that predate and sit outside this diff.
+Following manual review, the warm ivory/copper palette was replaced with a dark-only off-black/zinc canvas and the original DevKofi lime accent while preserving the editorial structure. Verification passes for the production build, changed-file lint, 19 scoped tests, diff hygiene, and scope/dependency scans. Automated visual inspection is unavailable because the required browser executable is not installed; another human browser checkpoint remains required before merge. The broad test suite also exposes 13 unrelated legacy failures that predate and sit outside this diff.
 
 No merge or deployment was performed.
 
