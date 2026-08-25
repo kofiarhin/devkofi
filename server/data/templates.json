@@ -8,11 +8,11 @@
     "githubUrl": "https://github.com/kofiarhin/codex-workflow-kit"
   },
   {
-    "id": "setup-prd-workspace",
-    "title": "Setup PRD Workspace",
-    "description": "Turn a PRD into an AI-ready Claude Code project workspace with reusable planning, review, demo, and routine documentation.",
+    "id": "ai-dev-workspace",
+    "title": "AI Dev Workspace",
+    "description": "A reusable repository operating system for AI-assisted software delivery, with persistent project context, operator briefs, planning, implementation, verification, and safe workspace lifecycle management.",
     "category": "AI Workflow",
-    "tags": ["Claude Code", "PRD", "AI Workflow"],
-    "templateUrl": "https://github.com/kofiarhin/setup-prd-workspace"
+    "tags": ["AI Agents", "Software Delivery", "Workspace"],
+    "templateUrl": "https://github.com/kofiarhin/ai-dev-workspace"
   }
 ]
