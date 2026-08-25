@@ -30,6 +30,10 @@ const projects = [
   },
 ];
 
+const projectData = JSON.parse(
+  fs.readFileSync("../server/data/projects.data.json", "utf-8"),
+);
+
 describe("projects page data behavior", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
@@ -61,6 +65,31 @@ describe("projects page data behavior", () => {
     });
 
     expect(result[0].name).toBe("Alpha");
+  });
+
+  it("makes ThriftChef the featured live project", () => {
+    const thriftChef = projectData.find(({ name }) => name === "ThriftChef");
+
+    expect(thriftChef).toEqual(
+      expect.objectContaining({
+        id: 32,
+        status: "Active",
+        featured: true,
+        demoUrl: "https://thriftchef.vercel.app",
+        repoUrl: "https://github.com/kofiarhin/thriftchef",
+        thumbnailUrl: "/projects/thriftchef.webp",
+      }),
+    );
+
+    const result = applyProjectFilters({
+      projects: projectData,
+      statusFilter: "All",
+      sortBy: "Featured",
+      search: "",
+      activeTags: [],
+    });
+
+    expect(result[0].name).toBe("ThriftChef");
   });
 
   it("applies search and tags", () => {
