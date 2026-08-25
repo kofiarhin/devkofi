@@ -42,7 +42,7 @@ Verified for this migration only:
 
 - target operating-workspace paths were inspected before creation;
 - `AGENTS.md`, `CLAUDE.md`, `README.md`, package manifests, and relevant legacy docs were inspected;
-- the seven skill sources were copied from `kofiarhin/setup-prd-workspace` into the migration branch;
+- the seven skill sources were copied from `kofiarhin/ai-dev-workspace` into the migration branch;
 - no application test/build/browser verification is claimed by this document.
 
 ## Released
