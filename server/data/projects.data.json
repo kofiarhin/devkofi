@@ -304,5 +304,22 @@
     "demoUrl": "https://amas-kitchen.vercel.app",
     "repoUrl": "https://github.com/kofiarhin/amas-kitchen",
     "thumbnailUrl": "https://opengraph.githubassets.com/1/kofiarhin/amas-kitchen"
+  },
+  {
+    "id": 32,
+    "name": "ThriftChef",
+    "description": "A retailer-aware weekly cooking assistant for UK households that builds practical meal plans and one consolidated shopping list around a hard weekly budget.",
+    "features": [
+      "Retailer-aware weekly meal planning",
+      "Hard-budget basket pricing",
+      "Consolidated shopping list",
+      "Anonymous no-account experience",
+      "Deterministic meal-planning engine"
+    ],
+    "status": "Active",
+    "featured": true,
+    "demoUrl": "https://thriftchef.vercel.app",
+    "repoUrl": "https://github.com/kofiarhin/thriftchef",
+    "thumbnailUrl": "/projects/thriftchef.webp"
   }
 ]
