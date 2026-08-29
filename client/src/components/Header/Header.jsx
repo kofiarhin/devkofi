@@ -24,6 +24,10 @@ const Header = () => {
   return (
     <header className="main-header">
       <div className="container header-content">
+        <Link to="/" className="logo-container" aria-label="DevKofi home">
+          <span className="logo">Dev<span>Kofi</span></span>
+        </Link>
+
         <button
           type="button"
           className="menu-button"
@@ -34,10 +38,6 @@ const Header = () => {
         >
           <List size={24} weight="bold" aria-hidden="true" />
         </button>
-
-        <Link to="/" className="logo-container" aria-label="DevKofi home">
-          <span className="logo">Dev<span>Kofi</span></span>
-        </Link>
 
         <nav className="nav-links" aria-label="Primary navigation">
           {publicNavItems.map((item) => (
