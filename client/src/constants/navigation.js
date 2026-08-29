@@ -3,7 +3,6 @@ export const publicNavItems = [
   { label: "Services", to: "/services" },
   { label: "Work", to: "/work" },
   { label: "Engineering Systems", to: "/engineering-systems" },
-  { label: "Products", to: "/products" },
   { label: "About", to: "/about" },
 ];
 
