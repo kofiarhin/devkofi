@@ -23,7 +23,7 @@ const Home = () => {
             <h1>{studioContent.hero.title}</h1>
             <p>{studioContent.hero.body}</p>
             <div className="studio-actions">
-              <Link className="studio-button studio-button--primary" to="/book-a-call">Book a Call</Link>
+              <Link className="studio-button studio-button--primary" to="/contact">Contact</Link>
               <Link className="studio-button studio-button--secondary" to="/work">Explore My Work</Link>
             </div>
           </div>
