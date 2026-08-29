@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import useProjects from "../../hooks/useProjects";
 import { services } from "../../constants/services";
-import { engineeringProcess, engineeringSystems, studioContent } from "../../constants/siteContent";
-import { selectFeaturedWork, selectProducts } from "../../lib/projectSelectors";
+import { engineeringProcess, studioContent } from "../../constants/siteContent";
+import { selectEngineeringSystems, selectFeaturedWork } from "../../lib/projectSelectors";
 import { FinalCta, PageMeta, ProjectCollection, SectionHeading, SplitSection } from "../../components/Studio/Studio";
 
 const Home = () => {
   const { data, isLoading, isError } = useProjects();
   const projects = Array.isArray(data) ? data : data?.data || [];
   const featuredWork = selectFeaturedWork(projects);
-  const products = selectProducts(projects).slice(0, 4);
+  const featuredSystems = selectEngineeringSystems(projects).slice(0, 4);
 
   return (
     <main>
@@ -54,24 +54,17 @@ const Home = () => {
 
       <section className="studio-projects-section">
         <div className="studio-container">
-          <SectionHeading eyebrow="Selected work" title="Systems that prove the engineering." body="A curated set of AI engineering work, focused on architecture, agent behaviour, context, verification, and production constraints." />
-          {isLoading ? <p className="studio-empty">Loading selected work...</p> : isError ? <p className="studio-empty">Selected work is temporarily unavailable. Explore the Work page or repository links directly.</p> : <ProjectCollection projects={featuredWork} emptyMessage="Selected AI engineering work will appear here as project classification data is completed." />}
+          <SectionHeading eyebrow="Selected work" title="Things I have engineered." body="A curated set of systems and products that demonstrate agent engineering, context infrastructure, full-stack architecture, verification, and real production constraints." />
+          {isLoading ? <p className="studio-empty">Loading selected work...</p> : isError ? <p className="studio-empty">Selected work is temporarily unavailable.</p> : <ProjectCollection projects={featuredWork} emptyMessage="Selected engineering work is temporarily unavailable." />}
           <div className="studio-actions"><Link className="studio-link" to="/work">View all engineering work</Link></div>
         </div>
       </section>
 
-      <SplitSection {...studioContent.systems} alt="AI engineering workflow visual" mediaLeft>
-        <div className="studio-system-grid">
-          {engineeringSystems.slice(0, 2).map((system) => <article className="studio-system-item" key={system.title}><h3>{system.title}</h3><p>{system.body}</p></article>)}
-        </div>
-        <div className="studio-actions"><Link className="studio-link" to="/engineering-systems">Explore Engineering Systems</Link></div>
-      </SplitSection>
-
       <section className="studio-projects-section">
         <div className="studio-container">
-          <SectionHeading eyebrow="Products" title="Built using the engineering system." body="AI and full-stack applications built through the same disciplined planning, implementation, and verification workflows." />
-          {isLoading ? <p className="studio-empty">Loading products...</p> : <ProjectCollection projects={products} emptyMessage="Products will appear here when project classification data is available." />}
-          <div className="studio-actions"><Link className="studio-link" to="/products">Explore Products</Link></div>
+          <SectionHeading eyebrow="Engineering systems" title="The systems behind how I build." body="Reusable workflows, agent infrastructure, context systems, and delivery controls that make AI-assisted engineering repeatable and reviewable." />
+          {isLoading ? <p className="studio-empty">Loading engineering systems...</p> : <ProjectCollection projects={featuredSystems} emptyMessage="Engineering systems are temporarily unavailable." />}
+          <div className="studio-actions"><Link className="studio-link" to="/engineering-systems">Explore Engineering Systems</Link></div>
         </div>
       </section>
 
