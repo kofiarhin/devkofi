@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, CalendarBlank, EnvelopeSimple, GithubLogo, LinkedinLogo, StackSimple, XLogo } from "@phosphor-icons/react";
+import { ArrowRight, EnvelopeSimple, GithubLogo, LinkedinLogo, StackSimple, XLogo } from "@phosphor-icons/react";
 import { publicActionItem, publicNavItems } from "../../constants/navigation";
 import "./footer.styles.scss";
 
@@ -28,7 +28,7 @@ const Footer = () => {
             <h2>Turn the AI idea into dependable software.</h2>
             <p>Bring the workflow, prototype, product, or system problem. I’ll help turn it into a clear engineering path.</p>
           </div>
-          <Link to="/book-a-call" className="footer-cta__button"><CalendarBlank size={18} weight="duotone" aria-hidden="true" />Book a call<ArrowRight size={16} weight="bold" aria-hidden="true" /></Link>
+          <Link to="/contact" className="footer-cta__button"><EnvelopeSimple size={18} weight="duotone" aria-hidden="true" />Contact<ArrowRight size={16} weight="bold" aria-hidden="true" /></Link>
         </section>
 
         <div className="footer-main">
