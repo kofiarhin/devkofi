@@ -73,7 +73,7 @@ export const FinalCta = ({ title = "Have an AI system you want to build?", body 
         <h2>{title}</h2>
         <p>{body}</p>
       </div>
-      <Link className="studio-button studio-button--primary" to="/book-a-call">Book a Call</Link>
+      <Link className="studio-button studio-button--primary" to="/contact">Contact</Link>
     </div>
   </section>
 );
