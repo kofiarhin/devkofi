@@ -1,60 +1,73 @@
 # DevKofi Current State
 
-Evidence basis: repository `README.md`, root/client package manifests, existing operating documents, and the AI-workspace migration branch. Runtime behavior was not executed during this documentation-only setup.
+Evidence basis: repository files and GitHub branch evidence. Runtime behavior has not been executed from this ChatGPT GitHub workflow unless explicitly listed under Verified.
 
 ## Proposed
 
-The existing README roadmap proposes, in order:
-
-1. client analytics and QA improvements;
-2. server validation/rate-limit/email-recipient hardening;
-3. deeper mentor-portal data/workflows;
-4. improved download-center ZIP/status behavior.
-
-No ticket/spec/plan for these roadmap outcomes was created by this setup.
+The existing README roadmap still contains legacy mentorship-platform outcomes. Those outcomes have not been removed or re-prioritized by this redesign branch and should be reconciled separately if DevKofi fully transitions away from the mentorship product model.
 
 ## Specified
 
-None established by the new canonical `spec/` workflow yet.
+The AI Engineering Studio redesign is specified by:
+
+- `docs/AI_ENGINEERING_STUDIO_PRD.md`
+- `docs/AI_ENGINEERING_STUDIO_SPEC.md`
 
 ## Planned
 
-None established by the new canonical `plans/` workflow yet.
+The approved execution plan is:
+
+- `docs/AI_ENGINEERING_STUDIO_PLAN.md`
 
 ## In Progress
 
-- AI operating-workspace migration on branch `chore/setup-workspace-ai-os` until merged or otherwise integrated.
+- Full public-site repositioning on branch `feat/ai-engineering-studio-redesign`.
+- Draft-PR review and executable verification remain pending.
 
 ## Implemented
 
-Repository documentation describes an existing application containing:
+On `feat/ai-engineering-studio-redesign`, repository changes now implement the public AI Engineering Studio structure:
 
-- marketing/home, curriculum, pricing, contact/newsletter, mentorship enrollment, success/error flows;
-- authenticated templates, portal/messages, and role-aware admin/student experiences;
-- Express APIs for mentorship/contact/newsletter, auth, users/admin, pricing, GitHub info, templates, and downloads;
-- MongoDB persistence and transactional email integrations.
+- target routes for Home, Services, Work, Engineering Systems, Products, About, and Book a Call;
+- compatibility redirects from `/projects` to `/work` and `/templates` to `/engineering-systems`;
+- founder-led AI engineering homepage and supporting page copy;
+- centralized service and studio content modules;
+- centralized semantic design tokens while preserving existing DevKofi green/lime branding;
+- shared studio layout, CTA, project-card, split-section, and page-meta components;
+- accessible left-side mobile navigation drawer behavior including focus management, Escape close, backdrop close, body scroll lock, and focus restoration;
+- reusable project selectors for Work, Products, Engineering Systems, and homepage featured work;
+- About and Footer messaging aligned to the AI engineering studio direction;
+- selector/navigation regression tests added under `client/tests/studioSelectors.test.js`.
 
-The branch also contains the seven installed AI workspace skills under `.claude/skills/` and the canonical operating workspace documents created by this migration.
+No server, authentication, dependency, lockfile, CI workflow, deployment, migration, or production-data changes are part of this branch.
 
 ## Verified
 
-Verified for this migration only:
+Repository-level review evidence:
 
-- target operating-workspace paths were inspected before creation;
-- `AGENTS.md`, `CLAUDE.md`, `README.md`, package manifests, and relevant legacy docs were inspected;
-- the seven skill sources were copied from `kofiarhin/ai-dev-workspace` into the migration branch;
-- no application test/build/browser verification is claimed by this document.
+- the implementation branch is based on the approved docs branch;
+- GitHub compare shows only expected public-client, test, and this current-state documentation changes;
+- no dependency or lockfile changes were introduced;
+- no server/auth/deployment files were changed.
+
+Not yet verified in an executable environment:
+
+- `npm test`
+- `npm run test:client`
+- `npm --prefix client run lint`
+- `npm --prefix client run build`
+- desktop/mobile browser behavior
+- console/network behavior
+
+The existing GitHub workflow only deploys/builds on pushes to `main`/`master` or manual workflow dispatch, so it does not provide automatic feature-branch verification evidence.
 
 ## Released
 
-`Unresolved` for current application/deployment state. Repository documentation lists production/staging URLs and deployment targets, but this migration did not verify them.
-
-The AI operating-workspace migration is not described as merged or released until separate Git/GitHub evidence proves that state.
+Not released. No merge or deployment is authorized or claimed for the AI Engineering Studio redesign.
 
 ## Unresolved
 
-- Real customer evidence has not yet been added under `customers/`.
-- Quantitative product success metrics are not defined in the inspected sources.
-- SCSS-only documentation conflicts with installed Tailwind tooling.
-- README Node 18+ guidance conflicts with root package engines requiring Node 20.x.
-- Current deployment health and canonical backend production host were not verified.
+- Project API records need deliberate classification (`aiEngineering`, `engineeringSystem`, `product`, `featured`, `displayOrder`) for the strongest curated Work/Systems/Products presentation; selector fallbacks currently preserve existing data compatibility.
+- Exact flagship project records and screenshots should be reviewed in the live project dataset before release.
+- Legacy mentorship-specific backend/admin capabilities remain in the repository and are intentionally outside this public-site redesign scope.
+- Executable test/lint/build/browser verification remains required before merge.
