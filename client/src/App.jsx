@@ -15,7 +15,6 @@ import Home from "./Pages/Home/Home";
 import Services from "./Pages/Services/Services";
 import Work from "./Pages/Work/Work";
 import EngineeringSystems from "./Pages/EngineeringSystems/EngineeringSystems";
-import Products from "./Pages/Products/Products";
 import About from "./Pages/About/About";
 import Contact from "./Pages/Contact/Contact";
 import BookCall from "./Pages/BookCall/BookCall";
@@ -37,7 +36,7 @@ export const AppRoutes = () => {
         <Route path="/services" element={<Services />} />
         <Route path="/work" element={<Work />} />
         <Route path="/engineering-systems" element={<EngineeringSystems />} />
-        <Route path="/products" element={<Products />} />
+        <Route path="/products" element={<Navigate to="/work" replace />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/book-a-call" element={<BookCall />} />
