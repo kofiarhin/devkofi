@@ -10,13 +10,13 @@ const Work = () => {
 
   return (
     <main>
-      <PageMeta title="AI Engineering Work" description="Curated DevKofi AI engineering case studies and systems work." />
-      <StudioPageHero eyebrow="Work" title="Engineering proof, not a repository dump." body="A curated set of systems that demonstrate how I approach agents, context, full-stack architecture, integration, verification and production constraints." image={aiImage} alt="DevKofi AI engineering work" />
+      <PageMeta title="AI Engineering Work" description="Curated DevKofi AI engineering case studies, systems, and product work." />
+      <StudioPageHero eyebrow="Work" title="Things I have engineered." body="A curated portfolio of AI agents, context infrastructure, full-stack systems, and products selected for the engineering story they demonstrate—not a dump of every repository." image={aiImage} alt="DevKofi AI engineering work" />
       <section className="studio-projects-section">
         <div className="studio-container">
           {isLoading && <p className="studio-empty">Loading engineering work...</p>}
           {isError && <div className="studio-empty"><p>Engineering work could not be loaded.</p><button type="button" className="studio-button studio-button--secondary" onClick={() => refetch()}>Try again</button></div>}
-          {!isLoading && !isError && <ProjectCollection projects={work} emptyMessage="No AI engineering projects are classified for this view yet. Existing project data remains unchanged until it is explicitly classified." />}
+          {!isLoading && !isError && <ProjectCollection projects={work} emptyMessage="Curated engineering work is temporarily unavailable." />}
         </div>
       </section>
       <FinalCta title="Have a similar system to build?" />
