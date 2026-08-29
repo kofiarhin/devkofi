@@ -1,9 +1,10 @@
 export const publicNavItems = [
   { label: "Home", to: "/" },
+  { label: "Services", to: "/services" },
+  { label: "Work", to: "/work" },
+  { label: "Engineering Systems", to: "/engineering-systems" },
+  { label: "Products", to: "/products" },
   { label: "About", to: "/about" },
-  { label: "Projects", to: "/projects" },
-  { label: "Templates", to: "/templates" },
-  { label: "Contact", to: "/contact" },
 ];
 
 export const publicActionItem = {
