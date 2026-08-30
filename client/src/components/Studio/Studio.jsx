@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getSeoForPath, SITE_NAME, SITE_URL } from "../../constants/seo";
+import { getProjectImageProps } from "../../lib/projectMedia";
 import "./studio.styles.scss";
 
 const upsertMeta = (attribute, key, content) => {
@@ -94,17 +95,38 @@ export const SplitSection = ({ eyebrow, title, body, image, alt = "", mediaLeft 
   </section>
 );
 
+const ProjectImage = ({ src, alt }) => {
+  const [status, setStatus] = useState("responsive");
+  const imageProps = status === "original" ? { src } : getProjectImageProps(src);
+
+  if (!src || status === "failed") {
+    return (
+      <div className="studio-project-card__placeholder" role="img" aria-label={`${alt} unavailable`}>
+        <span aria-hidden="true">Preview unavailable</span>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      {...imageProps}
+      alt={alt}
+      width="1600"
+      height="900"
+      loading="lazy"
+      decoding="async"
+      onError={() => setStatus(imageProps.srcSet ? "original" : "failed")}
+    />
+  );
+};
+
 export const ProjectCard = ({ project }) => {
   const projectTitle = project.name || project.title;
   const projectDescription = project.shortDescription || project.engineeringSummary || project.description;
   return (
     <article className="studio-project-card">
       <div className="studio-project-card__media">
-        {project.thumbnailUrl ? (
-          <img src={project.thumbnailUrl} alt={`${projectTitle} preview`} loading="lazy" />
-        ) : (
-          <div className="studio-project-card__placeholder" aria-hidden="true" />
-        )}
+        <ProjectImage key={project.thumbnailUrl || "missing"} src={project.thumbnailUrl} alt={`${projectTitle} preview`} />
       </div>
       <div className="studio-project-card__body">
         <div className="studio-project-card__meta">
@@ -124,7 +146,7 @@ export const ProjectCard = ({ project }) => {
 
 export const ProjectCollection = ({ projects, emptyMessage }) => {
   if (!projects?.length) return <p className="studio-empty">{emptyMessage}</p>;
-  return <div className="studio-project-grid">{projects.map((project) => <ProjectCard key={project._id || project.id || project.slug || project.name} project={project} />)}</div>;
+  return <div className="studio-project-grid">{projects.map((project) => <ProjectCard key={project.key || project._id || project.id || project.slug || project.name} project={project} />)}</div>;
 };
 
 export const FinalCta = ({ title = "Have an AI system you want to build?", body = "Bring the problem, prototype, or existing product. I’ll help turn it into an engineering plan and production path." }) => (

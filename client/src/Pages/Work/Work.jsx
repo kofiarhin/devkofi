@@ -11,7 +11,7 @@ const Work = () => {
   return (
     <main>
       <PageMeta title="AI Engineering Work" description="Curated DevKofi AI engineering case studies, systems, and product work." />
-      <StudioPageHero eyebrow="Work" title="Things I have engineered." body="A curated portfolio of AI agents, context infrastructure, full-stack systems, and products selected for the engineering story they demonstrate—not a dump of every repository." image={aiImage} alt="DevKofi AI engineering work" />
+      <StudioPageHero eyebrow="Work" title="Things I have engineered." body="AI agents and full-stack products built around practical problems, with a focus on how they work and what they help people do." image={aiImage} alt="DevKofi AI engineering work" />
       <section className="studio-projects-section">
         <div className="studio-container">
           {isLoading && <p className="studio-empty">Loading engineering work...</p>}

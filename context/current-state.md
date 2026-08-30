@@ -1,5 +1,16 @@
 # DevKofi Current State
 
+## Current checkpoint: issue #38 project showcase
+
+Baseline `main` commit: `8b6fb1efe3e4b5aee738a14336ac96ea9b1c59e3` (PR #39 is merged and supplies the approved Cloudinary Agent System cover).
+
+- Implemented on `fix/38-responsive-project-showcase`: the approved Home/Work/Engineering Systems placement, 16:9 contained card images without hover zoom, responsive Cloudinary sources, and original-image/fallback error handling.
+- Verified locally: 44 focused Vitest checks, changed-file lint, and production build. Full-suite/lint baseline failures and delivery-URL results are documented in `docs/verification/038-project-showcase.md`.
+- Still unverified: real mobile/desktop layout, browser-selected `currentSrc`, high-DPR behavior, keyboard focus and screenshots. The cloud browser blocks the local preview URL; do not treat component tests as browser evidence.
+- No merge or deployment of this follow-up is authorized or claimed. Issue #38 remains open pending verification and review.
+
+The sections below are historical redesign notes. Their branch/release claims do not describe current `main`; the inspected baseline already includes the studio routes/catalog and PR #39. Legacy mentorship priorities are outside this ticket.
+
 Evidence basis: repository files and GitHub branch evidence. Runtime behavior has not been executed from this ChatGPT GitHub workflow unless explicitly listed under Verified.
 
 ## Proposed

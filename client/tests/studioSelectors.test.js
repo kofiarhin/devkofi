@@ -39,7 +39,6 @@ describe("curated portfolio selection", () => {
     const work = selectWorkProjects(projects);
     expect(work.map((project) => project.name)).toEqual([
       "Hibachi",
-      "Context API",
       "Brain",
       "LeadRadar",
       "Forge",
@@ -54,12 +53,22 @@ describe("curated portfolio selection", () => {
     expect(hibachi.repoUrl).toBeNull();
   });
 
-  it("features Hibachi, Context API, and Brain on the homepage", () => {
+  it("features only Hibachi, Brain, and ThriftChef on the homepage", () => {
     expect(selectFeaturedWork(projects).map((project) => project.name)).toEqual([
       "Hibachi",
-      "Context API",
       "Brain",
+      "ThriftChef",
     ]);
+  });
+
+  it("keeps primary catalogs disjoint and ignores duplicate runtime records", () => {
+    const runtime = [...projects, ...projects, { name: "Hibachi", repoUrl: "https://example.test/private" }];
+    const work = selectWorkProjects(runtime);
+    const systems = selectEngineeringSystems(runtime);
+    const keys = [...work, ...systems].map((project) => project.key);
+    expect(new Set(keys).size).toBe(keys.length);
+    expect(selectFeaturedWork(runtime)).toHaveLength(3);
+    expect(work.find((project) => project.key === "hibachi").repoUrl).toBeNull();
   });
 
   it("uses an explicit engineering systems portfolio", () => {

@@ -2,14 +2,13 @@ import { Link } from "react-router-dom";
 import useProjects from "../../hooks/useProjects";
 import { services } from "../../constants/services";
 import { studioContent } from "../../constants/siteContent";
-import { selectEngineeringSystems, selectFeaturedWork } from "../../lib/projectSelectors";
+import { selectFeaturedWork } from "../../lib/projectSelectors";
 import { FinalCta, PageMeta, ProjectCollection, SectionHeading, SplitSection } from "../../components/Studio/Studio";
 
 const Home = () => {
   const { data, isLoading, isError } = useProjects();
   const projects = Array.isArray(data) ? data : data?.data || [];
   const featuredWork = selectFeaturedWork(projects);
-  const featuredSystems = selectEngineeringSystems(projects).slice(0, 4);
 
   return (
     <main>
@@ -43,7 +42,7 @@ const Home = () => {
 
       <section className="studio-projects-section">
         <div className="studio-container">
-          <SectionHeading eyebrow="Selected work" title="Things I have engineered." body="A curated set of systems and products that demonstrate agent engineering, context infrastructure, full-stack architecture, verification, and real production constraints." />
+          <SectionHeading eyebrow="Selected work" title="Things I have engineered." body="Three selected products spanning agent engineering, full-stack architecture, and practical planning tools." />
           {isLoading ? <p className="studio-empty">Loading selected work...</p> : isError ? <p className="studio-empty">Selected work is temporarily unavailable.</p> : <ProjectCollection projects={featuredWork} emptyMessage="Selected engineering work is temporarily unavailable." />}
           <div className="studio-actions"><Link className="studio-link" to="/work">View all engineering work</Link></div>
         </div>
@@ -52,7 +51,6 @@ const Home = () => {
       <section className="studio-projects-section">
         <div className="studio-container">
           <SectionHeading eyebrow="Engineering systems" title="The systems behind how I build." body="Reusable workflows, agent infrastructure, context systems, and delivery controls that make AI-assisted engineering repeatable and reviewable." />
-          {isLoading ? <p className="studio-empty">Loading engineering systems...</p> : <ProjectCollection projects={featuredSystems} emptyMessage="Engineering systems are temporarily unavailable." />}
           <div className="studio-actions"><Link className="studio-link" to="/engineering-systems">Explore Engineering Systems</Link></div>
         </div>
       </section>
