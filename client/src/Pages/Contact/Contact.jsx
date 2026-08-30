@@ -12,6 +12,7 @@ import {
   Sparkle,
   WarningCircle,
   XLogo,
+  YoutubeLogo,
 } from "@phosphor-icons/react";
 import useContactMutation from "../../hooks/useContactMutation";
 import "./contact.styles.scss";
@@ -310,17 +311,21 @@ const Contact = () => {
           <div className="contact-proof__item">
             <span>Social</span>
             <div className="contact-socials">
-              <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <a href="https://github.com/kofiarhin" target="_blank" rel="noreferrer" aria-label="GitHub">
                 <GithubLogo size={15} weight="fill" />
                 GitHub
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/joshua-o-9b49b72b/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
                 <LinkedinLogo size={15} weight="fill" />
                 LinkedIn
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter / X">
+              <a href="https://x.com/kwofiArhin" target="_blank" rel="noreferrer" aria-label="X">
                 <XLogo size={15} weight="fill" />
                 X
+              </a>
+              <a href="https://www.youtube.com/@devkofi" target="_blank" rel="noreferrer" aria-label="YouTube">
+                <YoutubeLogo size={15} weight="fill" />
+                YouTube
               </a>
             </div>
           </div>
