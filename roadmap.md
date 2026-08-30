@@ -4,6 +4,10 @@ Source: `README.md` plus current repository/package evidence inspected during th
 
 ## Current Goal
 
+Active approved outcome: issue #38, readable responsive project media and deliberate project placement. Implemented on `fix/38-responsive-project-showcase`; verification/review is incomplete (see `docs/verification/038-project-showcase.md`). Do not mark complete, merged or deployed.
+
+The following mentorship priorities are historical and are not re-prioritized by issue #38:
+
 Advance the existing DevKofi mentorship platform through the roadmap outcomes already documented in `README.md`, beginning with the first listed outcome: client analytics and QA.
 
 The roadmap order is product direction, not implementation evidence. Each outcome must still become a focused `/ticket` and pass the ticket → spec → plan → implementation workflow.

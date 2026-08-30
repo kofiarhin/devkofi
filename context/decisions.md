@@ -2,6 +2,15 @@
 
 ## Confirmed
 
+### Project showcase placement and media — issue #38
+
+- Source: Kofi approved the placement matrix, generated/uploaded the Agent System cover (merged in PR #39), then explicitly approved the remaining implementation plan in conversation.
+- Home: Hibachi, Brain, ThriftChef only; Systems uses introductory copy and a link instead of a second gallery.
+- Work: Hibachi, Brain, LeadRadar, Forge, ThriftChef. Engineering Systems: AI Dev Workspace, Codex Workflow Kit, Agent System, Context API, Ideas Hub. Each project has one primary listing across these two pages.
+- Project card artwork stays fully visible in a 16:9 frame. Cloudinary variants use layout-matched `srcSet`/`sizes`; unsafe or ambiguous URL shapes pass through unchanged.
+- An unavailable derived image falls back to the original once, then to a labelled placeholder. Existing source assets and the private Hibachi repository boundary are preserved.
+- Authorized route: separate branch and draft PR, with no merge/deployment. See `spec/038-project-showcase.md` and `plans/038-project-showcase.md`.
+
 ### AI operating system is canonical
 
 - Date: 2026-08-25

@@ -15,7 +15,7 @@ const EngineeringSystems = () => {
 
       <section className="studio-projects-section">
         <div className="studio-container">
-          <SectionHeading eyebrow="Core systems" title="Reusable infrastructure, not portfolio duplicates." body="These are the systems I use to make AI-assisted engineering more repeatable, controlled, and evidence-driven." />
+          <SectionHeading eyebrow="Core systems" title="Reusable engineering infrastructure." body="These are the systems I use to make AI-assisted engineering more repeatable, controlled, and evidence-driven." />
           {isLoading && <p className="studio-empty">Loading engineering systems...</p>}
           {isError && <div className="studio-empty"><p>Engineering systems could not be loaded.</p><button type="button" className="studio-button studio-button--secondary" onClick={() => refetch()}>Try again</button></div>}
           {!isLoading && !isError && <ProjectCollection projects={systems} emptyMessage="Engineering systems are temporarily unavailable." />}
