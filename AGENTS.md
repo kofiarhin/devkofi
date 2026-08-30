@@ -1,762 +1,196 @@
-# Agent Operating Guide
+# DevKofi AI Operating Guide
 
-This file defines how AI coding agents should work in this repository. It is intended for OpenAI Codex, Claude Code, Cursor, and similar tools.
+`AGENTS.md` is the canonical operating guide for AI work in this repository. `CLAUDE.md` is a compatibility entry point and must defer here.
 
-Customize placeholders before using this in a production project. MERN is the default example stack, but these rules apply to any stack.
+The canonical operating loop is:
+
+```text
+/morning-brief
+  ↓
+human selects or refines one outcome
+  ↓
+/ticket
+  ↓
+/spec
+  ↓
+/plan
+  ↓
+explicit implementation approval
+  ↓
+/implement-plan
+  ↓
+RED → GREEN → REFACTOR → VERIFY
+  ↓
+review + project-memory sync
+```
+
+`RUN_WORKFLOW.md`, `WORK_REQUEST.md`, `_workflow/`, `_spec/`, `_task/`, `_progress/`, `_review/`, `_summary/`, `_release/`, and related legacy workflow artifacts are retained for history/compatibility but are not the active orchestration path. Do not create new competing workflow state there unless the user explicitly requests legacy workflow work.
 
 ## Project Context
 
-- Project name: `DevKofi`
-- Product summary: Kofi Arhin's creative technology studio for product engineering, creative development, photography, content, and selected product work.
-- Primary stack: MERN by default unless changed
-  - Frontend: React, Vite, Tailwind CSS
-  - Backend: Node.js, Express, MongoDB, Mongoose
-  - Testing: Vitest/React Testing Library for frontend, Jest/Supertest for backend
-- Deployment: Vercel client and Heroku API; deployment requires separate approval.
-- Workflow entrypoints:
-  - `<artifact-root>/request.md` (active run-scoped request state)
-  - `WORK_REQUEST.md` (optional/manual compatibility input)
-  - `RUN_WORKFLOW.md`
-  - `.agents/skills/grill-me/SKILL.md`
-  - `.skills/design-taste-frontend/SKILL.md`
-- Workflow artifact scope:
-  - First detect current branch with `git branch --show-current`.
-  - First detect current worktree path with `git rev-parse --show-toplevel`.
-  - Run id defaults to current branch and may be overridden with `CODEX_WORKFLOW_RUN_ID`.
-  - Sanitize `/` and `\` in run ids to `__`.
-  - Active artifact root is `_workflow/runs/<run-id>/`.
-  - Agents must update only their own run directory.
-  - Shared `_workflow/index.md` and `_workflow/runs/README.md` are optional index/guidance files only.
-- Main workflow memory:
-  - `<artifact-root>/request.md`
-  - `<artifact-root>/handoff.md`
-  - `<artifact-root>/spec.md`
-  - `<artifact-root>/tasks.md`
-  - `<artifact-root>/progress.md`
-  - `<artifact-root>/review.md`
-  - `<artifact-root>/summary.md`
-  - `<artifact-root>/release-notes.md`
-  - `_decisions/`
-- Reusable `polish-ui` workflow artifacts:
-  - Use `.workflow/artifacts/polish-ui/` for polish-specific evidence and artifacts.
-  - Activate `polish-ui` only for UI redesign, UI polish, and frontend interface refinement tasks such as `polish ui`, `redesign ui`, `improve this interface`, `make this screen production-ready`, `visual polish pass`, and `refine this frontend`.
-  - Keep the default workflow intact and keep existing conditional frontend taste routing for frontend UI code generation, JSX/TSX markup, and CSS/Tailwind styling.
-  - Reuse `.skills/design-taste-frontend/SKILL.md` before implementation for audit and after implementation for final UI review.
-  - Record `Applied skill: design-taste-frontend` whenever the taste skill is applied.
-  - Do not force screenshots when browser automation is unavailable; use code-surface review as the fallback.
-- Supporting docs:
-  - `PRD.md`
-  - `roadmap.md`
-  - `review.md`
-  - `context/product.md`
-  - `context/architecture.md`
-  - `context/decisions.md`
-  - `context/current-state.md`
-  - `docs/PROJECT_CONTEXT.md`
-  - `docs/ARCHITECTURE.md`
-  - `docs/VERIFY.md`
-  - `docs/DECISIONS.md`
-  - `docs/PROMPTS.md`
+DevKofi is a MERN mentorship platform with a Vite/React learning portal and an Express/MongoDB API. It onboards mentees, presents curriculum/pricing, handles mentorship/contact/newsletter intake, provides authenticated templates/portal experiences, and supports mentorship-team administration.
 
-## Product Direction
+Repository-backed stack:
 
-- The intended product is the DevKofi creative technology studio defined in `PRD.md`.
-- Mentorship is historical/deprecated product context, not the active public direction.
-- Preserve current mentorship-related runtime behavior and records until a separate approved audit authorizes changes.
-- Keep intended, implemented, verified, merged, and deployed states distinct.
-- The Setup PRD Workspace skill is installed at `.claude/skills/setup-prd-workspace/`.
+- Frontend: React 19, Vite 7, React Router 7, TanStack Query 5, Redux Toolkit, Framer Motion.
+- Styling: the repository README documents SCSS Modules as the convention. Tailwind 4 tooling is present in `client/package.json`; do not introduce Tailwind-based styling into existing surfaces unless a ticket/spec explicitly resolves that convention.
+- Backend: Node.js, Express 5, MongoDB/Mongoose 8, CommonJS, JWT/bcrypt, Nodemailer.
+- Testing: Vitest/Testing Library on the client; Jest/Supertest on the server.
+- Package manager: npm.
+- Documented deployment targets: Vercel for the frontend and Heroku/Render for the backend. Treat current deployment state as unverified unless inspected.
 
-## Operating Rules
-
-1. If the latest user prompt looks like project work, treat it as the active work request and route it through `RUN_WORKFLOW.md`.
-2. Project work includes requests such as `implement`, `fix`, `create`, `generate`, `audit`, `refactor`, `test`, `document`, `deploy`, `review`, or similar software changes.
-3. Automatically sync the active user prompt into `<artifact-root>/request.md` only after grill-me has produced the Shared Understanding Handoff, unless `skip questions` is set (in which case sync immediately). Do not auto-update root `WORK_REQUEST.md`; it is optional/manual compatibility input only. Do not ask the user to manually edit workflow docs first.
-4. Default execution mode is `complete-workflow`.
-5. Execution modes:
-   - `plan-only`: run grill-me intake, write spec, stop for spec approval, write task plan only after approval, then stop.
-   - `single-task`: run grill-me intake, write spec, stop for spec approval, write task plan only after approval, execute only the next ready task through the full 3-pass hardening loop, update artifacts, then stop.
-   - `complete-workflow`: run grill-me intake, write spec, stop for spec approval, write task plan only after approval, then execute all generated tasks sequentially until the request/spec is complete or a stop condition is reached; each executable task must complete the full 3-pass hardening loop before the next task starts.
-6. Agents must not stop after `TASK-001` unless execution mode is explicitly `single-task` or a stop condition is reached.
-7. Agents must continue through `TASK-002`, `TASK-003`, and later tasks automatically when the current task is `Done` and safe to continue.
-8. Workflow requests must use the grill-me skill at `.agents/skills/grill-me/SKILL.md` as the default intake engine before any spec, task plan, or implementation work.
-
-9. Preserve the existing workflow sequence. Conditional frontend taste routing does not create a new default workflow or bypass intake, spec approval, task planning, task execution, verification, review, release notes, summary, or health check.
-10. Load/apply `.skills/design-taste-frontend/SKILL.md` only when a task or work surface involves frontend UI code generation, JSX/TSX markup, CSS/Tailwind styling, UI redesign, or UI polish.
-11. Do not apply `.skills/design-taste-frontend/SKILL.md` for backend-only, API-only, database-only, auth-only, test-only, or docs-only tasks.
-12. For mixed frontend/backend tasks, apply `.skills/design-taste-frontend/SKILL.md` only to the frontend UI work. Backend, API, database, auth, test-only, and docs-only work proceeds without the taste skill.
-13. When the skill is applied, record this exact line in task evidence and downstream workflow artifacts: `Applied skill: design-taste-frontend`.
-14. Do not create a separate taste skill.
-15. If frontend UI scope is discovered after spec generation, pause before frontend UI edits, read the taste skill, update spec/task acceptance criteria for the frontend UI work, record `Applied skill: design-taste-frontend`, then continue.
-16. Grill-me asks one focused question at a time and includes a recommended answer with every question.
-17. Grill-me inspects the repo (code, docs, workflow files) instead of asking when an answer can be discovered locally.
-18. The normal workflow starts only after grill-me has produced the Shared Understanding Handoff and the normalized request has been synced into `<artifact-root>/request.md`.
-19. Do not touch code, create `<artifact-root>/spec.md`, or create `<artifact-root>/tasks.md` during the grill-me intake phase.
-20. If the user says `skip questions`, bypass grill-me, generate a best-effort spec, and clearly record assumptions.
-21. If the user says `continue workflow`, do not invoke grill-me; resume from `<artifact-root>/handoff.md`.
-22. No implementation is allowed without a saved spec in `<artifact-root>/spec.md`.
-23. No task plan may be generated until the saved spec has explicit user approval.
-24. No implementation is allowed without a saved task plan in `<artifact-root>/tasks.md`.
-25. Before planning, read `<artifact-root>/handoff.md` if it exists, `<artifact-root>/progress.md`, and the latest relevant file in `<artifact-root>/summary.md`.
-26. Before touching code for any task, read `<artifact-root>/handoff.md`, `<artifact-root>/progress.md`, and the latest relevant file in `<artifact-root>/summary.md`.
-27. Read `RUN_WORKFLOW.md` before planning or editing.
-28. Read `docs/PROJECT_CONTEXT.md` and relevant supporting docs before implementation, updating them only when durable project facts change.
-29. Generate the active spec at `<artifact-root>/spec.md`.
-30. Display the spec summary and path, then stop for explicit approval using the approval gate in `RUN_WORKFLOW.md`.
-31. Generate a vertical task plan in `<artifact-root>/tasks.md` from the approved saved spec.
-32. Tasks must be vertical slices of user-visible or independently verifiable value, not vague frontend/backend/database layers.
-33. Break work into Ralph Wiggum-style tasks: small, literal, safe, sequential steps that are easy to follow and hard to misinterpret.
-34. Implement tasks sequentially, one task at a time.
-35. Keep changes scoped to the active task.
-36. Never implement unrelated work.
-37. Every task must move through `Planned -> Ready -> In Progress -> Verified -> Reviewed -> Done`.
-38. Every executable task must run through Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish before it can be marked `Done`.
-39. For every code-changing task, each Build, Refine, and Polish iteration must embed TDD-first Red -> Green -> Refactor: write or update the failing test first, verify the expected failure, implement the smallest passing change, verify tests pass, refactor without changing behavior, and verify tests still pass.
-40. Each iteration must include documented goal, changes made, test plan, Red phase evidence, Green phase evidence, Refactor phase evidence, test commands run, verification command/result, review findings, acceptance status, remaining issues, and next action.
-41. Allowed terminal task states are `Done`, `Blocked`, and `Needs Human Review`.
-42. A task cannot be `Done` unless all three iterations are complete, verification was attempted in each iteration, the task was reviewed in each iteration, and final acceptance is complete.
-43. A code-changing task cannot be `Done` unless relevant tests were added or updated first, the failing test was observed before implementation when possible, passing verification was recorded after implementation and after refactor, and any missing-test exception is explicitly justified.
-44. A task cannot move to `Reviewed` unless verification was attempted.
-45. If verification cannot run, the task can be `Needs Human Review`, not `Done`.
-46. Never skip verification. If verification cannot run, document the reason and the best available manual check.
-47. Record acceptance results for every task. A task cannot be `Done` unless every required acceptance criterion is checked `[x]`; `[ ]` or `[~]` means `Blocked` or `Needs Human Review`.
-48. If verification fails during any iteration, follow the failure recovery protocol inside that iteration: identify the failing command, capture the error, classify the failure, fix only in-scope issues, rerun the exact failing command, and stop with `Needs Human Review` if targeted recovery does not prove the task.
-49. After each task, append progress to `<artifact-root>/progress.md`, including separate iteration evidence, TDD-first evidence for code-changing tasks, acceptance results, and any failure recovery notes.
-50. After each task, update `<artifact-root>/handoff.md` so it reflects the latest completed task, current task, current iteration, current phase, blockers, dirty worktree status, verification status, acceptance status, iteration evidence status, and next step.
-51. Always keep `<artifact-root>/handoff.md` current; do not leave handoff stale after task execution.
-52. The handoff file should allow another agent/session to resume without rereading the entire conversation.
-53. `continue workflow` must start from `<artifact-root>/handoff.md`.
-54. If `<artifact-root>/handoff.md` conflicts with `<artifact-root>/progress.md`, trust `<artifact-root>/progress.md` for completed task history and update handoff accordingly.
-55. Before final review and summary, run or document the final diff audit with `git diff --stat` and `git diff` when available.
-56. After all executable tasks are complete or a stop condition is reached, create a review file in `<artifact-root>/review.md`.
-57. After review, create release notes in `<artifact-root>/release-notes.md`.
-58. After release notes are complete, create or append a summary in `<artifact-root>/summary.md` and update `<artifact-root>/handoff.md`.
-59. Record meaningful architecture or product decisions in `_decisions/`; do not create decision files for routine edits.
-60. Before the final response, run the workflow health check.
-61. Continue to the next task only when the current task completed Build -> Refine -> Polish, is verified, reviewed, documented, all required TDD evidence for code-changing tasks is documented or explicitly excepted, all required acceptance criteria are met, and safe to continue.
-62. Stop if scope is unclear, risky, destructive, unverified, blocked, or requires unavailable access.
-63. Final review, release notes, and summary must represent the full completed request or documented stop state, not only the first task.
-
-## Required Workflow
-
-For a work request:
-
-1. Use the latest direct user prompt as the active request when it looks like project work; otherwise read `<artifact-root>/request.md`, falling back to root `WORK_REQUEST.md` only as manual legacy input.
-2. Invoke the grill-me skill at `.agents/skills/grill-me/SKILL.md` to produce a Shared Understanding Handoff, unless the prompt explicitly says `skip questions` or `continue workflow`.
-3. Sync the normalized active request into `<artifact-root>/request.md`; do not auto-update root `WORK_REQUEST.md`.
-4. Read `RUN_WORKFLOW.md`.
-5. If questions are skipped, bypass grill-me and write assumptions into the spec. If the prompt is `continue workflow`, skip grill-me and resume from `<artifact-root>/handoff.md`.
-6. Check repository status for dirty worktree protection:
-
-   ```bash
-   git status --short
-   ```
-
-   Document existing dirty files, files planned for this workflow, and overlap risk. If dirty files overlap with planned files, stop and ask before editing. If dirty files are unrelated, continue but document them. Never overwrite user changes and never clean/reset files unless explicitly instructed.
-7. Read `<artifact-root>/handoff.md` if it exists, `<artifact-root>/progress.md`, the latest relevant `<artifact-root>/summary.md` entry, and durable supporting docs.
-8. Generate a detailed spec in `<artifact-root>/spec.md` using the required detailed spec template.
-9. Display the spec summary and path, then stop for explicit approval using the approval gate in `RUN_WORKFLOW.md`.
-10. Generate a vertical task plan in `<artifact-root>/tasks.md` from the approved saved detailed spec only after approval.
-11. If execution mode is `plan-only`, stop after saving the approved spec-derived task plan.
-12. If execution mode is `single-task`, execute only the next ready task through the full 3-pass hardening loop, update artifacts, then stop.
-13. If execution mode is omitted, use `complete-workflow`.
-14. In `complete-workflow`, execute every task in order until all tasks are complete or a stop condition is reached; each executable task must complete Build -> Refine -> Polish before the next task starts.
-15. For each task:
-    - read latest `<artifact-root>/progress.md`
-    - read relevant `<artifact-root>/summary.md`
-    - inspect the codebase for the current task
-    - implement only the current task through Iteration 1 Build, using Red -> Green -> Refactor for code-changing work
-    - refine only in-scope issues through Iteration 2 Refine, using Red -> Green -> Refactor for code-changing work
-    - polish and harden through Iteration 3 Polish, using Red -> Green -> Refactor for code-changing work
-    - verify, critique, and record evidence inside each iteration
-    - append progress to `<artifact-root>/progress.md`
-    - update `<artifact-root>/handoff.md`
-    - continue to the next task automatically only when the current task is `Done` and safe
-16. Before final review/summary, run the final diff audit:
-
-    ```bash
-    git diff --stat
-    git diff
-    ```
-
-    Document whether the diff matches the saved spec, unrelated files were touched, workflow artifacts were updated correctly, tests were added or updated for changed behavior, scope creep occurred, generated junk or temporary files appeared, and sensitive values or secrets were accidentally added. If either command cannot run, document why.
-17. After all allowed tasks are complete or the workflow stops, create a review file in `<artifact-root>/review.md`.
-18. After the review, create release notes in `<artifact-root>/release-notes.md`.
-19. After release notes, create or append a summary in `<artifact-root>/summary.md`.
-20. Run the workflow health check and mark the result as `Passed`, `Partial`, or `Failed`.
-21. Check repository status again:
-
-    ```bash
-    git status --short
-    ```
-
-22. Summarize results, include the final artifact checklist, and suggest a commit message.
-
-## Continue Workflow Command
-
-If the user says `continue workflow`:
-
-1. Read `<artifact-root>/handoff.md` first and use it as the primary resume source.
-2. Read `<artifact-root>/progress.md` to verify completed task history.
-3. If `<artifact-root>/handoff.md` conflicts with `<artifact-root>/progress.md`, trust `<artifact-root>/progress.md` for completed task history and update handoff.
-4. Read the latest relevant file in `<artifact-root>/summary.md`, if any.
-5. If a spec exists but no task plan exists for the active request, resume at the spec approval gate, show the spec summary and path again, and wait for approval. Do not auto-generate tasks.
-6. If a task plan exists, read the task plan referenced by `<artifact-root>/handoff.md`, or the latest file in `<artifact-root>/tasks.md` if handoff has no task plan.
-7. Read the spec referenced by that task plan.
-8. Find the next task whose status is not `Done` and the current iteration recorded in `<artifact-root>/handoff.md`.
-9. Continue from that task and iteration without asking the original intake questions again unless the request, scope, or acceptance criteria are unclear.
-10. Continue executing remaining tasks sequentially until all tasks are complete or a stop condition is reached; each executable task must complete the full 3-pass hardening loop before the next task starts.
-11. Do not regenerate the entire spec unless the request changed.
-12. If every task is `Done`, continue with any missing `<artifact-root>/review.md`, `<artifact-root>/summary.md`, handoff update, workflow health check, or final response steps.
-
-## Questioning Rules
-
-Use the grill-me skill at `.agents/skills/grill-me/SKILL.md` as the default intake engine for every workflow request. Grill-me asks one focused question at a time, includes a recommended answer with every question, and inspects the repo instead of asking when an answer can be discovered from code, docs, or workflow files. The normal workflow only starts after grill-me has produced the Shared Understanding Handoff.
-
-Grill-me must cover:
-
-- Goal and business/user value.
-- Primary users and roles.
-- Exact behavior and expected workflow.
-- UI, API, data model, and state expectations.
-- Edge cases and failure states.
-- Constraints, dependencies, and compatibility requirements.
-- Success criteria and verification.
-- Explicitly out-of-scope work.
-
-Stop grilling when the goal, scope, out-of-scope work, user-facing behavior, affected surfaces, and acceptance criteria are clear, or when the remaining unknowns can be documented as assumptions.
-
-`skip questions` bypasses grill-me and proceeds with a best-effort spec that records assumptions. `continue workflow` bypasses grill-me and resumes from `<artifact-root>/handoff.md`.
-
-## Spec Rules
-
-Each spec in `<artifact-root>/spec.md` must be a detailed, implementation-aware execution blueprint. Use `Not applicable` for irrelevant sections. Do not delete required sections.
-
-# Detailed Spec Template
-
-## 1. Metadata
-- Spec filename:
-- Date:
-- Request ID / slug:
-- Request source:
-- Execution mode:
-- Request classification:
-- Scope level:
-- Risk level:
-
-## 2. Original Request
-- Raw user request:
-- Normalized request:
-- Source prompt / `<artifact-root>/request.md` reference:
-
-## 3. Questions And Answers
-- Questions asked:
-- Answers received:
-- Questions skipped:
-- Remaining open questions:
-
-## 4. Problem Definition
-- Problem being solved:
-- Why it matters:
-- Current pain point:
-- Expected value:
-
-## 5. Current State Analysis
-- Existing behavior:
-- Existing architecture/components:
-- Existing files/modules likely involved:
-- Existing data flow:
-- Existing API/UI/CLI/workflow behavior:
-- Existing tests or verification coverage:
-
-## 6. Desired End State
-- Expected final behavior:
-- User-facing outcome:
-- Developer-facing outcome:
-- System/workflow outcome:
-- Backward compatibility expectations:
-
-## 7. Scope
-- In scope:
-- Out of scope:
-- Non-goals:
-- Explicit boundaries:
-
-## 8. Users And Use Cases
-- Primary users:
-- Secondary users:
-- Main use cases:
-- Edge use cases:
-
-## 9. Functional Requirements
-- Required behaviors:
-- Inputs:
-- Outputs:
-- State changes:
-- Error states:
-- Permissions/auth expectations:
-
-## 10. Non-Functional Requirements
-- Performance expectations:
-- Reliability expectations:
-- Security/privacy expectations:
-- Accessibility expectations:
-- Maintainability expectations:
-- DX expectations:
-
-## 11. Affected Surfaces
-- Files likely affected:
-- Directories likely affected:
-- UI surfaces:
-- API routes:
-- Components:
-- Services:
-- Database/schema:
-- Config/env vars:
-- Tests:
-- Docs:
-- Workflow artifacts:
-
-## 12. Dependency And Integration Map
-- Internal dependencies:
-- External packages/services:
-- Integration points:
-- Ordering constraints:
-- Migration/setup requirements:
-
-## 13. Data And State Impact
-- Data models:
-- Database changes:
-- State management changes:
-- Cache/session/local storage impact:
-- Backward compatibility impact:
-
-## 14. UX / API / Workflow Expectations
-- UX expectations:
-- API contract expectations:
-- CLI/workflow behavior:
-- Error handling expectations:
-- Empty/loading/success/failure states:
-
-## 15. Execution Strategy
-- Recommended implementation approach:
-- Suggested sequencing:
-- Safe rollout/migration approach:
-- Files to inspect before editing:
-- Decisions to avoid until more evidence exists:
-
-## 16. Verification Strategy
-- Required automated checks:
-- Required manual checks:
-- Test types needed:
-- Build/lint/typecheck expectations:
-- Acceptance evidence required:
-- Proof of completion:
-
-## 17. Acceptance Criteria
-- [ ] Concrete measurable criterion 1
-- [ ] Concrete measurable criterion 2
-- [ ] Concrete measurable criterion 3
-
-## 18. Edge Cases And Failure Modes
-- Edge cases:
-- Failure modes:
-- Regression risks:
-- Recovery expectations:
-
-## 19. Risks And Mitigations
-- Technical risks:
-- Product/UX risks:
-- Security risks:
-- Scope risks:
-- Mitigation plan:
-
-## 20. Assumptions
-- Explicit assumptions:
-- Confidence level:
-- What to revisit if assumptions are wrong:
-
-## 21. Open Questions
-- Blocking questions:
-- Non-blocking questions:
-- Execution impact:
-
-## 22. Task Extraction Notes
-- Suggested vertical task boundaries:
-- Suggested first task:
-- Suggested task ordering:
-- Areas that should not become separate tasks:
-- How the 3-pass Build -> Refine -> Polish loop should apply:
-
-Use timestamped or slugged filenames, such as:
-
-```txt
-<artifact-root>/spec.md
-```
-
-## Task Planning Rules
-
-Each task plan in `<artifact-root>/tasks.md` must include:
-
-- Spec file used.
-- Planning date.
-- Progress and summary files read.
-- Detailed spec sections used to derive or justify the task plan.
-- Task list.
-
-Task planning must be derived from the saved detailed spec, not from the raw request alone. The plan must cite or reference the detailed spec sections it used, especially affected surfaces, dependency and integration map, data and state impact, UX/API/workflow expectations, execution strategy, verification strategy, acceptance criteria, edge cases, risks and mitigations, assumptions, open questions, and task extraction notes.
-
-Each task must include:
-
-- Task ID.
-- Status.
-- Objective.
-- Files likely affected.
-- Checklist.
-- Iteration plan for Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish.
-- Test plan.
-- Red phase evidence.
-- Green phase evidence.
-- Refactor phase evidence.
-- Test commands run.
-- Acceptance criteria.
-- Acceptance result.
-- Verification commands.
-- Stop condition.
-- Out-of-scope items.
-
-Each iteration plan must include:
-
-- Goal.
-- Changes made.
-- Test plan.
-- Red phase evidence.
-- Green phase evidence.
-- Refactor phase evidence.
-- Test commands run.
-- Verification command/result.
-- Review findings.
-- Acceptance status.
-- Remaining issues.
-- Next action.
-
-Task statuses must follow this lifecycle:
-
-```txt
-Planned -> Ready -> In Progress -> Verified -> Reviewed -> Done
-```
-
-Allowed terminal states:
-
-- `Done`
-- `Blocked`
-- `Needs Human Review`
-
-Rules:
-
-- A task cannot be `Done` unless all three iterations are complete, verification was attempted in each iteration, the task was reviewed in each iteration, and final acceptance is complete.
-- A code-changing task cannot be `Done` unless relevant tests were added or updated first, the failing test was observed before implementation when possible, passing verification was recorded after implementation and after refactor, and any missing-test exception is explicitly justified.
-- A task cannot move to `Reviewed` unless verification was attempted.
-- If verification cannot run, the task can be `Needs Human Review`, not `Done`.
-- A task cannot be `Done` unless every required acceptance criterion is checked `[x]`.
-- If any acceptance result is `[ ]` or `[~]`, the task must be `Blocked` or `Needs Human Review`.
-- If required iteration evidence is missing, the task cannot be `Done` and workflow health must be `Partial` or `Failed`.
-
-Acceptance results use:
-
-- `[x] Criterion met`
-- `[ ] Criterion not met`
-- `[~] Partially met with notes`
-
-Tasks must be vertical slices. Prefer tasks like `TASK-001: Add theme toggle through settings and persist preference` over tasks like `TASK-001: Update frontend`.
-
-## Ralph Wiggum Task Style
-
-Tasks should be small enough that the agent can say exactly what it is doing without interpretation.
-
-Good task shape:
-
-- One concrete outcome.
-- One narrow set of files.
-- Plain verbs.
-- No bundled refactors.
-- Clear stop condition.
-- Clear verification.
-
-Example:
-
-```md
-### TASK-001: Add dark theme toggle in settings
-
-Objective:
-Add one visible settings toggle that switches the app between light and dark themes.
-```
-
-## Progress Tracking
-
-Maintain `<artifact-root>/progress.md`.
-
-`<artifact-root>/progress.md` is append-only task history. It records what happened over time and is authoritative for completed task history.
-
-`<artifact-root>/handoff.md` is the live resume state. Keep it updated with the current phase, active files, last completed task, current task, next task, blockers, verification status, and workflow health status.
-
-After each task, append:
-
-- Task ID.
-- Status.
-- Lifecycle transition reached.
-- Files changed.
-- Iteration evidence for Iteration 1 Build, Iteration 2 Refine, and Iteration 3 Polish.
-- Test plan, Red phase evidence, Green phase evidence, Refactor phase evidence, and test commands run for each code-changing iteration, or an explicit missing-test exception.
-- Acceptance result.
-- Verification result.
-- Failure recovery notes, if verification failed.
-- Review result.
-- Blockers.
-- Next step.
-
-Do not replace previous progress entries.
-
-## Summary Rules
-
-After implementation and before the final summary, create a review file in `<artifact-root>/review.md`.
-
-The review must include:
-
-- Request.
-- Spec file used.
-- Task plan used.
-- Tasks reviewed.
-- Bugs found.
-- Scope creep check.
-- Final diff audit.
-- Failure recovery notes.
-- Missing tests.
-- Security concerns.
-- Architecture concerns.
-- Follow-up tasks.
-- Final review verdict.
-
-After the review is complete, create release notes in `<artifact-root>/release-notes.md`, then create or append a summary in `<artifact-root>/summary.md`.
-
-The release note must include:
-
-- Request.
-- User-facing changes.
-- Developer changes.
-- New routes/APIs.
-- New env vars.
-- Database/schema changes.
-- Dependencies added/removed.
-- Test commands run.
-- Known limitations.
-- Follow-up work.
-- Suggested commit message.
-
-If there are no user-facing changes, say so. If there are no new APIs, env vars, dependencies, or schema changes, say `none`.
-
-`<artifact-root>/summary.md` is completed workflow history. It records finished workflow runs and should not replace the live state in `<artifact-root>/handoff.md`.
-
-The summary must include:
-
-- Request.
-- Spec file used.
-- Whether the detailed spec was complete or had gaps, including any missing required sections and whether they were repaired before planning.
-- Task plan used.
-- Review file used.
-- Tasks completed.
-- Iteration evidence summary.
-- Files changed.
-- Verification run.
-- Acceptance results.
-- Failure recovery notes.
-- Final diff audit.
-- Release notes file used.
-- Unresolved issues.
-- Next recommended work.
-
-## Workflow Health Check
-
-Before the final response, check:
-
-- Did `<artifact-root>/request.md` sync?
-- Did `<artifact-root>/handoff.md` exist and reflect the latest workflow state?
-- Did the spec file exist?
-- Did the spec include every required detailed spec section, or was any missing section repaired before planning?
-- Was the spec approval gate shown after saving the spec and before task planning?
-- Was explicit user approval recorded before `<artifact-root>/tasks.md` generation?
-- Did the task plan exist?
-- Was progress updated?
-- Was the review created?
-- Was the summary created?
-- Were release notes created?
-- Was required iteration evidence recorded for every executable task?
-- Was TDD-first evidence recorded for every code-changing task, including first-test Red evidence, expected failure when possible, Green verification, Refactor verification, and any justified missing-test exception?
-- Was the final diff audit completed or documented?
-- Was the dirty worktree checked?
-- Were acceptance results completed?
-- Were verification commands run or documented?
-- Was scope respected?
-- Were decisions recorded if needed?
-
-Final health status must be one of:
-
-- `Passed`
-- `Partial`
-- `Failed`
-
-`Passed` requires a synced `<artifact-root>/request.md`, root `WORK_REQUEST.md` left manual/compatibility-only, a detailed spec with every required section, explicit spec approval before task planning, a task plan derived from and citing or referencing the approved detailed spec, progress, handoff, review, summary, release notes, required iteration evidence for every executable task, required TDD-first evidence for every code-changing task or justified missing-test exceptions, final diff audit completed or documented, dirty worktree checked, acceptance results completed, verification run or documented, scope respected, and decisions recorded if needed.
-
-If release notes, final diff audit, dirty worktree check, required detailed spec sections, explicit spec approval before task planning, iteration evidence, TDD-first evidence for code-changing tasks, or acceptance results are missing, health must be `Partial` or `Failed` depending on severity. If `<artifact-root>/tasks.md` was generated before explicit approval or workflow execution continued without user confirmation, health must be `Partial` or `Failed` depending on severity. If any required artifact is missing, mark workflow health as `Failed`.
-
-## Implementation Boundaries
-
-Agents must not:
-
-- Touch implementation code before questions, spec, spec approval, and task plan are complete.
-- Implement without a saved spec in `<artifact-root>/spec.md`.
-- Generate `<artifact-root>/tasks.md` before explicit user approval of the saved spec.
-- Implement without a saved task plan in `<artifact-root>/tasks.md`.
-- Implement more than one active task at a time.
-- Expand scope beyond the request and active task.
-- Rewrite large parts of the application without explicit approval.
-- Introduce new dependencies unless the active task requires them and the reason is documented.
-- Change deployment configuration unless the active task requires it.
-- Hard-code secrets, API keys, tokens, credentials, or environment-specific URLs.
-- Duplicate server state into client global state.
-- Expose sensitive fields such as `passwordHash`, tokens, or private user data.
-- Remove tests or weaken validation to make a task pass.
-- Create fake application code to satisfy the workflow.
-- Run destructive commands such as `git reset --hard`, `git clean -fd`, or force pushes unless explicitly instructed.
-
-## Architecture Guidance
-
-Default MERN structure:
-
-```txt
-client/
-  src/
-    components/
-    hooks/
-      queries/
-      mutations/
-    lib/
-    pages/
-    redux/
-    routes/
-    services/
-    styles/
-    utils/
-  test/
-
-server/
-  config/
-  controllers/
-  middleware/
-  models/
-  routes/
-  tests/
-  utils/
-```
-
-Guidelines:
-
-- Prefer existing project conventions over new patterns.
-- Keep UI components focused on rendering and interaction.
-- Put frontend API calls in service files or query/mutation hooks.
-- Use a shared frontend API client when the stack supports it.
-- Use a server-state library for fetched data when the project already has one.
-- Use global client state only for client-owned state.
-- Keep backend route handlers thin; move business logic into services or utilities when it grows.
-- Validate input at API boundaries.
-- Keep persistence models authoritative for data rules.
-- Document meaningful architecture or product decisions in `_decisions/`. Keep `docs/DECISIONS.md` for durable project-level decision guidance when useful.
-
-## Testing Expectations
-
-Use the narrowest validation that proves the active task works, then broaden when risk is higher.
-
-Common commands:
+Useful commands from current package manifests:
 
 ```bash
-# Frontend
-cd client && npm test
-cd client && npm run lint
-cd client && npm run build
-
-# Backend
-cd server && npm test
-cd server && npm run lint
-
-# Full project, if configured
+npm run dev
 npm test
-npm run lint
-npm run build
-npm run typecheck
+npm run test:client
+npm --prefix client run lint
+npm --prefix client run build
 ```
 
-If tests or scripts are missing:
+There is no configured TypeScript/type-check command in the inspected package manifests.
 
-- State that they are missing.
-- Recommend the command that should exist.
-- Use available manual verification.
-- Record the gap in `<artifact-root>/progress.md` and the final `<artifact-root>/summary.md` entry.
+## Sources of Truth
 
-## Git Workflow Guidance
+Use this precedence for repository work:
 
-- Check `git status --short` before and after edits.
-- Do not overwrite user changes.
-- Keep commits task-sized.
-- Use clear commit messages:
+1. hard safety/permission boundaries and an approved execution contract;
+2. the user's latest explicit instruction;
+3. this `AGENTS.md` operating guide;
+4. `roadmap.md` and `review.md`;
+5. relevant `context/*.md` and real files under `customers/`;
+6. the active ticket → spec → plan chain;
+7. current repository/test evidence;
+8. legacy workflow documents only when they do not conflict with the sources above.
 
-  ```txt
-  <type>: <short task summary>
-  ```
+When documentation conflicts with current code or package manifests, record the conflict instead of silently choosing a story that is convenient.
 
-- Do not commit unless explicitly instructed.
-- Before preparing a commit, summarize files changed, validation run, risks, and follow-up work.
+## Operator Flow
 
-## Stop Conditions
+Use `/morning-brief` for read-only orientation. It may inspect project context, Git/GitHub state, roadmap priorities, verification evidence, risks, and real customer signals, then recommend at most one next ticket outcome.
 
-Stop and ask for direction when:
+A morning brief does not edit files, create tickets automatically, authorize implementation, activate routines, commit, push, merge, or deploy.
 
-- The work request is ambiguous enough that implementation could go in multiple incompatible directions.
-- Acceptance criteria conflict with the specification.
-- The implementation requires credentials or access that is unavailable.
-- A destructive migration or data loss is possible.
-- The task requires changing public API contracts beyond the stated scope.
-- The task requires introducing a new paid service or dependency.
-- Existing uncommitted changes overlap with the files needed and intent is unclear.
-- Tests fail for reasons unrelated to the current task and the fix would be out of scope.
-- The request is broad but no safe first vertical task can be identified.
+## Delivery Flow
 
-## Final Response Format
+After the user selects an outcome:
 
-At the end of a workflow run, report:
+1. `/ticket` defines **what should change and why**. One ticket equals one outcome and one visible finish line.
+2. `/spec` defines the repository-grounded technical contract for the approved ticket.
+3. `/plan` defines the smallest ordered implementation slices. Testable slices use RED → GREEN → REFACTOR → VERIFY.
+4. `/implement-plan` executes only an approved plan, verifies the result, reviews the diff, and synchronizes project memory from observed evidence.
 
-- Request classification.
-- Spec file used.
-- Whether the detailed spec was complete or had gaps.
-- Task plan used.
-- Tasks completed.
-- Iteration evidence summary.
-- Files changed.
-- Verification commands and results.
-- Progress updated in `<artifact-root>/progress.md`.
-- Handoff updated in `<artifact-root>/handoff.md`.
-- Review updated in `<artifact-root>/review.md`.
-- Release notes updated in `<artifact-root>/release-notes.md`.
-- Summary updated in `<artifact-root>/summary.md`.
-- Decisions updated in `_decisions/<file>.md` or `none`.
-- Workflow health status: `Passed`, `Partial`, or `Failed`.
-- Final artifact checklist with exact paths:
-  - Work request: `<artifact-root>/request.md`
-  - Handoff: `<artifact-root>/handoff.md`
-  - Spec: `<artifact-root>/spec.md`
-  - Task plan: `<artifact-root>/tasks.md`
-  - Progress: `<artifact-root>/progress.md`
-  - Review: `<artifact-root>/review.md`
-  - Release notes: `<artifact-root>/release-notes.md`
-  - Summary: `<artifact-root>/summary.md`
-  - Decisions: `_decisions/<file>.md` or `none`
-- Unresolved issues or recommended next task.
-- Suggested commit message.
+Do not collapse ticket, spec, plan, and implementation into a single speculative step.
+
+## Grill and Approval Gate
+
+For clear read-only/reversible work, proceed without unnecessary questions.
+
+For materially ambiguous, state-changing, destructive, costly, credential-sensitive, deployment, dependency, data-model, authentication, payment, permission, security, Git-write, routine/schedule, or external-service work:
+
+- inspect available repository context first;
+- ask exactly one material question at a time only when the answer would materially change the outcome;
+- include a recommended answer and the main consequence;
+- before implementation, present a concise Shared Understanding covering goal, scope, requirements, technical approach, risks/assumptions, acceptance criteria, and verification;
+- require explicit approval of that plan before changing state.
+
+A material change to approved scope, architecture, dependencies, migrations, authentication, payments, permissions, risk, acceptance criteria, destructive behavior, or external actions invalidates prior approval and requires a revised plan.
+
+## Working Rules
+
+- Inspect current files, repository state, and relevant project documents before making claims or edits.
+- Keep changes small, focused, reviewable, and inside the active ticket.
+- Preserve unrelated and uncommitted work. Never discard, reset, overwrite, or clean user changes automatically.
+- Existing project conventions override generic stack preferences.
+- JavaScript is the current project language; do not introduce TypeScript without an approved migration.
+- Keep API/data access out of React components. Use services/hooks and TanStack Query for server state.
+- Use Redux Toolkit only for global client-only state such as auth/session metadata or UI state; do not duplicate server records into Redux without a documented reason.
+- Preserve the server's route/controller/model/service/utility boundaries and keep routes thin.
+- Keep environment-specific values and secrets in environment configuration; never hard-code or expose credentials.
+- Do not add dependencies, migrations, authentication changes, payment logic, permission changes, or external services without explicit approval.
+- For frontend UI changes, use the existing design conventions. If `.agents/skills/design-taste-frontend/SKILL.md` is relevant and present, use it only for the frontend UI surface and do not let it bypass this operating flow.
+
+## Testing and Verification
+
+Use TDD by default for testable behavior:
+
+```text
+RED → GREEN → REFACTOR → VERIFY
+```
+
+For every testable implementation slice:
+
+- write/update the smallest behavior test first;
+- run it and confirm a meaningful failure for the missing behavior;
+- implement the smallest passing change;
+- rerun and confirm green;
+- refactor only within scope and keep tests green;
+- run targeted neighboring/regression checks.
+
+After implementation, run only checks relevant to the changed areas, including lint/build when configured and relevant. Never claim a test, lint, build, preview, deployment, commit, push, or release passed unless it was actually run/inspected.
+
+For user-facing work, inspect the actual flow at desktop and mobile widths when browser tooling is available. Check relevant loading, empty, error, success, keyboard/accessibility, console, and network states.
+
+Report checks as `Passed`, `Failed`, or `Not run` with the command/evidence.
+
+## Review Standard
+
+Use `review.md`. Classify findings as:
+
+- `Must fix`: blocks completion or creates material product/security/reliability risk.
+- `Should fix`: important quality issue that does not block the stated outcome.
+- `Okay to ship`: verified, in scope, and consistent with project standards.
+
+Unexpected files, scope creep, secret exposure, broken role/auth behavior, failed required verification, and undocumented material architecture changes are `Must fix` until resolved or explicitly re-approved.
+
+## Permissions
+
+### Safe / read-only
+
+May proceed when relevant:
+
+- inspect files, code, docs, history, branches, issues, pull requests, and current configuration;
+- analyze product/repository state;
+- run non-destructive local tests/checks when the environment allows;
+- propose tickets, specs, plans, reviews, and documentation changes without applying them.
+
+### Approval required
+
+Require explicit approval before:
+
+- creating/editing/deleting repository files;
+- installing/removing dependencies or changing lockfiles;
+- migrations, authentication, payments, permissions, security-sensitive behavior, or customer-data behavior;
+- Git commits, branch pushes, pull-request creation, or other GitHub writes;
+- activating routines/schedules;
+- changing external-service configuration or deployment behavior.
+
+### Human-owned
+
+Do not perform without a separate explicit human decision and an environment that permits it:
+
+- production deployment or release;
+- merge to the protected/default branch;
+- destructive production/customer-data operations;
+- live billing/customer-data policy decisions;
+- credential sharing;
+- security-policy ownership decisions.
+
+## Project Memory
+
+Keep these files aligned only from evidence:
+
+- `context/current-state.md`: what is proposed, implemented, verified, released, or unresolved;
+- `context/architecture.md`: intended versus implemented architecture;
+- `context/decisions.md`: confirmed decisions and unresolved material questions;
+- `context/lessons.md`: concise repository-specific lessons learned from actual implementation/review;
+- `roadmap.md`: ordered outcomes and completion status.
+
+A morning brief, ticket, spec, or plan is not implementation evidence.
+
+## Completion
+
+Work is complete only when the approved outcome is delivered, acceptance criteria are evaluated, relevant checks are run or explicitly reported as unavailable, the diff is reviewed against `review.md`, human-review items are disclosed, and project memory is synchronized where truth changed.
+
+Never equate `implemented`, `verified`, `committed`, `pushed`, `merged`, `deployed`, and `released`.

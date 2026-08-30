@@ -24,7 +24,7 @@ const Templates = () => {
           min-height: 100dvh;
           overflow-x: hidden;
           background:
-            radial-gradient(circle at 82% 12%, rgba(148, 255, 43, 0.08), transparent 25%),
+            radial-gradient(circle at 82% 12%, rgba(148, 255, 43, 0.12), transparent 25%),
             linear-gradient(180deg, #101113 0%, #09090b 58%, #0c0d0f 100%);
           color: #fafafa;
           padding: clamp(24px, 5vw, 48px) clamp(16px, 4vw, 32px) 76px;
@@ -388,12 +388,12 @@ const Templates = () => {
       <div className="templates-shell">
         <section className="templates-hero">
           <div>
-            <p className="templates-kicker">The lab / reusable artifacts</p>
-            <h1 id="templates-title">Useful systems from the studio floor.</h1>
+            <p className="templates-kicker">Template library</p>
+            <h1 id="templates-title">Starter systems for cleaner builds.</h1>
           </div>
           <p className="templates-hero__copy">
-            Working methods, starter systems, and small experiments released
-            from real product practice.
+            Practical documents and code-starting guides for planning,
+            building, and shipping with AI-assisted workflows.
           </p>
         </section>
 
@@ -508,7 +508,7 @@ const Templates = () => {
                           Use Template <ArrowUpRight size={16} weight="bold" />
                         </a>
                       ) : (
-                        <a className="template-card__action" href="/start-a-project">
+                        <a className="template-card__action" href="/contact">
                           Request this template{" "}
                           <ArrowUpRight size={16} weight="bold" />
                         </a>
@@ -544,8 +544,9 @@ const Templates = () => {
         )}
 
         <p className="templates-note">
-          Lab artifacts are loaded from the live library. New tools appear here
-          when they are useful enough to leave the studio.
+          Templates are loaded from the library endpoint so the catalog can
+          change without rewriting the page. Downloads, pricing, and filtering
+          can be added when the template product details are ready.
         </p>
       </div>
     </main>

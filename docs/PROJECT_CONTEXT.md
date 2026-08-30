@@ -1,46 +1,70 @@
-# DevKofi Project Context
+# Project Context
 
-## Summary
+This file captures durable repository facts discovered during workflow runs. Keep it concise and update it when repo conventions become clear.
 
-DevKofi is Kofi Arhin's creative technology studio. The established MERN application is transitioning from a historical mentorship platform to an editorial public experience for product engineering, creative development, photography, content, selected work, experiments, and qualified project enquiries.
+## Project Summary
 
-## Canonical product documents
-
-- Product direction: `PRD.md`
-- Roadmap: `roadmap.md`
-- Review standard: `review.md`
-- Product context: `context/product.md`
-- Architecture: `context/architecture.md`
-- Decisions: `context/decisions.md`
-- Current state: `context/current-state.md`
+- Project name: `<PROJECT_NAME>`
+- Purpose: `<ONE_SENTENCE_PURPOSE>`
+- Current maturity: `<prototype / MVP / production / unknown>`
 
 ## Stack
 
-- Frontend: React 19, Vite 7, React Router, TanStack Query, Redux Toolkit, Framer Motion, SCSS, Tailwind 4 tooling
-- Backend: Node.js, Express 5, MongoDB, Mongoose
-- Testing: Vitest/Testing Library, Jest/Supertest, Playwright
-- Package manager: npm
-- Deployment evidence: Vercel client and Heroku API
+- Frontend: `<Framework or none>`
+- Backend: `<Framework or none>`
+- Database: `<Database or none>`
+- Runtime: `<Node/Python/Ruby/etc.>`
+- Languages: `<Languages>`
+- Styling: `<Tailwind/CSS/SCSS/etc.>`
+- Deployment: `<Platform(s)>`
 
-## Commands
+## Package Manager
+
+- Detected package manager: `<npm / pnpm / yarn / pip / poetry / etc.>`
+- Lockfiles: `<package-lock.json / pnpm-lock.yaml / yarn.lock / etc.>`
+- Install command: `<command>`
+
+## Common Commands
 
 ```bash
-npm test
-npm run lint --prefix client
-npm run build --prefix client
+# Test
+<command>
+
+# Lint
+<command>
+
+# Build
+<command>
+
+# Typecheck
+<command>
 ```
 
-## Conventions
+## Testing Tools
 
-- Keep API calls in services and query/mutation hooks.
-- Keep API-backed server state in TanStack Query.
-- Use Redux only for shared client-owned navigation/auth state.
-- Keep environment-specific values and secrets outside source.
-- Preserve current backend contracts during the studio redesign.
-- Use authentic media or explicit asset slots; never invent portfolio evidence.
+- Unit tests: `<Tool>`
+- Integration tests: `<Tool>`
+- End-to-end tests: `<Tool>`
+- Manual verification notes: `<Notes>`
 
-## Known constraints
+## Repo Conventions
 
-- Legacy mentorship code and stored records remain until a separate governed audit.
-- Final photography, testimonials, and measurable client outcomes are unresolved.
-- Merge and deployment require separate approval.
+- Folder conventions: `<Notes>`
+- Naming conventions: `<Notes>`
+- API conventions: `<Notes>`
+- State management conventions: `<Notes>`
+- Error handling conventions: `<Notes>`
+
+## Architecture Rules
+
+- `<Rule discovered from repo or agreed by team>`
+- `<Rule discovered from repo or agreed by team>`
+
+## Known Constraints
+
+- `<Constraint>`
+- `<Constraint>`
+
+## Open Questions
+
+- `<Question>`

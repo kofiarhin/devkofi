@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { motion as Motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
   CheckCircle,
@@ -12,6 +12,7 @@ import {
   Sparkle,
   WarningCircle,
   XLogo,
+  YoutubeLogo,
 } from "@phosphor-icons/react";
 import useContactMutation from "../../hooks/useContactMutation";
 import "./contact.styles.scss";
@@ -119,28 +120,28 @@ const Contact = () => {
       <div className="contact-page__grain" aria-hidden="true" />
 
       <div className="contact-inner">
-        <Motion.section
+        <motion.section
           className="contact-hero"
           variants={container}
           initial="hidden"
           animate="visible"
           aria-labelledby="contact-title"
         >
-          <Motion.div className="contact-eyebrow" variants={item}>
+          <motion.div className="contact-eyebrow" variants={item}>
             <span className="eyebrow-dot" aria-hidden="true" />
             Open for selected builds
-          </Motion.div>
+          </motion.div>
 
-          <Motion.h1 id="contact-title" className="contact-heading" variants={item}>
-            Tell us what should exist next.
-          </Motion.h1>
+          <motion.h1 id="contact-title" className="contact-heading" variants={item}>
+            Tell me what you need built.
+          </motion.h1>
 
-          <Motion.p className="contact-desc" variants={item}>
-            Share the context, ambition, budget range, and timeline. Kofi will reply
-            with the clearest next step within 24 hours.
-          </Motion.p>
+          <motion.p className="contact-desc" variants={item}>
+            Send the project context, budget range, and timeline. I will reply with
+            the clearest next step within 24 hours.
+          </motion.p>
 
-          <Motion.div className="contact-actions" variants={item} aria-label="Fast contact options">
+          <motion.div className="contact-actions" variants={item} aria-label="Fast contact options">
             <a href={mailtoHref} className="contact-action contact-action--primary">
               <Envelope size={18} weight="duotone" />
               Email directly
@@ -149,15 +150,15 @@ const Contact = () => {
               <Clock size={18} weight="duotone" />
               24 hour reply
             </span>
-          </Motion.div>
+          </motion.div>
 
-          <Motion.div className="contact-signal" variants={item}>
+          <motion.div className="contact-signal" variants={item}>
             <PaperPlaneTilt size={18} weight="duotone" />
-            <span>Best fit: focused products, distinctive interfaces, and full-stack MVPs.</span>
-          </Motion.div>
-        </Motion.section>
+            <span>Best fit: launch pages, product interfaces, dashboards, and full-stack MVPs.</span>
+          </motion.div>
+        </motion.section>
 
-        <Motion.section
+        <motion.section
           className="contact-card"
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -300,7 +301,7 @@ const Contact = () => {
               </button>
             </form>
           )}
-        </Motion.section>
+        </motion.section>
 
         <aside className="contact-proof" aria-label="More contact links">
           <div className="contact-proof__item">
@@ -310,17 +311,21 @@ const Contact = () => {
           <div className="contact-proof__item">
             <span>Social</span>
             <div className="contact-socials">
-              <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <a href="https://github.com/kofiarhin" target="_blank" rel="noreferrer" aria-label="GitHub">
                 <GithubLogo size={15} weight="fill" />
                 GitHub
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/joshua-o-9b49b72b/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
                 <LinkedinLogo size={15} weight="fill" />
                 LinkedIn
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter / X">
+              <a href="https://x.com/kwofiArhin" target="_blank" rel="noreferrer" aria-label="X">
                 <XLogo size={15} weight="fill" />
                 X
+              </a>
+              <a href="https://www.youtube.com/@devkofi" target="_blank" rel="noreferrer" aria-label="YouTube">
+                <YoutubeLogo size={15} weight="fill" />
+                YouTube
               </a>
             </div>
           </div>

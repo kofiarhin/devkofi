@@ -1,11 +1,28 @@
-import { ArrowUpRight } from "@phosphor-icons/react";
-import { Link } from "react-router-dom";
-import "../Home/home.styles.scss";
+import { services } from "../../constants/services";
+import { aiImage, codeSnippetImage, personCoding, workStation } from "../../constants/constants";
+import { FinalCta, PageMeta, SplitSection, StudioPageHero } from "../../components/Studio/Studio";
 
-const engagements = [
-  ["01", "Shape", "Product strategy & discovery", "For early ideas and tangled products. We clarify the audience, user problem, value, constraints, core experience, and smallest credible MVP before expensive implementation decisions are made.", "Discovery sprint · MVP scope · Product brief · Prototype direction"],
-  ["02", "Make", "UX/UI design & full-stack development", "For teams ready to move from direction to working software. DevKofi designs the core user experience and engineers a production-ready web application across the frontend, API, data layer, testing, and launch preparation.", "UX/UI · Design system · React/Node delivery · Testing"],
-  ["03", "Sharpen", "Product evolution & AI features", "For useful software that needs a stronger next chapter. We diagnose product friction, redesign key journeys, improve engineering quality, and add automation or AI-enabled capabilities when they create clear user value.", "Product audit · Redesign · Feature delivery · AI/automation"],
-];
-const Services = () => <main className="studio-inner"><header className="studio-page-hero"><p className="studio-kicker"><span /> Digital product services</p><h1>Product strategy, UX/UI design, and <em>full-stack development.</em></h1><p>DevKofi helps founders and teams move from an uncertain product idea to production-ready web software through product discovery, interface design, MERN-stack engineering, testing, and practical AI integration.</p></header><section className="studio-engagements" aria-label="DevKofi product service engagements">{engagements.map(([number, verb, title, body, output]) => <article key={number}><span>{number}</span><p>{verb}</p><h2>{title}</h2><p>{body}</p><small>{output}</small></article>)}</section><section className="studio-process"><p className="studio-index">How a DevKofi engagement works</p><h2>How does a product go from idea to working software?</h2><ol><li><span>01</span><strong>Discover</strong><p>Understand the user, business goal, opportunity, evidence, and delivery constraints.</p></li><li><span>02</span><strong>Define</strong><p>Choose the product scope, success criteria, architecture boundaries, and smallest useful release.</p></li><li><span>03</span><strong>Design</strong><p>Make the journeys and interface tangible before implementation complexity grows.</p></li><li><span>04</span><strong>Deliver</strong><p>Build, test, verify, and prepare the product for real users and the next iteration.</p></li></ol></section><section className="studio-inline-cta"><h2>Need a web app, MVP,<br />AI product, or redesign?</h2><Link to="/start-a-project">Start a project with DevKofi <ArrowUpRight /></Link></section></main>;
+const visuals = [codeSnippetImage, aiImage, workStation, personCoding, codeSnippetImage, workStation];
+
+const Services = () => (
+  <main>
+    <PageMeta title="AI Engineering Services" description="AI systems engineering, AI product engineering, agentic workflows, integrations, context systems and ongoing AI engineering support." />
+    <StudioPageHero eyebrow="Services" title="AI engineering for systems that need to work beyond the demo." body="I help founders and product teams turn AI opportunities into dependable software connected to real data, tools, workflows and users." image={aiImage} alt="AI engineering system visual" />
+    {services.map((service, index) => (
+      <SplitSection
+        key={service.id}
+        eyebrow={service.eyebrow}
+        title={service.title}
+        body={`${service.problem} ${service.description}`}
+        image={visuals[index % visuals.length]}
+        alt={`${service.title} engineering visual`}
+        mediaLeft={index % 2 === 1}
+      >
+        <ul className="studio-service-points">{service.useCases.map((item) => <li key={item}>{item}</li>)}</ul>
+      </SplitSection>
+    ))}
+    <FinalCta />
+  </main>
+);
+
 export default Services;

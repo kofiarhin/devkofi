@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://devkofi.com/</loc></url>
-  <url><loc>https://devkofi.com/work</loc></url>
   <url><loc>https://devkofi.com/services</loc></url>
+  <url><loc>https://devkofi.com/work</loc></url>
+  <url><loc>https://devkofi.com/engineering-systems</loc></url>
   <url><loc>https://devkofi.com/about</loc></url>
-  <url><loc>https://devkofi.com/lab</loc></url>
-  <url><loc>https://devkofi.com/journal</loc></url>
-  <url><loc>https://devkofi.com/start-a-project</loc></url>
+  <url><loc>https://devkofi.com/contact</loc></url>
+  <url><loc>https://devkofi.com/book-a-call</loc></url>
 </urlset>

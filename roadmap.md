@@ -1,29 +1,47 @@
-# DevKofi Studio Roadmap
+# DevKofi Roadmap
 
-## Current goal
+Source: `README.md` plus current repository/package evidence inspected during the AI operating-workspace migration.
 
-Ship a verified draft pull request that transforms DevKofi's public experience into a creative technology studio while preserving current operational contracts.
+## Current Goal
+
+Advance the existing DevKofi mentorship platform through the roadmap outcomes already documented in `README.md`, beginning with the first listed outcome: client analytics and QA.
+
+The roadmap order is product direction, not implementation evidence. Each outcome must still become a focused `/ticket` and pass the ticket → spec → plan → implementation workflow.
 
 ## Priorities
 
-1. Establish the PRD-backed product truth and operating workspace.
-2. Deliver the editorial public shell, canonical routes, and legacy redirects.
-3. Complete the Home → Work → Start a Project conversion journey.
-4. Complete Services, About, Lab, and Journal discovery.
-5. Align supporting public and private presentation without changing private behavior.
-6. Verify accessibility, responsiveness, tests, lint, build, and scope.
+1. **Client analytics & QA — Proposed**
+   - Add/strengthen Vitest coverage for critical pages such as Home and Join Mentorship.
+   - Introduce analytics only through environment-controlled configuration.
+   - Exact analytics provider and event contract: `Unresolved`.
+
+2. **Server hardening — Proposed**
+   - Complete validation and rate limiting for contact/newsletter intake.
+   - Keep transactional-email recipient configuration in environment variables rather than literals.
+
+3. **Mentor portal — Proposed**
+   - Expand `/portal` from its current dashboard shell toward real assignments, messages, and template-backed data.
+   - Any new MongoDB collections or authorization changes require explicit approval through the normal workflow.
+
+4. **Download center — Proposed**
+   - Improve template ZIP generation/status handling and make planned/unavailable states clearer in the UI.
 
 ## Exclusions
 
-- Destructive removal of legacy mentorship data or code.
-- New CMS, dependencies, deployment configuration, merge, or production release.
-- Fabricated evidence or replacement photography.
+- No additional product feature is approved merely because this operating workspace exists.
+- Production deployment, billing changes, destructive customer/data operations, and security-policy decisions remain human-owned.
+- Authentication, permissions, migrations, new dependencies, and external analytics/services require a scoped ticket/spec/plan and explicit approval.
+- Legacy workflow cleanup/deletion is outside the current migration; legacy files are retained but inactive.
 
-## Definition of done
+## Definition of Done
 
-- The approved public routes and redirects work.
-- Public copy reflects the studio direction.
-- The persisted enquiry and admin flows remain compatible.
-- Required automated checks pass or a blocking gap is explicitly reported.
-- Responsive and accessibility review is recorded.
-- A draft PR is open with complete evidence; nothing is merged or deployed.
+A roadmap outcome is complete only when:
+
+- one or more approved tickets cover the stated outcome without hidden scope;
+- implementation exists in the repository;
+- relevant automated checks have been run and inspected;
+- user-facing work has been browser-reviewed at relevant desktop/mobile widths when tooling is available;
+- required error/loading/success/accessibility states are checked;
+- the final diff passes `review.md` with no unresolved `Must fix` findings;
+- `context/current-state.md` and other durable context are updated from observed evidence;
+- merged/deployed/released status is claimed only when separately verified.

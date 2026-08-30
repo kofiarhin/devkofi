@@ -1,6 +1,7 @@
-import { profileImage, workStation } from "./constants";
+import { aiImage, codeSnippetImage, profileImage, workStation } from "./constants";
 
 export const SITE_URL = "https://devkofi.com";
+export const SITE_NAME = "DevKofi";
 
 const organizationRef = { "@id": `${SITE_URL}/#organization` };
 const founderRef = { "@id": `${SITE_URL}/#kofi-arhin` };
@@ -26,8 +27,8 @@ const serviceEntities = {
       position: 1,
       item: {
         "@type": "Service",
-        name: "Product strategy and discovery",
-        description: "Product discovery, MVP scoping, product briefs, and prototype direction for new or unclear digital product opportunities.",
+        name: "AI systems engineering",
+        description: "Architecture and engineering for production AI systems connected to application data, tools, APIs, permissions, verification, and user workflows.",
         provider: organizationRef,
       },
     },
@@ -36,8 +37,8 @@ const serviceEntities = {
       position: 2,
       item: {
         "@type": "Service",
-        name: "UX/UI design and full-stack development",
-        description: "User experience design, interface systems, and production-ready web application delivery across the full product stack.",
+        name: "AI product engineering",
+        description: "Full-stack product engineering for AI-native applications, agentic workflows, integrations, interfaces, and production delivery.",
         provider: organizationRef,
       },
     },
@@ -46,8 +47,8 @@ const serviceEntities = {
       position: 3,
       item: {
         "@type": "Service",
-        name: "Product evolution and AI-enabled features",
-        description: "Product audits, focused redesigns, automation, AI-enabled features, and engineering improvements for existing software.",
+        name: "AI engineering systems and workflows",
+        description: "Context systems, agent infrastructure, evaluation, verification, delivery controls, and reusable workflows for dependable AI-assisted engineering.",
         provider: organizationRef,
       },
     },
@@ -56,103 +57,101 @@ const serviceEntities = {
 
 export const SEO_BY_PATH = {
   "/": {
-    title: "DevKofi | Creative Technology Studio for Web & AI Products",
-    description: "DevKofi is Kofi Arhin's founder-led creative technology studio for product strategy, UX/UI design, full-stack web development, and practical AI engineering.",
-    path: "/",
+    title: "DevKofi | AI Engineering Studio for Production AI Systems",
+    description: "DevKofi is Kofi Arhin's AI engineering studio for production AI systems, agentic workflows, AI-native products, full-stack software, context infrastructure, and verified delivery.",
+    canonicalPath: "/",
     image: workStation,
     structuredData: makePageSchema({
       path: "/",
-      name: "DevKofi — Creative Technology Studio",
-      description: "Founder-led creative technology studio for product strategy, UX/UI design, full-stack web development, and practical AI engineering.",
-    }),
-  },
-  "/work": {
-    title: "Work | DevKofi — Full-Stack & AI Product Case Studies",
-    description: "Explore DevKofi product work: web applications, full-stack MVPs, product systems, commerce experiences, and experiments designed and engineered by Kofi Arhin.",
-    path: "/work",
-    image: workStation,
-    structuredData: makePageSchema({
-      path: "/work",
-      name: "DevKofi Work",
-      description: "Selected digital product work and case studies from DevKofi.",
-      schemaType: "CollectionPage",
+      name: "DevKofi — AI Engineering Studio",
+      description: "Founder-led AI engineering studio for production AI systems, agentic workflows, AI-native products, full-stack software, and engineering infrastructure.",
     }),
   },
   "/services": {
-    title: "Services | DevKofi — Product Strategy, UX/UI & Full-Stack Development",
-    description: "DevKofi helps founders and teams shape, design, and build digital products through product strategy, UX/UI design, full-stack development, and AI-enabled product engineering.",
-    path: "/services",
-    image: workStation,
+    title: "AI Engineering Services | DevKofi",
+    description: "AI systems engineering, AI product engineering, agentic workflows, integrations, context systems, evaluation, verification, and ongoing AI engineering support from DevKofi.",
+    canonicalPath: "/services",
+    image: aiImage,
     structuredData: makePageSchema({
       path: "/services",
-      name: "DevKofi Services",
-      description: "Product strategy, UX/UI design, full-stack development, and AI-enabled product engineering services.",
+      name: "DevKofi AI Engineering Services",
+      description: "Production AI systems engineering, AI product engineering, agentic workflows, integrations, context systems, and verification services.",
       mainEntity: serviceEntities,
     }),
   },
+  "/work": {
+    title: "AI Engineering Work & Case Studies | DevKofi",
+    description: "Explore DevKofi engineering work across AI agents, context infrastructure, full-stack systems, AI-native products, APIs, verification, and production software delivery.",
+    canonicalPath: "/work",
+    image: aiImage,
+    structuredData: makePageSchema({
+      path: "/work",
+      name: "DevKofi AI Engineering Work",
+      description: "Selected AI engineering systems, products, case studies, and implementation evidence from DevKofi.",
+      schemaType: "CollectionPage",
+    }),
+  },
+  "/engineering-systems": {
+    title: "AI Engineering Systems & Agent Infrastructure | DevKofi",
+    description: "Explore DevKofi's reusable agent infrastructure, context systems, workflow controls, verification patterns, and engineering systems for dependable AI-assisted software delivery.",
+    canonicalPath: "/engineering-systems",
+    image: codeSnippetImage,
+    structuredData: makePageSchema({
+      path: "/engineering-systems",
+      name: "DevKofi Engineering Systems",
+      description: "Reusable agent infrastructure, context systems, delivery workflows, verification patterns, and engineering controls from DevKofi.",
+      schemaType: "CollectionPage",
+    }),
+  },
   "/about": {
-    title: "About Kofi Arhin | DevKofi — Full-Stack & AI Engineer",
-    description: "Meet Kofi Arhin, founder of DevKofi: a MERN-stack and AI engineer who combines product thinking, interface design, software engineering, content, and creative practice.",
-    path: "/about",
+    title: "About Kofi Arhin | AI & Full-Stack Engineer at DevKofi",
+    description: "Meet Kofi Arhin, founder of DevKofi: an AI and full-stack engineer focused on production AI systems, agentic workflows, software architecture, APIs, verification, and product engineering.",
+    canonicalPath: "/about",
     image: profileImage,
     structuredData: makePageSchema({
       path: "/about",
       name: "About Kofi Arhin and DevKofi",
-      description: "About Kofi Arhin, founder of DevKofi and a full-stack and AI engineer.",
+      description: "About Kofi Arhin, founder of DevKofi and an AI and full-stack engineer building production AI systems and software products.",
       schemaType: "AboutPage",
       mainEntity: founderRef,
     }),
   },
-  "/lab": {
-    title: "Lab | DevKofi — Developer Templates & Product Systems",
-    description: "Explore reusable developer templates, starter systems, workflows, and product experiments released from DevKofi's real software engineering practice.",
-    path: "/lab",
-    image: workStation,
+  "/contact": {
+    title: "Contact DevKofi | AI Engineering Project Enquiries",
+    description: "Contact Kofi Arhin at DevKofi about AI systems, agentic workflows, AI-native products, full-stack engineering, dashboards, integrations, automation, or product delivery.",
+    canonicalPath: "/contact",
+    image: profileImage,
     structuredData: makePageSchema({
-      path: "/lab",
-      name: "DevKofi Lab",
-      description: "Reusable developer templates, starter systems, workflows, and product experiments from DevKofi.",
-      schemaType: "CollectionPage",
-    }),
-  },
-  "/journal": {
-    title: "Journal | DevKofi — AI Engineering & Product Development Notes",
-    description: "DevKofi Journal covers AI engineering, MERN and full-stack development, product strategy, UX/UI decisions, developer workflows, testing, and lessons from building real products.",
-    path: "/journal",
-    image: workStation,
-    structuredData: makePageSchema({
-      path: "/journal",
-      name: "DevKofi Journal",
-      description: "Field notes on AI engineering, full-stack product development, product strategy, UX/UI, testing, and developer workflows.",
-      schemaType: "CollectionPage",
-    }),
-  },
-  "/start-a-project": {
-    title: "Start a Project | DevKofi — Web, AI & Full-Stack Product Studio",
-    description: "Start a project with DevKofi for a web app, full-stack MVP, AI-enabled product, dashboard, landing experience, automation, or focused product redesign.",
-    path: "/start-a-project",
-    image: workStation,
-    structuredData: makePageSchema({
-      path: "/start-a-project",
-      name: "Start a Project with DevKofi",
-      description: "Contact DevKofi about product strategy, UX/UI design, full-stack development, AI-enabled products, or product evolution.",
+      path: "/contact",
+      name: "Contact DevKofi",
+      description: "Project enquiry page for DevKofi AI engineering and full-stack product work.",
       schemaType: "ContactPage",
       mainEntity: organizationRef,
+    }),
+  },
+  "/book-a-call": {
+    title: "Book an AI Engineering Discovery Call | DevKofi",
+    description: "Book a 30-minute discovery call with Kofi Arhin to discuss an AI system, agentic workflow, AI-native product, integration, or full-stack engineering project.",
+    canonicalPath: "/book-a-call",
+    image: profileImage,
+    structuredData: makePageSchema({
+      path: "/book-a-call",
+      name: "Book a DevKofi Discovery Call",
+      description: "Book a discovery call with Kofi Arhin about an AI engineering or full-stack software project.",
     }),
   },
 };
 
 const legacyPaths = {
+  "/products": "/work",
   "/projects": "/work",
-  "/templates": "/lab",
-  "/contact": "/start-a-project",
-  "/book-a-call": "/start-a-project",
+  "/templates": "/engineering-systems",
 };
 
 const noIndexMeta = (path, title) => ({
   title,
   description: "This DevKofi route is not intended for public search results.",
-  path,
+  canonicalPath: path,
   image: workStation,
   robots: "noindex,follow",
   structuredData: null,

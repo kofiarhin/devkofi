@@ -11,24 +11,24 @@ describe("GET /api/templates", () => {
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body).toEqual(templates);
 
-    const setupPrdWorkspace = response.body.filter(
-      ({ id }) => id === "setup-prd-workspace"
+    const aiDevWorkspace = response.body.filter(
+      ({ id }) => id === "ai-dev-workspace"
     );
 
-    expect(setupPrdWorkspace).toHaveLength(1);
-    expect(setupPrdWorkspace[0]).toEqual({
-      id: "setup-prd-workspace",
-      title: "Setup PRD Workspace",
+    expect(aiDevWorkspace).toHaveLength(1);
+    expect(aiDevWorkspace[0]).toEqual({
+      id: "ai-dev-workspace",
+      title: "AI Dev Workspace",
       description:
-        "Turn a PRD into an AI-ready Claude Code project workspace with reusable planning, review, demo, and routine documentation.",
+        "A reusable repository operating system for AI-assisted software delivery, with persistent project context, operator briefs, planning, implementation, verification, and safe workspace lifecycle management.",
       category: "AI Workflow",
-      tags: ["Claude Code", "PRD", "AI Workflow"],
-      templateUrl: "https://github.com/kofiarhin/setup-prd-workspace",
+      tags: ["AI Agents", "Software Delivery", "Workspace"],
+      templateUrl: "https://github.com/kofiarhin/ai-dev-workspace",
     });
 
     const templateIds = response.body.map(({ id }) => id);
     expect(new Set(templateIds).size).toBe(templateIds.length);
-    expect(setupPrdWorkspace[0]).not.toHaveProperty("githubUrl");
+    expect(aiDevWorkspace[0]).not.toHaveProperty("githubUrl");
 
     response.body.forEach((template) => {
       expect(template).toEqual(

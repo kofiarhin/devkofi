@@ -273,12 +273,13 @@ const Projects = () => {
 
         <section className="projects-intro">
           <div>
-            <p className="projects-kicker">Work / selected builds</p>
-            <h1>Useful products. Distinct decisions.</h1>
+            <p className="projects-kicker">Selected builds</p>
+            <h1>Projects built to be used.</h1>
           </div>
           <p>
-            Products in the world, work taking shape, and experiments that
-            reveal how DevKofi turns a real constraint into a considered system.
+            A mobile-first look at shipped products, work in progress, and
+            experiments across marketplaces, dashboards, AI tools, and real-time
+            apps.
           </p>
 
           {projects.length > 0 && (

@@ -1,15 +1,24 @@
 # Claude Project Instructions
 
-Read and follow [AGENTS.md](AGENTS.md) as the canonical operating guide.
+`AGENTS.md` is the canonical operating guide for DevKofi. Read and follow it before project work.
 
-Before product work, read:
+Then read, as relevant:
 
-1. [PRD.md](PRD.md)
-2. [roadmap.md](roadmap.md)
-3. [review.md](review.md)
-4. The relevant files under [context/](context/)
-5. Current repository and run-scoped workflow evidence
+- `roadmap.md`
+- `review.md`
+- `context/product.md`
+- `context/current-state.md`
+- `context/architecture.md`
+- `context/decisions.md`
+- `context/lessons.md`
+- real customer evidence under `customers/`
 
-The reusable Setup PRD Workspace skill is installed at `.claude/skills/setup-prd-workspace/`.
+Use `/morning-brief` for read-only orientation and at most one evidence-backed recommended next outcome. A morning brief does not authorize execution.
 
-Do not treat the historical mentorship implementation as the intended product direction. Keep intended, implemented, verified, merged, and deployed states separate.
+Use the canonical delivery chain:
+
+```text
+/ticket → /spec → /plan → /implement-plan
+```
+
+Do not use `RUN_WORKFLOW.md` or the legacy `_workflow`/`_spec`/`_task`/`_progress` orchestration as the active workflow unless the user explicitly asks for legacy workflow work.

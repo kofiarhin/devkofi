@@ -1,15 +1,14 @@
 export const publicNavItems = [
   { label: "Home", to: "/" },
-  { label: "Work", to: "/work" },
   { label: "Services", to: "/services" },
+  { label: "Work", to: "/work" },
+  { label: "Engineering Systems", to: "/engineering-systems" },
   { label: "About", to: "/about" },
-  { label: "Lab", to: "/lab" },
-  { label: "Journal", to: "/journal" },
 ];
 
 export const publicActionItem = {
-  label: "Start a Project",
-  to: "/start-a-project",
+  label: "Contact",
+  to: "/contact",
 };
 
 export const adminNavItems = [

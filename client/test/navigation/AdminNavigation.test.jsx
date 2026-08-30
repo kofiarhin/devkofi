@@ -29,23 +29,11 @@ vi.mock('../../src/Pages/About/About', () => ({
 }));
 
 vi.mock('../../src/Pages/Projects/Projects', () => ({
-  default: () => <main>Work page</main>,
-}));
-
-vi.mock('../../src/Pages/Services/Services', () => ({
-  default: () => <main>Services page</main>,
-}));
-
-vi.mock('../../src/Pages/Journal/Journal', () => ({
-  default: () => <main>Journal page</main>,
-}));
-
-vi.mock('../../src/Pages/Templates/Templates', () => ({
-  default: () => <main>Lab page</main>,
+  default: () => <main>Projects page</main>,
 }));
 
 vi.mock('../../src/Pages/Contact/Contact', () => ({
-  default: () => <main>Start a project page</main>,
+  default: () => <main>Contact page</main>,
 }));
 
 vi.mock('../../src/Pages/BookCall/BookCall', () => ({
@@ -115,21 +103,7 @@ describe('admin navigation preservation', () => {
     renderWithProviders(<Header />);
 
     expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /work/i })).toHaveAttribute('href', '/work');
-    expect(screen.getByRole('link', { name: /services/i })).toHaveAttribute(
-      'href',
-      '/services'
-    );
     expect(screen.getByRole('link', { name: /about/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /lab/i })).toHaveAttribute('href', '/lab');
-    expect(screen.getByRole('link', { name: /journal/i })).toHaveAttribute(
-      'href',
-      '/journal'
-    );
-    expect(screen.getByRole('link', { name: /start a project/i })).toHaveAttribute(
-      'href',
-      '/start-a-project'
-    );
     expect(screen.queryByRole('link', { name: /dashboard/i })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /logout/i })).not.toBeInTheDocument();
   });
@@ -209,16 +183,5 @@ describe('admin navigation preservation', () => {
     renderWithProviders(<AdminRoute />, { admin: null, isChecked: false });
 
     expect(document.querySelector('.animate-spin')).toBeInTheDocument();
-  });
-
-  it.each([
-    ['/projects', /work page/i],
-    ['/templates', /lab page/i],
-    ['/contact', /start a project page/i],
-    ['/book-a-call', /start a project page/i],
-  ])('redirects the legacy public route %s to its canonical page', (route, pageName) => {
-    renderWithProviders(<AppRoutes />, { route });
-
-    expect(screen.getByText(pageName)).toBeInTheDocument();
   });
 });
