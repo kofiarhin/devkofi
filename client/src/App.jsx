@@ -5,9 +5,12 @@ import {
   Route,
   Outlet,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import SEO from "./components/SEO/SEO";
+import { getSeoForPath } from "./constants/seo";
 
 import Home from "./Pages/Home/Home";
 import Header from "./components/Header/Header";
@@ -29,36 +32,41 @@ import Journal from "./Pages/Journal/Journal";
 
 export const AppRoutes = () => {
   useAdminSession();
+  const location = useLocation();
+  const seo = getSeoForPath(location.pathname);
 
   return (
-    <Routes>
-      <Route element={<PublicLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/work" element={<Projects />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/lab" element={<Templates />} />
-        <Route path="/journal" element={<Journal />} />
-        <Route path="/start-a-project" element={<Contact />} />
-        <Route path="/projects" element={<Navigate to="/work" replace />} />
-        <Route path="/templates" element={<Navigate to="/lab" replace />} />
-        <Route path="/contact" element={<Navigate to="/start-a-project" replace />} />
-        <Route path="/book-a-call" element={<Navigate to="/start-a-project" replace />} />
-        <Route path="/newsletter/verify" element={<NewsletterVerify />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route element={<AdminRoute />}>
-        <Route element={<AdminLayout />}>
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route
-            path="/admin/messages/:messageId"
-            element={<AdminMessageDetails />}
-          />
+    <>
+      <SEO {...seo} />
+      <Routes>
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/work" element={<Projects />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/lab" element={<Templates />} />
+          <Route path="/journal" element={<Journal />} />
+          <Route path="/start-a-project" element={<Contact />} />
+          <Route path="/projects" element={<Navigate to="/work" replace />} />
+          <Route path="/templates" element={<Navigate to="/lab" replace />} />
+          <Route path="/contact" element={<Navigate to="/start-a-project" replace />} />
+          <Route path="/book-a-call" element={<Navigate to="/start-a-project" replace />} />
+          <Route path="/newsletter/verify" element={<NewsletterVerify />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
-      </Route>
-    </Routes>
+
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route element={<AdminRoute />}>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route
+              path="/admin/messages/:messageId"
+              element={<AdminMessageDetails />}
+            />
+          </Route>
+        </Route>
+      </Routes>
+    </>
   );
 };
 

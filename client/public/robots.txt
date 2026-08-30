@@ -1,0 +1,17 @@
+# DevKofi welcomes search and answer-engine discovery of public studio pages.
+User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://devkofi.com/sitemap.xml
