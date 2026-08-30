@@ -1,0 +1,27 @@
+# Public DevKofi pages are available for search and answer-engine discovery.
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /newsletter/verify
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /newsletter/verify
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /newsletter/verify
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /newsletter/verify
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /newsletter/verify
+
+Sitemap: https://devkofi.com/sitemap.xml

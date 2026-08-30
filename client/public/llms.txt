@@ -1,0 +1,24 @@
+# DevKofi
+> DevKofi is Kofi Arhin's founder-led AI engineering studio for production AI systems, agentic workflows, AI-native products, full-stack software, context infrastructure, and verified engineering delivery.
+
+## Main sections
+- [Home](https://devkofi.com/): What DevKofi is, the AI engineering focus, selected work, and the systems behind how Kofi builds.
+- [Services](https://devkofi.com/services): AI systems engineering, AI product engineering, agentic workflows, integrations, context systems, evaluation, verification, and ongoing engineering support.
+- [Work](https://devkofi.com/work): Selected AI agents, context infrastructure, full-stack systems, products, repositories, demos, and engineering case-study evidence.
+- [Engineering Systems](https://devkofi.com/engineering-systems): Reusable agent infrastructure, context systems, workflow controls, verification patterns, and engineering delivery systems.
+- [About](https://devkofi.com/about): Kofi Arhin's AI and full-stack engineering background, engineering philosophy, process, and founder role at DevKofi.
+- [Contact](https://devkofi.com/contact): Project enquiry route for AI systems, agentic workflows, AI-native products, full-stack software, integrations, automation, dashboards, and product engineering.
+- [Book a Call](https://devkofi.com/book-a-call): Discovery-call scheduling with Kofi Arhin for relevant engineering projects.
+
+## Key facts
+- Founder: Kofi Arhin
+- Studio: DevKofi
+- Engineering focus: AI engineering, agentic workflows, AI agents, full-stack software engineering, JavaScript/TypeScript, React, Node.js, Express, MongoDB, APIs, testing, verification, context systems, and production delivery
+- GitHub: https://github.com/kofiarhin
+- YouTube: https://www.youtube.com/@devkofi
+- Canonical website: https://devkofi.com/
+
+## Notes for automated systems
+Use the canonical pages above as the public source for DevKofi information. Do not infer shipped capabilities, client outcomes, pricing, production status, employment, certifications, or third-party endorsements beyond what the linked pages explicitly state.
+
+This file is an auxiliary machine-readable site map. It is not presented as a Google Search ranking mechanism.

@@ -1,12 +1,74 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { getSeoForPath, SITE_NAME, SITE_URL } from "../../constants/seo";
 import "./studio.styles.scss";
 
-export const PageMeta = ({ title, description }) => {
-  if (typeof document !== "undefined") {
-    document.title = title ? `${title} | DevKofi` : "DevKofi | AI Engineering Studio";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta && description) meta.setAttribute("content", description);
+const upsertMeta = (attribute, key, content) => {
+  let element = document.head.querySelector(`meta[${attribute}="${key}"]`);
+  if (!element) {
+    element = document.createElement("meta");
+    element.setAttribute(attribute, key);
+    document.head.appendChild(element);
   }
+  element.setAttribute("content", content);
+};
+
+const upsertCanonical = (href) => {
+  let element = document.head.querySelector('link[rel="canonical"]');
+  if (!element) {
+    element = document.createElement("link");
+    element.setAttribute("rel", "canonical");
+    document.head.appendChild(element);
+  }
+  element.setAttribute("href", href);
+};
+
+const upsertStructuredData = (structuredData) => {
+  const scriptId = "devkofi-page-jsonld";
+  const existing = document.getElementById(scriptId);
+
+  if (!structuredData) {
+    existing?.remove();
+    return;
+  }
+
+  const script = existing || document.createElement("script");
+  script.id = scriptId;
+  script.type = "application/ld+json";
+  script.textContent = JSON.stringify(structuredData);
+  if (!existing) document.head.appendChild(script);
+};
+
+export const PageMeta = ({ title, description }) => {
+  const location = useLocation();
+  const routeMeta = getSeoForPath(location.pathname);
+  const pageTitle = routeMeta.title || (title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} | AI Engineering Studio`);
+  const pageDescription = routeMeta.description || description || "DevKofi AI Engineering Studio.";
+  const canonicalUrl = new URL(routeMeta.canonicalPath || location.pathname, SITE_URL).toString();
+  const robots = routeMeta.robots || "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
+
+  useEffect(() => {
+    document.title = pageTitle;
+    upsertMeta("name", "description", pageDescription);
+    upsertMeta("name", "robots", robots);
+    upsertMeta("name", "author", "Kofi Arhin");
+
+    upsertMeta("property", "og:site_name", SITE_NAME);
+    upsertMeta("property", "og:type", "website");
+    upsertMeta("property", "og:title", pageTitle);
+    upsertMeta("property", "og:description", pageDescription);
+    upsertMeta("property", "og:url", canonicalUrl);
+    upsertMeta("property", "og:image", routeMeta.image);
+
+    upsertMeta("name", "twitter:card", "summary_large_image");
+    upsertMeta("name", "twitter:title", pageTitle);
+    upsertMeta("name", "twitter:description", pageDescription);
+    upsertMeta("name", "twitter:image", routeMeta.image);
+
+    upsertCanonical(canonicalUrl);
+    upsertStructuredData(routeMeta.structuredData);
+  }, [canonicalUrl, pageDescription, pageTitle, robots, routeMeta.image, routeMeta.structuredData]);
+
   return null;
 };
 
@@ -33,13 +95,13 @@ export const SplitSection = ({ eyebrow, title, body, image, alt = "", mediaLeft 
 );
 
 export const ProjectCard = ({ project }) => {
-  const title = project.name || project.title;
-  const description = project.shortDescription || project.engineeringSummary || project.description;
+  const projectTitle = project.name || project.title;
+  const projectDescription = project.shortDescription || project.engineeringSummary || project.description;
   return (
     <article className="studio-project-card">
       <div className="studio-project-card__media">
         {project.thumbnailUrl ? (
-          <img src={project.thumbnailUrl} alt={`${title} preview`} loading="lazy" />
+          <img src={project.thumbnailUrl} alt={`${projectTitle} preview`} loading="lazy" />
         ) : (
           <div className="studio-project-card__placeholder" aria-hidden="true" />
         )}
@@ -49,8 +111,8 @@ export const ProjectCard = ({ project }) => {
           <span>{project.category || "Engineering"}</span>
           {project.status && <span>{project.status}</span>}
         </div>
-        <h3>{title}</h3>
-        {description && <p>{description}</p>}
+        <h3>{projectTitle}</h3>
+        {projectDescription && <p>{projectDescription}</p>}
         <div className="studio-actions">
           {project.demoUrl && <a className="studio-link" href={project.demoUrl} target="_blank" rel="noreferrer">Live demo</a>}
           {project.repoUrl && <a className="studio-link" href={project.repoUrl} target="_blank" rel="noreferrer">Repository</a>}

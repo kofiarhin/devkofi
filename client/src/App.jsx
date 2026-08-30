@@ -10,6 +10,7 @@ import {
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import Header from "./components/Header/Header";
 import SideNav from "./components/SideNav/SideNav";
+import { PageMeta } from "./components/Studio/Studio";
 import Footer from "./Pages/Footer/Footer";
 import Home from "./Pages/Home/Home";
 import Services from "./Pages/Services/Services";
@@ -30,30 +31,33 @@ export const AppRoutes = () => {
   useAdminSession();
 
   return (
-    <Routes>
-      <Route element={<PublicLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/work" element={<Work />} />
-        <Route path="/engineering-systems" element={<EngineeringSystems />} />
-        <Route path="/products" element={<Navigate to="/work" replace />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/book-a-call" element={<BookCall />} />
-        <Route path="/newsletter/verify" element={<NewsletterVerify />} />
-        <Route path="/projects" element={<Navigate to="/work" replace />} />
-        <Route path="/templates" element={<Navigate to="/engineering-systems" replace />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route element={<AdminRoute />}>
-        <Route element={<AdminLayout />}>
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/messages/:messageId" element={<AdminMessageDetails />} />
+    <>
+      <PageMeta />
+      <Routes>
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/work" element={<Work />} />
+          <Route path="/engineering-systems" element={<EngineeringSystems />} />
+          <Route path="/products" element={<Navigate to="/work" replace />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/book-a-call" element={<BookCall />} />
+          <Route path="/newsletter/verify" element={<NewsletterVerify />} />
+          <Route path="/projects" element={<Navigate to="/work" replace />} />
+          <Route path="/templates" element={<Navigate to="/engineering-systems" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
-      </Route>
-    </Routes>
+
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route element={<AdminRoute />}>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/messages/:messageId" element={<AdminMessageDetails />} />
+          </Route>
+        </Route>
+      </Routes>
+    </>
   );
 };
 
