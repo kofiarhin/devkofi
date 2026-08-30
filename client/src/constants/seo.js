@@ -22,25 +22,34 @@ const serviceEntities = {
   "@type": "ItemList",
   itemListElement: [
     {
-      "@type": "Service",
+      "@type": "ListItem",
       position: 1,
-      name: "Product strategy and discovery",
-      description: "Product discovery, MVP scoping, product briefs, and prototype direction for new or unclear digital product opportunities.",
-      provider: organizationRef,
+      item: {
+        "@type": "Service",
+        name: "Product strategy and discovery",
+        description: "Product discovery, MVP scoping, product briefs, and prototype direction for new or unclear digital product opportunities.",
+        provider: organizationRef,
+      },
     },
     {
-      "@type": "Service",
+      "@type": "ListItem",
       position: 2,
-      name: "UX/UI design and full-stack development",
-      description: "User experience design, interface systems, and production-ready web application delivery across the full product stack.",
-      provider: organizationRef,
+      item: {
+        "@type": "Service",
+        name: "UX/UI design and full-stack development",
+        description: "User experience design, interface systems, and production-ready web application delivery across the full product stack.",
+        provider: organizationRef,
+      },
     },
     {
-      "@type": "Service",
+      "@type": "ListItem",
       position: 3,
-      name: "Product evolution and AI-enabled features",
-      description: "Product audits, focused redesigns, automation, AI-enabled features, and engineering improvements for existing software.",
-      provider: organizationRef,
+      item: {
+        "@type": "Service",
+        name: "Product evolution and AI-enabled features",
+        description: "Product audits, focused redesigns, automation, AI-enabled features, and engineering improvements for existing software.",
+        provider: organizationRef,
+      },
     },
   ],
 };

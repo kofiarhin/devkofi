@@ -49,5 +49,10 @@ describe("DevKofi route SEO metadata", () => {
     const schema = JSON.parse(document.getElementById("devkofi-page-jsonld").textContent);
     expect(schema.name).toBe("DevKofi Services");
     expect(schema.mainEntity.itemListElement).toHaveLength(3);
+    expect(schema.mainEntity.itemListElement[0]).toMatchObject({
+      "@type": "ListItem",
+      position: 1,
+      item: { "@type": "Service", name: "Product strategy and discovery" },
+    });
   });
 });
