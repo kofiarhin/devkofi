@@ -12,7 +12,7 @@ export const workPortfolio = [
     category: "AI Agent Engineering",
     featured: true,
     displayOrder: 1,
-    thumbnailUrl: null,
+    thumbnailUrl: "https://res.cloudinary.com/dlsiabgiw/image/upload/v1788069502/devkofi/projects/hibachi-thumbnail.webp",
     repoUrl: null,
   },
   {
@@ -27,7 +27,7 @@ export const workPortfolio = [
     displayOrder: 2,
     repoUrl: github("context-api"),
     demoUrl: "https://context-api-3b9dfadf403e.herokuapp.com",
-    thumbnailUrl: og("context-api"),
+    thumbnailUrl: "https://res.cloudinary.com/dlsiabgiw/image/upload/v1788069264/devkofi/projects/context-api-thumbnail.webp",
   },
   {
     key: "brain",
@@ -93,7 +93,7 @@ export const engineeringSystemsPortfolio = [
     category: "Engineering Operating System",
     displayOrder: 1,
     repoUrl: github("ai-dev-workspace"),
-    thumbnailUrl: og("ai-dev-workspace"),
+    thumbnailUrl: "https://res.cloudinary.com/dlsiabgiw/image/upload/v1788069577/devkofi/projects/ai-dev-workspace-thumbnail.webp",
   },
   {
     key: "codex-workflow-kit",
@@ -105,7 +105,7 @@ export const engineeringSystemsPortfolio = [
     category: "Engineering Workflow",
     displayOrder: 2,
     repoUrl: github("codex-workflow-kit"),
-    thumbnailUrl: og("codex-workflow-kit"),
+    thumbnailUrl: "https://res.cloudinary.com/dlsiabgiw/image/upload/v1788069442/devkofi/projects/codex-workflow-kit-thumbnail.webp",
   },
   {
     key: "agent-system",
@@ -130,7 +130,7 @@ export const engineeringSystemsPortfolio = [
     displayOrder: 4,
     repoUrl: github("context-api"),
     demoUrl: "https://context-api-3b9dfadf403e.herokuapp.com",
-    thumbnailUrl: og("context-api"),
+    thumbnailUrl: "https://res.cloudinary.com/dlsiabgiw/image/upload/v1788069264/devkofi/projects/context-api-thumbnail.webp",
   },
   {
     key: "ideahub",
