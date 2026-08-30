@@ -117,7 +117,7 @@ export const engineeringSystemsPortfolio = [
     category: "Agent Infrastructure",
     displayOrder: 3,
     repoUrl: github("agent-system"),
-    thumbnailUrl: og("agent-system"),
+    thumbnailUrl: "https://res.cloudinary.com/dlsiabgiw/image/upload/v1788130712/devkofi/agent-system-cover-20260831.png",
   },
   {
     key: "context-api",
