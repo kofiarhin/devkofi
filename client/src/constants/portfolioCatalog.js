@@ -142,6 +142,6 @@ export const engineeringSystemsPortfolio = [
     category: "Knowledge Infrastructure",
     displayOrder: 5,
     repoUrl: github("ideahub"),
-    thumbnailUrl: "https://res.cloudinary.com/dlsiabgiw/image/upload/v1788131343/devkofi/projects/ideahub-knowledge-thumbnail-20260830.png",
+    thumbnailUrl: "https://res.cloudinary.com/dlsiabgiw/image/upload/v1788132136/devkofi/projects/ideahub-knowledge-thumbnail-text-20260830.png",
   },
 ];
