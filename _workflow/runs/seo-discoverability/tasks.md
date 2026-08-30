@@ -6,84 +6,53 @@ Execution mode: `complete-workflow`
 
 ## TASK-001 — Establish metadata and entity foundation
 
-**State:** Ready
+**State:** Needs Human Review
 
-Value: every canonical public route exposes a clear title, description, canonical URL, social metadata and truthful structured data without adding a dependency.
-
-Files:
-- `client/src/components/SEO/SEO.jsx` (new)
-- `client/src/constants/seo.js` (new)
-- `client/src/App.jsx`
-- `client/index.html`
-- `client/test/seo/seoMetadata.test.jsx` (new)
-
-Acceptance:
+Implemented:
+- dependency-free route metadata component;
 - unique metadata for all seven canonical studio routes;
-- Organization/Person/WebSite identity in base HTML;
-- route-level JSON-LD uses truthful supported schema types;
-- redirects/admin behavior unchanged.
+- base Organization, Person, and WebSite JSON-LD;
+- route-level WebPage/CollectionPage/AboutPage/ContactPage/Service data;
+- noindex handling for admin, verification, and unknown routes;
+- focused metadata tests authored.
 
-Verification: focused Vitest, lint, build when runnable.
+Verification limitation: tests, lint, and build could not be executed through the GitHub connector and branch CI does not run on this feature branch.
 
 ## TASK-002 — Strengthen core page content for retrieval and citability
 
-**State:** Planned
+**State:** Needs Human Review
 
-Value: core public copy answers what DevKofi is, what it does, who Kofi is, and what topics it covers using explicit, natural language.
+Implemented:
+- Home now defines DevKofi and core product/engineering capabilities explicitly;
+- Services names product strategy, UX/UI, full-stack development, and AI-enabled product work;
+- About defines founder/engineering entity context more clearly;
+- Journal explicitly declares its AI engineering and product-development subject matter while retaining `Publishing soon` status;
+- existing form and API-backed page behavior left untouched.
 
-Files:
-- `client/src/Pages/Home/Home.jsx`
-- `client/src/Pages/Services/Services.jsx`
-- `client/src/Pages/About/About.jsx`
-- `client/src/Pages/Journal/Journal.jsx`
-- `client/src/Pages/Contact/Contact.jsx`
-
-Acceptance:
-- Home contains a self-contained definition of DevKofi and concrete capabilities;
-- Services uses concrete search-intent terminology without keyword stuffing;
-- About identifies Kofi and relevant engineering disciplines accurately;
-- Journal declares topical focus while retaining `Publishing soon` honesty;
-- contact form behavior is untouched while project types are clearer in surrounding copy.
-
-Verification: relevant existing navigation/contact tests plus lint/build when runnable.
+Verification limitation: code review completed, but executable client checks were unavailable.
 
 ## TASK-003 — Add crawl and AI-readable discovery files
 
-**State:** Planned
+**State:** Needs Human Review
 
-Value: crawlers receive explicit canonical route discovery and machine-readable site navigation.
+Implemented:
+- `robots.txt` with sitemap and selected AI-search crawler access;
+- `sitemap.xml` with exactly seven canonical public studio routes;
+- optional `llms.txt` machine-readable navigation file with no Google ranking claim;
+- focused static-file tests authored.
 
-Files:
-- `client/public/robots.txt` (new)
-- `client/public/sitemap.xml` (new)
-- `client/public/llms.txt` (new)
-- `client/test/seo/discoveryFiles.test.js` (new)
-
-Acceptance:
-- sitemap lists only the seven canonical studio URLs;
-- robots permits normal crawling, explicitly permits selected AI search crawlers and references the sitemap;
-- llms.txt accurately summarizes the studio and canonical sections without ranking claims;
-- no admin, verification, legacy redirect, API or private route is advertised.
-
-Verification: focused Vitest/static-file assertions and build artifact inspection when runnable.
+Verification limitation: file contents were fetched back from the exact implementation revision and manually inspected, but build-copy/static tests were not executable.
 
 ## TASK-004 — Final SEO scope review and evidence
 
-**State:** Planned
+**State:** Needs Human Review
 
-Value: the SEO patch is reviewed against the approved scope and exact branch revision.
+Completed review/evidence:
+- exact implementation diff reviewed through GitHub compare;
+- only 13 client/SEO files changed in the implementation commit;
+- service ItemList schema refined in a follow-up commit;
+- no server, dependency, auth, data, deployment, or infrastructure files changed;
+- GitHub returned no status checks and no workflow runs for the implementation revision;
+- no merge or deployment performed.
 
-Files:
-- `_workflow/runs/seo-discoverability/progress.md`
-- `_workflow/runs/seo-discoverability/verification.md`
-- `_workflow/runs/seo-discoverability/review.md`
-- `_workflow/runs/seo-discoverability/release-notes.md`
-- `_workflow/runs/seo-discoverability/summary.md`
-- `_workflow/runs/seo-discoverability/handoff.md`
-- `_workflow/runs/seo-discoverability/health-check.md`
-
-Acceptance:
-- exact changed-file scope reviewed;
-- verification results distinguished from implementation state;
-- no merge/deploy claim;
-- remaining SPA/prerender limitation recorded.
+Remaining gate: run the focused tests, client lint, and client build in a command-capable checkout before treating the SEO pass as verified.
