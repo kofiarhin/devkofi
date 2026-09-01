@@ -116,6 +116,18 @@ export const SEO_BY_PATH = {
       mainEntity: founderRef,
     }),
   },
+  "/blog": {
+    title: "AI Engineering Articles | DevKofi",
+    description: "Practical DevKofi articles about AI engineering, full-stack systems, architecture, agents, reliability, and software delivery.",
+    canonicalPath: "/blog",
+    image: codeSnippetImage,
+    structuredData: makePageSchema({
+      path: "/blog",
+      name: "DevKofi AI Engineering Articles",
+      description: "Practical writing about AI engineering, full-stack systems, architecture, agents, reliability, and software delivery.",
+      schemaType: "CollectionPage",
+    }),
+  },
   "/contact": {
     title: "Contact DevKofi | AI Engineering Project Enquiries",
     description: "Contact Kofi Arhin at DevKofi about AI systems, agentic workflows, AI-native products, full-stack engineering, dashboards, integrations, automation, or product delivery.",
@@ -162,6 +174,10 @@ export const getSeoForPath = (pathname) => {
 
   if (SEO_BY_PATH[canonicalPath]) {
     return SEO_BY_PATH[canonicalPath];
+  }
+
+  if (pathname.startsWith("/blog/")) {
+    return { ...SEO_BY_PATH["/blog"], canonicalPath: pathname };
   }
 
   if (pathname.startsWith("/admin") || pathname === "/newsletter/verify") {
