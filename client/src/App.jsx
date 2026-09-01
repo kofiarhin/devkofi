@@ -20,6 +20,8 @@ import About from "./Pages/About/About";
 import Contact from "./Pages/Contact/Contact";
 import BookCall from "./Pages/BookCall/BookCall";
 import NewsletterVerify from "./Pages/NewsletterVerify/NewsletterVerify";
+import Blog from "./Pages/Blog/Blog";
+import BlogArticle from "./Pages/BlogArticle/BlogArticle";
 import NotFound from "./Pages/NotFound/NotFound";
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 import AdminLogin from "./Pages/Login/AdminLogin";
@@ -44,6 +46,8 @@ export const AppRoutes = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/book-a-call" element={<BookCall />} />
           <Route path="/newsletter/verify" element={<NewsletterVerify />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogArticle />} />
           <Route path="/projects" element={<Navigate to="/work" replace />} />
           <Route path="/templates" element={<Navigate to="/engineering-systems" replace />} />
           <Route path="*" element={<NotFound />} />
