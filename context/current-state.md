@@ -1,5 +1,15 @@
 # DevKofi Current State
 
+## Current checkpoint: shared IdeaHub publishing
+
+Baseline `main` commit: `d1cfda7363c10371841d897a860389e52ff555c8`.
+
+- Implemented on `feat/shared-blog-publishing`: a read-only public blog API over the shared MongoDB `blogposts` collection, public `/blog` and `/blog/:slug` routes, Markdown article rendering, navigation, and article metadata/structured data.
+- IdeaHub is the only writer in this MVP. Its `/generate-post` workflow inserts a validated document with `status: "published"`; DevKofi reads the same database and exposes it immediately without a second approval or ingestion layer.
+- Duplicate slugs fail instead of overwriting an existing article. No DevKofi admin publishing UI, draft state, webhook, queue, or cross-service HTTP call is part of this architecture.
+- Verified locally: focused server and client tests, changed-file client lint, and the production client build. The repository-wide client lint still fails on pre-existing unrelated files.
+- No live MongoDB write, merge, or deployment is authorized or claimed.
+
 ## Current checkpoint: issue #38 project showcase
 
 Baseline `main` commit: `8b6fb1efe3e4b5aee738a14336ac96ea9b1c59e3` (PR #39 is merged and supplies the approved Cloudinary Agent System cover).
