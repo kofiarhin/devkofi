@@ -11,7 +11,7 @@ const sourceSchema = new mongoose.Schema(
 const blogPostSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true },
-    slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
+    slug: { type: String, required: true, trim: true, lowercase: true },
     excerpt: { type: String, required: true, trim: true },
     content: { type: String, required: true },
     tags: { type: [String], default: [] },
@@ -37,5 +37,6 @@ const blogPostSchema = new mongoose.Schema(
 );
 
 blogPostSchema.index({ status: 1, publishedAt: -1 });
+blogPostSchema.index({ slug: 1 }, { unique: true, name: "blog_slug_unique" });
 
 module.exports = mongoose.model("BlogPost", blogPostSchema);
