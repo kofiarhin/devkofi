@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, EnvelopeSimple, GithubLogo, LinkedinLogo, StackSimple, XLogo } from "@phosphor-icons/react";
-import { publicActionItem, publicNavItems } from "../../constants/navigation";
+import { publicActionItem, publicNavItems, secondaryNavItems } from "../../constants/navigation";
 import "./footer.styles.scss";
 
 const actionLinks = [
@@ -19,6 +19,7 @@ const socialLinks = [
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const navigateLinks = [{ label: "Home", to: "/" }, ...publicNavItems, ...secondaryNavItems];
 
   return (
     <footer className="main-footer">
@@ -42,7 +43,7 @@ const Footer = () => {
           <div className="footer-links-grid">
             <div className="footer-column">
               <h3 className="column-title">Navigate</h3>
-              <ul className="column-list">{publicNavItems.map((link) => <li key={link.to}><Link to={link.to}>{link.label}</Link></li>)}</ul>
+              <ul className="column-list">{navigateLinks.map((link) => <li key={link.to}><Link to={link.to}>{link.label}</Link></li>)}</ul>
             </div>
             <div className="footer-column">
               <h3 className="column-title">Start here</h3>
