@@ -24,8 +24,11 @@ const panelVariants = {
 const EventInfoPanel = () => (
   <div className="event-info-panel">
     <div className="event-info-panel__avatar">K</div>
-    <p className="event-info-panel__host">Kofi Arhin</p>
-    <h1 className="event-info-panel__title">Discovery Call</h1>
+    <p className="event-info-panel__host">Kofi Arhin · DevKofi</p>
+    <h1 className="event-info-panel__title">AI Workflow Call</h1>
+    <p className="event-info-panel__subtitle">
+      30 minutes to scope an audit, pilot, or production path for one workflow.
+    </p>
     <div className="event-info-panel__divider" />
     <ul className="event-info-panel__meta">
       <li>
