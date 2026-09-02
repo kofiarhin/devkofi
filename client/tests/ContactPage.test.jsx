@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import Contact from "../src/Pages/Contact/Contact";
 
@@ -21,7 +22,11 @@ vi.mock("../src/hooks/useContactMutation", () => ({
 
 describe("Contact page", () => {
   it("links to Kofi's verified professional social profiles", () => {
-    render(<Contact />);
+    render(
+      <MemoryRouter>
+        <Contact />
+      </MemoryRouter>,
+    );
 
     expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
       "href",
@@ -29,7 +34,7 @@ describe("Contact page", () => {
     );
     expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
       "href",
-      "https://www.linkedin.com/in/joshua-o-9b49b72b/",
+      "https://www.linkedin.com/in/kofi-arhin",
     );
     expect(screen.getByRole("link", { name: "X" })).toHaveAttribute(
       "href",
