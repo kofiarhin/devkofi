@@ -30,6 +30,11 @@ const Services = () => (
         <div className="studio-offer-grid">
           {engagementOffers.map((offer) => (
             <article className="studio-offer-card" key={offer.id}>
+              {offer.image && (
+                <div className="studio-offer-card__media">
+                  <img src={offer.image} alt={offer.imageAlt || offer.name} loading="lazy" />
+                </div>
+              )}
               <p className="studio-offer-card__meta">{offer.duration}</p>
               <h3>{offer.name}</h3>
               <p>{offer.summary}</p>

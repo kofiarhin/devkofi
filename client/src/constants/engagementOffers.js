@@ -1,3 +1,5 @@
+import { aiImage, codeSnippetImage, workStation } from "./constants";
+
 export const engagementOffers = [
   {
     id: "ai-workflow-audit",
@@ -10,6 +12,8 @@ export const engagementOffers = [
       "Integration and risk notes",
       "Success metrics and pilot scope",
     ],
+    image: aiImage,
+    imageAlt: "AI workflow mapping and systems planning visual",
   },
   {
     id: "ai-pilot-sprint",
@@ -22,6 +26,8 @@ export const engagementOffers = [
       "Structured outputs and evaluation criteria",
       "Human approval path before action",
     ],
+    image: codeSnippetImage,
+    imageAlt: "Engineering code and pilot implementation visual",
   },
   {
     id: "production-ai-system",
@@ -34,6 +40,8 @@ export const engagementOffers = [
       "Auth, observability, and failure handling",
       "Evaluation and deployment path",
     ],
+    image: workStation,
+    imageAlt: "Production workstation and delivery environment visual",
   },
 ];
 
