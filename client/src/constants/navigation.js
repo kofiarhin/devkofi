@@ -2,11 +2,11 @@ export const publicNavItems = [
   { label: "Services", to: "/services" },
   { label: "Work", to: "/work" },
   { label: "Systems", to: "/engineering-systems" },
+  { label: "Blog", to: "/blog" },
   { label: "About", to: "/about" },
 ];
 
 export const secondaryNavItems = [
-  { label: "Blog", to: "/blog" },
   { label: "AI Workflow Audit", to: "/ai-workflow-audit" },
 ];
 

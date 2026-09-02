@@ -9,10 +9,10 @@ import {
 describe("AI engineering studio navigation", () => {
   it("keeps the public portfolio focused on work and engineering systems", () => {
     expect(publicNavItems.map((item) => item.to)).toEqual([
-      "/",
       "/services",
       "/work",
       "/engineering-systems",
+      "/blog",
       "/about",
     ]);
     expect(publicActionItem).toEqual({ label: "Contact", to: "/contact" });
