@@ -3,6 +3,7 @@ import { ChatCircleDots, Funnel, ShieldCheck } from "@phosphor-icons/react";
 import useProjects from "../../hooks/useProjects";
 import { engagementOffers, workflowExamples } from "../../constants/engagementOffers";
 import { services } from "../../constants/services";
+import { heroVideoMp4, heroVideoWebm, profileImage } from "../../constants/constants";
 import { studioContent } from "../../constants/siteContent";
 import { selectFeaturedWork } from "../../lib/projectSelectors";
 import { FinalCta, PageMeta, ProjectCollection, SectionHeading, SplitSection } from "../../components/Studio/Studio";
@@ -25,23 +26,32 @@ const Home = () => {
         description="DevKofi turns manual business workflows and early AI prototypes into dependable, human-controlled AI systems for founder-led teams."
       />
 
-      <section className="studio-page-hero">
-        <div className="studio-container studio-page-hero__grid">
-          <div className="studio-page-hero__media">
-            <img src={studioContent.hero.image} alt="Kofi, founder and AI systems engineer at DevKofi" />
-          </div>
-          <div className="studio-page-hero__copy">
-            <p className="studio-eyebrow">{studioContent.hero.eyebrow}</p>
-            <h1>{studioContent.hero.title}</h1>
-            <p>{studioContent.hero.body}</p>
-            <div className="studio-actions">
-              <Link className="studio-button studio-button--primary" to="/book-a-call">
-                Book an AI workflow call
-              </Link>
-              <Link className="studio-button studio-button--secondary" to="/engineering-systems">
-                See our systems
-              </Link>
-            </div>
+      <section className="studio-video-hero" aria-label="Studio intro">
+        <div className="studio-video-hero__media" aria-hidden="true">
+          <video
+            className="studio-video-hero__video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={profileImage}
+          >
+            <source src={heroVideoWebm} type="video/webm" />
+            <source src={heroVideoMp4} type="video/mp4" />
+          </video>
+          <div className="studio-video-hero__veil" />
+        </div>
+        <div className="studio-container studio-video-hero__content">
+          <p className="studio-eyebrow">{studioContent.hero.eyebrow}</p>
+          <h1>{studioContent.hero.title}</h1>
+          <p>{studioContent.hero.body}</p>
+          <div className="studio-actions">
+            <Link className="studio-button studio-button--primary" to="/contact">
+              Contact
+            </Link>
+            <Link className="studio-button studio-button--secondary" to="/work">
+              See the work
+            </Link>
           </div>
         </div>
       </section>
@@ -99,8 +109,8 @@ const Home = () => {
             ))}
           </div>
           <div className="studio-actions">
-            <Link className="studio-button studio-button--primary" to="/book-a-call">
-              Book an AI workflow call
+            <Link className="studio-button studio-button--primary" to="/contact">
+              Contact
             </Link>
             <Link className="studio-link" to="/services">
               View services
@@ -164,7 +174,7 @@ const Home = () => {
         </div>
       </section>
 
-      <SplitSection {...studioContent.viewpoint} alt="Kofi working on software engineering" />
+      <SplitSection {...studioContent.viewpoint} alt="Engineering workstation visual" />
       <FinalCta />
     </main>
   );

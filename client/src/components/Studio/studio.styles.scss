@@ -14,6 +14,7 @@
 
 .studio-heading h2,
 .studio-page-hero h1,
+.studio-video-hero h1,
 .studio-final-cta h2 {
   color: var(--color-text-primary);
   letter-spacing: -0.045em;
@@ -21,9 +22,11 @@
 }
 
 .studio-heading h2 { font-size: clamp(2rem, 4vw, 4.4rem); }
-.studio-page-hero h1 { font-size: clamp(2.5rem, 6vw, 5.4rem); max-width: 11ch; }
+.studio-page-hero h1,
+.studio-video-hero h1 { font-size: clamp(2.5rem, 6vw, 5.4rem); max-width: 11ch; }
 .studio-copy,
 .studio-page-hero__copy > p:last-child,
+.studio-video-hero__content > p:last-of-type,
 .studio-final-cta p {
   max-width: 62ch;
   color: var(--color-text-secondary);
@@ -36,6 +39,52 @@
 .studio-process,
 .studio-system-list {
   padding: clamp(4rem, 8vw, 8rem) 0;
+}
+
+.studio-video-hero {
+  position: relative;
+  display: grid;
+  align-items: end;
+  min-height: min(88vh, 820px);
+  padding: clamp(5rem, 12vw, 9rem) 0 clamp(3rem, 6vw, 5rem);
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.studio-video-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.studio-video-hero__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.studio-video-hero__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-primary) 42%, transparent) 0%, color-mix(in srgb, var(--color-bg-primary) 78%, transparent) 55%, var(--color-bg-primary) 100%),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-bg-primary) 72%, transparent) 0%, color-mix(in srgb, var(--color-bg-primary) 28%, transparent) 58%, transparent 100%);
+}
+
+.studio-video-hero__content {
+  position: relative;
+  z-index: 1;
+}
+
+.studio-video-hero__content .studio-eyebrow,
+.studio-video-hero__content h1,
+.studio-video-hero__content p {
+  color: var(--color-text-primary);
+}
+
+.studio-video-hero__content p {
+  color: color-mix(in srgb, var(--color-text-primary) 82%, transparent);
 }
 
 .studio-split__grid,
@@ -241,19 +290,23 @@
   .studio-page-hero__media { order: 0; }
   .studio-split__content,
   .studio-page-hero__copy { order: 1; }
-  .studio-page-hero h1 { max-width: 13ch; }
+  .studio-page-hero h1,
+  .studio-video-hero h1 { max-width: 13ch; }
   .studio-project-grid { grid-template-columns: 1fr; }
   .studio-process__steps { grid-template-columns: repeat(2, 1fr); }
   .studio-final-cta__inner { align-items: start; }
+  .studio-video-hero { min-height: min(78vh, 700px); }
 }
 
 @media (max-width: 560px) {
   .studio-process__steps { grid-template-columns: 1fr; }
   .studio-split__media img,
   .studio-page-hero__media img { min-height: 280px; }
+  .studio-video-hero { min-height: 70vh; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .studio-button,
   .studio-link { transition: none; }
+  .studio-video-hero__video { display: none; }
 }
