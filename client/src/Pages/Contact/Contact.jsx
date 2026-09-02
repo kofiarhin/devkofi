@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -31,12 +32,12 @@ const item = {
   visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 20 } },
 };
 
-const projectPrompts = [
-  "Portfolio site",
-  "MVP build",
-  "Dashboard",
-  "Landing page",
-  "Automation",
+const workflowPrompts = [
+  "Prospecting workflow",
+  "Support triage",
+  "Internal ops automation",
+  "AI pilot rescue",
+  "Production AI system",
 ];
 
 const validateForm = (form) => {
@@ -49,11 +50,11 @@ const validateForm = (form) => {
   } else if (!emailPattern.test(form.email.trim())) {
     errors.email = "Use a valid email address.";
   }
-  if (!form.subject.trim()) errors.subject = "Add a short subject.";
+  if (!form.subject.trim()) errors.subject = "Add the workflow or engagement type.";
   if (!form.message.trim()) {
-    errors.message = "Tell me what you need help with.";
+    errors.message = "Describe the business problem and desired outcome.";
   } else if (form.message.trim().length < 20) {
-    errors.message = "Add a little more detail so I can reply usefully.";
+    errors.message = "Add a little more detail so the first reply can be useful.";
   }
 
   return errors;
@@ -64,7 +65,10 @@ const Contact = () => {
   const [fieldErrors, setFieldErrors] = useState({});
   const { mutate, isPending, isSuccess, isError, error, reset } = useContactMutation();
 
-  const mailtoHref = useMemo(() => `mailto:${contactEmail}?subject=Project%20inquiry`, []);
+  const mailtoHref = useMemo(
+    () => `mailto:${contactEmail}?subject=AI%20workflow%20enquiry`,
+    [],
+  );
   const isFormEmpty = Object.values(form).every((value) => !value.trim());
 
   const handleChange = (e) => {
@@ -82,7 +86,9 @@ const Contact = () => {
     setForm((prev) => ({
       ...prev,
       subject: prev.subject || prompt,
-      message: prev.message || `I need help with a ${prompt.toLowerCase()}. `,
+      message:
+        prev.message ||
+        `We have a ${prompt.toLowerCase()} that is still manual or unreliable. Current process: . Desired outcome: . Systems involved: . Timeline: .`,
     }));
     setFieldErrors((prev) => {
       const next = { ...prev };
@@ -129,32 +135,34 @@ const Contact = () => {
         >
           <motion.div className="contact-eyebrow" variants={item}>
             <span className="eyebrow-dot" aria-hidden="true" />
-            Open for selected builds
+            Open for selected AI workflow builds
           </motion.div>
 
           <motion.h1 id="contact-title" className="contact-heading" variants={item}>
-            Tell me what you need built.
+            Tell me about the workflow.
           </motion.h1>
 
           <motion.p className="contact-desc" variants={item}>
-            Send the project context, budget range, and timeline. I will reply with
-            the clearest next step within 24 hours.
+            Share the business problem, current process, systems involved, and the outcome you need.
+            I will reply with the clearest next step—usually an audit, pilot, or production path—within 24 hours.
           </motion.p>
 
           <motion.div className="contact-actions" variants={item} aria-label="Fast contact options">
-            <a href={mailtoHref} className="contact-action contact-action--primary">
+            <Link to="/book-a-call" className="contact-action contact-action--primary">
+              <Clock size={18} weight="duotone" />
+              Book an AI workflow call
+            </Link>
+            <a href={mailtoHref} className="contact-action contact-action--status">
               <Envelope size={18} weight="duotone" />
               Email directly
             </a>
-            <span className="contact-action contact-action--status">
-              <Clock size={18} weight="duotone" />
-              24 hour reply
-            </span>
           </motion.div>
 
           <motion.div className="contact-signal" variants={item}>
             <PaperPlaneTilt size={18} weight="duotone" />
-            <span>Best fit: launch pages, product interfaces, dashboards, and full-stack MVPs.</span>
+            <span>
+              Best fit: founder-led teams turning one expensive manual workflow into a human-controlled AI system.
+            </span>
           </motion.div>
         </motion.section>
 
@@ -180,7 +188,7 @@ const Contact = () => {
             <form className="contact-form" onSubmit={handleSubmit} noValidate>
               <div className="contact-form__header">
                 <span>Start here</span>
-                <strong>Project inquiry</strong>
+                <strong>Workflow enquiry</strong>
               </div>
 
               {isFormEmpty && (
@@ -188,7 +196,7 @@ const Contact = () => {
                   <span className="contact-empty-state__icon" aria-hidden="true">
                     <ChatCenteredText size={20} weight="duotone" />
                   </span>
-                  <p>Start by entering your details and message.</p>
+                  <p>Start with the business problem and the workflow you want to improve.</p>
                 </div>
               )}
 
@@ -202,8 +210,8 @@ const Contact = () => {
                 </div>
               )}
 
-              <div className="contact-prompt-grid" aria-label="Common project types">
-                {projectPrompts.map((prompt) => (
+              <div className="contact-prompt-grid" aria-label="Common workflow types">
+                {workflowPrompts.map((prompt) => (
                   <button
                     className="contact-prompt"
                     key={prompt}
@@ -240,7 +248,7 @@ const Contact = () => {
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder="you@company.com"
                     value={form.email}
                     onChange={handleChange}
                     required
@@ -253,12 +261,12 @@ const Contact = () => {
               </div>
 
               <div className="contact-field">
-                <label htmlFor="subject">Project type</label>
+                <label htmlFor="subject">Workflow or engagement</label>
                 <input
                   id="subject"
                   name="subject"
                   type="text"
-                  placeholder="Landing page, MVP, dashboard..."
+                  placeholder="Prospecting workflow, pilot sprint, production system..."
                   value={form.subject}
                   onChange={handleChange}
                   required
@@ -269,11 +277,11 @@ const Contact = () => {
               </div>
 
               <div className="contact-field">
-                <label htmlFor="message">What should happen next?</label>
+                <label htmlFor="message">Business problem and desired outcome</label>
                 <textarea
                   id="message"
                   name="message"
-                  placeholder="Briefly describe the goal, current state, timeline, and any must-have features."
+                  placeholder="What is manual today, what systems are involved, what outcome would make this successful, and any timeline constraints."
                   value={form.message}
                   onChange={handleChange}
                   required
@@ -281,7 +289,7 @@ const Contact = () => {
                   aria-describedby={fieldErrors.message ? "message-error message-helper" : "message-helper"}
                 />
                 <span id="message-helper" className="field-helper">
-                  A few details now means a more useful first reply.
+                  Problem, current process, systems, and success metric make the first reply sharper.
                 </span>
                 {fieldErrors.message && <span id="message-error" className="field-error">{fieldErrors.message}</span>}
               </div>
@@ -294,7 +302,7 @@ const Contact = () => {
                   </>
                 ) : (
                   <>
-                    Send project details
+                    Send workflow details
                     <ArrowRight size={17} weight="bold" />
                   </>
                 )}
@@ -315,7 +323,7 @@ const Contact = () => {
                 <GithubLogo size={15} weight="fill" />
                 GitHub
               </a>
-              <a href="https://www.linkedin.com/in/joshua-o-9b49b72b/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/kofi-arhin" target="_blank" rel="noreferrer" aria-label="LinkedIn">
                 <LinkedinLogo size={15} weight="fill" />
                 LinkedIn
               </a>
