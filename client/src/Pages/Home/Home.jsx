@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
+import { Code, Headset, UsersThree } from "@phosphor-icons/react";
 import useProjects from "../../hooks/useProjects";
 import { engagementOffers, workflowExamples } from "../../constants/engagementOffers";
 import { services } from "../../constants/services";
 import { studioContent } from "../../constants/siteContent";
 import { selectFeaturedWork } from "../../lib/projectSelectors";
 import { FinalCta, PageMeta, ProjectCollection, SectionHeading, SplitSection } from "../../components/Studio/Studio";
+
+const workflowIcons = {
+  "Prospecting workflow": UsersThree,
+  "Support triage workflow": Headset,
+  "Governed coding workflow": Code,
+};
 
 const Home = () => {
   const { data, isLoading, isError } = useProjects();
@@ -47,12 +54,20 @@ const Home = () => {
             body={studioContent.whoFor.body}
           />
           <div className="studio-offer-grid">
-            {workflowExamples.map((example) => (
-              <article className="studio-offer-card" key={example.title}>
-                <h3>{example.title}</h3>
-                <p>{example.body}</p>
-              </article>
-            ))}
+            {workflowExamples.map((example) => {
+              const Icon = workflowIcons[example.title];
+              return (
+                <article className="studio-offer-card" key={example.title}>
+                  {Icon && (
+                    <div className="studio-offer-card__icon" aria-hidden="true">
+                      <Icon size={56} weight="duotone" />
+                    </div>
+                  )}
+                  <h3>{example.title}</h3>
+                  <p>{example.body}</p>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
