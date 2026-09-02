@@ -1,7 +1,11 @@
 export const baseUrl = import.meta.env.VITE_API_URL;
 
+// Primary portraits — alternate these across page sections
 export const profileImage =
-  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1753586196/devkofi/bnxcwfcq2mrrv3qio0uf.jpg";
+  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1775353964/snapsell/products/ssklwevepeqd9j4abvgl.jpg";
+export const profileImageSecondary =
+  "https://res.cloudinary.com/dlsiabgiw/image/upload/v1775353965/snapsell/products/de09sxtdauuhwrkpkmxm.jpg";
+
 export const codeSnippetImage =
   "https://res.cloudinary.com/dlsiabgiw/image/upload/v1753763160/devkofi/f2bycwqmitsvfzzfyptp.png";
 

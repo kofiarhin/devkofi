@@ -1,4 +1,4 @@
-import { profileImage, personCoding } from "../../constants/constants";
+import { profileImage, profileImageSecondary } from "../../constants/constants";
 import { engineeringProcess } from "../../constants/siteContent";
 import { FinalCta, PageMeta, SectionHeading, SplitSection, StudioPageHero } from "../../components/Studio/Studio";
 
@@ -17,15 +17,26 @@ const About = () => (
       eyebrow="The shift"
       title="From full-stack delivery to AI systems engineering."
       body="My background is building complete software systems across frontend, APIs, databases, deployment, testing, and product UX. AI engineering extends that responsibility rather than replacing it: models still need architecture, context, tools, permissions, verification, and interfaces around them."
-      image={personCoding}
-      alt="Kofi working on software engineering"
+      image={profileImageSecondary}
+      alt="Kofi, DevKofi founder"
       mediaLeft
     />
 
     <section className="studio-process">
       <div className="studio-container">
-        <SectionHeading eyebrow="How I work" title="The process stays engineering-led." body="I treat AI as a powerful component inside a wider software system. The work starts with the problem and ends with verification, not with a prompt." />
-        <div className="studio-process__steps">{engineeringProcess.map((step, index) => <div className="studio-process__step" key={step}><span>{String(index + 1).padStart(2, "0")}</span>{step}</div>)}</div>
+        <SectionHeading
+          eyebrow="How I work"
+          title="The process stays engineering-led."
+          body="I treat AI as a powerful component inside a wider software system. The work starts with the problem and ends with verification, not with a prompt."
+        />
+        <div className="studio-process__steps">
+          {engineeringProcess.map((step, index) => (
+            <div className="studio-process__step" key={step}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {step}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
 
@@ -34,7 +45,7 @@ const About = () => (
       title="AI isn’t the whole system."
       body="A dependable AI product needs the surrounding engineering to be explicit: context, data, APIs, tool boundaries, application state, human approvals, evaluation, fallbacks, observability, security, and user experience. That is the layer I focus on building well."
       image={profileImage}
-      alt="Kofi, DevKofi founder"
+      alt="Kofi, founder of DevKofi"
     />
 
     <FinalCta title="Have a system that needs senior AI engineering?" />
