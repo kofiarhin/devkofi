@@ -8,8 +8,8 @@ export const publicNavItems = [
 ];
 
 export const publicActionItem = {
-  label: "Contact",
-  to: "/contact",
+  label: "Book a call",
+  to: "/book-a-call",
 };
 
 export const adminNavItems = [

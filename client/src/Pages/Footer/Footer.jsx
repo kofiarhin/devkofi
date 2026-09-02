@@ -6,14 +6,15 @@ import "./footer.styles.scss";
 
 const actionLinks = [
   publicActionItem,
+  { label: "Send a workflow brief", to: "/contact" },
   { label: "View work", to: "/work" },
   { label: "Explore systems", to: "/engineering-systems" },
 ];
 
 const socialLinks = [
   { label: "GitHub", href: "https://github.com/kofiarhin", icon: GithubLogo },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: LinkedinLogo },
-  { label: "Twitter", href: "https://twitter.com", icon: XLogo },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/kofi-arhin", icon: LinkedinLogo },
+  { label: "Twitter", href: "https://x.com/kwofiArhin", icon: XLogo },
 ];
 
 const Footer = () => {
@@ -25,16 +26,16 @@ const Footer = () => {
         <section className="footer-cta" aria-label="Start an AI engineering project">
           <div className="footer-cta__signal"><span className="footer-status-dot" aria-hidden="true" />AI engineering studio</div>
           <div className="footer-cta__content">
-            <h2>Turn the AI idea into dependable software.</h2>
-            <p>Bring the workflow, prototype, product, or system problem. I’ll help turn it into a clear engineering path.</p>
+            <h2>Turn a manual workflow into a reliable AI system.</h2>
+            <p>Bring the process, prototype, or product constraint. We’ll map an audit, pilot, or production path with human oversight built in.</p>
           </div>
-          <Link to="/contact" className="footer-cta__button"><EnvelopeSimple size={18} weight="duotone" aria-hidden="true" />Contact<ArrowRight size={16} weight="bold" aria-hidden="true" /></Link>
+          <Link to="/book-a-call" className="footer-cta__button"><EnvelopeSimple size={18} weight="duotone" aria-hidden="true" />Book an AI workflow call<ArrowRight size={16} weight="bold" aria-hidden="true" /></Link>
         </section>
 
         <div className="footer-main">
           <div className="footer-brand">
             <Link to="/" className="footer-logo" aria-label="DevKofi home">Dev<span>Kofi</span></Link>
-            <p className="footer-tagline">Founder-led AI engineering for production AI systems, agentic workflows, and AI-native products.</p>
+            <p className="footer-tagline">Founder-led AI engineering studio for production AI workflow systems, agents, and AI-native products.</p>
             <a className="footer-email" href="mailto:kofiarhin69@gmail.com"><EnvelopeSimple size={18} weight="duotone" aria-hidden="true" />kofiarhin69@gmail.com</a>
           </div>
 

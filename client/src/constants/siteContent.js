@@ -3,8 +3,8 @@ import { aiImage, codeSnippetImage, personCoding, profileImage, workStation } fr
 export const studioContent = {
   hero: {
     eyebrow: "AI Engineering Studio",
-    title: "I engineer AI systems that do real work.",
-    body: "AI agents, intelligent workflows, and AI-native products engineered around your software, data, and business processes.",
+    title: "Turn manual workflows into reliable AI systems.",
+    body: "DevKofi designs and builds AI agents, internal tools, and AI-powered products that integrate with your existing software—complete with validation, human oversight, and production-ready engineering.",
     image: profileImage,
   },
   problem: {
@@ -22,7 +22,7 @@ export const studioContent = {
   products: {
     eyebrow: "Built with the system",
     title: "Real products are the output.",
-    body: "The same engineering workflows power AI systems and conventional full-stack products. Products shows the broader set of applications I have built and shipped.",
+    body: "The same engineering workflows power AI systems and conventional full-stack products. Work shows the broader set of applications I have built and shipped.",
     image: workStation,
   },
   viewpoint: {
@@ -30,6 +30,11 @@ export const studioContent = {
     title: "AI isn't the whole system.",
     body: "The model is one component. Reliable AI products depend on the engineering around it: context, data, APIs, tools, permissions, state, verification, human control, and UX.",
     image: personCoding,
+  },
+  whoFor: {
+    eyebrow: "Who it is for",
+    title: "Founder-led teams with a manual workflow worth automating carefully.",
+    body: "Best fit for founder-led B2B companies and small product teams that want a repetitive, data-heavy process turned into a reliable, human-controlled AI-assisted system.",
   },
 };
 

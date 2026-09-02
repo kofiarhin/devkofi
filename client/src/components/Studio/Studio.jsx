@@ -151,7 +151,10 @@ export const ProjectCollection = ({ projects, emptyMessage }) => {
   return <div className="studio-project-grid">{projects.map((project) => <ProjectCard key={project.key || project._id || project.id || project.slug || project.name} project={project} />)}</div>;
 };
 
-export const FinalCta = ({ title = "Have an AI system you want to build?", body = "Bring the problem, prototype, or existing product. I’ll help turn it into an engineering plan and production path." }) => (
+export const FinalCta = ({
+  title = "Have a workflow you want to make dependable?",
+  body = "Bring the manual process, prototype, or internal tool. We’ll scope an audit, pilot, or production path around real inputs and human control.",
+} = {}) => (
   <section className="studio-final-cta">
     <div className="studio-container studio-final-cta__inner">
       <div>
@@ -159,7 +162,9 @@ export const FinalCta = ({ title = "Have an AI system you want to build?", body 
         <h2>{title}</h2>
         <p>{body}</p>
       </div>
-      <Link className="studio-button studio-button--primary" to="/contact">Contact</Link>
+      <Link className="studio-button studio-button--primary" to="/book-a-call">
+        Book an AI workflow call
+      </Link>
     </div>
   </section>
 );
