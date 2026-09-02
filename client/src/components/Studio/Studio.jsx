@@ -40,18 +40,20 @@ const upsertStructuredData = (structuredData) => {
   if (!existing) document.head.appendChild(script);
 };
 
-export const PageMeta = ({ title, description }) => {
+export const PageMeta = ({ title, description, canonicalPath, image, robots, structuredData } = {}) => {
   const location = useLocation();
   const routeMeta = getSeoForPath(location.pathname);
-  const pageTitle = routeMeta.title || (title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} | AI Engineering Studio`);
-  const pageDescription = routeMeta.description || description || "DevKofi AI Engineering Studio.";
-  const canonicalUrl = new URL(routeMeta.canonicalPath || location.pathname, SITE_URL).toString();
-  const robots = routeMeta.robots || "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
+  const pageTitle = title ? (title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`) : routeMeta.title || `${SITE_NAME} | AI Engineering Studio`;
+  const pageDescription = description || routeMeta.description || "DevKofi AI Engineering Studio.";
+  const canonicalUrl = new URL(canonicalPath || routeMeta.canonicalPath || location.pathname, SITE_URL).toString();
+  const pageRobots = robots || routeMeta.robots || "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
+  const pageImage = image || routeMeta.image;
+  const pageStructuredData = structuredData === undefined ? routeMeta.structuredData : structuredData;
 
   useEffect(() => {
     document.title = pageTitle;
     upsertMeta("name", "description", pageDescription);
-    upsertMeta("name", "robots", robots);
+    upsertMeta("name", "robots", pageRobots);
     upsertMeta("name", "author", "Kofi Arhin");
 
     upsertMeta("property", "og:site_name", SITE_NAME);
@@ -59,16 +61,16 @@ export const PageMeta = ({ title, description }) => {
     upsertMeta("property", "og:title", pageTitle);
     upsertMeta("property", "og:description", pageDescription);
     upsertMeta("property", "og:url", canonicalUrl);
-    upsertMeta("property", "og:image", routeMeta.image);
+    upsertMeta("property", "og:image", pageImage);
 
     upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", pageTitle);
     upsertMeta("name", "twitter:description", pageDescription);
-    upsertMeta("name", "twitter:image", routeMeta.image);
+    upsertMeta("name", "twitter:image", pageImage);
 
     upsertCanonical(canonicalUrl);
-    upsertStructuredData(routeMeta.structuredData);
-  }, [canonicalUrl, pageDescription, pageTitle, robots, routeMeta.image, routeMeta.structuredData]);
+    upsertStructuredData(pageStructuredData);
+  }, [canonicalUrl, pageDescription, pageImage, pageRobots, pageStructuredData, pageTitle]);
 
   return null;
 };
