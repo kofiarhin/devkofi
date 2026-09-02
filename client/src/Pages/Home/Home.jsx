@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Code, Headset, UsersThree } from "@phosphor-icons/react";
+import { ChatCircleDots, Funnel, ShieldCheck } from "@phosphor-icons/react";
 import useProjects from "../../hooks/useProjects";
 import { engagementOffers, workflowExamples } from "../../constants/engagementOffers";
 import { services } from "../../constants/services";
@@ -8,9 +8,9 @@ import { selectFeaturedWork } from "../../lib/projectSelectors";
 import { FinalCta, PageMeta, ProjectCollection, SectionHeading, SplitSection } from "../../components/Studio/Studio";
 
 const workflowIcons = {
-  "Prospecting workflow": UsersThree,
-  "Support triage workflow": Headset,
-  "Governed coding workflow": Code,
+  "Prospecting workflow": Funnel,
+  "Support triage workflow": ChatCircleDots,
+  "Governed coding workflow": ShieldCheck,
 };
 
 const Home = () => {
@@ -60,7 +60,7 @@ const Home = () => {
                 <article className="studio-offer-card" key={example.title}>
                   {Icon && (
                     <div className="studio-offer-card__icon" aria-hidden="true">
-                      <Icon size={56} weight="duotone" />
+                      <Icon size={48} weight="duotone" />
                     </div>
                   )}
                   <h3>{example.title}</h3>
