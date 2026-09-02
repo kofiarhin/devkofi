@@ -34,6 +34,11 @@ const Work = () => {
           <div className="studio-offer-grid">
             {caseStudies.map((study) => (
               <article className="studio-offer-card" key={study.id}>
+                {study.image && (
+                  <div className="studio-offer-card__media">
+                    <img src={study.image} alt={study.imageAlt || study.name} loading="lazy" />
+                  </div>
+                )}
                 <p className="studio-offer-card__meta">
                   {study.category} · {study.status}
                 </p>

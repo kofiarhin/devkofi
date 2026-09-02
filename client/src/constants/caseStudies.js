@@ -1,3 +1,5 @@
+import { codeSnippetImage, workStation } from "./constants";
+
 export const caseStudies = [
   {
     id: "leadradar",
@@ -20,6 +22,8 @@ export const caseStudies = [
     links: {
       repo: "https://github.com/kofiarhin/leadradar",
     },
+    image: workStation,
+    imageAlt: "LeadRadar sales workflow system visual",
   },
   {
     id: "governed-coding-workflow",
@@ -42,5 +46,7 @@ export const caseStudies = [
     links: {
       repo: "https://github.com/kofiarhin/ai-dev-workspace",
     },
+    image: codeSnippetImage,
+    imageAlt: "Governed AI coding workflow infrastructure visual",
   },
 ];
