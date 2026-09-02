@@ -1,13 +1,13 @@
 import useProjects from "../../hooks/useProjects";
 import { caseStudies } from "../../constants/caseStudies";
 import { aiImage } from "../../constants/constants";
-import { selectPortfolioWork } from "../../lib/projectSelectors";
+import { selectWorkProjects } from "../../lib/projectSelectors";
 import { FinalCta, PageMeta, ProjectCollection, SectionHeading, StudioPageHero } from "../../components/Studio/Studio";
 
 const Work = () => {
   const { data, isLoading, isError } = useProjects();
   const projects = Array.isArray(data) ? data : data?.data || [];
-  const portfolioWork = selectPortfolioWork(projects);
+  const portfolioWork = selectWorkProjects(projects);
 
   return (
     <main>
