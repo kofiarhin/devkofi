@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import Contact from '../../src/Pages/Contact/Contact';
 import useContactMutation from '../../src/hooks/useContactMutation';
 
@@ -16,7 +17,12 @@ const mutationState = {
   error: null,
 };
 
-const renderContact = () => render(<Contact />);
+const renderContact = () =>
+  render(
+    <MemoryRouter>
+      <Contact />
+    </MemoryRouter>,
+  );
 
 describe('Contact page empty state', () => {
   beforeEach(() => {
@@ -28,7 +34,7 @@ describe('Contact page empty state', () => {
     renderContact();
 
     expect(
-      screen.getByText('Start by entering your details and message.')
+      screen.getByText('Start with the business problem and the workflow you want to improve.')
     ).toBeInTheDocument();
   });
 
@@ -39,7 +45,7 @@ describe('Contact page empty state', () => {
     await user.type(screen.getByLabelText(/name/i), 'Ava Morgan');
 
     expect(
-      screen.queryByText('Start by entering your details and message.')
+      screen.queryByText('Start with the business problem and the workflow you want to improve.')
     ).not.toBeInTheDocument();
   });
 
@@ -47,10 +53,10 @@ describe('Contact page empty state', () => {
     const user = userEvent.setup();
     renderContact();
 
-    await user.click(screen.getByRole('button', { name: /dashboard/i }));
+    await user.click(screen.getByRole('button', { name: /prospecting workflow/i }));
 
     expect(
-      screen.queryByText('Start by entering your details and message.')
+      screen.queryByText('Start with the business problem and the workflow you want to improve.')
     ).not.toBeInTheDocument();
   });
 });
