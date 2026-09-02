@@ -17,6 +17,8 @@ const post = {
   tags: ["AI Engineering", "Reliability"],
   sources: [{ title: "Primary source", url: "https://example.com/source" }],
   publishedAt: "2026-09-01T12:00:00.000Z",
+  coverImageUrl: "https://res.cloudinary.com/test/image/upload/blog-thumbnail.png",
+  coverImageAlt: "A technical systems thumbnail.",
 };
 
 describe("Blog pages", () => {
@@ -32,6 +34,10 @@ describe("Blog pages", () => {
     render(<MemoryRouter><Blog /></MemoryRouter>);
 
     expect(screen.getByRole("heading", { name: post.title })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: post.coverImageAlt })).toHaveAttribute(
+      "src",
+      post.coverImageUrl,
+    );
     expect(screen.getByRole("link", { name: /read article/i })).toHaveAttribute(
       "href",
       `/blog/${post.slug}`,
@@ -55,9 +61,13 @@ describe("Blog pages", () => {
     expect(screen.getByRole("alert")).toHaveTextContent(/could not load articles/i);
   });
 
-  it("renders Markdown and source links for one article", () => {
+  it("renders Markdown, thumbnail, and source links for one article", () => {
     render(<MemoryRouter><BlogArticle slug={post.slug} /></MemoryRouter>);
 
+    expect(screen.getByRole("img", { name: post.coverImageAlt })).toHaveAttribute(
+      "src",
+      post.coverImageUrl,
+    );
     expect(screen.getByRole("heading", { name: "Reliable retries" })).toBeInTheDocument();
     expect(screen.getByText("A retry is another state transition.")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Primary source" })).toHaveAttribute(
@@ -77,6 +87,19 @@ describe("Blog pages", () => {
 
     expect(screen.getByText("Safe copy")).toBeInTheDocument();
     expect(container.querySelector("script")).not.toBeInTheDocument();
+  });
+
+  it("omits the thumbnail safely for older posts without one", () => {
+    useBlogPosts.mockReturnValue({
+      data: { posts: [{ ...post, coverImageUrl: null, coverImageAlt: null }] },
+      isLoading: false,
+      isError: false,
+    });
+
+    render(<MemoryRouter><Blog /></MemoryRouter>);
+
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: post.title })).toBeInTheDocument();
   });
 
   it("renders article loading and not-found states", () => {
