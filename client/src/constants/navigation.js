@@ -7,13 +7,12 @@ export const publicNavItems = [
 
 export const secondaryNavItems = [
   { label: "Blog", to: "/blog" },
-  { label: "Contact", to: "/contact" },
   { label: "AI Workflow Audit", to: "/ai-workflow-audit" },
 ];
 
 export const publicActionItem = {
-  label: "Book a call",
-  to: "/book-a-call",
+  label: "Contact",
+  to: "/contact",
 };
 
 export const adminNavItems = [
