@@ -2,7 +2,6 @@ import {
   aiImage,
   codeSnippetImage,
   profileImage,
-  profileImageSecondary,
   workStation,
 } from "./constants";
 
@@ -35,7 +34,7 @@ export const studioContent = {
     eyebrow: "Point of view",
     title: "AI isn't the whole system.",
     body: "The model is one component. Reliable AI products depend on the engineering around it: context, data, APIs, tools, permissions, state, verification, human control, and UX.",
-    image: profileImageSecondary,
+    image: workStation,
   },
   whoFor: {
     eyebrow: "Who it is for",
