@@ -26,8 +26,15 @@ import BlogArticle from "./Pages/BlogArticle/BlogArticle";
 import NotFound from "./Pages/NotFound/NotFound";
 import AdminRoute from "./components/AdminRoute/AdminRoute";
 import AdminLogin from "./Pages/Login/AdminLogin";
-import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 import AdminMessageDetails from "./Pages/AdminMessageDetails/AdminMessageDetails";
+import AdminShell from "./components/AdminShell/AdminShell";
+import AdminOverview from "./Pages/Admin/AdminOverview";
+import AdminArticles from "./Pages/Admin/AdminArticles";
+import AdminArticleForm from "./Pages/Admin/AdminArticleForm";
+import AdminBookings from "./Pages/Admin/AdminBookings";
+import AdminMessages from "./Pages/Admin/AdminMessages";
+import AdminSubscribers from "./Pages/Admin/AdminSubscribers";
+import AdminSettings from "./Pages/Admin/AdminSettings";
 import useAdminSession from "./hooks/queries/useAdminSession";
 
 export const AppRoutes = () => {
@@ -57,9 +64,16 @@ export const AppRoutes = () => {
 
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route element={<AdminRoute />}>
-          <Route element={<AdminLayout />}>
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route element={<AdminShell />}>
+            <Route path="/admin/dashboard" element={<AdminOverview />} />
+            <Route path="/admin/articles" element={<AdminArticles />} />
+            <Route path="/admin/articles/new" element={<AdminArticleForm />} />
+            <Route path="/admin/articles/:articleId/edit" element={<AdminArticleForm />} />
+            <Route path="/admin/bookings" element={<AdminBookings />} />
+            <Route path="/admin/messages" element={<AdminMessages />} />
             <Route path="/admin/messages/:messageId" element={<AdminMessageDetails />} />
+            <Route path="/admin/subscribers" element={<AdminSubscribers />} />
+            <Route path="/admin/settings" element={<AdminSettings />} />
           </Route>
         </Route>
       </Routes>
@@ -75,17 +89,6 @@ const PublicLayout = () => {
       {isOpen && <SideNav />}
       <Outlet />
       <Footer />
-    </>
-  );
-};
-
-const AdminLayout = () => {
-  const { isOpen } = useSelector((state) => state.navigation);
-  return (
-    <>
-      <Header />
-      {isOpen && <SideNav />}
-      <Outlet />
     </>
   );
 };

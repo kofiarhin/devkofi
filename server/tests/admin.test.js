@@ -6,6 +6,7 @@ const Admin = require('../models/Admin');
 const Booking = require('../models/Booking');
 const ContactMessage = require('../models/ContactMessage');
 const NewsletterSubscriber = require('../models/NewsletterSubscriber');
+const BlogPost = require('../models/BlogPost');
 const { getWeekMonday } = require('../utils/bookingSlots');
 
 const TEST_EMAIL = 'testadmin@devkofi.com';
@@ -63,7 +64,103 @@ afterAll(async () => {
     email: { $in: ['older-subscriber@test.com', 'new-subscriber@test.com'] },
   });
   await Booking.deleteMany({ email: /admin-booking/i });
+  await BlogPost.deleteMany({ slug: /^admin-foundation-test/ });
   await mongoose.disconnect();
+});
+
+describe('Admin foundation overview and article lifecycle', () => {
+  it('requires authentication for overview and article management', async () => {
+    expect((await request(app).get('/api/admin/overview')).status).toBe(401);
+    expect((await request(app).get('/api/admin/articles')).status).toBe(401);
+    expect((await request(app).post('/api/admin/articles').send({})).status).toBe(401);
+  });
+
+  it('creates, publishes, unpublishes, archives, and restores an article', async () => {
+    const cookie = await getAuthCookie();
+    const payload = {
+      title: 'Admin Foundation Test Article',
+      slug: `admin-foundation-test-${Date.now()}`,
+      excerpt: 'A test article excerpt.',
+      content: '# Test article',
+      tags: ['admin', 'test'],
+      sources: [{ title: 'DevKofi', url: 'https://devkofi.com' }],
+      coverImageUrl: null,
+      coverImageAlt: null,
+      seoTitle: 'Admin Foundation Test Article',
+      seoDescription: 'A test description for the admin foundation article.',
+      status: 'draft',
+    };
+
+    const created = await request(app).post('/api/admin/articles').set('Cookie', cookie).send(payload);
+    expect(created.status).toBe(201);
+    expect(created.body.data.article.status).toBe('draft');
+    expect(created.body.data.article.origin.generator).toBe('devkofi-admin');
+    const id = created.body.data.article._id;
+
+    const published = await request(app).post(`/api/admin/articles/${id}/publish`).set('Cookie', cookie);
+    expect(published.status).toBe(200);
+    expect(published.body.data.article.status).toBe('published');
+    expect(published.body.data.article.publishedAt).toBeTruthy();
+
+    const publicResult = await request(app).get(`/api/blog/${payload.slug}`);
+    expect(publicResult.status).toBe(200);
+
+    const unpublished = await request(app).post(`/api/admin/articles/${id}/unpublish`).set('Cookie', cookie);
+    expect(unpublished.body.data.article.status).toBe('draft');
+    expect((await request(app).get(`/api/blog/${payload.slug}`)).status).toBe(404);
+
+    const archived = await request(app).post(`/api/admin/articles/${id}/archive`).set('Cookie', cookie);
+    expect(archived.body.data.article.status).toBe('archived');
+    expect(archived.body.data.article.archivedAt).toBeTruthy();
+
+    const restored = await request(app).post(`/api/admin/articles/${id}/restore`).set('Cookie', cookie);
+    expect(restored.body.data.article.status).toBe('draft');
+  });
+
+  it('rejects duplicate slugs and returns overview metrics', async () => {
+    const cookie = await getAuthCookie();
+    const payload = {
+      title: 'Duplicate Article', slug: `admin-foundation-test-duplicate-${Date.now()}`,
+      excerpt: 'Duplicate excerpt', content: 'Duplicate content', tags: [], sources: [],
+      seoTitle: 'Duplicate Article', seoDescription: 'Duplicate description', status: 'draft',
+    };
+    expect((await request(app).post('/api/admin/articles').set('Cookie', cookie).send(payload)).status).toBe(201);
+    expect((await request(app).post('/api/admin/articles').set('Cookie', cookie).send(payload)).status).toBe(409);
+
+    const overview = await request(app).get('/api/admin/overview').set('Cookie', cookie);
+    expect(overview.status).toBe(200);
+    expect(overview.body.data.articles.total).toBeGreaterThan(0);
+    expect(overview.body.data.messages).toHaveProperty('unread');
+    expect(overview.body.data.subscribers).toHaveProperty('verified');
+    expect(Array.isArray(overview.body.data.recentActivity)).toBe(true);
+  });
+});
+
+describe('Admin message and subscriber management', () => {
+  it('updates message read and archive state', async () => {
+    const cookie = await getAuthCookie();
+    const read = await request(app).patch(`/api/admin/contact-messages/${testMessageId}/read-state`).set('Cookie', cookie).send({ isRead: true });
+    expect(read.status).toBe(200);
+    expect(read.body.data.message.isRead).toBe(true);
+    expect(read.body.data.message.readAt).toBeTruthy();
+
+    const archived = await request(app).post(`/api/admin/contact-messages/${testMessageId}/archive`).set('Cookie', cookie);
+    expect(archived.body.data.message.isArchived).toBe(true);
+    const restored = await request(app).post(`/api/admin/contact-messages/${testMessageId}/restore`).set('Cookie', cookie);
+    expect(restored.body.data.message.isArchived).toBe(false);
+  });
+
+  it('never exposes subscriber verification tokens and removes a subscriber', async () => {
+    const email = `remove-${Date.now()}@test.com`;
+    const subscriber = await NewsletterSubscriber.create({ email, verifyToken: 'never-return-this' });
+    const cookie = await getAuthCookie();
+    const listed = await request(app).get('/api/admin/newsletter-subscribers?search=remove-').set('Cookie', cookie);
+    expect(listed.status).toBe(200);
+    expect(JSON.stringify(listed.body)).not.toContain('never-return-this');
+    const removed = await request(app).delete(`/api/admin/newsletter-subscribers/${subscriber._id}`).set('Cookie', cookie);
+    expect(removed.status).toBe(200);
+    expect(await NewsletterSubscriber.findById(subscriber._id)).toBeNull();
+  });
 });
 
 beforeEach(async () => {

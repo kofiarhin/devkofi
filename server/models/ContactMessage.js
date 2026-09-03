@@ -8,6 +8,8 @@ const contactMessageSchema = new mongoose.Schema(
     message: { type: String, required: true, trim: true },
     isRead: { type: Boolean, default: false },
     readAt: { type: Date, default: null },
+    isArchived: { type: Boolean, default: false },
+    archivedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );

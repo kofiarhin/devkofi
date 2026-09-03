@@ -1,0 +1,13 @@
+.shell { min-height: 100vh; display: grid; grid-template-columns: 250px 1fr; background: #0a0b0c; color: #f4f4f0; }
+.sidebar { position: sticky; top: 0; height: 100vh; padding: 28px 18px; border-right: 1px solid #2d302c; background: #111311; display: flex; flex-direction: column; }
+.brand { color: #fff; text-decoration: none; font-weight: 800; font-size: 1.25rem; padding: 0 10px 28px; }
+.brand span { color: #91e000; }
+.nav { display: grid; gap: 6px; }
+.link { color: #adb2aa; text-decoration: none; padding: 11px 12px; border-radius: 8px; font-weight: 650; }
+.link:hover, .active { color: #fff; background: #252a20; }
+.active { box-shadow: inset 3px 0 #91e000; }
+.account { margin-top: auto; display: grid; gap: 8px; padding: 16px 10px 0; border-top: 1px solid #2d302c; overflow-wrap: anywhere; }
+.account small { color: #858b83; }
+.account button { border: 1px solid #444a42; border-radius: 7px; background: transparent; color: #fff; padding: 9px; cursor: pointer; }
+.content { min-width: 0; padding: 36px; }
+@media (max-width: 760px) { .shell { display: block; } .sidebar { position: static; height: auto; padding: 16px; } .brand { padding-bottom: 14px; } .nav { display: flex; overflow-x: auto; padding-bottom: 8px; } .link { white-space: nowrap; } .account { display: flex; align-items: center; flex-wrap: wrap; } .content { padding: 22px 16px; } }

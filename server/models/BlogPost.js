@@ -22,12 +22,13 @@ const blogPostSchema = new mongoose.Schema(
     seoDescription: { type: String, required: true, trim: true },
     status: {
       type: String,
-      enum: ["published"],
+      enum: ["draft", "published", "archived"],
       required: true,
-      default: "published",
+      default: "draft",
       index: true,
     },
-    publishedAt: { type: Date, required: true, index: true },
+    publishedAt: { type: Date, default: null, index: true },
+    archivedAt: { type: Date, default: null },
     origin: {
       generator: { type: String, default: "ideahub-generate-post" },
       sourceType: { type: String, default: "generated" },

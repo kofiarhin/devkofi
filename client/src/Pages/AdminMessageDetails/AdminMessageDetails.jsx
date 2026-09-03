@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import useContactMessage from '../../hooks/queries/useContactMessage';
+import { useMessageMutation } from '../../hooks/useAdminData';
 import s from './AdminMessageDetails.module.scss';
 
 const formatDateTime = (dateString) => {
@@ -15,6 +16,7 @@ const AdminMessageDetails = () => {
   const { messageId } = useParams();
   const [copyState, setCopyState] = useState('');
   const { data, isLoading, isError, error, refetch, isFetching } = useContactMessage(messageId);
+  const mutation = useMessageMutation();
 
   const message = data?.data?.data?.message;
   const isNotFound = error?.response?.status === 404 || error?.response?.status === 400;
@@ -62,7 +64,7 @@ const AdminMessageDetails = () => {
           <div className={s.card}>
             <h1 className={s.title}>Message not found</h1>
             <p className={s.muted}>The link is invalid or the message no longer exists.</p>
-            <Link className={s.backBtn} to="/admin/dashboard">Back to dashboard</Link>
+            <Link className={s.backBtn} to="/admin/messages">Back to messages</Link>
           </div>
         </main>
       </div>
@@ -78,7 +80,7 @@ const AdminMessageDetails = () => {
             <p className={s.muted}>Please try again.</p>
             <div className={s.actions}>
               <button type="button" onClick={() => refetch()} className={s.actionBtn}>Retry</button>
-              <Link className={s.backBtn} to="/admin/dashboard">Back to dashboard</Link>
+              <Link className={s.backBtn} to="/admin/messages">Back to messages</Link>
             </div>
           </div>
         </main>
@@ -90,7 +92,7 @@ const AdminMessageDetails = () => {
     <div className={s.page}>
       <main className={s.main}>
         <header className={s.header}>
-          <Link className={s.backBtn} to="/admin/dashboard">← Back to dashboard</Link>
+          <Link className={s.backBtn} to="/admin/messages">← Back to messages</Link>
           <h1 className={s.title}>Message Details</h1>
           <span className={s.statusBadge}>
             {message?.isRead ? 'Read' : 'Unread'}
@@ -149,6 +151,15 @@ const AdminMessageDetails = () => {
               onClick={() => handleCopy(message?.message, 'Message')}
             >
               Copy message
+            </button>
+            <button type="button" className={s.actionBtn} disabled={mutation.isPending} onClick={() => mutation.mutate({ id: messageId, action: 'read-state', isRead: !message?.isRead })}>
+              Mark {message?.isRead ? 'unread' : 'read'}
+            </button>
+            <button type="button" className={s.actionBtn} disabled={mutation.isPending} onClick={() => {
+              const action = message?.isArchived ? 'restore' : 'archive';
+              if (window.confirm(`${message?.isArchived ? 'Restore' : 'Archive'} this message?`)) mutation.mutate({ id: messageId, action });
+            }}>
+              {message?.isArchived ? 'Restore' : 'Archive'}
             </button>
           </div>
           {copyState ? <p className={s.copyFeedback}>{copyState}</p> : null}

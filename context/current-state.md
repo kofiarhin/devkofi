@@ -1,5 +1,17 @@
 # DevKofi Current State
 
+## Current checkpoint: admin foundation implementation
+
+Baseline `main` commit: `a2a9019b98c91faa591bcf402f547525d7f16407`.
+
+- Implemented on `feat/admin-foundation`: production-compatible admin input hardening, trusted-origin protection for admin mutations, a protected responsive admin shell, aggregate database overview, article draft/publish/archive lifecycle management, contact-message read/archive triage, subscriber search/filter/removal, and integration of existing booking management.
+- DevKofi Admin is now an additional schema-compatible writer to the shared `blogposts` collection on this branch. Existing IdeaHub-originated published documents remain compatible; public routes continue to expose only published articles.
+- Registered member/customer accounts remain out of scope. The unrouted legacy `adminUsersController.js` remains inactive.
+- Verified locally: 19 focused admin/navigation client tests, changed-file client lint, server JavaScript syntax checks, clean diff validation, and the production client build.
+- Blocked verification: Jest/Supertest admin tests could not connect to the expected local MongoDB service. The full client suite still has 22 unrelated baseline failures recorded in existing project state; the focused admin suite passes.
+- Not verified: live MongoDB behavior, production authentication/cookie behavior, desktop/mobile browser behavior, merge, or deployment.
+
+
 ## Current checkpoint: shared IdeaHub publishing
 
 Baseline `main` commit: `d1cfda7363c10371841d897a860389e52ff555c8`.

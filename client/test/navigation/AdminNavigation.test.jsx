@@ -44,7 +44,7 @@ vi.mock('../../src/Pages/Login/AdminLogin', () => ({
   default: () => <main>Admin login page</main>,
 }));
 
-vi.mock('../../src/Pages/AdminDashboard/AdminDashboard', () => ({
+vi.mock('../../src/Pages/Admin/AdminOverview', () => ({
   default: () => <main>Admin dashboard page</main>,
 }));
 
@@ -120,36 +120,34 @@ describe('admin navigation preservation', () => {
     expect(screen.getByRole('button', { name: /logout/i })).toBeInTheDocument();
   });
 
-  it('renders the shared header on the protected dashboard route', () => {
+  it('renders the dedicated admin shell on the protected dashboard route', () => {
     renderWithProviders(<AppRoutes />, {
       route: '/admin/dashboard',
       admin: ADMIN,
       isChecked: true,
     });
 
-    expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /about/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /dashboard/i })).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: /admin navigation/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /articles/i })).toBeInTheDocument();
     expect(screen.getByText(/admin dashboard page/i)).toBeInTheDocument();
   });
 
-  it('renders the shared header on protected admin detail routes', () => {
+  it('renders the dedicated admin shell on protected admin detail routes', () => {
     renderWithProviders(<AppRoutes />, {
       route: '/admin/messages/123',
       admin: ADMIN,
       isChecked: true,
     });
 
-    expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /about/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /dashboard/i })).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: /admin navigation/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /messages/i })).toHaveAttribute('aria-current', 'page');
     expect(screen.getByText(/admin message details page/i)).toBeInTheDocument();
   });
 
   it('mirrors admin-aware links in the mobile side nav', () => {
     const { unmount } = renderWithProviders(<SideNav />);
 
-    expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /services/i })).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /dashboard/i })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /logout/i })).not.toBeInTheDocument();
 

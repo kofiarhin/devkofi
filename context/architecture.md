@@ -51,6 +51,8 @@ Current production availability/configuration of those external services was not
 - The client accesses those endpoints through a service and TanStack Query hooks, then renders Markdown without enabling raw HTML.
 - This MVP intentionally has no ingestion API, synchronization job, approval UI, draft workflow, queue, or separate blog database.
 
+On the `feat/admin-foundation` implementation branch, DevKofi Admin becomes a second schema-compatible writer. It manages manual draft, published, and archived lifecycle states through authenticated endpoints while IdeaHub may continue inserting validated published articles. The unique slug index remains the cross-writer conflict boundary, and public endpoints remain restricted to `status: "published"`. This is implemented but not merged, deployed, or production-verified.
+
 ## Verification Tooling
 
 Current package manifests expose:

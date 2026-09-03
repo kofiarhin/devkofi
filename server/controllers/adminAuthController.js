@@ -20,7 +20,8 @@ const CLEAR_COOKIE_OPTIONS = {
 const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || typeof email !== 'string' || !password || typeof password !== 'string') {
+  if (!email || typeof email !== 'string' || !password || typeof password !== 'string' ||
+      email.length > 254 || password.length > 256 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
     return res.status(400).json({ success: false, error: 'Email and password are required' });
   }
 

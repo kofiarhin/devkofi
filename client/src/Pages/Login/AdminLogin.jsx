@@ -7,6 +7,7 @@ import s from './AdminLogin.module.scss';
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [validationError, setValidationError] = useState('');
   const navigate = useNavigate();
   const admin = useSelector((state) => state.auth.admin);
   const { mutate: login, isPending, error } = useLoginAdmin();
@@ -17,11 +18,21 @@ const AdminLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ email, password });
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail || !password) {
+      setValidationError('Email and password are required');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      setValidationError('Enter a valid email address');
+      return;
+    }
+    setValidationError('');
+    login({ email: normalizedEmail, password });
   };
 
   const errorMessage =
-    error?.response?.data?.error || (error ? 'Login failed. Please try again.' : null);
+    validationError || error?.response?.data?.error || (error ? 'Login failed. Please try again.' : null);
 
   return (
     <div className={s.page}>

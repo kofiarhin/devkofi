@@ -2,6 +2,16 @@
 
 ## Confirmed
 
+### Admin foundation scope and content lifecycle
+
+- Date: 2026-09-03
+- Source: Kofi explicitly requested implementation of `docs/ADMIN_FOUNDATION_SPEC.md` and `docs/ADMIN_FOUNDATION_IMPLEMENTATION_PLAN.md`.
+- Decision: complete the admin foundation around existing operational records and article management; do not introduce registered member/customer accounts in this milestone.
+- Decision: DevKofi Admin may act as a second compatible writer to `blogposts`; articles use draft, published, and archived states, while public readers remain restricted to published records.
+- Decision: contact messages use read/unread and archive/restore behavior; newsletter removal is confirmation-protected hard deletion.
+- Consequence: merge and deployment remain separate approval gates, and production authentication remains unverified until deployed runtime evidence exists.
+
+
 ### Project showcase placement and media — issue #38
 
 - Source: Kofi approved the placement matrix, generated/uploaded the Agent System cover (merged in PR #39), then explicitly approved the remaining implementation plan in conversation.
