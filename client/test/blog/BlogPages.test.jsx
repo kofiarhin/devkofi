@@ -21,15 +21,32 @@ const post = {
   coverImageAlt: "A technical systems thumbnail.",
 };
 
+const defaultPagination = {
+  page: 1,
+  limit: 6,
+  totalPosts: 1,
+  totalPages: 1,
+  hasPreviousPage: false,
+  hasNextPage: false,
+};
+
 describe("Blog pages", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    useBlogPosts.mockReturnValue({ data: { posts: [] }, isLoading: false, isError: false });
+    useBlogPosts.mockReturnValue({
+      data: { posts: [], pagination: defaultPagination },
+      isLoading: false,
+      isError: false,
+    });
     useBlogPost.mockReturnValue({ data: { post }, isLoading: false, isError: false });
   });
 
   it("renders published article cards linking to their slug", () => {
-    useBlogPosts.mockReturnValue({ data: { posts: [post] }, isLoading: false, isError: false });
+    useBlogPosts.mockReturnValue({
+      data: { posts: [post], pagination: defaultPagination },
+      isLoading: false,
+      isError: false,
+    });
 
     render(<MemoryRouter><Blog /></MemoryRouter>);
 
@@ -42,6 +59,35 @@ describe("Blog pages", () => {
       "href",
       `/blog/${post.slug}`,
     );
+  });
+
+  it("reads the requested page from the URL and renders pagination links", () => {
+    useBlogPosts.mockReturnValue({
+      data: {
+        posts: [post],
+        pagination: {
+          page: 2,
+          limit: 6,
+          totalPosts: 14,
+          totalPages: 3,
+          hasPreviousPage: true,
+          hasNextPage: true,
+        },
+      },
+      isLoading: false,
+      isError: false,
+    });
+
+    render(
+      <MemoryRouter initialEntries={["/blog?page=2"]}>
+        <Blog />
+      </MemoryRouter>,
+    );
+
+    expect(useBlogPosts).toHaveBeenCalledWith(2, 6);
+    expect(screen.getByRole("link", { name: "Previous" })).toHaveAttribute("href", "/blog?page=1");
+    expect(screen.getByRole("link", { name: "Next" })).toHaveAttribute("href", "/blog?page=3");
+    expect(screen.getByRole("link", { name: "2" })).toHaveAttribute("aria-current", "page");
   });
 
   it("renders an honest empty state", () => {
@@ -91,7 +137,10 @@ describe("Blog pages", () => {
 
   it("omits the thumbnail safely for older posts without one", () => {
     useBlogPosts.mockReturnValue({
-      data: { posts: [{ ...post, coverImageUrl: null, coverImageAlt: null }] },
+      data: {
+        posts: [{ ...post, coverImageUrl: null, coverImageAlt: null }],
+        pagination: defaultPagination,
+      },
       isLoading: false,
       isError: false,
     });
