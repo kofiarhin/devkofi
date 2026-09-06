@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBlogPosts } from "../../services/blogService";
 
-const useBlogPosts = () => useQuery({
-  queryKey: ["blog-posts"],
-  queryFn: getBlogPosts,
+const useBlogPosts = (page = 1, limit = 6) => useQuery({
+  queryKey: ["blog-posts", page, limit],
+  queryFn: () => getBlogPosts({ page, limit }),
   staleTime: 5 * 60 * 1000,
 });
 
