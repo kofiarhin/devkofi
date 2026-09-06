@@ -1,7 +1,9 @@
 import api from "../lib/api";
 
-export const getBlogPosts = async () => {
-  const response = await api.get("/api/blog");
+export const getBlogPosts = async ({ page = 1, limit = 6 } = {}) => {
+  const response = await api.get("/api/blog", {
+    params: { page, limit },
+  });
   return response.data;
 };
 
