@@ -1,14 +1,12 @@
 # DevKofi Current State
 
-## Current checkpoint: shared IdeaHub publishing
+## Current checkpoint: IdeaHub API blog read boundary
 
-Baseline `main` commit: `d1cfda7363c10371841d897a860389e52ff555c8`.
-
-- Implemented on `feat/shared-blog-publishing`: a read-only public blog API over the shared MongoDB `blogposts` collection, public `/blog` and `/blog/:slug` routes, Markdown article rendering, navigation, and article metadata/structured data.
-- IdeaHub is the only writer in this MVP. Its `/generate-post` workflow inserts a validated document with `status: "published"`; DevKofi reads the same database and exposes it immediately without a second approval or ingestion layer.
-- Duplicate slugs fail instead of overwriting an existing article. No DevKofi admin publishing UI, draft state, webhook, queue, or cross-service HTTP call is part of this architecture.
-- Verified locally: focused server and client tests, changed-file client lint, and the production client build. The repository-wide client lint still fails on pre-existing unrelated files.
-- No live MongoDB write, merge, or deployment is authorized or claimed.
+- Implemented on `agent/blog-ideahub-api`: DevKofi's existing `/api/blog` and `/api/blog/:slug` endpoints now read published posts from IdeaHub API over authenticated server-to-server HTTP instead of querying the shared `blogposts` collection directly.
+- The React blog service and TanStack Query contract are unchanged.
+- DevKofi's blog-specific Mongoose model and its direct-database model test are removed; DevKofi retains MongoDB for its other application data.
+- IdeaHub API owns the blog read/write database boundary and uses a dedicated DevKofi bearer key for the read surface.
+- Executable verification is pending; no merge or deployment is authorized or claimed.
 
 ## Current checkpoint: issue #38 project showcase
 
