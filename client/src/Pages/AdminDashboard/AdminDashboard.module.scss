@@ -6,13 +6,13 @@ $text-main: #fafafa;
 $text-muted: #a1a1aa;
 $lime: #a3e635;
 $lime-dim: #84cc16;
+$danger: #f43f5e;
+$danger-soft: rgba(244, 63, 94, 0.12);
 
 .page {
   min-height: 100vh;
   background-color: $bg-main;
 }
-
-// ── Header ──────────────────────────────────────────────────────────────────
 
 .header {
   display: flex;
@@ -63,21 +63,17 @@ $lime-dim: #84cc16;
   color: $text-muted;
 }
 
-.logoutBtn {
-  padding: 0.45rem 1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: $text-main;
-  background-color: transparent;
-  border: 1px solid $border;
+.logoutBtn,
+.secondaryBtn,
+.actionBtn,
+.primaryBtn,
+.dangerBtn,
+.closeBtn,
+.exportBtn,
+.pageBtn {
   border-radius: 8px;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
-
-  &:hover:not(:disabled) {
-    border-color: #52525b;
-    color: $text-main;
-  }
+  transition: border-color 0.15s, color 0.15s, background-color 0.15s;
 
   &:disabled {
     opacity: 0.5;
@@ -85,15 +81,32 @@ $lime-dim: #84cc16;
   }
 }
 
-// ── Main layout ──────────────────────────────────────────────────────────────
+.logoutBtn,
+.secondaryBtn,
+.actionBtn,
+.closeBtn,
+.exportBtn,
+.pageBtn {
+  color: $text-main;
+  background-color: transparent;
+  border: 1px solid $border;
+
+  &:hover:not(:disabled) {
+    border-color: #52525b;
+  }
+}
+
+.logoutBtn {
+  padding: 0.45rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
 
 .main {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
 }
-
-// ── Tabs ─────────────────────────────────────────────────────────────────────
 
 .tabs {
   display: flex;
@@ -124,8 +137,6 @@ $lime-dim: #84cc16;
   }
 }
 
-// ── Card ─────────────────────────────────────────────────────────────────────
-
 .card {
   background-color: $bg-card;
   border: 1px solid $border;
@@ -133,7 +144,62 @@ $lime-dim: #84cc16;
   overflow: hidden;
 }
 
-// ── Table ────────────────────────────────────────────────────────────────────
+.filters {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(160px, 220px) auto;
+  gap: 0.75rem;
+  align-items: end;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid $border;
+  background-color: rgba(255, 255, 255, 0.015);
+}
+
+.filterField,
+.panelField {
+  display: grid;
+  gap: 0.4rem;
+
+  span {
+    color: $text-muted;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    color: $text-main;
+    background-color: $bg-surface;
+    border: 1px solid $border;
+    border-radius: 10px;
+    padding: 0.65rem 0.75rem;
+    font: inherit;
+    outline: none;
+
+    &:focus {
+      border-color: rgba(163, 230, 53, 0.55);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+}
+
+.sectionToolbar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: start;
+  border-bottom: 1px solid $border;
+
+  .filters {
+    border-bottom: none;
+  }
+}
 
 .tableWrapper {
   overflow-x: auto;
@@ -220,7 +286,68 @@ $lime-dim: #84cc16;
   }
 }
 
-// ── Empty / spinner ───────────────────────────────────────────────────────────
+.rowActions,
+.panelActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.actionBtn,
+.secondaryBtn,
+.primaryBtn,
+.dangerBtn,
+.closeBtn {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.primaryBtn {
+  color: #111827;
+  background-color: $lime;
+  border: 1px solid $lime;
+
+  &:hover:not(:disabled) {
+    background-color: $lime-dim;
+    border-color: $lime-dim;
+  }
+}
+
+.dangerBtn {
+  color: #fecdd3;
+  background-color: $danger-soft;
+  border: 1px solid rgba(244, 63, 94, 0.35);
+
+  &:hover:not(:disabled) {
+    color: #fff1f2;
+    border-color: $danger;
+  }
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.statusRead {
+  color: $lime;
+  background-color: rgba(163, 230, 53, 0.1);
+  border: 1px solid rgba(163, 230, 53, 0.25);
+}
+
+.statusUnread {
+  color: #fda4af;
+  background-color: rgba(244, 63, 94, 0.1);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+}
 
 .empty {
   padding: 4rem 1.5rem;
@@ -248,8 +375,6 @@ $lime-dim: #84cc16;
   to { transform: rotate(360deg); }
 }
 
-// ── Pagination ────────────────────────────────────────────────────────────────
-
 .pagination {
   display: flex;
   align-items: center;
@@ -269,21 +394,6 @@ $lime-dim: #84cc16;
   padding: 0.35rem 0.75rem;
   font-size: 0.8rem;
   font-weight: 500;
-  color: $text-main;
-  background: transparent;
-  border: 1px solid $border;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: border-color 0.15s;
-
-  &:hover:not(:disabled) {
-    border-color: #52525b;
-  }
-
-  &:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-  }
 }
 
 .exportRow {
@@ -294,32 +404,19 @@ $lime-dim: #84cc16;
 
 .exportWrap {
   position: relative;
+  padding: 1rem 1.25rem 0 0;
 }
 
 .exportBtn {
   padding: 0.5rem 0.85rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: $text-main;
-  background-color: transparent;
-  border: 1px solid $border;
-  border-radius: 8px;
-  cursor: pointer;
-
-  &:hover:not(:disabled) {
-    border-color: #52525b;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 }
 
 .exportMenu {
   position: absolute;
   top: calc(100% + 0.5rem);
-  right: 0;
+  right: 1.25rem;
   min-width: 170px;
   border: 1px solid $border;
   background-color: $bg-surface;
@@ -352,5 +449,109 @@ $lime-dim: #84cc16;
 .errorText {
   color: #fda4af;
   font-size: 0.82rem;
-  margin: 0.75rem 1.25rem 0;
+  margin: 0.75rem 0 0;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: flex-end;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+}
+
+.panel {
+  width: min(520px, 100%);
+  height: 100%;
+  overflow-y: auto;
+  background-color: $bg-card;
+  border-left: 1px solid $border;
+  padding: 1.25rem;
+  color: $text-main;
+}
+
+.panelTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+
+  h2 {
+    font-size: 1rem;
+  }
+}
+
+.panelStack,
+.panelForm {
+  display: grid;
+  gap: 1rem;
+
+  h3 {
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+
+  p {
+    color: $text-main;
+    line-height: 1.65;
+  }
+}
+
+.checkboxField {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: $text-main;
+  font-size: 0.9rem;
+
+  input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: $lime;
+  }
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding: 2.5rem 2rem;
+  }
+
+  .headerTitle {
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .header,
+  .headerRight,
+  .sectionToolbar,
+  .pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .filters,
+  .sectionToolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .exportWrap {
+    padding: 0 1.25rem 1rem;
+  }
+
+  .exportMenu {
+    left: 1.25rem;
+    right: auto;
+  }
+
+  .tabs {
+    overflow-x: auto;
+  }
+
+  .tab {
+    white-space: nowrap;
+  }
 }
