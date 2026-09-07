@@ -1,11 +1,8 @@
-const BlogPost = require("../models/BlogPost");
+const contextApiBlogService = require("../services/contextApiBlogService");
 
 const listPublishedPosts = async (req, res, next) => {
   try {
-    const posts = await BlogPost.find({ status: "published" })
-      .sort({ publishedAt: -1, createdAt: -1 })
-      .lean();
-
+    const posts = await contextApiBlogService.getPublishedPosts();
     return res.status(200).json({ posts });
   } catch (error) {
     return next(error);
@@ -14,15 +11,7 @@ const listPublishedPosts = async (req, res, next) => {
 
 const getPublishedPost = async (req, res, next) => {
   try {
-    const post = await BlogPost.findOne({
-      slug: req.params.slug,
-      status: "published",
-    }).lean();
-
-    if (!post) {
-      return res.status(404).json({ success: false, error: "Article not found" });
-    }
-
+    const post = await contextApiBlogService.getPublishedPost(req.params.slug);
     return res.status(200).json({ post });
   } catch (error) {
     return next(error);
