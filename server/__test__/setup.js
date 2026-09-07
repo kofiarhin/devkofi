@@ -24,3 +24,11 @@ if (!process.env.ADMIN_PASSWORD) {
 // in the rate-limit test push over the limit (calls 26-27 → 429).
 process.env.LOGIN_RATE_LIMIT_MAX = '25';
 process.env.LOGIN_RATE_LIMIT_WINDOW_MS = '60000';
+
+if (!process.env.CONTEXT_API_URL) {
+  process.env.CONTEXT_API_URL = 'http://context-api.test';
+}
+
+if (!process.env.CONTEXT_API_KEY) {
+  process.env.CONTEXT_API_KEY = 'test-devkofi-blog-api-key-1234567890';
+}
