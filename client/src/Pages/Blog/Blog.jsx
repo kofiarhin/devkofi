@@ -17,7 +17,7 @@ const Blog = () => {
       <header className="blog-hero">
         <div className="blog-container">
           <p className="blog-eyebrow">Engineering notes</p>
-          <h1>Systems, products and the work behind them.</h1>
+          <h1>AI Engineering, in Practice.</h1>
           <p>Practical writing about AI engineering, full-stack systems, architecture and reliable software delivery.</p>
         </div>
       </header>
