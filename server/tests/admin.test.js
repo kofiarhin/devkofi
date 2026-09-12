@@ -534,7 +534,7 @@ describe('GET /api/admin/newsletter/export/csv', () => {
     expect(res.status).toBe(200);
     expect(res.headers['content-type']).toContain('text/csv');
     expect(res.headers['content-disposition']).toContain('.csv');
-    expect(res.text).toContain('email,subscribedAt');
+    expect(res.text).toContain('email,verified,subscribedAt');
 
     const lines = res.text.trim().split('\n');
     expect(lines[1]).toContain('new-subscriber@test.com');
@@ -555,7 +555,7 @@ describe('GET /api/admin/newsletter/export/csv', () => {
       .set('Cookie', cookie);
 
     expect(res.status).toBe(200);
-    expect(res.text).toBe('email,subscribedAt\n');
+    expect(res.text).toBe('email,verified,subscribedAt\n');
 
     await NewsletterSubscriber.insertMany([
       { email: 'older-subscriber@test.com', createdAt: new Date('2026-01-10T00:00:00.000Z') },
@@ -578,8 +578,10 @@ describe('GET /api/admin/newsletter/export/json', () => {
     const payload = JSON.parse(res.text);
     expect(Array.isArray(payload)).toBe(true);
     expect(payload[0]).toHaveProperty('email', 'new-subscriber@test.com');
+    expect(payload[0]).toHaveProperty('verified', 'no');
     expect(payload[0]).toHaveProperty('subscribedAt', '2026-04-22T10:30:00.000Z');
     expect(payload[1]).toHaveProperty('email', 'older-subscriber@test.com');
+    expect(payload[1]).toHaveProperty('verified', 'no');
   });
 
   it('returns 401 when unauthenticated', async () => {
