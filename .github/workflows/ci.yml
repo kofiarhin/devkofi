@@ -104,6 +104,24 @@ jobs:
   validate_backend:
     name: Validate backend
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:8.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --quiet --eval 'db.adminCommand({ ping: 1 })'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      NODE_ENV: test
+      MONGO_URI: mongodb://127.0.0.1:27017/devkofi_test
+      MONGO_URI_TEST: mongodb://127.0.0.1:27017/devkofi_test
+      JWT_SECRET: ci-test-jwt-secret
+      ADMIN_EMAIL: admin-ci@example.com
+      ADMIN_PASSWORD: ci-test-password
+      CLIENT_URL: http://localhost:5173
 
     steps:
       - uses: actions/checkout@v4
