@@ -1,5 +1,16 @@
 # DevKofi Current State
 
+## Current checkpoint: tool-contracts blog thumbnail fallback
+
+Baseline `main` commit: `2f69b62b7ae7f57f575ab709e657314857626e81`.
+
+- Implemented on `fix/production-ai-agents-thumbnail`: the public blog API supplies a Cloudinary cover-image fallback for `Production AI Agents Need Tool Contracts` when the stored `coverImageUrl` is missing. Existing posts with their own cover image are unchanged.
+- Cloudinary asset confirmed: `https://res.cloudinary.com/dlsiabgiw/image/upload/v1789259864/devkofi/blog/production-ai-agents-need-tool-contracts.png` (1600×900 PNG).
+- Focused server tests were added for both the blog-list and single-article API responses.
+- Verified from connected-service evidence: Cloudinary reports the asset as public and available; GitHub compare shows only the intended controller, test, and current-state changes on the implementation branch; pull-request CI ran `npm test` in the `Validate backend` job successfully.
+- Not run: client lint/build, browser, or live API verification. Pull-request deployment jobs were skipped.
+- Not merged or deployed. Production behavior remains unchanged until the implementation branch is reviewed, merged, and separately deployed through the repository's normal release path.
+
 ## Current checkpoint: shared IdeaHub publishing
 
 Baseline `main` commit: `d1cfda7363c10371841d897a860389e52ff555c8`.

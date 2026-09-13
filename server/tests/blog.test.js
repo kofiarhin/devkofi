@@ -21,6 +21,16 @@ const publishedPost = {
   publishedAt: new Date("2026-09-01T12:00:00.000Z"),
 };
 
+const missingThumbnailPost = {
+  ...publishedPost,
+  title: "Production AI Agents Need Tool Contracts",
+  slug: "production-ai-agents-need-tool-contracts",
+  coverImageUrl: null,
+  coverImageAlt: null,
+};
+
+const expectedFallbackCover = "https://res.cloudinary.com/dlsiabgiw/image/upload/v1789259864/devkofi/blog/production-ai-agents-need-tool-contracts.png";
+
 const mockPublishedListQuery = (posts) => {
   const lean = jest.fn().mockResolvedValue(posts);
   const limit = jest.fn().mockReturnValue({ lean });
@@ -79,6 +89,20 @@ describe("public blog API", () => {
     });
   });
 
+  it("adds the Cloudinary thumbnail fallback to the affected published post", async () => {
+    mockPublishedListQuery([missingThumbnailPost]);
+    BlogPost.countDocuments.mockResolvedValue(1);
+
+    const response = await request(app).get("/api/blog");
+
+    expect(response.status).toBe(200);
+    expect(response.body.posts[0]).toEqual(expect.objectContaining({
+      slug: missingThumbnailPost.slug,
+      coverImageUrl: expectedFallbackCover,
+      coverImageAlt: "DevKofi thumbnail showing an AI agent connected to a tool contract and typed tools.",
+    }));
+  });
+
   it("returns a published post by slug", async () => {
     BlogPost.findOne.mockReturnValue({ lean: jest.fn().mockResolvedValue(publishedPost) });
 
@@ -90,6 +114,18 @@ describe("public blog API", () => {
       status: "published",
     });
     expect(response.body.post.slug).toBe(publishedPost.slug);
+  });
+
+  it("adds the Cloudinary thumbnail fallback to the affected article response", async () => {
+    BlogPost.findOne.mockReturnValue({ lean: jest.fn().mockResolvedValue(missingThumbnailPost) });
+
+    const response = await request(app).get(`/api/blog/${missingThumbnailPost.slug}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.post).toEqual(expect.objectContaining({
+      coverImageUrl: expectedFallbackCover,
+      coverImageAlt: "DevKofi thumbnail showing an AI agent connected to a tool contract and typed tools.",
+    }));
   });
 
   it("returns 404 for missing or unpublished slugs", async () => {
