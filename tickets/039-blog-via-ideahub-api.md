@@ -1,6 +1,6 @@
 # 039: Route DevKofi Blog Reads Through IdeaHub API
 
-**Status:** Approved  
+**Status:** Implemented / awaiting release verification  
 **Project:** DevKofi  
 **Destination:** GitHub implementation  
 **Priority:** High
@@ -13,17 +13,18 @@ Move DevKofi public blog reads away from direct access to the shared `blogposts`
 
 ## 2. Context & Evidence
 
-**Current behavior:** DevKofi's blog controller queries the local `BlogPost` Mongoose model against the shared MongoDB database.
+**Previous behavior:** DevKofi's blog controller queried the local `BlogPost` Mongoose model against the shared MongoDB database.
 
-**Desired behavior:** IdeaHub API becomes the sole blog-data access boundary for DevKofi public reads. DevKofi keeps its existing browser-facing API contract and proxies those reads server-to-server.
+**Implemented behavior:** IdeaHub API is the intended blog-data access boundary for DevKofi public reads. DevKofi keeps its existing browser-facing API contract and proxies those reads server-to-server.
 
 ### Evidence status
 
 **Confirmed:**
-- DevKofi currently exposes `GET /api/blog` and `GET /api/blog/:slug`.
-- Current public blog reads use `server/models/BlogPost.js` directly.
-- IdeaHub API already owns authenticated blog read/write operations against the same `blogposts` collection.
+- DevKofi exposes `GET /api/blog` and `GET /api/blog/:slug`.
+- Before this ticket, public blog reads used `server/models/BlogPost.js` directly.
 - Kofi approved server-to-server integration and public unauthenticated IdeaHub API endpoints for published blog reads.
+- IdeaHub API draft PR #12 implements the public read boundary.
+- DevKofi draft PR #54 removes direct `BlogPost` use from `server/controllers/blogController.js` and adds the server-to-server client.
 
 **Proposed:** None.
 
@@ -68,13 +69,13 @@ Move DevKofi public blog reads away from direct access to the shared `blogposts`
 
 **Empty:** The list endpoint returns an empty `posts` array with valid pagination metadata.
 
-**Error:** Missing IdeaHub configuration returns a service-unavailable response. Upstream IdeaHub failures return a gateway-style server error without exposing secrets.
+**Error:** Missing IdeaHub configuration returns 503. Upstream IdeaHub/network failures return 502 without exposing credentials.
 
-**Success:** Published list/detail responses render through the existing frontend contract.
+**Success:** Published list/detail responses preserve the existing frontend contract.
 
 ### Edge cases
 
-- Archived/unpublished posts are never returned from public IdeaHub endpoints.
+- Archived/unpublished posts are filtered from public IdeaHub queries.
 - Missing slug returns 404 through DevKofi.
 - Page and limit remain bounded.
 - Existing stored cover image is preserved; the known fallback still applies when the target post lacks one.
@@ -85,12 +86,12 @@ Move DevKofi public blog reads away from direct access to the shared `blogposts`
 
 - DevKofi remains JavaScript/CommonJS.
 - IdeaHub API remains TypeScript/Express.
-- No new dependencies are required.
+- No new dependencies were introduced.
 
 ### Security / Permissions
 
 - Only the two published-read endpoints are public.
-- Internal generation/write metadata must not be exposed by the public API.
+- Internal generation/write metadata is excluded from the public projection.
 - Secrets remain in environment variables.
 
 ### Unresolved decisions
@@ -99,27 +100,29 @@ Move DevKofi public blog reads away from direct access to the shared `blogposts`
 
 ## 6. Acceptance Criteria
 
-- [ ] IdeaHub API exposes unauthenticated paginated published-post reads.
-- [ ] IdeaHub API exposes unauthenticated published-post detail by slug.
-- [ ] Archived/unpublished posts are excluded.
-- [ ] GPT/write/archive/restore routes remain authenticated.
-- [ ] DevKofi public blog routes no longer query `BlogPost` directly.
-- [ ] DevKofi browser-facing routes and response behavior remain compatible.
-- [ ] Missing upstream post returns 404.
-- [ ] Upstream configuration/network failures are handled explicitly.
-- [ ] Relevant automated tests pass in repository CI or another executable environment.
+- [x] IdeaHub API exposes unauthenticated paginated published-post reads.
+- [x] IdeaHub API exposes unauthenticated published-post detail by slug.
+- [x] Public IdeaHub service queries require `status: "published"`.
+- [x] GPT/write/archive/restore routes remain under the existing authenticated `/api/v1/gpt` router.
+- [x] DevKofi public blog routes no longer query `BlogPost` directly.
+- [x] DevKofi browser-facing routes and response behavior remain compatible in automated controller coverage.
+- [x] Missing upstream post returns 404.
+- [x] Upstream configuration/network failures are handled explicitly.
+- [x] IdeaHub API typecheck, tests, and build passed on the implementation head; DevKofi backend tests passed on the implementation head.
+- [ ] Cross-service deployed behavior is live-verified.
 
 ## 7. Repository Inspection & Implementation Plan
 
 **Inspection status:** Complete for the affected blog route/controller/model/tests and IdeaHub API app/service/types/tests.
 
-### Implementation approach
+### Actual implementation
 
-1. Add public-safe list/detail service methods and public routes to IdeaHub API.
-2. Add route-level tests proving unauthenticated access and published-only behavior.
-3. Replace DevKofi blog-controller Mongoose reads with server-to-server HTTP calls.
-4. Update DevKofi tests and environment documentation.
-5. Update repository architecture/current-state docs from observed implementation evidence.
+1. Added `src/public-blog-service.ts` and `src/public-blog-router.ts` in IdeaHub API.
+2. Mounted the public router at `/api/v1/blog-posts` while keeping the GPT app protected.
+3. Added `server/services/ideaHubBlogService.js` in DevKofi.
+4. Replaced direct `BlogPost` reads in `server/controllers/blogController.js` with the IdeaHub service.
+5. Added focused IdeaHub public-route tests and DevKofi controller/client tests.
+6. Added `IDEAHUB_API_URL` to `.env.example` and updated architecture/current-state documentation.
 
 ## 8. Implementation Authority
 
@@ -127,22 +130,56 @@ Move DevKofi public blog reads away from direct access to the shared `blogposts`
 
 **Approved scope:** The server-to-server migration described in this ticket and the approved shared plan in the ChatGPT GitHub workflow.
 
-Ticket/spec/plan creation does not expand scope beyond this outcome. Merge, deployment, and external runtime configuration remain separately controlled.
+Merge, deployment, production environment configuration, and live-release verification remain separately controlled.
 
 ## 9. Verification & Completion Handoff
 
-**Implementation status:** Not implemented at ticket creation.
+### Implementation status
 
-Verification will record actual CI/test/build evidence after implementation.
+**Implemented on feature branches.**
+
+### Automated verification
+
+**IdeaHub API PR #12 / head `384991f3972bf22b6f1420aef2f5766f968630df`:**
+- Typecheck — Passed.
+- Test — Passed.
+- Build — Passed.
+- Deploy to Heroku — Skipped on feature branch.
+
+**DevKofi PR #54 / implementation head `8692994a1448cb9fffa3cb505f33ce64618f52bf`:**
+- Backend tests — Passed in `Validate backend`.
+- Feature-branch deployment/live-verification jobs — Skipped.
+
+Documentation commits after that implementation head do not change runtime code; their final PR-head CI status should still be inspected before merge.
+
+### Functional verification
+
+- Public route behavior — covered by automated tests.
+- DevKofi proxy behavior, pagination, fallback, 404, 502/503 paths — covered by automated tests.
+- Live IdeaHub → MongoDB → DevKofi cross-service flow — Not run; deployment/runtime config not authorized.
+
+### Review findings
+
+**Must fix:** None found in the reviewed branch diffs.
+
+**Should fix:** None required within approved scope.
+
+**Verified within scope:** Repository implementation and automated code-path verification.
+
+### Limitations / human review
+
+- `IDEAHUB_API_URL` must be configured in the DevKofi backend runtime before release.
+- IdeaHub API must be deployed before DevKofi can consume the new public endpoint in production.
+- Merge/deployment/live verification remain separate actions.
 
 ## 10. Lifecycle State
 
 **Ticket:** 039  
-**Implementation:** Not started  
-**Verification:** Not run  
+**Implementation:** Implemented  
+**Verification:** Partial — automated repository checks passed; live cross-service verification pending  
 **Approval:** Approved  
-**Commit:** Not created  
-**Push:** Not pushed  
-**Pull request:** Not created  
+**Commit:** Created on both feature branches  
+**Push:** Pushed  
+**Pull request:** Draft — IdeaHub API #12 and DevKofi #54  
 **Deployment:** Not requested  
-**Completion:** Incomplete
+**Completion:** Incomplete pending release/configuration/live verification
