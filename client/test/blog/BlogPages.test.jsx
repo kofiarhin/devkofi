@@ -21,18 +21,36 @@ const post = {
   coverImageAlt: "A technical systems thumbnail.",
 };
 
+const defaultPagination = {
+  page: 1,
+  limit: 10,
+  totalPosts: 1,
+  totalPages: 1,
+  hasPreviousPage: false,
+  hasNextPage: false,
+};
+
 describe("Blog pages", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    useBlogPosts.mockReturnValue({ data: { posts: [] }, isLoading: false, isError: false });
+    useBlogPosts.mockReturnValue({
+      data: { posts: [], pagination: { ...defaultPagination, totalPosts: 0 } },
+      isLoading: false,
+      isError: false,
+    });
     useBlogPost.mockReturnValue({ data: { post }, isLoading: false, isError: false });
   });
 
   it("renders published article cards linking to their slug", () => {
-    useBlogPosts.mockReturnValue({ data: { posts: [post] }, isLoading: false, isError: false });
+    useBlogPosts.mockReturnValue({
+      data: { posts: [post], pagination: defaultPagination },
+      isLoading: false,
+      isError: false,
+    });
 
     render(<MemoryRouter><Blog /></MemoryRouter>);
 
+    expect(useBlogPosts).toHaveBeenCalledWith(1, 10);
     expect(screen.getByRole("heading", { name: post.title })).toBeInTheDocument();
     expect(screen.getByRole("img", { name: post.coverImageAlt })).toHaveAttribute(
       "src",
@@ -42,6 +60,37 @@ describe("Blog pages", () => {
       "href",
       `/blog/${post.slug}`,
     );
+    expect(screen.queryByRole("navigation", { name: /blog pagination/i })).not.toBeInTheDocument();
+  });
+
+  it("reads the requested page from the URL and renders previous and next links", () => {
+    useBlogPosts.mockReturnValue({
+      data: {
+        posts: [post],
+        pagination: {
+          page: 2,
+          limit: 10,
+          totalPosts: 25,
+          totalPages: 3,
+          hasPreviousPage: true,
+          hasNextPage: true,
+        },
+      },
+      isLoading: false,
+      isError: false,
+    });
+
+    render(
+      <MemoryRouter initialEntries={["/blog?page=2"]}>
+        <Blog />
+      </MemoryRouter>,
+    );
+
+    expect(useBlogPosts).toHaveBeenCalledWith(2, 10);
+    expect(screen.getByRole("navigation", { name: /blog pagination/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Previous" })).toHaveAttribute("href", "/blog");
+    expect(screen.getByText("Page 2 of 3")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Next" })).toHaveAttribute("href", "/blog?page=3");
   });
 
   it("renders an honest empty state", () => {
@@ -91,7 +140,10 @@ describe("Blog pages", () => {
 
   it("omits the thumbnail safely for older posts without one", () => {
     useBlogPosts.mockReturnValue({
-      data: { posts: [{ ...post, coverImageUrl: null, coverImageAlt: null }] },
+      data: {
+        posts: [{ ...post, coverImageUrl: null, coverImageAlt: null }],
+        pagination: defaultPagination,
+      },
       isLoading: false,
       isError: false,
     });

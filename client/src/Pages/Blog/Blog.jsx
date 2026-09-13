@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import useBlogPosts from "../../hooks/queries/useBlogPosts";
 import "../BlogArticle/blog.styles.scss";
+
+const BLOG_PAGE_SIZE = 10;
 
 const formatDate = (value) => new Intl.DateTimeFormat("en-GB", {
   day: "numeric",
@@ -8,9 +10,20 @@ const formatDate = (value) => new Intl.DateTimeFormat("en-GB", {
   year: "numeric",
 }).format(new Date(value));
 
+const getPageHref = (page) => (page <= 1 ? "/blog" : `/blog?page=${page}`);
+
 const Blog = () => {
-  const { data, isLoading, isError } = useBlogPosts();
+  const [searchParams] = useSearchParams();
+  const parsedPage = Number.parseInt(searchParams.get("page"), 10);
+  const page = Number.isNaN(parsedPage) ? 1 : Math.max(1, parsedPage);
+  const { data, isLoading, isError } = useBlogPosts(page, BLOG_PAGE_SIZE);
   const posts = data?.posts || [];
+  const pagination = data?.pagination;
+  const currentPage = pagination?.page || page;
+  const totalPages = pagination?.totalPages || 1;
+  const hasPreviousPage = pagination?.hasPreviousPage ?? currentPage > 1;
+  const hasNextPage = pagination?.hasNextPage ?? currentPage < totalPages;
+  const showPagination = !isLoading && !isError && posts.length > 0 && totalPages > 1;
 
   return (
     <main className="blog-page">
@@ -44,6 +57,24 @@ const Blog = () => {
             </div>
           </article>
         ))}
+
+        {showPagination && (
+          <nav className="blog-pagination" aria-label="Blog pagination">
+            {hasPreviousPage ? (
+              <Link className="blog-pagination__link" to={getPageHref(currentPage - 1)}>Previous</Link>
+            ) : (
+              <span className="blog-pagination__link blog-pagination__link--disabled" aria-disabled="true">Previous</span>
+            )}
+
+            <span className="blog-pagination__status">Page {currentPage} of {totalPages}</span>
+
+            {hasNextPage ? (
+              <Link className="blog-pagination__link" to={getPageHref(currentPage + 1)}>Next</Link>
+            ) : (
+              <span className="blog-pagination__link blog-pagination__link--disabled" aria-disabled="true">Next</span>
+            )}
+          </nav>
+        )}
       </section>
     </main>
   );
