@@ -1,5 +1,18 @@
 # DevKofi Current State
 
+## Current checkpoint: IdeaHub API blog read boundary
+
+Baseline DevKofi `main` commit: `2dd71fd1ee00fc49a4b07c41bbb459c961e82061`.
+
+- Implemented on `feature/blog-via-ideahub-api` with draft PR #54: DevKofi keeps `/api/blog` and `/api/blog/:slug`, but the controller now calls IdeaHub API server-to-server instead of querying the `BlogPost` Mongoose model.
+- `server/services/ideaHubBlogService.js` reads the configured `IDEAHUB_API_URL`, calls the public IdeaHub blog endpoints, maps missing configuration to 503, maps upstream/network failures to 502, and preserves a missing-post 404 path.
+- Existing public response behavior and the known Cloudinary cover-image fallback are preserved.
+- `.env.example` documents `IDEAHUB_API_URL`; runtime configuration has not been changed.
+- The dependency is implemented in `kofiarhin/ideahub-api` draft PR #12 on `feature/public-blog-api`: public unauthenticated published-only `GET /api/v1/blog-posts` and `GET /api/v1/blog-posts/:slug` routes, while `/api/v1/gpt/*` remains protected.
+- IdeaHub API PR #12 GitHub Actions `Validate` passed Typecheck, Test, and Build for head `384991f3972bf22b6f1420aef2f5766f968630df`; its Heroku deploy job was skipped.
+- DevKofi PR #54 GitHub Actions `Validate backend` completed the backend test step successfully for implementation head `8692994a1448cb9fffa3cb505f33ce64618f52bf`; feature-branch deployment/live-verification jobs were skipped.
+- Not merged, not deployed, and not live-verified. Production still requires IdeaHub API deployment, DevKofi runtime `IDEAHUB_API_URL` configuration, DevKofi deployment, and cross-service verification under separate authority.
+
 ## Current checkpoint: tool-contracts blog thumbnail fallback
 
 Baseline `main` commit: `2f69b62b7ae7f57f575ab709e657314857626e81`.
@@ -15,11 +28,10 @@ Baseline `main` commit: `2f69b62b7ae7f57f575ab709e657314857626e81`.
 
 Baseline `main` commit: `d1cfda7363c10371841d897a860389e52ff555c8`.
 
-- Implemented on `feat/shared-blog-publishing`: a read-only public blog API over the shared MongoDB `blogposts` collection, public `/blog` and `/blog/:slug` routes, Markdown article rendering, navigation, and article metadata/structured data.
-- IdeaHub is the only writer in this MVP. Its `/generate-post` workflow inserts a validated document with `status: "published"`; DevKofi reads the same database and exposes it immediately without a second approval or ingestion layer.
-- Duplicate slugs fail instead of overwriting an existing article. No DevKofi admin publishing UI, draft state, webhook, queue, or cross-service HTTP call is part of this architecture.
-- Verified locally: focused server and client tests, changed-file client lint, and the production client build. The repository-wide client lint still fails on pre-existing unrelated files.
-- No live MongoDB write, merge, or deployment is authorized or claimed.
+- Historical implementation on `feat/shared-blog-publishing`: a read-only public blog API over the shared MongoDB `blogposts` collection, public `/blog` and `/blog/:slug` routes, Markdown article rendering, navigation, and article metadata/structured data.
+- IdeaHub remained the writer while DevKofi originally read the same database directly. Ticket 039 supersedes that direct blog-read boundary with server-to-server IdeaHub API reads once merged and deployed.
+- Duplicate slugs fail instead of overwriting an existing article. No DevKofi admin publishing UI, draft state, webhook, queue, or synchronization job is part of this architecture.
+- Historical verification included focused server and client tests, changed-file client lint, and the production client build. The repository-wide client lint still had pre-existing unrelated failures.
 
 ## Current checkpoint: issue #38 project showcase
 
