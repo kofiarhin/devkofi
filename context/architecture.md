@@ -42,14 +42,14 @@ Documented integrations include:
 
 Current production availability/configuration of those external services was not verified during this setup.
 
-### Shared Blog Publishing Boundary
+### Blog Publishing Boundary
 
-- IdeaHub and DevKofi use the same database named in `MONGO_URI`.
-- IdeaHub owns writes to the `blogposts` collection through its `generate-post` publisher.
-- A successful generation inserts one validated, immediately published article. Duplicate slugs are rejected; the publisher does not retry, update, or overwrite.
-- DevKofi owns read presentation only: `GET /api/blog` lists published documents and `GET /api/blog/:slug` resolves one published document.
-- The client accesses those endpoints through a service and TanStack Query hooks, then renders Markdown without enabling raw HTML.
-- This MVP intentionally has no ingestion API, synchronization job, approval UI, draft workflow, queue, or separate blog database.
+- IdeaHub API owns access to the shared `blogposts` collection for both publishing and DevKofi reads.
+- IdeaHub API exposes authenticated server-to-server reads at `GET /api/v1/devkofi/blog-posts` and `GET /api/v1/devkofi/blog-posts/:slug`.
+- DevKofi no longer queries `blogposts` directly. Its Express API calls IdeaHub API using `IDEAHUB_API_URL` and the server-only `IDEAHUB_API_KEY`.
+- DevKofi preserves its frontend-facing contract: `GET /api/blog` lists published documents and `GET /api/blog/:slug` resolves one published document.
+- The React client continues to access only DevKofi's own API through the existing service and TanStack Query hooks; IdeaHub API credentials are never exposed to the browser.
+- DevKofi's MongoDB connection remains in place for its other application data.
 
 ## Verification Tooling
 
