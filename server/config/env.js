@@ -1,4 +1,4 @@
-const required = ['MONGO_URI', 'JWT_SECRET', 'ADMIN_EMAIL', 'ADMIN_PASSWORD'];
+const required = ['MONGO_URI', 'JWT_SECRET', 'ADMIN_EMAIL', 'ADMIN_PASSWORD', 'IDEAHUB_API_URL'];
 
 for (const key of required) {
   if (!process.env[key]) throw new Error(`Missing required env var: ${key}`);
@@ -11,6 +11,7 @@ module.exports = {
   adminEmail: process.env.ADMIN_EMAIL,
   adminPassword: process.env.ADMIN_PASSWORD,
   clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  ideaHubApiUrl: process.env.IDEAHUB_API_URL,
   loginRateLimit: {
     max: parseInt(process.env.LOGIN_RATE_LIMIT_MAX || '10', 10),
     windowMs: parseInt(process.env.LOGIN_RATE_LIMIT_WINDOW_MS || '900000', 10),
