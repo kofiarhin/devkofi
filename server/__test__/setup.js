@@ -18,6 +18,10 @@ if (!process.env.ADMIN_PASSWORD) {
   process.env.ADMIN_PASSWORD = 'TestAdmin@Pass2026!';
 }
 
+if (!process.env.IDEAHUB_API_URL) {
+  process.env.IDEAHUB_API_URL = 'http://127.0.0.1:3999';
+}
+
 // Raise the login rate limit so regular test calls don't exhaust it, but keep
 // it low enough that the rate-limit test (12 concurrent calls) still triggers
 // a 429. Regular tests make ~15 login calls; with max=25 the remaining 10
