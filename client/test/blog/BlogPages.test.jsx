@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import Blog from "../../src/Pages/Blog/Blog";
@@ -61,6 +61,33 @@ describe("Blog pages", () => {
       `/blog/${post.slug}`,
     );
     expect(screen.queryByRole("navigation", { name: /blog pagination/i })).not.toBeInTheDocument();
+  });
+
+  it("promotes the first post as featured and keeps later posts in the latest writing section", () => {
+    const secondPost = {
+      ...post,
+      title: "Tool contracts make agents safer",
+      slug: "tool-contracts-make-agents-safer",
+      publishedAt: "2026-08-28T12:00:00.000Z",
+    };
+
+    useBlogPosts.mockReturnValue({
+      data: {
+        posts: [post, secondPost],
+        pagination: { ...defaultPagination, totalPosts: 2 },
+      },
+      isLoading: false,
+      isError: false,
+    });
+
+    render(<MemoryRouter><Blog /></MemoryRouter>);
+
+    const featuredArticle = screen.getByRole("article", { name: /featured article/i });
+    const latestSection = screen.getByRole("region", { name: /latest writing/i });
+
+    expect(within(featuredArticle).getByRole("heading", { name: post.title })).toBeInTheDocument();
+    expect(within(featuredArticle).queryByRole("heading", { name: secondPost.title })).not.toBeInTheDocument();
+    expect(within(latestSection).getByRole("heading", { name: secondPost.title })).toBeInTheDocument();
   });
 
   it("reads the requested page from the URL and renders previous and next links", () => {
