@@ -1,0 +1,8 @@
+.blog-story__visual {
+  object-fit: contain;
+  object-position: center;
+}
+
+.blog-story__media-link:hover .blog-story__visual {
+  transform: none;
+}
