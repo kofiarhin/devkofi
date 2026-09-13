@@ -1,6 +1,7 @@
 import { Link, useSearchParams } from "react-router-dom";
 import useBlogPosts from "../../hooks/queries/useBlogPosts";
 import "../BlogArticle/blog.styles.scss";
+import "./blog-thumbnails.scss";
 
 const BLOG_PAGE_SIZE = 10;
 
