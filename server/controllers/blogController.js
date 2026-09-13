@@ -1,4 +1,4 @@
-const BlogPost = require("../models/BlogPost");
+const ideaHubBlogService = require("../services/ideaHubBlogService");
 
 const DEFAULT_PAGE_SIZE = 10;
 const MAX_PAGE_SIZE = 100;
@@ -43,29 +43,14 @@ const parsePagination = (query) => {
 
 const listPublishedPosts = async (req, res, next) => {
   try {
-    const filter = { status: "published" };
-    const { page: requestedPage, limit } = parsePagination(req.query);
-    const totalPosts = await BlogPost.countDocuments(filter);
-    const totalPages = Math.max(1, Math.ceil(totalPosts / limit));
-    const page = Math.min(requestedPage, totalPages);
-    const skip = (page - 1) * limit;
-
-    const posts = await BlogPost.find(filter)
-      .sort({ publishedAt: -1, createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean();
+    const { page, limit } = parsePagination(req.query);
+    const result = await ideaHubBlogService.listPublishedPosts({ page, limit });
 
     return res.status(200).json({
-      posts: posts.map(applyCoverImageFallback),
-      pagination: {
-        page,
-        limit,
-        totalPosts,
-        totalPages,
-        hasPreviousPage: page > 1,
-        hasNextPage: page < totalPages,
-      },
+      ...result,
+      posts: Array.isArray(result.posts)
+        ? result.posts.map(applyCoverImageFallback)
+        : [],
     });
   } catch (error) {
     return next(error);
@@ -74,10 +59,8 @@ const listPublishedPosts = async (req, res, next) => {
 
 const getPublishedPost = async (req, res, next) => {
   try {
-    const post = await BlogPost.findOne({
-      slug: req.params.slug,
-      status: "published",
-    }).lean();
+    const result = await ideaHubBlogService.getPublishedPost(req.params.slug);
+    const post = result?.post;
 
     if (!post) {
       return res.status(404).json({ success: false, error: "Article not found" });
@@ -85,6 +68,9 @@ const getPublishedPost = async (req, res, next) => {
 
     return res.status(200).json({ post: applyCoverImageFallback(post) });
   } catch (error) {
+    if (error?.response?.status === 404) {
+      return res.status(404).json({ success: false, error: "Article not found" });
+    }
     return next(error);
   }
 };
