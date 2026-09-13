@@ -1,8 +1,14 @@
+.blog-feature__media-link {
+  background: var(--color-bg-secondary);
+}
+
+.blog-feature__visual,
 .blog-story__visual {
   object-fit: contain;
   object-position: center;
 }
 
+.blog-feature__media-link:hover .blog-feature__visual,
 .blog-story__media-link:hover .blog-story__visual {
   transform: none;
 }
