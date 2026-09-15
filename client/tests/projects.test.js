@@ -97,12 +97,62 @@ describe("projects page data behavior", () => {
       projects,
       statusFilter: "All",
       sortBy: "Featured",
-      search: "case",
+      search: "alpha",
       activeTags: ["MongoDB"],
     });
 
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe("Alpha");
+  });
+
+  it("matches project name case-insensitively", () => {
+    const result = applyProjectFilters({
+      projects,
+      statusFilter: "All",
+      sortBy: "Featured",
+      search: "ZETA",
+      activeTags: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].name).toBe("Zeta");
+  });
+
+  it("matches partial project names", () => {
+    const result = applyProjectFilters({
+      projects,
+      statusFilter: "All",
+      sortBy: "Featured",
+      search: "lph",
+      activeTags: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].name).toBe("Alpha");
+  });
+
+  it("does not match text found only in description or features", () => {
+    const result = applyProjectFilters({
+      projects,
+      statusFilter: "All",
+      sortBy: "Featured",
+      search: "case study",
+      activeTags: [],
+    });
+
+    expect(result).toHaveLength(0);
+  });
+
+  it("returns no results for a search with no matching project name", () => {
+    const result = applyProjectFilters({
+      projects,
+      statusFilter: "All",
+      sortBy: "Featured",
+      search: "nonexistent",
+      activeTags: [],
+    });
+
+    expect(result).toHaveLength(0);
   });
 
   it("maps case study fields", () => {

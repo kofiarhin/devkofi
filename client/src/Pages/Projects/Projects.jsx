@@ -463,7 +463,7 @@ const Projects = () => {
         {!isLoading && !isError && filteredProjects.length === 0 && (
           <section className="projects-state projects-state-panel">
             <p className="state-label">No matches</p>
-            <h2>No project fits those filters.</h2>
+            <h2>No projects found</h2>
             <p>Clear a tag, change the status, or search for another build.</p>
             <button type="button" onClick={resetFilters}>
               Reset filters

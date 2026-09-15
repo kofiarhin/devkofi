@@ -56,12 +56,11 @@ export const applyProjectFilters = ({
 
   if (search.trim()) {
     const query = search.trim().toLowerCase();
-    filtered = filtered.filter((project) => {
-      const haystack = [project.name, project.shortDescription, project.description, ...(project.features || [])]
-        .join(" ")
-        .toLowerCase();
-      return haystack.includes(query);
-    });
+    filtered = filtered.filter((project) =>
+      String(project.name || "")
+        .toLowerCase()
+        .includes(query),
+    );
   }
 
   if (activeTags.length > 0) {
