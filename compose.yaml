@@ -1,0 +1,28 @@
+services:
+  devkofi-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: devkofi-api:local
+    network_mode: host
+    env_file:
+      - ${DEVKOFI_ENV_FILE:?Set DEVKOFI_ENV_FILE to the absolute path of the existing VPS environment file}
+    environment:
+      NODE_ENV: production
+      HOST: 127.0.0.1
+      PORT: ${DEVKOFI_PORT:-4001}
+    restart: unless-stopped
+    mem_limit: 300m
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
