@@ -1,4 +1,29 @@
 services:
+  devkofi-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    image: devkofi-frontend:local
+    ports:
+      - "127.0.0.1:${DEVKOFI_FRONTEND_PORT:-8082}:8080"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:rw,noexec,nosuid,size=16m
+      - /var/run:rw,noexec,nosuid,size=4m
+      - /tmp:rw,noexec,nosuid,size=8m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 128m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
   devkofi-api:
     build:
       context: .
