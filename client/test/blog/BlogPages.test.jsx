@@ -175,11 +175,29 @@ describe("Blog pages", () => {
       isError: false,
     });
 
-    render(<MemoryRouter><Blog /></MemoryRouter>);
+    const { container } = render(<MemoryRouter><Blog /></MemoryRouter>);
 
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
-    expect(screen.getByText("RELIABLE AGENT RETRIES NEED CONTRACTS")).toBeInTheDocument();
+    // Uppercasing is applied by CSS text-transform, so the DOM keeps the original casing.
+    expect(container.querySelector(".blog-text-thumbnail__title")).toHaveTextContent(post.title);
     expect(screen.getByRole("heading", { name: post.title })).toBeInTheDocument();
+  });
+
+  it("keeps cover images and skips the text thumbnail when a post has one", () => {
+    useBlogPosts.mockReturnValue({
+      data: {
+        posts: [post, { ...post, slug: "second-post", title: "Second post with image" }],
+        pagination: { ...defaultPagination, totalPosts: 2 },
+      },
+      isLoading: false,
+      isError: false,
+    });
+
+    const { container } = render(<MemoryRouter><Blog /></MemoryRouter>);
+
+    expect(screen.getAllByRole("img")).toHaveLength(2);
+    screen.getAllByRole("img").forEach((img) => expect(img).toHaveAttribute("src", post.coverImageUrl));
+    expect(container.querySelector(".blog-text-thumbnail")).not.toBeInTheDocument();
   });
 
   it("shortens text thumbnail titles to six words", () => {

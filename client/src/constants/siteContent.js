@@ -10,6 +10,8 @@ export const studioContent = {
     eyebrow: "AI Engineering Studio",
     title: "Turn manual workflows into reliable AI systems.",
     body: "DevKofi designs and builds AI agents, internal tools, and AI-powered products that integrate with your existing software—complete with validation, human oversight, and production-ready engineering.",
+    focusLead: "Building",
+    focus: ["AI agents", "internal tools", "AI-powered products"],
     image: profileImage,
   },
   problem: {

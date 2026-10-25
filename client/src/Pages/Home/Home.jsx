@@ -5,7 +5,7 @@ import { engagementOffers, workflowExamples } from "../../constants/engagementOf
 import { services } from "../../constants/services";
 import { studioContent } from "../../constants/siteContent";
 import { selectFeaturedWork } from "../../lib/projectSelectors";
-import { FinalCta, PageMeta, ProjectCollection, SectionHeading, SplitSection } from "../../components/Studio/Studio";
+import { FinalCta, PageMeta, ProjectCollection, RotatingFocus, SectionHeading, SplitSection } from "../../components/Studio/Studio";
 
 const workflowIcons = {
   "Prospecting workflow": Funnel,
@@ -33,6 +33,7 @@ const Home = () => {
           <div className="studio-page-hero__copy">
             <p className="studio-eyebrow">{studioContent.hero.eyebrow}</p>
             <h1>{studioContent.hero.title}</h1>
+            <RotatingFocus lead={studioContent.hero.focusLead} phrases={studioContent.hero.focus} />
             <p>{studioContent.hero.body}</p>
             <div className="studio-actions">
               <Link className="studio-button studio-button--primary" to="/contact">

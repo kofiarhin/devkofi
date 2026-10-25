@@ -169,6 +169,73 @@ export const FinalCta = ({
   </section>
 );
 
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+const getPrefersReducedMotion = () =>
+  typeof window !== "undefined" && typeof window.matchMedia === "function"
+    ? window.matchMedia(REDUCED_MOTION_QUERY).matches
+    : false;
+
+const usePrefersReducedMotion = () => {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(getPrefersReducedMotion);
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== "function") return undefined;
+    const query = window.matchMedia(REDUCED_MOTION_QUERY);
+    const handleChange = () => setPrefersReducedMotion(query.matches);
+    query.addEventListener?.("change", handleChange);
+    return () => query.removeEventListener?.("change", handleChange);
+  }, []);
+
+  return prefersReducedMotion;
+};
+
+const joinPhrases = (phrases) =>
+  phrases.length > 1 ? `${phrases.slice(0, -1).join(", ")}, and ${phrases[phrases.length - 1]}` : phrases.join("");
+
+export const RotatingFocus = ({ lead, phrases = [], interval = 2800 }) => {
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const shouldRotate = !prefersReducedMotion && phrases.length > 1;
+
+  useEffect(() => {
+    if (!shouldRotate) return undefined;
+    const timer = window.setInterval(() => {
+      setActiveIndex((index) => (index + 1) % phrases.length);
+    }, interval);
+    return () => window.clearInterval(timer);
+  }, [shouldRotate, phrases.length, interval]);
+
+  if (!phrases.length) return null;
+
+  if (!shouldRotate) {
+    return (
+      <p className="studio-hero-focus">
+        {lead} <span className="studio-hero-focus__static">{joinPhrases(phrases)}</span>
+      </p>
+    );
+  }
+
+  return (
+    <p className="studio-hero-focus">
+      <span className="studio-visually-hidden">{`${lead} ${joinPhrases(phrases)}`}</span>
+      <span aria-hidden="true">
+        {lead}{" "}
+        <span className="studio-hero-focus__rotator">
+          {phrases.map((phrase, index) => (
+            <span
+              key={phrase}
+              className={`studio-hero-focus__phrase${index === activeIndex ? " is-active" : ""}`}
+            >
+              {phrase}
+            </span>
+          ))}
+        </span>
+      </span>
+    </p>
+  );
+};
+
 export const StudioPageHero = ({ eyebrow, title, body, image, alt = "" }) => (
   <section className="studio-page-hero">
     <div className="studio-container studio-page-hero__grid">

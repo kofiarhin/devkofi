@@ -30,6 +30,49 @@
   font-size: clamp(1rem, 1.5vw, 1.16rem);
 }
 
+.studio-hero-focus {
+  margin: var(--space-4) 0 0;
+  color: var(--color-text-primary);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.studio-hero-focus__static { color: var(--color-brand-accent); }
+
+// Phrases share one grid cell so the slot is always as wide as the longest phrase (no layout shift).
+.studio-hero-focus__rotator {
+  display: inline-grid;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.studio-hero-focus__phrase {
+  grid-area: 1 / 1;
+  color: var(--color-brand-accent);
+  opacity: 0;
+  transform: translateY(0.35em);
+  transition: opacity 450ms ease, transform 450ms ease;
+
+  &.is-active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.studio-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .studio-split,
 .studio-page-hero,
 .studio-projects-section,
@@ -255,5 +298,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .studio-button,
-  .studio-link { transition: none; }
+  .studio-link,
+  .studio-hero-focus__phrase { transition: none; }
 }
