@@ -178,7 +178,18 @@ describe("Blog pages", () => {
     render(<MemoryRouter><Blog /></MemoryRouter>);
 
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(screen.getByText("RELIABLE AGENT RETRIES NEED CONTRACTS")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: post.title })).toBeInTheDocument();
+  });
+
+  it("shortens text thumbnail titles to six words", () => {
+    useBlogPosts.mockReturnValue({
+      data: { posts: [{ ...post, title: "Your LLM Judge’s Rating Scale Is Part of the Metric", coverImageUrl: null }], pagination: defaultPagination },
+      isLoading: false, isError: false,
+    });
+    render(<MemoryRouter><Blog /></MemoryRouter>);
+    expect(screen.getByText("Your LLM Judge’s Rating Scale Is")).toBeInTheDocument();
+    expect(screen.queryByText("Your LLM Judge’s Rating Scale Is Part")).not.toBeInTheDocument();
   });
 
   it("renders article loading and not-found states", () => {
