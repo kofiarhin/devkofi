@@ -205,9 +205,10 @@ describe("Blog pages", () => {
       data: { posts: [{ ...post, title: "Your LLM Judge’s Rating Scale Is Part of the Metric", coverImageUrl: null }], pagination: defaultPagination },
       isLoading: false, isError: false,
     });
-    render(<MemoryRouter><Blog /></MemoryRouter>);
-    expect(screen.getByText("Your LLM Judge’s Rating Scale Is")).toBeInTheDocument();
-    expect(screen.queryByText("Your LLM Judge’s Rating Scale Is Part")).not.toBeInTheDocument();
+    const { container } = render(<MemoryRouter><Blog /></MemoryRouter>);
+    const thumbnailTitle = container.querySelector(".blog-text-thumbnail__title");
+    expect(thumbnailTitle).toHaveTextContent(/^Your LLM Judge’s Rating Scale Is$/);
+    expect(container.querySelector(".blog-text-thumbnail__accent")).toHaveTextContent("Is");
   });
 
   it("renders article loading and not-found states", () => {
