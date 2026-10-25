@@ -12,3 +12,51 @@
 .blog-story__media-link:hover .blog-story__visual {
   transform: none;
 }
+
+/* Generated editorial thumbnails for articles without a cover image. */
+.blog-text-thumbnail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: clamp(1.15rem, 3vw, 2.4rem);
+  background: radial-gradient(circle at 82% 20%, #16485b 0%, transparent 46%), linear-gradient(140deg, #08121f, #132537);
+  color: #f5f8ff;
+  isolation: isolate;
+}
+.blog-text-thumbnail--1 { background: radial-gradient(circle at 85% 10%, #163d36, transparent 48%), linear-gradient(140deg, #071b1b, #11222f); }
+.blog-text-thumbnail--2 { background: radial-gradient(circle at 80% 15%, #31365b, transparent 48%), linear-gradient(140deg, #0b1324, #17233c); }
+.blog-text-thumbnail__grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.35;
+  background-image: linear-gradient(#ffffff10 1px, transparent 1px), linear-gradient(90deg, #ffffff10 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(90deg, transparent, black);
+}
+.blog-text-thumbnail__brand,
+.blog-text-thumbnail__footer { font-size: clamp(0.52rem, 0.85vw, 0.7rem); font-weight: 700; letter-spacing: 0.13em; }
+.blog-text-thumbnail__brand span { color: #a3ff35; }
+.blog-text-thumbnail__title {
+  display: -webkit-box;
+  overflow: hidden;
+  max-width: 18ch;
+  font-size: clamp(1.25rem, 3.2vw, 3.4rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+.blog-story__visual.blog-text-thumbnail { height: auto; aspect-ratio: 16 / 9; }
+.blog-story .blog-text-thumbnail__title { font-size: clamp(1.15rem, 2.5vw, 2.25rem); }
+.blog-text-thumbnail__footer { color: #a3ff35; }
+@media (max-width: 640px) {
+  .blog-text-thumbnail { padding: 1.1rem; }
+  .blog-text-thumbnail__title { font-size: clamp(1.3rem, 7vw, 2rem); }
+}
