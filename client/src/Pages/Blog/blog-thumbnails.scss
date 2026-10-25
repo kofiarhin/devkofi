@@ -21,7 +21,7 @@
 
 /* Generated editorial thumbnails for articles without a cover image. */
 .blog-text-thumbnail {
-  --thumb-accent: #a3ff35;
+  --thumb-accent: #3b9eff;
   // Container units below resolve against this element, so its own padding stays viewport-based.
   --thumb-pad: clamp(1.1rem, 2.6vw, 2.4rem);
 
@@ -42,11 +42,6 @@
 }
 .blog-text-thumbnail--1 { background: radial-gradient(circle at 85% 10%, #163d36, transparent 48%), linear-gradient(140deg, #071b1b, #11222f); }
 .blog-text-thumbnail--2 { background: radial-gradient(circle at 80% 15%, #31365b, transparent 48%), linear-gradient(140deg, #0b1324, #17233c); }
-
-.blog-text-thumbnail--accent-blue { --thumb-accent: #4da3ff; }
-.blog-text-thumbnail--accent-orange { --thumb-accent: #ff9f43; }
-.blog-text-thumbnail--accent-green { --thumb-accent: #5be37a; }
-.blog-text-thumbnail--accent-red { --thumb-accent: #ff5f5f; }
 
 // Soft accent-tinted glow that drifts slowly behind the text.
 .blog-text-thumbnail__glow {
