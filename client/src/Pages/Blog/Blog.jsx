@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import useBlogPosts from "../../hooks/queries/useBlogPosts";
+import BlogThumbnail from "../../components/BlogThumbnail";
 import "../BlogArticle/blog.styles.scss";
 import "./blog-thumbnails.scss";
 
@@ -96,7 +97,7 @@ const Blog = () => {
                     alt={featuredPost.coverImageAlt || ""}
                   />
                 ) : (
-                  <span className="blog-feature__visual blog-feature__visual--empty" aria-hidden="true" />
+                  <BlogThumbnail title={featuredPost.title} slug={featuredPost.slug} className="blog-feature__visual" />
                 )}
               </Link>
 
@@ -151,7 +152,7 @@ const Blog = () => {
                             loading="lazy"
                           />
                         ) : (
-                          <span className="blog-story__visual blog-story__visual--empty" aria-hidden="true" />
+                          <BlogThumbnail title={post.title} slug={post.slug} className="blog-story__visual" />
                         )}
                       </Link>
 
