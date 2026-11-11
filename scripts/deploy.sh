@@ -68,8 +68,8 @@ health_once() {
   curl -fsS --max-time 5 http://127.0.0.1:8082/ >/dev/null || return 1
   curl -fsS --max-time 5 http://127.0.0.1:4001/health | node -e '
 let s="";process.stdin.on("data",x=>s+=x).on("end",()=>{try{const j=JSON.parse(s);process.exit(j.message==="ok"&&j.db===1?0:1)}catch{process.exit(1)}})' || return 1
-  curl -fsS --max-time 10 https://devkofi.com/ >/dev/null || return 1
-  curl -fsS --max-time 10 https://devkofi.com/health | node -e '
+  curl -fLsS --max-redirs 3 --max-time 10 https://devkofi.com/ >/dev/null || return 1
+  curl -fLsS --max-redirs 3 --max-time 10 https://devkofi.com/health | node -e '
 let s="";process.stdin.on("data",x=>s+=x).on("end",()=>{try{const j=JSON.parse(s);process.exit(j.message==="ok"&&j.db===1?0:1)}catch{process.exit(1)}})' || return 1
 }
 wait_healthy() {
@@ -106,6 +106,13 @@ trap on_exit EXIT
 trap "exit 130" INT
 trap "exit 143" TERM
 
+# Manual recovery must work even when one of the live containers is stopped.
+if [[ "$mode" == --rollback ]]; then
+  [[ -s "$rollback_file" && -f "$state/active.yaml" ]] || fail "No tracked rollback release saved"
+  restore_previous || fail "Rollback failed; inspect the live services"
+  exit 0
+fi
+
 for svc in "${services[@]}"; do
   mapfile -t running < <("${dk[@]}" ps -q --filter label=com.docker.compose.project=devkofi --filter "label=com.docker.compose.service=$svc")
   [[ ${#running[@]} -eq 1 ]] || fail "Expected exactly one running $svc container"
@@ -139,12 +146,6 @@ if [[ "$mode" == --check ]]; then
   log "Preflight passed: $(git rev-parse --short HEAD)"
   exit 0
 fi
-if [[ "$mode" == --rollback ]]; then
-  [[ -s "$rollback_file" ]] || fail "No saved previous release"
-  restore_previous || fail "Rollback failed"
-  exit 0
-fi
-
 log "Fetching latest main"
 previous_commit="$(git rev-parse HEAD)"
 git fetch --quiet origin main
@@ -167,7 +168,7 @@ log "Running backend Jest against an isolated disposable MongoDB"
 "${dk[@]}" build -f Dockerfile.verify --target api-test -t "devkofi-verify-api:$short" .
 test_network="devkofi-ci-$short-$$"
 "${dk[@]}" network create --internal "$test_network" >/dev/null
-test_mongo="$("${dk[@]}" run -d --rm --name "devkofi-test-mongo-$short-$$" --network "$test_network" --network-alias test-mongo -e GLIBC_TUNABLES=glibc.pthread.rseq=1 --tmpfs /data/db:rw,size=512m mongo:8 --quiet)"
+test_mongo="$("${dk[@]}" run -d --rm --name "devkofi-test-mongo-$short-$$" --network "$test_network" --network-alias test-mongo -e GLIBC_TUNABLES=glibc.pthread.rseq=1 --memory 768m --pids-limit 256 --tmpfs /data/db:rw,size=512m mongo:8 --quiet)"
 ready=false
 for ((n=0;n<30;n++)); do
   if "${dk[@]}" exec "$test_mongo" mongosh --quiet --eval 'db.adminCommand({ping:1}).ok' 2>/dev/null | grep -qx 1; then ready=true; break; fi
@@ -180,7 +181,7 @@ done
   -e JWT_SECRET=devkofi-deploy-test-only-secret \
   -e ADMIN_EMAIL=admin-ci@example.com -e ADMIN_PASSWORD=ci-test-password \
   -e CLIENT_URL=http://localhost:5173 -e IDEAHUB_API_URL=http://127.0.0.1:3999 \
-  "devkofi-verify-api:$short" npm test -- --runInBand
+  --memory 1g --pids-limit 256 "devkofi-verify-api:$short" npm test -- --runInBand
 "${dk[@]}" rm -f "$test_mongo" >/dev/null
 test_mongo=""
 "${dk[@]}" network rm "$test_network" >/dev/null
