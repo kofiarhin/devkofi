@@ -23,7 +23,28 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // JSX member components (motion.div) and component render props are used in JSX.
+      'no-unused-vars': ['error', { varsIgnorePattern: '^(?:[A-Z_]|motion$)', argsIgnorePattern: '^[A-Z_]' }],
     },
+  },
+  {
+    // Vitest globals are injected by the test runner.
+    files: ['test/**/*.{js,jsx}', 'src/**/*.{test,spec}.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        vi: 'readonly',
+        describe: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        it: 'readonly',
+        test: 'readonly',
+        expect: 'readonly',
+      },
+    },
+  },
+  {
+    // Legacy fixtures are CommonJS, unlike the Vite client.
+    files: ['tests/**/*.js'],
+    languageOptions: { globals: globals.node },
   },
 ])

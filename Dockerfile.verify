@@ -1,0 +1,20 @@
+# Dedicated verification stages; never used as production images.
+FROM node:20-bookworm-slim AS root-deps
+ENV PUPPETEER_SKIP_DOWNLOAD=1
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts --no-audit --no-fund
+
+FROM root-deps AS api-test
+COPY server/ ./server/
+ENV NODE_ENV=test
+CMD ["npm", "test", "--", "--runInBand"]
+
+FROM root-deps AS client-test
+WORKDIR /app/client
+COPY client/package.json client/package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY client/ ./
+ENV CI=true
+RUN npm run lint
+RUN ./node_modules/.bin/vitest run

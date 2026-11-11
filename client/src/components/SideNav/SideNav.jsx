@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { X } from "@phosphor-icons/react";
 import { closeSideNav } from "../../redux/navigation/navigationSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +15,7 @@ const SideNav = () => {
   const panelRef = useRef(null);
   const closeButtonRef = useRef(null);
 
-  const closeNav = () => dispatch(closeSideNav());
+  const closeNav = useCallback(() => dispatch(closeSideNav()), [dispatch]);
 
   useEffect(() => {
     const previous = document.activeElement;
@@ -47,7 +47,7 @@ const SideNav = () => {
       document.removeEventListener("keydown", onKeyDown);
       previous?.focus?.();
     };
-  }, []);
+  }, [closeNav]);
 
   const navLinkClass = ({ isActive }) => (isActive ? "active-link" : "nav-link");
   const adminNavLinkClass = (item) => {
