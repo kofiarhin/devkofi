@@ -103,6 +103,8 @@ on_exit() {
   exit "$rc"
 }
 trap on_exit EXIT
+trap "exit 130" INT
+trap "exit 143" TERM
 
 for svc in "${services[@]}"; do
   mapfile -t running < <("${dk[@]}" ps -q --filter label=com.docker.compose.project=devkofi --filter "label=com.docker.compose.service=$svc")
@@ -123,7 +125,7 @@ done
 "${dk[@]}" inspect -f '{{json .NetworkSettings.Ports}}' "${ids[0]}" | node -e '
 let s="";process.stdin.on("data",x=>s+=x).on("end",()=>{const p=JSON.parse(s)["8080/tcp"]||[];process.exit(p.length===1&&p[0].HostIp==="127.0.0.1"&&p[0].HostPort==="8082"?0:1)})' || fail "Unexpected frontend port exposure"
 
-if [[ -f "$state/active.yaml" ]]; then
+if [[ "$mode" != --rollback && -f "$state/active.yaml" ]]; then
   for i in 0 1; do
     expected="$("${compose[@]}" -f "$state/active.yaml" config --format json | node -e '
 let s="";process.stdin.on("data",x=>s+=x).on("end",()=>console.log(JSON.parse(s).services[process.argv[1]].image))' "${services[$i]}")"
@@ -144,8 +146,10 @@ if [[ "$mode" == --rollback ]]; then
 fi
 
 log "Fetching latest main"
+previous_commit="$(git rev-parse HEAD)"
 git fetch --quiet origin main
 git merge --ff-only refs/remotes/origin/main || fail "Fast-forward failed"
+[[ -z "$(git diff --name-only "$previous_commit" HEAD -- compose.yaml)" ]] || fail "compose.yaml changed since preflight; review and rerun"
 [[ -z "$(git status --porcelain)" ]] || fail "Working tree changed unexpectedly"
 commit="$(git rev-parse HEAD)"
 short="${commit:0:12}"
@@ -163,7 +167,7 @@ log "Running backend Jest against an isolated disposable MongoDB"
 "${dk[@]}" build -f Dockerfile.verify --target api-test -t "devkofi-verify-api:$short" .
 test_network="devkofi-ci-$short-$$"
 "${dk[@]}" network create --internal "$test_network" >/dev/null
-test_mongo="$("${dk[@]}" run -d --rm --name "devkofi-test-mongo-$short-$$" --network "$test_network" --network-alias test-mongo --tmpfs /data/db:rw,size=512m mongo:8 --quiet)"
+test_mongo="$("${dk[@]}" run -d --rm --name "devkofi-test-mongo-$short-$$" --network "$test_network" --network-alias test-mongo -e GLIBC_TUNABLES=glibc.pthread.rseq=1 --tmpfs /data/db:rw,size=512m mongo:8 --quiet)"
 ready=false
 for ((n=0;n<30;n++)); do
   if "${dk[@]}" exec "$test_mongo" mongosh --quiet --eval 'db.adminCommand({ping:1}).ok' 2>/dev/null | grep -qx 1; then ready=true; break; fi
@@ -202,6 +206,8 @@ for i in 0 1; do
   active="$("${dk[@]}" ps -q --filter label=com.docker.compose.project=devkofi --filter "label=com.docker.compose.service=$svc" | head -n1)"
   while IFS= read -r cid; do
     [[ -n "$cid" && "$cid" != "$active" ]] || continue
+    oneoff="$("${dk[@]}" inspect -f '{{index .Config.Labels "com.docker.compose.oneoff"}}' "$cid")"
+    [[ "$oneoff" == false || "$oneoff" == False ]] || continue
     "${dk[@]}" rm "$cid" >/dev/null 2>&1 || true
   done < <("${dk[@]}" ps -aq --filter label=com.docker.compose.project=devkofi --filter "label=com.docker.compose.service=$svc" --filter status=exited)
   mapfile -t tags < <("${dk[@]}" image ls --format '{{.Repository}}:{{.Tag}}' --filter "reference=$image:release-*")

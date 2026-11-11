@@ -29,3 +29,5 @@ Only after every check passes does it tag both previous live images and recreate
 Cleanup targets only stopped DevKofi service containers and old DevKofi release images; no global prune, volume deletion or unrelated app changes.
 
 **First run:** inspect the live Compose configuration and run `npm run deploy:check`. If it blocks on Compose mismatch, do not bypass. Production deployment still needs explicit approval and live verification. Reconcile the Beast VPS profile after a permanent release.
+
+CI runs a Docker frontend lint/Vitest stage and production Vite build. The backend CI test container uses a test-only glibc rseq setting for compatibility with GitHub's newer Linux kernel; production MongoDB is unchanged.

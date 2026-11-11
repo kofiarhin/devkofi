@@ -20,6 +20,8 @@ jobs:
     services:
       mongodb:
         image: mongo:8.0
+        env:
+          GLIBC_TUNABLES: glibc.pthread.rseq=1
         ports:
           - 27017:27017
         options: >-
@@ -61,3 +63,12 @@ jobs:
           test -s Dockerfile.verify
           test -s Dockerfile.verify.dockerignore
           test -s compose.yaml
+  verify_frontend_docker:
+    name: Verify frontend Docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run frontend lint and Vitest in Docker
+        run: docker build -f Dockerfile.verify --target client-test -t devkofi-client-ci .
+      - name: Build production Vite assets
+        run: docker build -f Dockerfile.frontend --target build -t devkofi-frontend-ci .
