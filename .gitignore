@@ -10,3 +10,4 @@ server/coverage/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+.deploy-state/

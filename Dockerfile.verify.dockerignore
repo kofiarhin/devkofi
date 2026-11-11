@@ -1,0 +1,15 @@
+.git
+.github
+.claude
+.agents
+.env
+.env.*
+node_modules
+**/node_modules
+**/dist
+**/coverage
+docs
+context
+customers
+*.log
+README.md

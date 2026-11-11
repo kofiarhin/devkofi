@@ -10,7 +10,10 @@
     "client": "npm run dev --prefix client",
     "test": "jest --forceExit",
     "test:watch": "jest --watchAll",
-    "test:client": "npm run test --prefix client"
+    "test:client": "npm run test --prefix client",
+    "deploy": "bash scripts/deploy.sh",
+    "deploy:check": "bash scripts/deploy.sh --check",
+    "deploy:rollback": "bash scripts/deploy.sh --rollback"
   },
   "jest": {
     "testMatch": [

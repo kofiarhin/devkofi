@@ -49,3 +49,15 @@ jobs:
 
       - name: Run backend tests
         run: npm test
+  verify_deploy_scripts:
+    name: Validate deployment scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Bash syntax
+        run: bash -n scripts/deploy.sh scripts/deploy.conf
+      - name: Check deployment artifacts
+        run: |
+          test -s Dockerfile.verify
+          test -s Dockerfile.verify.dockerignore
+          test -s compose.yaml
