@@ -31,3 +31,5 @@ Cleanup targets only stopped DevKofi service containers and old DevKofi release 
 **First run:** inspect the live Compose configuration and run `npm run deploy:check`. If it blocks on Compose mismatch, do not bypass. Production deployment still needs explicit approval and live verification. Reconcile the Beast VPS profile after a permanent release.
 
 CI runs a Docker frontend lint/Vitest stage and production Vite build. The backend CI test container uses a test-only glibc rseq setting for compatibility with GitHub's newer Linux kernel; production MongoDB is unchanged.
+
+**Current verification limitation (11 Nov 2026):** Existing full frontend Vitest suite has 30 failures unrelated to the new deployment script (outdated page expectations, mocks and fixture paths). The deploy script intentionally blocks production until these are fixed and its CI check is green; do not bypass this gate. The CI production Vite build is checked separately even when a test job fails.

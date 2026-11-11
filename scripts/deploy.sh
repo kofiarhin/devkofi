@@ -149,7 +149,7 @@ log "Fetching latest main"
 previous_commit="$(git rev-parse HEAD)"
 git fetch --quiet origin main
 git merge --ff-only refs/remotes/origin/main || fail "Fast-forward failed"
-[[ -z "$(git diff --name-only "$previous_commit" HEAD -- compose.yaml)" ]] || fail "compose.yaml changed since preflight; review and rerun"
+[[ -z "$(git diff --name-only "$previous_commit" HEAD -- compose.yaml scripts/deploy.sh scripts/deploy.conf)" ]] || fail "Deploy config/script changed since preflight; review and rerun"
 [[ -z "$(git status --porcelain)" ]] || fail "Working tree changed unexpectedly"
 commit="$(git rev-parse HEAD)"
 short="${commit:0:12}"

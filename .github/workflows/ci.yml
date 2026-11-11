@@ -71,4 +71,5 @@ jobs:
       - name: Run frontend lint and Vitest in Docker
         run: docker build -f Dockerfile.verify --target client-test -t devkofi-client-ci .
       - name: Build production Vite assets
+        if: always()
         run: docker build -f Dockerfile.frontend --target build -t devkofi-frontend-ci .
