@@ -1,7 +1,10 @@
 import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
-const readPublicFile = (name) => readFileSync(new URL(`../../public/${name}`, import.meta.url), "utf8");
+const publicDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../../public");
+const readPublicFile = (name) => readFileSync(resolve(publicDirectory, name), "utf8");
 
 const canonicalRoutes = [
   "https://devkofi.com/",

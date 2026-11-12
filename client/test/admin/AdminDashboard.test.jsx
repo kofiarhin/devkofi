@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
@@ -133,10 +133,10 @@ describe('AdminDashboard Contact Messages tab', () => {
 
     expect(screen.getByText('Alice')).toBeInTheDocument();
     expect(screen.getByText('alice@test.com')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /view message from alice/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^view$/i })).toBeInTheDocument();
   });
 
-  it('navigates to details route when subject button is clicked', () => {
+  it('opens message details when the row view action is clicked', () => {
     useContactMessages.mockReturnValue({
       data: { data: { data: { messages: mockMessages, total: 1, limit: 20 } } },
       isLoading: false,
@@ -145,9 +145,12 @@ describe('AdminDashboard Contact Messages tab', () => {
 
     renderDashboard();
     fireEvent.click(screen.getByRole('tab', { name: /contact messages/i }));
-    fireEvent.click(screen.getByRole('button', { name: /view message from alice/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^view$/i }));
 
-    expect(screen.getByText('Message details route')).toBeInTheDocument();
+    const panel = screen.getByRole('dialog', { name: 'Contact Message' });
+    expect(within(panel).getByRole('heading', { name: 'Hello' })).toBeInTheDocument();
+    expect(within(panel).getByText('Hi there')).toBeInTheDocument();
+    expect(within(panel).getByText('Alice · alice@test.com')).toBeInTheDocument();
   });
 
   it('shows empty state when messages array is empty', () => {
@@ -160,7 +163,7 @@ describe('AdminDashboard Contact Messages tab', () => {
     renderDashboard();
     fireEvent.click(screen.getByRole('tab', { name: /contact messages/i }));
 
-    expect(screen.getByText(/no messages yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/no messages found/i)).toBeInTheDocument();
   });
 });
 
@@ -194,7 +197,7 @@ describe('AdminDashboard Newsletter Subscribers tab', () => {
     renderDashboard();
     fireEvent.click(screen.getByRole('tab', { name: /newsletter subscribers/i }));
 
-    expect(screen.getByText(/no subscribers yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/no subscribers found/i)).toBeInTheDocument();
   });
 });
 

@@ -1,5 +1,14 @@
 # DevKofi Current State
 
+## Current checkpoint: deployment Vitest repair
+
+- Implemented on `fix/deploy-vitest-suite`, based on local `eec5b2a`, preserving the earlier production env-file metadata and sudo forwarding fixes.
+- Current baseline reproduced 31 failures across 11 files (132 passing). Updated stale assertions to the current admin, booking, studio and SEO behavior; replaced tests for intentionally removed mentorship/settings pages with route-retirement checks; completed service mocks; resolved public fixtures through filesystem paths; included the public project-data fixture in `Dockerfile.verify`.
+- Restored the missing `/work` retry action, with a focused failing test before the fix. No production configuration, credentials, dependencies, permissions, authentication behavior or deployment safeguards changed.
+- Verified: complete local Vitest suite with two workers and Docker's Node 20 client-test stage both passed all 163 tests in 26 files; local and Docker lint passed; desktop/mobile keyboard retry and recovery passed against mocked API responses; diff reviewed. No tests skipped or disabled.
+- Existing footer duplicate-key warnings remain unsuppressed. Browser checks did not validate external image delivery or production connectivity.
+- Local commit authorized after repeat full-suite verification and diff review. Not pushed, merged, deployed or released. Full evidence and per-file causes: `docs/verification/deployment-vitest.md`.
+
 ## Current checkpoint: server-to-server blog reads
 
 Baseline `main` commit: `2dd71fd1ee00fc49a4b07c41bbb459c961e82061`.

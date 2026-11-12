@@ -32,6 +32,6 @@ Cleanup targets only stopped DevKofi service containers and old DevKofi release 
 
 CI runs a Docker frontend lint/Vitest stage and production Vite build. The backend CI test container uses a test-only glibc rseq setting for compatibility with GitHub's newer Linux kernel; production MongoDB is unchanged.
 
-**Current verification limitation (11 Nov 2026):** Existing full frontend Vitest suite has 30 failures unrelated to the new deployment script (outdated page expectations, mocks and fixture paths). The deploy script intentionally blocks production until these are fixed and its CI check is green; do not bypass this gate. The CI production Vite build is checked separately even when a test job fails.
+**Verification update (12 Nov 2026):** The repair on `fix/deploy-vitest-suite` passes all 163 frontend tests locally and in the Docker client-test stage, with lint passing in both environments. See [per-file causes and verification](../verification/deployment-vitest.md). These are local branch results, not a CI result or production release. Keep the deployment test gate intact; CI and production approval remain required. The CI production Vite build is checked separately even when a test job fails.
 
 Manual rollback can recover even when a current service container is stopped, provided a previous release was successfully saved by this script. Test MongoDB and Jest containers have memory/pid limits. Public HTTPS checks follow at most three redirects.

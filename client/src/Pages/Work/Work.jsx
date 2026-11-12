@@ -4,7 +4,7 @@ import { selectWorkProjects } from "../../lib/projectSelectors";
 import { FinalCta, PageMeta, ProjectCollection, SectionHeading, StudioPageHero } from "../../components/Studio/Studio";
 
 const Work = () => {
-  const { data, isLoading, isError } = useProjects();
+  const { data, isLoading, isError, refetch } = useProjects();
   const projects = Array.isArray(data) ? data : data?.data || [];
   const portfolioWork = selectWorkProjects(projects);
 
@@ -33,7 +33,12 @@ const Work = () => {
           {isLoading ? (
             <p className="studio-empty">Loading work...</p>
           ) : isError ? (
-            <p className="studio-empty">Work is temporarily unavailable.</p>
+            <div className="studio-empty">
+              <p>Work is temporarily unavailable.</p>
+              <button type="button" className="studio-button studio-button--secondary" onClick={() => refetch()}>
+                Try again
+              </button>
+            </div>
           ) : (
             <ProjectCollection projects={portfolioWork} emptyMessage="Engineering work is temporarily unavailable." />
           )}

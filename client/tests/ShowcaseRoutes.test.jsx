@@ -41,13 +41,16 @@ describe("Showcase routes", () => {
     expect(cards.map((card) => within(card).getByRole("heading", { level: 3 }).textContent)).toEqual(names);
   });
 
-  it.each(["/work", "/engineering-systems"])("preserves loading and retry behavior on %s", (route) => {
+  it.each([
+    ["/work", "Loading work...", "Work is temporarily unavailable."],
+    ["/engineering-systems", "Loading engineering systems...", "Engineering systems could not be loaded."],
+  ])("preserves loading and retry behavior on %s", (route, loadingMessage, errorMessage) => {
     renderRoute(route, { isLoading: true });
-    expect(screen.getByText(/Loading engineering/)).toBeInTheDocument();
+    expect(screen.getByText(loadingMessage)).toBeInTheDocument();
     expect(screen.queryAllByRole("article")).toHaveLength(0);
     cleanup();
     const retry = renderRoute(route, { isError: true });
-    expect(screen.getByText(/could not be loaded/)).toBeInTheDocument();
+    expect(screen.getByText(errorMessage)).toBeInTheDocument();
     expect(screen.queryAllByRole("article")).toHaveLength(0);
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
     expect(retry).toHaveBeenCalledOnce();

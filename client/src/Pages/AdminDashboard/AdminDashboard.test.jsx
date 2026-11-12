@@ -89,6 +89,10 @@ vi.mock('../../hooks/mutations/useDeleteBooking', () => ({
 }));
 
 vi.mock('../../services/adminService', () => ({
+  deleteContactMessage: vi.fn(),
+  updateContactMessage: vi.fn(),
+  deleteNewsletterSubscriber: vi.fn(),
+  updateNewsletterSubscriber: vi.fn(),
   exportNewsletterSubscribersCsv: vi.fn(),
   exportNewsletterSubscribersJson: vi.fn(),
 }));

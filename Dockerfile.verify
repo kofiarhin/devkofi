@@ -15,6 +15,7 @@ WORKDIR /app/client
 COPY client/package.json client/package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY client/ ./
+COPY server/data/projects.data.json /app/server/data/projects.data.json
 ENV CI=true
 RUN npm run lint
 RUN ./node_modules/.bin/vitest run
