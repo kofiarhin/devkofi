@@ -25,7 +25,7 @@ describe("DevKofi route SEO metadata", () => {
       expect(document.title).toBe("AI Engineering Services | DevKofi");
     });
 
-    expect(document.querySelector('meta[name="description"]')?.content).toContain("AI systems engineering");
+    expect(document.querySelector('meta[name="description"]')?.content).toContain("AI Workflow Audit, Pilot Sprint, and Production AI System");
     expect(document.querySelector('meta[property="og:url"]')?.content).toBe("https://devkofi.com/services");
     expect(document.querySelector('link[rel="canonical"]')?.href).toBe("https://devkofi.com/services");
 
@@ -35,7 +35,7 @@ describe("DevKofi route SEO metadata", () => {
     expect(schema.mainEntity.itemListElement[0]).toMatchObject({
       "@type": "ListItem",
       position: 1,
-      item: { "@type": "Service", name: "AI systems engineering" },
+      item: { "@type": "Service", name: "AI Workflow Audit" },
     });
   });
 

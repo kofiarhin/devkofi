@@ -15,12 +15,14 @@ const renderHome = (state = {}) => {
 describe("Home showcase", () => {
   it("shows three selected projects and links to Systems without a second gallery", () => {
     renderHome();
-    const cards = screen.getAllByRole("article");
+    const selectedWork = screen.getByRole("heading", { name: "Things I have engineered." }).closest("section");
+    const cards = within(selectedWork).getAllByRole("article");
     expect(cards).toHaveLength(3);
     expect(cards.map((card) => within(card).getByRole("heading", { level: 3 }).textContent))
       .toEqual(["Hibachi", "Brain", "ThriftChef"]);
-    expect(screen.getByRole("link", { name: "Explore Engineering Systems" }))
-      .toHaveAttribute("href", "/engineering-systems");
+    const systemsLink = screen.getByRole("link", { name: "Explore Engineering Systems" });
+    expect(systemsLink).toHaveAttribute("href", "/engineering-systems");
+    expect(within(systemsLink.closest("section")).queryAllByRole("article")).toHaveLength(0);
   });
 
   it.each([
@@ -29,7 +31,8 @@ describe("Home showcase", () => {
   ])("preserves the selected-work state and Systems link: %j", (state, message) => {
     renderHome(state);
     expect(screen.getByText(message)).toBeInTheDocument();
-    expect(screen.queryAllByRole("article")).toHaveLength(0);
+    const selectedWork = screen.getByRole("heading", { name: "Things I have engineered." }).closest("section");
+    expect(within(selectedWork).queryAllByRole("article")).toHaveLength(0);
     expect(screen.getByRole("link", { name: "Explore Engineering Systems" })).toBeInTheDocument();
   });
 });

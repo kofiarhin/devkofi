@@ -77,7 +77,7 @@ describe("projects page data behavior", () => {
         featured: true,
         demoUrl: "https://thriftchef.vercel.app",
         repoUrl: "https://github.com/kofiarhin/thriftchef",
-        thumbnailUrl: "/projects/thriftchef.webp",
+        thumbnailUrl: "https://res.cloudinary.com/dlsiabgiw/image/upload/v1787967836/vxxoyiakgw6o1xeow6yw.png",
       }),
     );
 

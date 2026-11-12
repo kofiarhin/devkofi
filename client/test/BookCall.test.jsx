@@ -67,8 +67,9 @@ describe("BookCall", () => {
   it("renders the page", () => {
     render(<BookCall />);
 
-    expect(screen.getByRole("heading", { name: "Choose a GMT call slot." })).toBeTruthy();
-    expect(screen.getByText("Choose a weekday slot between 9:00 AM and 5:00 PM GMT.")).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "AI Workflow Call" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Select a Date & Time" })).toBeInTheDocument();
+    expect(screen.getByText("GMT timezone")).toBeInTheDocument();
   });
 
   it("renders a loading state", () => {
@@ -86,33 +87,32 @@ describe("BookCall", () => {
     const slot = screen.getByRole("button", { name: /09:00 GMT, available/i });
     await user.click(slot);
 
-    expect(slot.getAttribute("aria-pressed")).toBe("true");
-    expect(screen.getByText(/Monday, 5 January, 09:00-09:30 GMT/i)).toBeTruthy();
+    expect(await screen.findByRole("heading", { name: "Your details" })).toBeInTheDocument();
+    expect(screen.getByText(/Monday,? 5 January, 09:00-09:30 GMT/i)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /09:00 GMT, available/i })).not.toBeInTheDocument();
   });
 
-  it("keeps unavailable slots disabled", async () => {
+  it("does not offer unavailable slots for booking", () => {
+    const mutation = mockMutation();
     render(<BookCall />);
-    const user = userEvent.setup();
 
-    const unavailableSlot = screen.getByRole("button", { name: /09:30 GMT, unavailable/i });
-    expect(unavailableSlot.disabled).toBe(true);
-
-    await user.click(unavailableSlot);
-
-    expect(unavailableSlot.getAttribute("aria-pressed")).toBe("false");
+    expect(screen.getByRole("button", { name: /09:00 GMT, available/i })).toBeEnabled();
+    expect(screen.queryByRole("button", { name: /09:30 GMT/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /confirm booking/i })).not.toBeInTheDocument();
+    expect(mutation.mutate).not.toHaveBeenCalled();
   });
 
   it("keeps submit disabled until a slot and required fields are present", async () => {
     render(<BookCall />);
     const user = userEvent.setup();
 
-    const submit = screen.getByRole("button", { name: /Book this call/i });
-    expect(submit.disabled).toBe(true);
+    expect(screen.queryByRole("button", { name: /confirm booking/i })).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /09:00 GMT, available/i }));
-    expect(submit.disabled).toBe(true);
+    const submit = await screen.findByRole("button", { name: /confirm booking/i });
+    expect(submit).toBeDisabled();
 
-    await user.type(screen.getByLabelText("Name"), "Laura");
+    await user.type(await screen.findByLabelText("Name"), "Laura");
     await user.type(screen.getByLabelText("Email"), "laura@example.com");
 
     expect(submit.disabled).toBe(false);
@@ -126,7 +126,9 @@ describe("BookCall", () => {
 
     render(<BookCall />);
 
-    expect(screen.getByText("This slot is no longer available. Choose another time.")).toBeTruthy();
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: /09:00 GMT, available/i }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("This slot is no longer available. Choose another time.");
   });
 
   it("renders confirmation after successful booking", async () => {
@@ -146,13 +148,18 @@ describe("BookCall", () => {
     const user = userEvent.setup();
 
     await user.click(screen.getByRole("button", { name: /09:00 GMT, available/i }));
-    await user.type(screen.getByLabelText("Name"), "Laura");
+    await user.type(await screen.findByLabelText("Name"), "Laura");
     await user.type(screen.getByLabelText("Email"), "laura@example.com");
-    await user.click(screen.getByRole("button", { name: /Book this call/i }));
+    await user.click(screen.getByRole("button", { name: /Confirm booking/i }));
 
     await waitFor(() => {
       expect(mutation.mutate).toHaveBeenCalledTimes(1);
-      expect(screen.getByText("Call booked.")).toBeTruthy();
+      expect(mutation.mutate).toHaveBeenCalledWith({
+        name: "Laura", email: "laura@example.com", company: "", message: "",
+        slotStart: "2099-01-05T09:00:00.000Z",
+      }, expect.objectContaining({ onSuccess: expect.any(Function) }));
+      expect(screen.getByRole("status")).toHaveTextContent("You're booked!");
+      expect(screen.getByRole("status")).toHaveTextContent(/Monday,? 5 January, 09:00-09:30 GMT/);
     });
   });
 });

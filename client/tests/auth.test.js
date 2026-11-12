@@ -1,28 +1,27 @@
-import { describe, it, expect } from "vitest";
-import fs from "fs";
+import { describe, it, expect, vi } from "vitest";
+import { screen } from "@testing-library/react";
+import fs from "node:fs";
+import { renderApp } from "../test/renderApp";
 
-describe("frontend mentorship flow wiring", () => {
-  it("pricing component includes mentorship plan heading", () => {
+vi.mock("../src/hooks/queries/useAdminSession", () => ({ default: () => ({}) }));
+vi.mock("../src/hooks/mutations/useLogoutAdmin", () => ({
+  default: () => ({ mutate: vi.fn(), isPending: false }),
+}));
+
+describe("retired mentorship flow", () => {
+  it("keeps the legacy pricing component directing enquiries to contact", () => {
     const content = fs.readFileSync("src/components/Pricing/Pricing.jsx", "utf-8");
-    expect(content.includes("Mentorship Plans")).toBe(true);
-    expect(content.includes("/join/standard") || content.includes("cta")).toBe(true);
+    expect(content).toContain("Choose the support level that matches the build");
+    expect(content).toContain('plan?.cta?.route || "/contact"');
   });
 
-  it("join page checks onboarding status and routes to onboarding", () => {
-    const content = fs.readFileSync("src/Pages/Join/Join.jsx", "utf-8");
-    expect(content.includes("onboardingCompleted")).toBe(true);
-    expect(content.includes("/onboarding?plan=")).toBe(true);
-  });
-
-  it("onboarding page submits intake and continues to join flow", () => {
-    const content = fs.readFileSync("src/Pages/Onboarding/Onboarding.jsx", "utf-8");
-    expect(content.includes("useOnboardingIntakeMutation")).toBe(true);
-    expect(content.includes("navigate(`/join/${plan}`")).toBe(true);
-  });
-
-  it("student dashboard renders mentorship-aware state", () => {
-    const content = fs.readFileSync("src/Pages/Dashboard/StudentDashboard/StudentDashboard.jsx", "utf-8");
-    expect(content.includes("AI Workflow Readiness")).toBe(true);
-    expect(content.includes("Next Action")).toBe(true);
-  });
+  it.each(["/join/standard", "/onboarding?plan=standard", "/dashboard"])(
+    "returns not found for the retired student route %s",
+    (route) => {
+      renderApp(route);
+      expect(screen.getByRole("heading", { name: "Page not found" })).toBeInTheDocument();
+      expect(document.querySelector('meta[name="robots"]')).toHaveAttribute("content", "noindex,follow");
+      expect(screen.queryByRole("link", { name: /join|onboarding|student dashboard/i })).not.toBeInTheDocument();
+    },
+  );
 });
