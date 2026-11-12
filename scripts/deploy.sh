@@ -19,7 +19,10 @@ read -r -a dk <<< "$DEPLOY_DOCKER"
 [[ "$DEPLOY_KEEP_RELEASES" =~ ^[0-9]+$ && "$DEPLOY_KEEP_RELEASES" -ge 3 ]] || fail "Keep at least three releases"
 [[ "$DEPLOY_HEALTH_RETRIES" =~ ^[0-9]+$ && "$DEPLOY_HEALTH_RETRIES" -gt 0 ]] || fail "Invalid retry count"
 [[ "$DEPLOY_HEALTH_DELAY" =~ ^[0-9]+$ && "$DEPLOY_HEALTH_DELAY" -gt 0 ]] || fail "Invalid retry delay"
-[[ "$DEPLOY_ENV_FILE" == /* && -f "$DEPLOY_ENV_FILE" && ! -L "$DEPLOY_ENV_FILE" ]] || fail "Missing/unsafe external production env file"
+[[ "$DEPLOY_ENV_FILE" == /* ]] &&
+  sudo -n test -f "$DEPLOY_ENV_FILE" &&
+  sudo -n test ! -L "$DEPLOY_ENV_FILE" ||
+  fail "Missing/unsafe external production env file"
 [[ "${DEVKOFI_FRONTEND_PORT:-8082}" == 8082 && "${DEVKOFI_PORT:-4001}" == 4001 ]] || fail "Unexpected production port"
 [[ "$(git rev-parse --show-toplevel)" == "$ROOT" ]] || fail "Incorrect Git repository"
 [[ "$(git branch --show-current)" == main ]] || fail "Expected main branch"
