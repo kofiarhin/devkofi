@@ -35,6 +35,9 @@ esac
 # Prevent a development .env from changing production Compose interpolation.
 export DEVKOFI_ENV_FILE="$DEPLOY_ENV_FILE"
 compose=("${dk[@]}" compose --env-file /dev/null -p devkofi -f "$ROOT/compose.yaml")
+if [[ "${dk[0]}" == sudo ]]; then
+  compose=(sudo --preserve-env=DEVKOFI_ENV_FILE "${compose[@]:1}")
+fi
 "${compose[@]}" config --quiet || fail "Invalid Compose configuration"
 state="$ROOT/.deploy-state"
 [[ ! -L "$state" ]] || fail "Unsafe deploy-state symlink"
