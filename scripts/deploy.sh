@@ -174,7 +174,8 @@ log "Running backend Jest against an isolated disposable MongoDB"
 "${dk[@]}" build -f Dockerfile.verify --target api-test -t "devkofi-verify-api:$short" .
 test_network="devkofi-ci-$short-$$"
 "${dk[@]}" network create --internal "$test_network" >/dev/null
-test_mongo="$("${dk[@]}" run -d --rm --name "devkofi-test-mongo-$short-$$" --network "$test_network" --network-alias test-mongo -e GLIBC_TUNABLES=glibc.pthread.rseq=1 --memory 768m --pids-limit 256 --tmpfs /data/db:rw,size=512m mongo:8 --quiet)"
+# mongod needs 500 MiB free for index builds; its 200 MiB journal shares this tmpfs.
+test_mongo="$("${dk[@]}" run -d --rm --name "devkofi-test-mongo-$short-$$" --network "$test_network" --network-alias test-mongo -e GLIBC_TUNABLES=glibc.pthread.rseq=1 --memory 768m --pids-limit 256 --tmpfs /data/db:rw,size=1g mongo:8 --quiet)"
 ready=false
 for ((n=0;n<30;n++)); do
   if "${dk[@]}" exec "$test_mongo" mongosh --quiet --eval 'db.adminCommand({ping:1}).ok' 2>/dev/null | grep -qx 1; then ready=true; break; fi
