@@ -3,6 +3,7 @@ set -Eeuo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 cd "$ROOT"
 source "$ROOT/scripts/deploy.conf"
+source "$ROOT/scripts/deploy-compose-label.sh"
 
 log() { printf '[deploy] %s\n' "$*"; }
 fail() { printf '[deploy] ERROR: %s\n' "$*" >&2; exit 1; }
@@ -124,10 +125,15 @@ for svc in "${services[@]}"; do
   [[ ${#running[@]} -eq 1 ]] || fail "Expected exactly one running $svc container"
   cid="${running[0]}"
   live_files="$("${dk[@]}" inspect -f '{{index .Config.Labels "com.docker.compose.project.config_files"}}' "$cid")"
-  if [[ "$live_files" != "$ROOT/compose.yaml" ]]; then
-    [[ "$live_files" != *,* && -f "$live_files" ]] || fail "$svc uses an unexpected Compose configuration"
-    cmp -s "$live_files" "$ROOT/compose.yaml" || fail "$svc live Compose file differs; review before migration"
-  fi
+  kind="$(classify_compose_label "$ROOT" "$state" "$live_files")" || fail "$svc uses an unexpected Compose configuration"
+  case "$kind" in
+    # The overlay file itself is renamed after cutover; active.yaml's image check below vouches for it.
+    overlay) [[ -f "$state/active.yaml" ]] || fail "$svc uses a deploy overlay but no active release is tracked" ;;
+    external)
+      [[ -f "$live_files" ]] || fail "$svc uses an unexpected Compose configuration"
+      cmp -s "$live_files" "$ROOT/compose.yaml" || fail "$svc live Compose file differs; review before migration"
+      ;;
+  esac
   ids+=("$cid")
   id="$("${dk[@]}" inspect -f '{{.Image}}' "$cid")"
   [[ "$id" == sha256:* ]] || fail "No live image ID for $svc"
@@ -156,7 +162,7 @@ log "Fetching latest main"
 previous_commit="$(git rev-parse HEAD)"
 git fetch --quiet origin main
 git merge --ff-only refs/remotes/origin/main || fail "Fast-forward failed"
-[[ -z "$(git diff --name-only "$previous_commit" HEAD -- compose.yaml scripts/deploy.sh scripts/deploy.conf)" ]] || fail "Deploy config/script changed since preflight; review and rerun"
+[[ -z "$(git diff --name-only "$previous_commit" HEAD -- compose.yaml scripts/deploy.sh scripts/deploy.conf scripts/deploy-compose-label.sh)" ]] || fail "Deploy config/script changed since preflight; review and rerun"
 [[ -z "$(git status --porcelain)" ]] || fail "Working tree changed unexpectedly"
 commit="$(git rev-parse HEAD)"
 short="${commit:0:12}"
