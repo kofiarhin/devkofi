@@ -13,7 +13,8 @@
     "test:client": "npm run test --prefix client",
     "deploy": "bash scripts/deploy.sh",
     "deploy:check": "bash scripts/deploy.sh --check",
-    "deploy:rollback": "bash scripts/deploy.sh --rollback"
+    "deploy:rollback": "bash scripts/deploy.sh --rollback",
+    "test:deploy": "node --test scripts/tests/deploy-compose-label.test.mjs"
   },
   "jest": {
     "testMatch": [

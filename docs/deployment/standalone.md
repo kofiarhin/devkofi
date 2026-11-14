@@ -18,7 +18,7 @@ npm run deploy
 npm run deploy:rollback
 ```
 
-`deploy:check` checks clean Git, project identity, Compose configuration, live service labels, expected ports and both local/public health routes. It does not build or restart services.
+`deploy:check` checks clean Git, project identity, Compose configuration, live service labels, expected ports and both local/public health routes. It does not build or restart services. After a `deploy.sh` cutover or rollback the live labels list `compose.yaml` plus the tracked `.deploy-state` overlay; that pair is accepted only while `.deploy-state/active.yaml` matches the live images.
 
 `deploy` fetches and fast-forwards `main`; validates frontend ESLint and Vitest in a Docker stage; builds both version-tagged production images (Vite build included); runs backend Jest in Docker using a new disposable MongoDB container isolated on a Docker-internal network. The test database `devkofi_deploy_ephemeral` is **not** the real production database `devkofi_test`. No production environment values are passed to tests.
 

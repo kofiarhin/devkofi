@@ -1,5 +1,12 @@
 # DevKofi Current State
 
+## Current checkpoint: deploy preflight overlay label
+
+- Production runs `15f984f` (`devkofi-*:release-15f984f0c4eb`) from the first `scripts/deploy.sh` cutover. Its containers record `compose.yaml,.deploy-state/candidate.yaml` as their Compose files, which the preflight rejected, so `deploy:check` and every later deploy failed with "unexpected Compose configuration".
+- Implemented on `fix/deploy-preflight-overlay-label`: `scripts/deploy-compose-label.sh` accepts the base `compose.yaml`, the tracked candidate/rollback overlays (only when `.deploy-state/active.yaml` exists, so the existing live-image drift check still applies) and the single-file migration path; anything else is still rejected.
+- Verified locally: `npm run test:deploy` (6 Node tests) passed; the real `deploy.sh --check` run in a scratch clone with stubbed Docker/curl failed on `15f984f` for the overlay label and, with the fix, passed for base/candidate/rollback labels and failed for an unknown overlay, image drift and a missing `active.yaml`; both live production labels classify as `overlay`. No production containers, data or deploy state changed.
+- Not pushed, merged or deployed. Preflight runs before `deploy.sh` fetches, so the fix cannot deploy itself: after merge, fast-forward Beast's `main` (`git pull --ff-only`), then run `npm run deploy:check` (remaining end-to-end check), then `npm run deploy`.
+
 ## Current checkpoint: deployment Vitest repair
 
 - Implemented on `fix/deploy-vitest-suite`, based on local `eec5b2a`, preserving the earlier production env-file metadata and sudo forwarding fixes.
