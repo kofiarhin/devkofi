@@ -1,0 +1,94 @@
+name: Deploy
+
+# Releases a commit to Beast only after the CI workflow's push run for that exact commit
+# on main succeeded. workflow_run always runs this file from the default branch, so pull
+# requests cannot change it. Inert until the repository variable DEVKOFI_AUTO_DEPLOY is
+# "true" (set only after Beast's restricted deploy account is provisioned and approved).
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+  actions: read
+
+# One production release at a time; never cancel one that is switching containers.
+# Older queued runs are skipped by the current-main checks below and on Beast.
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Beast
+    if: >-
+      vars.DEVKOFI_AUTO_DEPLOY == 'true' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.repository.full_name == 'kofiarhin/devkofi' &&
+      github.event.workflow_run.head_repository.full_name == 'kofiarhin/devkofi'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: Production
+    env:
+      # Event values reach scripts only through env, never through ${{ }} inside run blocks.
+      RELEASE_SHA: ${{ github.event.workflow_run.head_sha }}
+      CI_RUN_ID: ${{ github.event.workflow_run.id }}
+    steps:
+      - name: Check out trusted main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Check release eligibility
+        id: gate
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          rc=0
+          node scripts/check-ci.cjs --sha "$RELEASE_SHA" --run-id "$CI_RUN_ID" || rc=$?
+          if [ "$rc" -eq 75 ]; then
+            echo "::notice title=Release skipped::${RELEASE_SHA:0:12} is no longer the tip of main"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          exit "$rc"
+
+      - name: Deploy on Beast
+        if: steps.gate.outputs.skip != 'true'
+        env:
+          BEAST_HOST: ${{ secrets.BEAST_HOST }}
+          BEAST_KNOWN_HOSTS: ${{ secrets.BEAST_KNOWN_HOSTS }}
+          BEAST_SSH_KEY: ${{ secrets.DEVKOFI_DEPLOY_SSH_KEY }}
+        run: |
+          set -eu
+          if [ -z "$BEAST_HOST" ] || [ -z "$BEAST_KNOWN_HOSTS" ] || [ -z "$BEAST_SSH_KEY" ]; then
+            echo "::error::Deployment secrets are missing; nothing was changed"
+            exit 1
+          fi
+          umask 077
+          ssh_dir="$RUNNER_TEMP/beast-ssh"
+          mkdir -p "$ssh_dir"
+          printf '%s\n' "$BEAST_SSH_KEY" > "$ssh_dir/key"
+          printf '%s\n' "$BEAST_KNOWN_HOSTS" > "$ssh_dir/known_hosts"
+          rc=0
+          # The forced command on Beast accepts only "deploy <sha> <run-id>" and re-checks everything.
+          ssh -i "$ssh_dir/key" -o IdentitiesOnly=yes -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$ssh_dir/known_hosts" \
+            -o ServerAliveInterval=30 -o ServerAliveCountMax=6 \
+            "devkofi-deploy@$BEAST_HOST" "deploy $RELEASE_SHA $CI_RUN_ID" || rc=$?
+          case "$rc" in
+            0) echo "::notice title=Deployed::DevKofi ${RELEASE_SHA:0:12} is live" ;;
+            75) echo "::notice title=Release skipped::${RELEASE_SHA:0:12} was stale or already live" ; rc=0 ;;
+            70) echo "::error title=Rollback failed::Production needs manual recovery (see docs/deployment/beast-docker.md)" ;;
+            *) echo "::error title=Deployment failed::Exit $rc; live services were left unchanged or restored" ;;
+          esac
+          exit "$rc"
+
+      - name: Remove SSH material
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/beast-ssh"

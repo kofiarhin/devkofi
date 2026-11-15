@@ -57,9 +57,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check Bash syntax
-        run: for f in scripts/deploy.sh scripts/deploy.conf scripts/deploy-compose-label.sh; do bash -n "$f"; done
-      - name: Test deployment preflight rules
-        run: node --test scripts/tests/deploy-compose-label.test.mjs
+        run: |
+          for f in scripts/deploy.sh scripts/deploy.conf scripts/deploy-compose-label.sh scripts/beast/devkofi-deploy-run; do bash -n "$f"; done
+          sh -n scripts/beast/devkofi-deploy-ssh
+      - name: Test deployment preflight rules and release gate
+        run: npm run test:deploy
       - name: Check deployment artifacts
         run: |
           test -s Dockerfile.verify

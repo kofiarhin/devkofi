@@ -1,0 +1,31 @@
+#!/bin/sh
+# SSH forced command for the devkofi-deploy account. Template only: Phase 2 installs it
+# root-owned as /usr/local/sbin/devkofi-deploy-ssh. The GitHub key can only ask for a
+# read-only preflight or a deployment of one exact commit (optionally naming its CI run);
+# everything else is refused before sudo runs.
+set -eu
+
+run() { exec sudo -n -u ubuntu /usr/local/sbin/devkofi-deploy-run "$@"; }
+is_sha() { case "$1" in *[!0-9a-f]*) return 1 ;; esac; [ "${#1}" -eq 40 ]; }
+is_run_id() { case "$1" in ""|0*|*[!0-9]*) return 1 ;; esac; [ "${#1}" -le 20 ]; }
+
+request="${SSH_ORIGINAL_COMMAND-}"
+case "$request" in
+  check)
+    run check
+    ;;
+  "deploy "*)
+    args="${request#deploy }"
+    sha="${args%% *}"
+    if [ "$sha" = "$args" ]; then
+      is_sha "$sha" && run deploy "$sha"
+    else
+      ci_run="${args#* }"
+      is_sha "$sha" && is_run_id "$ci_run" && run deploy "$sha" "$ci_run"
+    fi
+    echo "devkofi-deploy: invalid commit SHA or CI run id" >&2
+    exit 64
+    ;;
+esac
+echo "devkofi-deploy: command not allowed (use: check | deploy <40-hex-sha> [<ci-run-id>])" >&2
+exit 64
