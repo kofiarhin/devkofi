@@ -207,6 +207,7 @@ let s="";process.stdin.on("data",x=>s+=x).on("end",()=>console.log(JSON.parse(s)
 fi
 
 if [[ "$mode" == --check ]]; then
+  commit="$(git rev-parse HEAD)"
   health_once || fail "Existing DevKofi health checks failed"
   log "Preflight passed: $(git rev-parse --short HEAD)"
   exit 0

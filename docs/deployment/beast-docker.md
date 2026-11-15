@@ -2,6 +2,8 @@
 
 ## Scope and approvals
 
+Sections from "Design" to "Rollback" record the original Docker setup and the completed manual cutover; they are history, not current operating steps. Current releases use `scripts/deploy.sh` and are described in "Releases" below.
+
 This repository change only prepares Docker support. It does not authorize a Git push, production deployment, Nginx edit, PM2 stop, or secret change. Obtain explicit approval for each consequential action in the production cutover plan.
 
 Compose runs two services: `devkofi-frontend` (static React build served by non-root nginx) and `devkofi-api` (Express).
@@ -53,3 +55,39 @@ If the Docker cutover fails, restore the approved backed-up Nginx site configura
 - A successful Docker image build is not proof of runtime connectivity.
 - A production-like smoke test needs a reachable non-production MongoDB; fake credentials are insufficient for a healthy `/health`.
 - Verify Node 20 behavior against the live application's dependencies and runtime before cutover.
+
+## Releases (`scripts/deploy.sh`)
+
+`npm run deploy:check` (read-only preflight), `npm run deploy` and `npm run deploy:rollback` run on Beast. Every release, manual or automatic, must pass `scripts/check-ci.cjs`: the commit must be the current tip of `main` and the CI workflow's push run for that exact commit must have passed every job (anonymous public GitHub API; any GitHub error or rate limit refuses the release). There is no bypass flag.
+
+A release also refuses to start when the checkout or Docker data filesystem has less than `DEPLOY_MIN_FREE_MB` (3072 MB) free, and it re-reads `origin/main` just before switching containers. Manual and automatic releases share the host lock `~/.devkofi-deploy.lock`. After success it keeps the newest `DEPLOY_KEEP_RELEASES` release tags and rollback tags per service, plus the pair named in `.deploy-state/rollback.yaml`; there is no global prune.
+
+Exit codes: `0` released, `1` failed with live services unchanged or restored, `64` bad input, `65` CI not passed, `69` GitHub unavailable, `70` rollback failed (critical), `75` skipped (stale commit or already live). Each run ends with one sanitized `[deploy] RESULT ...` line.
+
+## Automatic CI-gated releases (IDE-142, not yet active)
+
+Flow: merge to `main` → CI → `.github/workflows/deploy.yml` (`workflow_run`) checks event, branch, repository and every CI job → SSH as `devkofi-deploy` → forced command `devkofi-deploy-ssh` → `sudo -u ubuntu devkofi-deploy-run deploy <sha> <run-id>` → `deploy.sh` with `DEVKOFI_EXPECTED_SHA`.
+
+The workflow is inert until the repository variable `DEVKOFI_AUTO_DEPLOY` is `true`. It needs the `Production` environment secrets `BEAST_HOST`, `BEAST_KNOWN_HOSTS` (independently verified host key line, never only `ssh-keyscan`) and `DEVKOFI_DEPLOY_SSH_KEY` (dedicated key, not EscoWear's). Missing secrets fail the job before anything on Beast runs.
+
+Why a separate checkout: `/home/ubuntu/projects/devkofi` is writable by `beast-agent` and `ubuntu` has full sudo, so releasing from it as `ubuntu` would give `beast-agent` root. Automatic releases run only from `/home/ubuntu/deploy/devkofi` (inside the private `/home/ubuntu/deploy`, mode 700), with logs and lock in `/home/ubuntu/deploy/devkofi-automation`. Anything merged to `main` still runs as `ubuntu` on Beast, so merge rights are effectively host-admin rights; require CI on `main` and keep merges owner-approved.
+
+Templates in `scripts/beast/` are **not installed** by merging. Provisioning (Phase 2, separate approval for account, SSH, sudoers and secrets):
+
+1. Create the `devkofi-deploy` system user (no password, `/bin/sh`), install its public key in `authorized_keys` with `restrict`.
+2. Install `devkofi-deploy-ssh` and `devkofi-deploy-run` root-owned 0755 in `/usr/local/sbin`, `sudoers.devkofi-deploy` as `/etc/sudoers.d/devkofi-deploy` (0440, `visudo -cf`), `sshd-devkofi-deploy.conf` as `/etc/ssh/sshd_config.d/99-devkofi-deploy.conf` (`sshd -t`, then reload).
+3. Clone `https://github.com/kofiarhin/devkofi.git` to `/home/ubuntu/deploy/devkofi` on `main` at the live commit. Copy `.deploy-state/active.yaml` and `rollback.yaml` from the old checkout into a new mode-700 `.deploy-state`. Do not move or delete the old checkout.
+4. Run `ssh devkofi-deploy@<host> check`. The preflight accepts the old checkout's Compose labels (`DEPLOY_LEGACY_ROOT`) only when the copied `active.yaml` matches the live image IDs and both `compose.yaml` files are identical.
+5. Set the three secrets.
+
+Activation (Phase 3, separate approval): merge, verify `check`, release once through the wrapper so containers are relabelled to the new checkout, then set `DEVKOFI_AUTO_DEPLOY=true` and exercise the full chain with one small reviewed change. From then on, run manual `deploy:check`/`deploy`/`deploy:rollback` only from `/home/ubuntu/deploy/devkofi`.
+
+First release of this change: the old checkout's `deploy.sh` refuses commits that change deployment scripts. Bootstrap exactly as for PR #72: `git merge --ff-only origin/main` in the release checkout, `npm run deploy:check`, then `npm run deploy`.
+
+### Recovery
+
+- Workflow red, exit 65/69/1: live services were not changed or were restored. Read the full log in `/home/ubuntu/deploy/devkofi-automation/logs/`, fix through a reviewed PR; never deploy an older run by hand.
+- Exit 70: production may be degraded. Run `npm run deploy:rollback` from the release checkout, check `docker ps` and `https://devkofi.com/health`.
+- GitHub or the deploy key unavailable: an authorized operator can still run `npm run deploy:check` and `npm run deploy:rollback` on Beast. `npm run deploy` still requires CI to have passed.
+- Low disk: free space only with an approved, DevKofi-scoped cleanup; never delete the live or rollback images.
+- Rotating the deploy key: generate a new key, replace the `authorized_keys` line and `DEVKOFI_DEPLOY_SSH_KEY` together, then run `check`. No CI token exists to renew.
