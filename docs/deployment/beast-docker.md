@@ -60,9 +60,9 @@ If the Docker cutover fails, restore the approved backed-up Nginx site configura
 
 `npm run deploy:check` (read-only preflight), `npm run deploy` and `npm run deploy:rollback` run on Beast. Every release, manual or automatic, must pass `scripts/check-ci.cjs`: the commit must be the current tip of `main` and the CI workflow's push run for that exact commit must have passed every job (anonymous public GitHub API; any GitHub error or rate limit refuses the release). There is no bypass flag.
 
-A release also refuses to start when the checkout or Docker data filesystem has less than `DEPLOY_MIN_FREE_MB` (3072 MB) free, and it re-reads `origin/main` just before switching containers. Manual and automatic releases share the host lock `~/.devkofi-deploy.lock`. After success it keeps the newest `DEPLOY_KEEP_RELEASES` release tags and rollback tags per service, plus the pair named in `.deploy-state/rollback.yaml`; there is no global prune.
+A release also refuses to start when the checkout or Docker data filesystem has less than `DEPLOY_MIN_FREE_MB` (3072 MB) free, and it re-reads `origin/main` just before switching containers. Manual and automatic releases share the host lock `/home/ubuntu/.devkofi-deploy.lock`. After success it keeps the newest `DEPLOY_KEEP_RELEASES` release tags and rollback tags per service, plus the pair named in `.deploy-state/rollback.yaml`; there is no global prune.
 
-Exit codes: `0` released, `1` failed with live services unchanged or restored, `64` bad input, `65` CI not passed, `69` GitHub unavailable, `70` rollback failed (critical), `75` skipped (stale commit or already live). Each run ends with one sanitized `[deploy] RESULT ...` line.
+Exit codes: `0` released, `1` failed with live services unchanged or restored, `64` bad input, `65` CI not passed, `69` GitHub unavailable, `70` rollback failed (critical), `73` another release holds the lock, `75` skipped (stale commit or already live), `76` the commit changes deployment tooling and must be released by hand (wrapper only). Each run ends with one sanitized `[deploy] RESULT ...` line.
 
 ## Automatic CI-gated releases (IDE-142, not yet active)
 
@@ -82,10 +82,12 @@ Templates in `scripts/beast/` are **not installed** by merging. Provisioning (Ph
 
 Activation (Phase 3, separate approval): merge, verify `check`, release once through the wrapper so containers are relabelled to the new checkout, then set `DEVKOFI_AUTO_DEPLOY=true` and exercise the full chain with one small reviewed change. From then on, run manual `deploy:check`/`deploy`/`deploy:rollback` only from `/home/ubuntu/deploy/devkofi`.
 
-First release of this change: the old checkout's `deploy.sh` refuses commits that change deployment scripts. Bootstrap exactly as for PR #72: `git merge --ff-only origin/main` in the release checkout, `npm run deploy:check`, then `npm run deploy`.
+Commits that change `compose.yaml`, `scripts/deploy.sh`, `scripts/deploy.conf`, `scripts/deploy-compose-label.sh` or `scripts/check-ci.cjs` are never released unattended: the wrapper exits 76 and the job goes red. Release them by hand, exactly as for PR #72: `git merge --ff-only origin/main` in the release checkout, `npm run deploy:check`, then `npm run deploy` (the CI gate still applies). This includes the first release of this change.
 
 ### Recovery
 
+- Workflow red, exit 73: another release was running; re-run the job after it ends.
+- Workflow red, exit 76: release by hand as above.
 - Workflow red, exit 65/69/1: live services were not changed or were restored. Read the full log in `/home/ubuntu/deploy/devkofi-automation/logs/`, fix through a reviewed PR; never deploy an older run by hand.
 - Exit 70: production may be degraded. Run `npm run deploy:rollback` from the release checkout, check `docker ps` and `https://devkofi.com/health`.
 - GitHub or the deploy key unavailable: an authorized operator can still run `npm run deploy:check` and `npm run deploy:rollback` on Beast. `npm run deploy` still requires CI to have passed.

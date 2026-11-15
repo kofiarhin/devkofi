@@ -57,9 +57,15 @@ esac
 private_base || refuse 66 "$BASE must be owned by $RUN_USER, mode 700, without ACLs or writable ancestors"
 mkdir -p -m 700 "$STATE/logs"
 [[ ! -L "$STATE" && ! -L "$STATE/logs" ]] || refuse 66 "unsafe state directory"
-# Held by the detached deployment too, so a second request is refused until it ends.
+# Both locks are inherited by the detached deployment, so they stay held until it ends.
+# Lock contention is a failure (73), not a skip: the newer commit still needs releasing.
 exec 8>"$STATE/run.lock"
-flock -n 8 || refuse 75 "another DevKofi deployment request is running"
+flock -n 8 || refuse 73 "another DevKofi deployment request is running"
+# Shared with deploy.sh, so manual releases and this wrapper never touch the checkout at once.
+HOST_LOCK=/home/ubuntu/.devkofi-deploy.lock
+[[ ! -L "$HOST_LOCK" ]] || refuse 66 "unsafe host lock"
+exec 7>>"$HOST_LOCK"
+flock -n 7 || refuse 73 "a DevKofi release is already running"
 
 # Defence in depth: ignore system/global Git config, replace refs, hooks and fsmonitor.
 export GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null GIT_NO_REPLACE_OBJECTS=1 GIT_TERMINAL_PROMPT=0 \
@@ -82,8 +88,11 @@ if [[ "$mode" == deploy ]]; then
   gate=(--sha "$sha")
   [[ -z "$ci_run" ]] || gate+=(--run-id "$ci_run")
   node scripts/check-ci.cjs "${gate[@]}" || exit $?
-  # deploy.sh then runs the reviewed script of the commit it releases, so changes to the
-  # deployment scripts themselves can ship through the same gate.
+  # Changes to the release tooling itself are never applied unattended (spec section 6):
+  # an operator releases them once by hand, after which automation resumes.
+  if [[ -n "$(git diff --name-only HEAD "$sha" -- compose.yaml scripts/deploy.sh scripts/deploy.conf scripts/deploy-compose-label.sh scripts/check-ci.cjs)" ]]; then
+    refuse 76 "${sha:0:12} changes deployment tooling; release it manually (docs/deployment/beast-docker.md)"
+  fi
   git merge --quiet --ff-only "$sha" || refuse 66 "could not fast-forward to ${sha:0:12}"
   export DEVKOFI_EXPECTED_SHA="$sha"
   [[ -z "$ci_run" ]] || export DEVKOFI_CI_RUN_ID="$ci_run"

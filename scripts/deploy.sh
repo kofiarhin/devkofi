@@ -7,8 +7,9 @@ source "$ROOT/scripts/deploy-compose-label.sh"
 
 log() { printf '[deploy] %s\n' "$*"; }
 # Exit codes: 1 failed with live services unchanged or restored, 64 usage, 65 CI gate
-# refused, 69 GitHub unavailable, 70 rollback failed (critical), 75 skipped (stale or
-# already deployed). deploy.yml and the Beast wrapper rely on these values.
+# refused, 69 GitHub unavailable, 70 rollback failed (critical), 73 another release holds
+# the lock, 75 skipped (stale or already deployed), 76 deploy tooling changed (manual
+# release required). deploy.yml and the Beast wrapper rely on these values.
 fail() { printf '[deploy] ERROR: %s\n' "$*" >&2; exit 1; }
 fail_with() { local code="$1"; shift; printf '[deploy] ERROR: %s\n' "$*" >&2; exit "$code"; }
 skip() { printf '[deploy] SKIPPED: %s\n' "$*"; skipped=true; exit 75; }
@@ -62,10 +63,12 @@ state="$ROOT/.deploy-state"
 mkdir -p -m 700 "$state"
 chmod 700 "$state"
 exec 9>"$state/deploy.lock"
-flock -n 9 || fail "Deployment already running"
+flock -n 9 || fail_with 73 "Deployment already running"
 [[ ! -L "$DEPLOY_HOST_LOCK" ]] || fail "Unsafe host lock symlink"
-exec 7>>"$DEPLOY_HOST_LOCK"
-flock -n 7 || fail "A DevKofi deployment is already running from another checkout"
+# The Beast wrapper takes this lock before touching Git and passes it down as fd 7;
+# re-locking that same open file succeeds, while any other holder blocks us.
+[[ "$(readlink "/proc/$$/fd/7" 2>/dev/null)" == "$DEPLOY_HOST_LOCK" ]] || exec 7>>"$DEPLOY_HOST_LOCK"
+flock -n 7 || fail_with 73 "A DevKofi deployment is already running from another checkout"
 
 free_mb() {
   local df_cmd=(df -Pk "$1")
@@ -163,7 +166,7 @@ trap "exit 143" TERM
 # Manual recovery must work even when one of the live containers is stopped.
 if [[ "$mode" == --rollback ]]; then
   [[ -s "$rollback_file" && -f "$state/active.yaml" ]] || fail "No tracked rollback release saved"
-  restore_previous || fail "Rollback failed; inspect the live services"
+  restore_previous || fail_with 70 "Rollback failed; inspect the live services"
   exit 0
 fi
 

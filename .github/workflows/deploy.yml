@@ -85,6 +85,8 @@ jobs:
             0) echo "::notice title=Deployed::DevKofi ${RELEASE_SHA:0:12} is live" ;;
             75) echo "::notice title=Release skipped::${RELEASE_SHA:0:12} was stale or already live" ; rc=0 ;;
             70) echo "::error title=Rollback failed::Production needs manual recovery (see docs/deployment/beast-docker.md)" ;;
+            73) echo "::error title=Release blocked::Another DevKofi release holds the lock; re-run this job when it ends" ;;
+            76) echo "::error title=Manual release required::This commit changes deployment tooling; release it by hand on Beast" ;;
             *) echo "::error title=Deployment failed::Exit $rc; live services were left unchanged or restored" ;;
           esac
           exit "$rc"
