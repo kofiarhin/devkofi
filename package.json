@@ -14,7 +14,7 @@
     "deploy": "bash scripts/deploy.sh",
     "deploy:check": "bash scripts/deploy.sh --check",
     "deploy:rollback": "bash scripts/deploy.sh --rollback",
-    "test:deploy": "node --test scripts/tests/deploy-compose-label.test.mjs"
+    "test:deploy": "node --test scripts/tests/deploy-compose-label.test.mjs scripts/tests/check-ci.test.mjs scripts/tests/deploy-ssh-command.test.mjs"
   },
   "jest": {
     "testMatch": [

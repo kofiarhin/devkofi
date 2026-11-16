@@ -1,0 +1,5 @@
+# Template only: Phase 2 installs it as /etc/sudoers.d/devkofi-deploy (root:root 0440,
+# checked with visudo -cf). devkofi-deploy may run exactly one root-owned wrapper, as
+# ubuntu, with exactly "check" or "deploy <40-hex-sha> [<ci-run-id>]". No shell, no
+# Docker, no other sudo.
+devkofi-deploy ALL=(ubuntu) NOPASSWD: /usr/local/sbin/devkofi-deploy-run check, /usr/local/sbin/devkofi-deploy-run ^deploy [0-9a-f]{40}$, /usr/local/sbin/devkofi-deploy-run ^deploy [0-9a-f]{40} [1-9][0-9]{0,19}$

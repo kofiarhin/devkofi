@@ -7,14 +7,15 @@ const lib = fileURLToPath(new URL("../deploy-compose-label.sh", import.meta.url)
 const root = "/home/ubuntu/projects/devkofi";
 const state = `${root}/.deploy-state`;
 
-const classify = (label) => {
+const classifyIn = (checkout, label, legacy = "") => {
   const result = spawnSync(
     "bash",
-    ["-c", 'source "$1"; classify_compose_label "$2" "$3" "$4"', "bash", lib, root, state, label],
+    ["-c", 'source "$1"; classify_compose_label "$2" "$3" "$4" "$5"', "bash", lib, checkout, `${checkout}/.deploy-state`, label, legacy],
     { encoding: "utf8" },
   );
   return { status: result.status, kind: result.stdout.trim() };
 };
+const classify = (label) => classifyIn(root, label);
 
 test("accepts the base compose.yaml", () => {
   assert.deepEqual(classify(`${root}/compose.yaml`), { status: 0, kind: "base" });
@@ -54,4 +55,38 @@ test("matches paths literally, not as glob patterns", () => {
     { encoding: "utf8" },
   );
   assert.equal(result.stdout.trim(), "external");
+});
+
+// Migration from the shared projects checkout to the private deploy checkout.
+const deployRoot = "/home/ubuntu/deploy/devkofi";
+
+test("works for a checkout outside /home/ubuntu/projects", () => {
+  assert.deepEqual(classifyIn(deployRoot, `${deployRoot}/compose.yaml,${deployRoot}/.deploy-state/candidate.yaml`), { status: 0, kind: "overlay" });
+});
+
+test("accepts the previous checkout's labels only when it is configured as legacy", () => {
+  for (const label of [
+    `${root}/compose.yaml`,
+    `${root}/compose.yaml,${state}/candidate.yaml`,
+    `${root}/compose.yaml,${state}/rollback.yaml`,
+  ]) {
+    assert.deepEqual(classifyIn(deployRoot, label, root), { status: 0, kind: "legacy" }, label);
+    assert.notEqual(classifyIn(deployRoot, label).kind, "legacy", `unconfigured legacy accepted ${label}`);
+  }
+});
+
+test("rejects spoofed legacy labels", () => {
+  for (const label of [
+    `${root}/compose.yaml,${state}/active.yaml`,
+    `${root}/compose.yaml,/tmp/candidate.yaml`,
+    `${root}/compose.yaml,${deployRoot}/.deploy-state/candidate.yaml`,
+    `${root}/compose.yaml,${state}/candidate.yaml,${state}/rollback.yaml`,
+  ]) {
+    assert.equal(classifyIn(deployRoot, label, root).status, 1, label);
+  }
+});
+
+test("ignores a relative or self-referencing legacy root", () => {
+  assert.equal(classifyIn(deployRoot, "projects/devkofi/compose.yaml,projects/devkofi/.deploy-state/candidate.yaml", "projects/devkofi").status, 1);
+  assert.deepEqual(classifyIn(root, `${root}/compose.yaml`, root), { status: 0, kind: "base" });
 });
