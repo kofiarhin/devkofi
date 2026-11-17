@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Clock, Globe, VideoCamera } from "@phosphor-icons/react";
+import { Clock, Globe, Tag, VideoCamera } from "@phosphor-icons/react";
 import BookingCalendar from "../../components/BookingCalendar/BookingCalendar";
 import BookingForm, { BookingConfirmation } from "../../components/BookingForm/BookingForm";
 import useCreateBooking from "../../hooks/mutations/useCreateBooking";
@@ -13,7 +13,15 @@ import {
   getWeekMonday,
   isPreviousWeekDisabled,
 } from "./bookCallDateUtils";
+import { CalendlyLink, Checklist } from "../../components/Site/Site";
+import { BOOK_CALL_LABEL } from "../../constants/booking";
 import "./book-call.styles.scss";
+
+const callTopics = [
+  "AI integration for your business: your system, the process and a sensible first step",
+  "1-on-1 mentorship: your goals, current level and which track fits",
+  "Whether we're a good fit, with no obligation",
+];
 
 const panelVariants = {
   enter: { opacity: 0, x: 20 },
@@ -25,12 +33,16 @@ const EventInfoPanel = () => (
   <div className="event-info-panel">
     <div className="event-info-panel__avatar">K</div>
     <p className="event-info-panel__host">Kofi Arhin · DevKofi</p>
-    <h1 className="event-info-panel__title">AI Workflow Call</h1>
+    <h1 className="event-info-panel__title">{BOOK_CALL_LABEL}</h1>
     <p className="event-info-panel__subtitle">
-      30 minutes to scope an audit, pilot, or production path for one workflow.
+      A short call about AI integration for your business or 1-on-1 mentorship.
     </p>
     <div className="event-info-panel__divider" />
     <ul className="event-info-panel__meta">
+      <li>
+        <Tag size={15} weight="duotone" />
+        Free
+      </li>
       <li>
         <Clock size={15} weight="duotone" />
         30 min
@@ -78,7 +90,14 @@ const BookCall = () => {
   };
 
   return (
-    <main className="book-call-page">
+    <main className="site-page book-call-page">
+      <div className="book-call-page__glow" aria-hidden="true" />
+      <div className="book-call-page__intro">
+        <p className="site-eyebrow">Free intro call</p>
+        <p className="book-call-page__lead">
+          Pick a time that suits you. We'll talk about what you want to build or learn, and agree a sensible next step.
+        </p>
+      </div>
       <motion.div
         className="book-call-page__card"
         initial={{ opacity: 0, y: 22 }}
@@ -151,6 +170,13 @@ const BookCall = () => {
           </AnimatePresence>
         </div>
       </motion.div>
+      <div className="book-call-page__after">
+        <CalendlyLink />
+        <div className="book-call-page__topics">
+          <h2>What we'll cover</h2>
+          <Checklist items={callTopics} />
+        </div>
+      </div>
     </main>
   );
 };

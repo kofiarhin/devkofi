@@ -45,8 +45,8 @@
       width: 2.1rem;
 
       &:hover:not(:disabled) {
-        border-color: rgba(134, 239, 172, 0.4);
-        color: #86efac;
+        border-color: rgba(148, 255, 43, 0.4);
+        color: #94ff2b;
       }
 
       &:disabled {
@@ -118,13 +118,13 @@
     width: 100%;
 
     &:hover {
-      border-color: #86efac;
-      color: #86efac;
+      border-color: #94ff2b;
+      color: #94ff2b;
     }
 
     &--selected {
-      background: #86efac;
-      border-color: #86efac;
+      background: #94ff2b;
+      border-color: #94ff2b;
       color: #052e16;
     }
   }

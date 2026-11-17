@@ -67,7 +67,10 @@ describe("BookCall", () => {
   it("renders the page", () => {
     render(<BookCall />);
 
-    expect(screen.getByRole("heading", { name: "AI Workflow Call" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "Book a free intro call" })).toBeInTheDocument();
+    expect(screen.getByText("Free")).toBeInTheDocument();
+    // No Calendly link while CALENDLY_INTRO_URL is null; the paid coaching event must never be linked.
+    expect(screen.queryByRole("link", { name: /calendly/i })).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Select a Date & Time" })).toBeInTheDocument();
     expect(screen.getByText("GMT timezone")).toBeInTheDocument();
   });
