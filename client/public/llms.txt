@@ -1,19 +1,21 @@
 # DevKofi
-> DevKofi is Kofi Arhin's founder-led AI engineering studio for production AI systems, agentic workflows, AI-native products, full-stack software, context infrastructure, and verified engineering delivery.
+> DevKofi is Kofi Arhin's site. Kofi is an AI engineer with real MERN stack experience. He integrates AI into existing systems for businesses, and offers 1-on-1 AI engineering and MERN stack mentorship for developers.
 
 ## Main sections
-- [Home](https://devkofi.com/): What DevKofi is, the AI engineering focus, selected work, and the systems behind how Kofi builds.
-- [Services](https://devkofi.com/services): AI systems engineering, AI product engineering, agentic workflows, integrations, context systems, evaluation, verification, and ongoing engineering support.
-- [Work](https://devkofi.com/work): Selected AI agents, context infrastructure, full-stack systems, products, repositories, demos, and engineering case-study evidence.
-- [Engineering Systems](https://devkofi.com/engineering-systems): Reusable agent infrastructure, context systems, workflow controls, verification patterns, and engineering delivery systems.
-- [About](https://devkofi.com/about): Kofi Arhin's AI and full-stack engineering background, engineering philosophy, process, and founder role at DevKofi.
-- [Contact](https://devkofi.com/contact): Project enquiry route for AI systems, agentic workflows, AI-native products, full-stack software, integrations, automation, dashboards, and product engineering.
-- [Book a Call](https://devkofi.com/book-a-call): Discovery-call scheduling with Kofi Arhin for relevant engineering projects.
+- [Home](https://devkofi.com/): Positioning, services, case studies, how working together starts, and FAQs.
+- [AI Integration](https://devkofi.com/ai-integration): AI integration into existing systems for businesses: assistants grounded in your data, governed agents, workflow automation with human review, and AI features inside existing web apps.
+- [Mentorship](https://devkofi.com/mentorship): 1-on-1 AI engineering mentorship and MERN stack mentorship for developers.
+- [Work](https://devkofi.com/work): Case studies (Hibachi, Brain, EscoWear), the engineering systems behind how Kofi builds, and other projects.
+- [About](https://devkofi.com/about): Kofi Arhin's AI and full-stack engineering background, engineering philosophy and process.
+- [Book a Call](https://devkofi.com/book-a-call): Free intro call scheduling with Kofi Arhin.
+- [Contact](https://devkofi.com/contact): Written enquiry form for AI integration and mentorship.
+- [Blog](https://devkofi.com/blog): Articles on AI engineering, architecture, agents and software delivery.
 
 ## Key facts
-- Founder: Kofi Arhin
-- Studio: DevKofi
-- Engineering focus: AI engineering, agentic workflows, AI agents, full-stack software engineering, JavaScript/TypeScript, React, Node.js, Express, MongoDB, APIs, testing, verification, context systems, and production delivery
+- Name: Kofi Arhin
+- Site: DevKofi
+- Services: AI integration into existing systems; 1-on-1 AI engineering mentorship; 1-on-1 MERN stack mentorship
+- Engineering focus: AI engineering, agentic workflows, AI agents, retrieval, full-stack software engineering, JavaScript/TypeScript, React, Node.js, Express, MongoDB, APIs, testing, verification and production delivery
 - GitHub: https://github.com/kofiarhin
 - YouTube: https://www.youtube.com/@devkofi
 - Canonical website: https://devkofi.com/
