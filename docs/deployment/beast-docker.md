@@ -64,11 +64,11 @@ A release also refuses to start when the checkout or Docker data filesystem has 
 
 Exit codes: `0` released, `1` failed with live services unchanged or restored, `64` bad input, `65` CI not passed, `69` GitHub unavailable, `70` rollback failed (critical), `73` another release holds the lock, `75` skipped (stale commit or already live), `76` the commit changes deployment tooling and must be released by hand (wrapper only). Each run ends with one sanitized `[deploy] RESULT ...` line.
 
-## Automatic CI-gated releases (IDE-142, not yet active)
+## Automatic CI-gated releases (IDE-142, active since 2026-11-17)
 
 Flow: merge to `main` → CI → `.github/workflows/deploy.yml` (`workflow_run`) checks event, branch, repository and every CI job → SSH as `devkofi-deploy` → forced command `devkofi-deploy-ssh` → `sudo -u ubuntu devkofi-deploy-run deploy <sha> <run-id>` → `deploy.sh` with `DEVKOFI_EXPECTED_SHA`.
 
-The workflow is inert until the repository variable `DEVKOFI_AUTO_DEPLOY` is `true`. It needs the `Production` environment secrets `BEAST_HOST`, `BEAST_KNOWN_HOSTS` (independently verified host key line, never only `ssh-keyscan`) and `DEVKOFI_DEPLOY_SSH_KEY` (dedicated key, not EscoWear's). Missing secrets fail the job before anything on Beast runs.
+Status: active. Phase 2 (account, SSH, sudoers, release checkout, secrets) and Phase 3 (wrapper release of d8b4083, rollback to the 9514a4e images and forward again) were completed on 2026-11-17, and `DEVKOFI_AUTO_DEPLOY` is now `true`. Setting it to anything else switches automatic releases off again. It needs the `Production` environment secrets `BEAST_HOST`, `BEAST_KNOWN_HOSTS` (independently verified host key line, never only `ssh-keyscan`) and `DEVKOFI_DEPLOY_SSH_KEY` (dedicated key, not EscoWear's). Missing secrets fail the job before anything on Beast runs.
 
 Why a separate checkout: `/home/ubuntu/projects/devkofi` is writable by `beast-agent` and `ubuntu` has full sudo, so releasing from it as `ubuntu` would give `beast-agent` root. Automatic releases run only from `/home/ubuntu/deploy/devkofi` (inside the private `/home/ubuntu/deploy`, mode 700), with logs and lock in `/home/ubuntu/deploy/devkofi-automation`. Anything merged to `main` still runs as `ubuntu` on Beast, so merge rights are effectively host-admin rights; require CI on `main` and keep merges owner-approved.
 
