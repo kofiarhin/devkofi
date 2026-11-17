@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { List } from "@phosphor-icons/react";
 import { toggleSideNav } from "../../redux/navigation/navigationSlice";
 import useLogoutAdmin from "../../hooks/mutations/useLogoutAdmin";
-import { adminNavItems, publicActionItem, publicNavItems } from "../../constants/navigation";
+import { adminNavItems, primaryNavItems } from "../../constants/navigation";
 
 const getNavLinkClass = ({ isActive }) => (isActive ? "nav-item active" : "nav-item");
 
@@ -24,7 +24,7 @@ const Header = () => {
   return (
     <header className="main-header">
       <div className="container header-content">
-        <Link to="/" className="logo-container" aria-label="DevKofi home">
+        <Link to="/" className="logo-container" aria-label="DevKofi">
           <span className="logo">Dev<span>Kofi</span></span>
         </Link>
 
@@ -40,8 +40,13 @@ const Header = () => {
         </button>
 
         <nav className="nav-links" aria-label="Primary navigation">
-          {publicNavItems.map((item) => (
-            <NavLink key={item.to} to={item.to} end={item.to === "/"} className={getNavLinkClass}>
+          {primaryNavItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === "/"}
+              className={item.cta ? "btn-cta" : getNavLinkClass}
+            >
               {item.label}
             </NavLink>
           ))}
@@ -52,7 +57,6 @@ const Header = () => {
             </NavLink>
           ))}
 
-          <NavLink to={publicActionItem.to} className="btn-cta">{publicActionItem.label}</NavLink>
           {admin && (
             <button type="button" className="btn-logout" onClick={() => logout()} disabled={isLoggingOut}>
               {isLoggingOut ? "Logging out..." : "Logout"}

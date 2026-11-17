@@ -34,7 +34,7 @@ describe('Contact page empty state', () => {
     renderContact();
 
     expect(
-      screen.getByText('Start with the business problem and the workflow you want to improve.')
+      screen.getByText('Start with what you want to build, integrate or learn.')
     ).toBeInTheDocument();
   });
 
@@ -45,7 +45,7 @@ describe('Contact page empty state', () => {
     await user.type(screen.getByLabelText(/name/i), 'Ava Morgan');
 
     expect(
-      screen.queryByText('Start with the business problem and the workflow you want to improve.')
+      screen.queryByText('Start with what you want to build, integrate or learn.')
     ).not.toBeInTheDocument();
   });
 
@@ -53,10 +53,10 @@ describe('Contact page empty state', () => {
     const user = userEvent.setup();
     renderContact();
 
-    await user.click(screen.getByRole('button', { name: /prospecting workflow/i }));
+    await user.click(screen.getByRole('button', { name: /ai integration/i }));
 
     expect(
-      screen.queryByText('Start with the business problem and the workflow you want to improve.')
+      screen.queryByText('Start with what you want to build, integrate or learn.')
     ).not.toBeInTheDocument();
   });
 });

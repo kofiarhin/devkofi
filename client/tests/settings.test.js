@@ -23,7 +23,7 @@ describe("retired student settings", () => {
       const nav = within(screen.getByRole("navigation", { name }));
       expect(nav.queryByRole("link", { name: /settings/i })).not.toBeInTheDocument();
       expect(nav.getByRole("link", { name: "Dashboard" })).toHaveAttribute("href", "/admin/dashboard");
-      expect(nav.getByRole("link", { name: "Services" })).toHaveAttribute("href", "/services");
+      expect(nav.getByRole("link", { name: "AI Integration" })).toHaveAttribute("href", "/ai-integration");
       expect(nav.getByRole("button", { name: "Logout" })).toBeInTheDocument();
     }
   });

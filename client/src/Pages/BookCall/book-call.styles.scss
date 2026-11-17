@@ -2,20 +2,66 @@
   align-items: center;
   background: #09090b;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  isolation: isolate;
   min-height: 100dvh;
-  padding: 5.5rem 1.25rem 3rem;
+  padding: 4rem 1.25rem 4rem;
+  position: relative;
+
+  &__glow {
+    background: radial-gradient(closest-side, rgba(148, 255, 43, 0.16), transparent);
+    height: 520px;
+    left: 50%;
+    pointer-events: none;
+    position: absolute;
+    top: -120px;
+    transform: translateX(-50%);
+    width: min(1000px, 120vw);
+    z-index: -1;
+  }
+
+  &__intro {
+    margin-bottom: 2rem;
+    max-width: 640px;
+    text-align: center;
+
+    .site-eyebrow { justify-content: center; }
+  }
+
+  &__lead {
+    color: var(--color-text-secondary);
+    font-size: clamp(1.02rem, 1.6vw, 1.2rem);
+    margin: 0;
+  }
 
   &__card {
     background: #111318;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(148, 255, 43, 0.22);
     border-radius: 1.5rem;
-    box-shadow: 0 28px 72px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 40px 120px -40px rgba(148, 255, 43, 0.3), 0 28px 72px rgba(0, 0, 0, 0.6);
     display: flex;
     max-width: 1060px;
     min-height: 560px;
     overflow: hidden;
     width: 100%;
+  }
+
+  &__after {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: center;
+    margin-top: 2.5rem;
+    max-width: 720px;
+    width: 100%;
+  }
+
+  &__topics {
+    width: 100%;
+
+    h2 {
+      font-size: 1.25rem;
+      margin: 0 0 1rem;
+    }
   }
 
   &__content {
@@ -39,10 +85,10 @@
 
   &__avatar {
     align-items: center;
-    background: rgba(134, 239, 172, 0.1);
-    border: 2px solid rgba(134, 239, 172, 0.22);
+    background: rgba(148, 255, 43, 0.1);
+    border: 2px solid rgba(148, 255, 43, 0.3);
     border-radius: 50%;
-    color: #86efac;
+    color: var(--color-brand-accent);
     display: flex;
     font-size: 1.3rem;
     font-weight: 800;
@@ -87,7 +133,7 @@
       gap: 0.6rem;
 
       svg {
-        color: #86efac;
+        color: var(--color-brand-accent);
         flex-shrink: 0;
       }
     }
@@ -96,17 +142,20 @@
 
 @media (max-width: 860px) {
   .book-call-page {
-    align-items: flex-start;
-    padding: 4.5rem 0 0;
+    padding: 2.5rem 0 3rem;
+
+    &__intro,
+    &__after {
+      padding: 0 1.25rem;
+    }
 
     &__card {
       border-left: 0;
       border-radius: 0;
       border-right: 0;
-      border-top: 0;
       box-shadow: none;
       flex-direction: column;
-      min-height: 100dvh;
+      min-height: 0;
     }
   }
 

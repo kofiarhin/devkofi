@@ -16,6 +16,7 @@ import {
   YoutubeLogo,
 } from "@phosphor-icons/react";
 import useContactMutation from "../../hooks/useContactMutation";
+import { BOOK_CALL_LABEL, BOOK_CALL_PATH } from "../../constants/booking";
 import "./contact.styles.scss";
 
 const INITIAL_FORM = { name: "", email: "", subject: "", message: "" };
@@ -32,12 +33,23 @@ const item = {
   visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 20 } },
 };
 
-const workflowPrompts = [
-  "Prospecting workflow",
-  "Support triage",
-  "Internal ops automation",
-  "AI pilot rescue",
-  "Production AI system",
+const enquiryPrompts = [
+  {
+    label: "AI integration",
+    message: "We want to add AI to an existing system. What we run today: . What we want AI to help with: . Desired outcome: . Timeline: .",
+  },
+  {
+    label: "AI prototype to production",
+    message: "We have an AI prototype that needs to become dependable software. What it does today: . What is unreliable: . Systems involved: . Timeline: .",
+  },
+  {
+    label: "AI engineering mentorship",
+    message: "I'd like 1-on-1 AI engineering mentorship. My current level: . What I want to build or learn: . Availability: .",
+  },
+  {
+    label: "MERN stack mentorship",
+    message: "I'd like 1-on-1 MERN stack mentorship. My current level: . What I want to build: . Availability: .",
+  },
 ];
 
 const validateForm = (form) => {
@@ -50,9 +62,9 @@ const validateForm = (form) => {
   } else if (!emailPattern.test(form.email.trim())) {
     errors.email = "Use a valid email address.";
   }
-  if (!form.subject.trim()) errors.subject = "Add the workflow or engagement type.";
+  if (!form.subject.trim()) errors.subject = "Add a short subject.";
   if (!form.message.trim()) {
-    errors.message = "Describe the business problem and desired outcome.";
+    errors.message = "Tell me what you need and the outcome you want.";
   } else if (form.message.trim().length < 20) {
     errors.message = "Add a little more detail so the first reply can be useful.";
   }
@@ -66,7 +78,7 @@ const Contact = () => {
   const { mutate, isPending, isSuccess, isError, error, reset } = useContactMutation();
 
   const mailtoHref = useMemo(
-    () => `mailto:${contactEmail}?subject=AI%20workflow%20enquiry`,
+    () => `mailto:${contactEmail}?subject=DevKofi%20enquiry`,
     [],
   );
   const isFormEmpty = Object.values(form).every((value) => !value.trim());
@@ -85,10 +97,8 @@ const Contact = () => {
   const handlePromptClick = (prompt) => {
     setForm((prev) => ({
       ...prev,
-      subject: prev.subject || prompt,
-      message:
-        prev.message ||
-        `We have a ${prompt.toLowerCase()} that is still manual or unreliable. Current process: . Desired outcome: . Systems involved: . Timeline: .`,
+      subject: prev.subject || prompt.label,
+      message: prev.message || prompt.message,
     }));
     setFieldErrors((prev) => {
       const next = { ...prev };
@@ -135,22 +145,22 @@ const Contact = () => {
         >
           <motion.div className="contact-eyebrow" variants={item}>
             <span className="eyebrow-dot" aria-hidden="true" />
-            Open for selected AI workflow builds
+            AI integration and 1-on-1 mentorship
           </motion.div>
 
           <motion.h1 id="contact-title" className="contact-heading" variants={item}>
-            Tell me about the workflow.
+            Tell me what you're working on.
           </motion.h1>
 
           <motion.p className="contact-desc" variants={item}>
-            Share the business problem, current process, systems involved, and the outcome you need.
-            I will reply with the clearest next step—usually an audit, pilot, or production path—within 24 hours.
+            Prefer writing to a call? Share the system you run or what you want to learn, and the outcome you need.
+            I will reply with the clearest next step within 24 hours.
           </motion.p>
 
           <motion.div className="contact-actions" variants={item} aria-label="Fast contact options">
-            <Link to="/book-a-call" className="contact-action contact-action--primary">
+            <Link to={BOOK_CALL_PATH} className="contact-action contact-action--primary">
               <Clock size={18} weight="duotone" />
-              Book an AI workflow call
+              {BOOK_CALL_LABEL}
             </Link>
             <a href={mailtoHref} className="contact-action contact-action--status">
               <Envelope size={18} weight="duotone" />
@@ -161,7 +171,7 @@ const Contact = () => {
           <motion.div className="contact-signal" variants={item}>
             <PaperPlaneTilt size={18} weight="duotone" />
             <span>
-              Best fit: founder-led teams turning one expensive manual workflow into a human-controlled AI system.
+              Businesses adding AI to existing systems, and developers who want 1-on-1 AI engineering or MERN stack mentorship.
             </span>
           </motion.div>
         </motion.section>
@@ -188,7 +198,7 @@ const Contact = () => {
             <form className="contact-form" onSubmit={handleSubmit} noValidate>
               <div className="contact-form__header">
                 <span>Start here</span>
-                <strong>Workflow enquiry</strong>
+                <strong>Send a message</strong>
               </div>
 
               {isFormEmpty && (
@@ -196,7 +206,7 @@ const Contact = () => {
                   <span className="contact-empty-state__icon" aria-hidden="true">
                     <ChatCenteredText size={20} weight="duotone" />
                   </span>
-                  <p>Start with the business problem and the workflow you want to improve.</p>
+                  <p>Start with what you want to build, integrate or learn.</p>
                 </div>
               )}
 
@@ -210,16 +220,16 @@ const Contact = () => {
                 </div>
               )}
 
-              <div className="contact-prompt-grid" aria-label="Common workflow types">
-                {workflowPrompts.map((prompt) => (
+              <div className="contact-prompt-grid" aria-label="Common enquiry types">
+                {enquiryPrompts.map((prompt) => (
                   <button
                     className="contact-prompt"
-                    key={prompt}
+                    key={prompt.label}
                     type="button"
                     onClick={() => handlePromptClick(prompt)}
                   >
                     <Sparkle size={13} weight="duotone" />
-                    {prompt}
+                    {prompt.label}
                   </button>
                 ))}
               </div>
@@ -261,12 +271,12 @@ const Contact = () => {
               </div>
 
               <div className="contact-field">
-                <label htmlFor="subject">Workflow or engagement</label>
+                <label htmlFor="subject">Subject</label>
                 <input
                   id="subject"
                   name="subject"
                   type="text"
-                  placeholder="Prospecting workflow, pilot sprint, production system..."
+                  placeholder="AI integration, AI mentorship, MERN mentorship..."
                   value={form.subject}
                   onChange={handleChange}
                   required
@@ -277,11 +287,11 @@ const Contact = () => {
               </div>
 
               <div className="contact-field">
-                <label htmlFor="message">Business problem and desired outcome</label>
+                <label htmlFor="message">What you need and the outcome you want</label>
                 <textarea
                   id="message"
                   name="message"
-                  placeholder="What is manual today, what systems are involved, what outcome would make this successful, and any timeline constraints."
+                  placeholder="For a business: what you run today and what you want AI to help with. For mentorship: your current level and what you want to build."
                   value={form.message}
                   onChange={handleChange}
                   required
@@ -289,7 +299,7 @@ const Contact = () => {
                   aria-describedby={fieldErrors.message ? "message-error message-helper" : "message-helper"}
                 />
                 <span id="message-helper" className="field-helper">
-                  Problem, current process, systems, and success metric make the first reply sharper.
+                  A little context on your goal and timeline makes the first reply sharper.
                 </span>
                 {fieldErrors.message && <span id="message-error" className="field-error">{fieldErrors.message}</span>}
               </div>
@@ -302,7 +312,7 @@ const Contact = () => {
                   </>
                 ) : (
                   <>
-                    Send workflow details
+                    Send message
                     <ArrowRight size={17} weight="bold" />
                   </>
                 )}

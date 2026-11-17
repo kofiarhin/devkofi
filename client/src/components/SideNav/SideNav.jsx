@@ -4,7 +4,7 @@ import { closeSideNav } from "../../redux/navigation/navigationSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
 import useLogoutAdmin from "../../hooks/mutations/useLogoutAdmin";
-import { adminNavItems, publicActionItem, publicNavItems } from "../../constants/navigation";
+import { adminNavItems, primaryNavItems } from "../../constants/navigation";
 import "./sideNav.styles.scss";
 
 const SideNav = () => {
@@ -68,15 +68,14 @@ const SideNav = () => {
 
         <nav className="nav-content" aria-label="Mobile navigation">
           <ul className="nav-list">
-            {publicNavItems.map((item) => (
+            {primaryNavItems.map((item) => (
               <li key={item.to}>
-                <NavLink to={item.to} end={item.to === "/"} onClick={closeNav} className={navLinkClass}>{item.label}</NavLink>
+                <NavLink to={item.to} end={item.to === "/"} onClick={closeNav} className={item.cta ? "side-nav-cta" : navLinkClass}>{item.label}</NavLink>
               </li>
             ))}
             {admin && adminNavItems.map((item) => (
               <li key={item.to}><NavLink to={item.to} onClick={closeNav} className={() => adminNavLinkClass(item)}>{item.label}</NavLink></li>
             ))}
-            <li><NavLink to={publicActionItem.to} onClick={closeNav} className="side-nav-cta">{publicActionItem.label}</NavLink></li>
             {admin && <li><button type="button" onClick={() => { closeNav(); logout(); }} className="logout-btn" disabled={isLoggingOut}>{isLoggingOut ? "Logging out..." : "Logout"}</button></li>}
           </ul>
         </nav>

@@ -43,8 +43,8 @@ const upsertStructuredData = (structuredData) => {
 export const PageMeta = ({ title, description, canonicalPath, image, robots, structuredData } = {}) => {
   const location = useLocation();
   const routeMeta = getSeoForPath(location.pathname);
-  const pageTitle = title ? (title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`) : routeMeta.title || `${SITE_NAME} | AI Engineering Studio`;
-  const pageDescription = description || routeMeta.description || "DevKofi AI Engineering Studio.";
+  const pageTitle = title ? (title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`) : routeMeta.title || `${SITE_NAME} | AI Engineer with Real MERN Stack Experience`;
+  const pageDescription = description || routeMeta.description || "AI integration for businesses and 1-on-1 AI engineering and MERN stack mentorship.";
   const canonicalUrl = new URL(canonicalPath || routeMeta.canonicalPath || location.pathname, SITE_URL).toString();
   const pageRobots = robots || routeMeta.robots || "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
   const pageImage = image || routeMeta.image;
@@ -64,6 +64,7 @@ export const PageMeta = ({ title, description, canonicalPath, image, robots, str
     upsertMeta("property", "og:image", pageImage);
 
     upsertMeta("name", "twitter:card", "summary_large_image");
+    upsertMeta("name", "twitter:site", "@kwofiArhin");
     upsertMeta("name", "twitter:title", pageTitle);
     upsertMeta("name", "twitter:description", pageDescription);
     upsertMeta("name", "twitter:image", pageImage);

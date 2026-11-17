@@ -1,19 +1,15 @@
-export const publicNavItems = [
-  { label: "Services", to: "/services" },
+// Primary navigation in the approved order. The item flagged `cta` renders as the primary button.
+export const primaryNavItems = [
+  { label: "Home", to: "/" },
+  { label: "AI Integration", to: "/ai-integration" },
+  { label: "Mentorship", to: "/mentorship" },
   { label: "Work", to: "/work" },
-  { label: "Systems", to: "/engineering-systems" },
-  { label: "Blog", to: "/blog" },
   { label: "About", to: "/about" },
+  { label: "Book a call", to: "/book-a-call", cta: true },
+  { label: "Blog", to: "/blog" },
 ];
 
-export const secondaryNavItems = [
-  { label: "AI Workflow Audit", to: "/ai-workflow-audit" },
-];
-
-export const publicActionItem = {
-  label: "Contact",
-  to: "/contact",
-};
+export const publicActionItem = primaryNavItems.find((item) => item.cta);
 
 export const adminNavItems = [
   {

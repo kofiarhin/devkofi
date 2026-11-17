@@ -1,4 +1,4 @@
-import { aiImage, codeSnippetImage, profileImage, workStation } from "./constants";
+import { aiImage, codeSnippetImage, profileImage, profileImageSecondary, workStation } from "./constants";
 
 export const SITE_URL = "https://devkofi.com";
 export const SITE_NAME = "DevKofi";
@@ -19,110 +19,96 @@ const makePageSchema = ({ path, name, description, schemaType = "WebPage", mainE
   ...(mainEntity ? { mainEntity } : {}),
 });
 
+const makeService = (name, description, audience) => ({
+  "@type": "Service",
+  name,
+  description,
+  provider: founderRef,
+  ...(audience ? { audience: { "@type": "Audience", audienceType: audience } } : {}),
+});
+
 const serviceEntities = {
   "@type": "ItemList",
   itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      item: {
-        "@type": "Service",
-        name: "AI Workflow Audit",
-        description: "Map one expensive manual process, identify where AI is appropriate, and define a scoped pilot plan.",
-        provider: organizationRef,
-      },
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      item: {
-        "@type": "Service",
-        name: "AI Pilot Sprint",
-        description: "Build one working vertical slice against real inputs with structured outputs, evaluation, and human approval.",
-        provider: organizationRef,
-      },
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      item: {
-        "@type": "Service",
-        name: "Production AI System",
-        description: "Turn a validated pilot into an integrated application with auth, observability, failure handling, and deployment.",
-        provider: organizationRef,
-      },
-    },
-  ],
+    makeService(
+      "AI integration into existing systems",
+      "Integrating AI assistants, governed agents and workflow automation into the software and data a business already runs.",
+      "Businesses",
+    ),
+    makeService(
+      "AI engineering mentorship",
+      "1-on-1 mentorship in building software with LLMs, agents and AI coding tools.",
+      "Developers",
+    ),
+    makeService(
+      "MERN stack mentorship",
+      "1-on-1 coaching in MongoDB, Express, React and Node.js through real projects.",
+      "Developers",
+    ),
+  ].map((item, index) => ({ "@type": "ListItem", position: index + 1, item })),
 };
 
 export const SEO_BY_PATH = {
   "/": {
-    title: "DevKofi | AI Engineering Studio for Production AI Workflow Systems",
-    description: "DevKofi is Kofi Arhin's founder-led AI engineering studio for turning manual workflows and AI prototypes into dependable, human-controlled production systems.",
+    title: "DevKofi | AI Engineer with Real MERN Stack Experience",
+    description: "Kofi Arhin integrates AI into the systems businesses already run, and mentors developers 1-on-1 in AI engineering and the MERN stack. Book a free intro call.",
     canonicalPath: "/",
-    image: workStation,
+    image: profileImage,
     structuredData: makePageSchema({
       path: "/",
-      name: "DevKofi — AI Engineering Studio",
-      description: "Founder-led AI engineering studio for production AI workflow systems, agents, and AI-native products.",
-    }),
-  },
-  "/services": {
-    title: "AI Engineering Services | DevKofi",
-    description: "AI Workflow Audit, Pilot Sprint, and Production AI System engagements for founder-led teams building human-controlled AI workflow systems.",
-    canonicalPath: "/services",
-    image: aiImage,
-    structuredData: makePageSchema({
-      path: "/services",
-      name: "DevKofi AI Engineering Services",
-      description: "Productized AI workflow engagements: audit, pilot sprint, and production system delivery.",
+      name: "DevKofi: AI integration and 1-on-1 mentorship",
+      description: "AI integration into existing systems for businesses, plus 1-on-1 AI engineering and MERN stack mentorship.",
       mainEntity: serviceEntities,
     }),
   },
-  "/ai-workflow-audit": {
-    title: "AI Workflow Audit | DevKofi",
-    description: "Map one expensive manual process, identify where AI is appropriate, and leave with a scoped pilot plan for a human-controlled AI system.",
-    canonicalPath: "/ai-workflow-audit",
+  "/ai-integration": {
+    title: "AI Integration into Existing Systems | DevKofi",
+    description: "Add AI to the software, data and workflows you already run: grounded assistants, governed agents and automation with human approval. Book a free intro call.",
+    canonicalPath: "/ai-integration",
     image: aiImage,
     structuredData: makePageSchema({
-      path: "/ai-workflow-audit",
-      name: "AI Workflow Audit",
-      description: "Focused audit engagement for one expensive business workflow.",
+      path: "/ai-integration",
+      name: "AI integration into existing systems",
+      description: "AI integration service for businesses: assistants grounded in your data, governed agents and workflow automation with human review.",
+      mainEntity: serviceEntities.itemListElement[0].item,
+    }),
+  },
+  "/mentorship": {
+    title: "1-on-1 AI Engineering & MERN Stack Mentorship | DevKofi",
+    description: "Direct, project-based 1-on-1 mentorship in AI engineering and the MERN stack: real code, review, tests and shipping habits. Book a free intro call.",
+    canonicalPath: "/mentorship",
+    image: profileImageSecondary,
+    structuredData: makePageSchema({
+      path: "/mentorship",
+      name: "1-on-1 AI engineering and MERN stack mentorship",
+      description: "1-on-1 mentorship for developers in AI engineering and the MERN stack.",
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: serviceEntities.itemListElement.slice(1).map((entry, index) => ({ ...entry, position: index + 1 })),
+      },
     }),
   },
   "/work": {
-    title: "AI Engineering Work & Case Studies | DevKofi",
-    description: "Case studies and selected engineering work across AI workflow systems, governed agents, and full-stack products from DevKofi.",
+    title: "Work & Case Studies: Hibachi, Brain, EscoWear | DevKofi",
+    description: "Case studies and engineering systems from Kofi Arhin: a governed local AI agent, an AI personal operating system and a live MERN e-commerce store.",
     canonicalPath: "/work",
-    image: aiImage,
+    image: workStation,
     structuredData: makePageSchema({
       path: "/work",
-      name: "DevKofi AI Engineering Work",
-      description: "Selected AI engineering systems, products, and case studies from DevKofi.",
-      schemaType: "CollectionPage",
-    }),
-  },
-  "/engineering-systems": {
-    title: "AI Engineering Systems & Agent Infrastructure | DevKofi",
-    description: "Reusable agent infrastructure, context systems, workflow controls, and verification patterns for dependable AI-assisted software delivery.",
-    canonicalPath: "/engineering-systems",
-    image: codeSnippetImage,
-    structuredData: makePageSchema({
-      path: "/engineering-systems",
-      name: "DevKofi Engineering Systems",
-      description: "Reusable agent infrastructure, context systems, delivery workflows, and verification patterns from DevKofi.",
+      name: "DevKofi work and case studies",
+      description: "Case studies, engineering systems and selected projects from DevKofi.",
       schemaType: "CollectionPage",
     }),
   },
   "/about": {
-    title: "About Kofi Arhin | AI Engineering Studio Founder at DevKofi",
-    description: "Meet Kofi Arhin, founder of DevKofi: focused on production AI workflow systems, agentic workflows, verification, and full-stack product engineering.",
+    title: "About Kofi Arhin | AI Engineer and Mentor | DevKofi",
+    description: "Meet Kofi Arhin: a full-stack engineer building AI systems, agentic workflows and AI-native products, and mentoring developers 1-on-1.",
     canonicalPath: "/about",
     image: profileImage,
     structuredData: makePageSchema({
       path: "/about",
       name: "About Kofi Arhin and DevKofi",
-      description: "About Kofi Arhin, founder of DevKofi and an AI engineer building production AI workflow systems.",
+      description: "About Kofi Arhin, AI engineer with real MERN stack experience and founder of DevKofi.",
       schemaType: "AboutPage",
       mainEntity: founderRef,
     }),
@@ -140,35 +126,40 @@ export const SEO_BY_PATH = {
     }),
   },
   "/contact": {
-    title: "Contact DevKofi | AI Workflow Enquiries",
-    description: "Contact Kofi Arhin at DevKofi about AI workflow audits, pilot sprints, production AI systems, integrations, and human-controlled agent systems.",
+    title: "Contact Kofi Arhin | DevKofi",
+    description: "Send Kofi Arhin a message about AI integration for your business or 1-on-1 AI engineering and MERN stack mentorship.",
     canonicalPath: "/contact",
     image: profileImage,
     structuredData: makePageSchema({
       path: "/contact",
       name: "Contact DevKofi",
-      description: "Workflow enquiry page for DevKofi AI engineering engagements.",
+      description: "Contact page for AI integration and mentorship enquiries.",
       schemaType: "ContactPage",
       mainEntity: organizationRef,
     }),
   },
   "/book-a-call": {
-    title: "Book an AI Workflow Call | DevKofi",
-    description: "Book a 30-minute AI workflow call with Kofi Arhin to scope an audit, pilot sprint, or production AI system.",
+    title: "Book a Free Intro Call | DevKofi",
+    description: "Book a free intro call with Kofi Arhin about AI integration for your business or 1-on-1 AI engineering and MERN stack mentorship.",
     canonicalPath: "/book-a-call",
     image: profileImage,
     structuredData: makePageSchema({
       path: "/book-a-call",
-      name: "Book a DevKofi AI Workflow Call",
-      description: "Book a discovery call about an AI workflow system engagement with DevKofi.",
+      name: "Book a free intro call with DevKofi",
+      description: "Book a free intro call about AI integration or 1-on-1 mentorship.",
     }),
   },
 };
 
-const legacyPaths = {
+// Retired routes redirect client-side (react-router Navigate) and share the destination's canonical URL.
+export const legacyRedirects = {
+  "/services": "/ai-integration",
+  "/ai-workflow-audit": "/ai-integration",
+  "/engineering-systems": "/work",
+  "/systems": "/work",
+  "/templates": "/work",
   "/products": "/work",
   "/projects": "/work",
-  "/templates": "/engineering-systems",
 };
 
 const noIndexMeta = (path, title) => ({
@@ -181,7 +172,7 @@ const noIndexMeta = (path, title) => ({
 });
 
 export const getSeoForPath = (pathname) => {
-  const canonicalPath = legacyPaths[pathname] || pathname;
+  const canonicalPath = legacyRedirects[pathname] || pathname;
 
   if (SEO_BY_PATH[canonicalPath]) {
     return SEO_BY_PATH[canonicalPath];
