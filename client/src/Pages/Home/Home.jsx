@@ -1,171 +1,144 @@
 import { Link } from "react-router-dom";
-import { ChatCircleDots, Funnel, ShieldCheck } from "@phosphor-icons/react";
-import useProjects from "../../hooks/useProjects";
-import { engagementOffers, workflowExamples } from "../../constants/engagementOffers";
-import { services } from "../../constants/services";
-import { studioContent } from "../../constants/siteContent";
-import { selectFeaturedWork } from "../../lib/projectSelectors";
-import { FinalCta, PageMeta, ProjectCollection, RotatingFocus, SectionHeading, SplitSection } from "../../components/Studio/Studio";
+import { CheckCircle } from "@phosphor-icons/react";
+import { profileImage, profileImageSecondary } from "../../constants/constants";
+import { caseStudies, homeFaq, howItWorks, positioning, services } from "../../constants/siteOffer";
+import AiDemo from "../../components/Site/AiDemo";
+import {
+  BookCallButton,
+  CalendlyLink,
+  CaseStudyTeaser,
+  Checklist,
+  Faq,
+  FinalCta,
+  PageHero,
+  Reveal,
+  Section,
+  SectionHeader,
+  SiteLink,
+  Steps,
+} from "../../components/Site/Site";
 
-const workflowIcons = {
-  "Prospecting workflow": Funnel,
-  "Support triage workflow": ChatCircleDots,
-  "Governed coding workflow": ShieldCheck,
-};
+const heroPoints = ["AI integration for businesses", "1-on-1 AI engineering mentorship", "1-on-1 MERN stack mentorship"];
+
+const HeroPortrait = () => (
+  <figure className="site-portrait">
+    <img src={profileImage} alt="Kofi Arhin, AI engineer and founder of DevKofi" width="880" height="1100" fetchPriority="high" />
+    <figcaption className="site-portrait__badge">
+      <span aria-hidden="true" />
+      Kofi Arhin · AI engineer
+    </figcaption>
+  </figure>
+);
+
+const ServiceCard = ({ service, featured = false, delay = 0 }) => (
+  <Reveal as="article" className={`site-card site-service ${featured ? "site-service--featured" : ""}`.trim()} delay={delay}>
+    <p className="site-eyebrow">{service.eyebrow}</p>
+    <h3>{service.title}</h3>
+    <p>{service.body}</p>
+    <Checklist items={service.points} />
+    <SiteLink to={service.to}>{service.cta}</SiteLink>
+  </Reveal>
+);
 
 const Home = () => {
-  const { data, isLoading, isError } = useProjects();
-  const projects = Array.isArray(data) ? data : data?.data || [];
-  const featuredWork = selectFeaturedWork(projects);
+  const [leadService, ...mentorshipServices] = services;
 
   return (
-    <main>
-      <PageMeta
-        title="AI Engineering Studio"
-        description="DevKofi turns manual business workflows and early AI prototypes into dependable, human-controlled AI systems for founder-led teams."
-      />
-
-      <section className="studio-page-hero">
-        <div className="studio-container studio-page-hero__grid">
-          <div className="studio-page-hero__media">
-            <img src={studioContent.hero.image} alt="Kofi, founder and AI systems engineer at DevKofi" />
-          </div>
-          <div className="studio-page-hero__copy">
-            <p className="studio-eyebrow">{studioContent.hero.eyebrow}</p>
-            <h1>{studioContent.hero.title}</h1>
-            <RotatingFocus lead={studioContent.hero.focusLead} phrases={studioContent.hero.focus} />
-            <p>{studioContent.hero.body}</p>
-            <div className="studio-actions">
-              <Link className="studio-button studio-button--primary" to="/contact">
-                Contact
-              </Link>
-              <Link className="studio-button studio-button--secondary" to="/work">
-                See the work
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="studio-projects-section">
-        <div className="studio-container">
-          <SectionHeading
-            eyebrow={studioContent.whoFor.eyebrow}
-            title={studioContent.whoFor.title}
-            body={studioContent.whoFor.body}
-          />
-          <div className="studio-offer-grid">
-            {workflowExamples.map((example) => {
-              const Icon = workflowIcons[example.title];
-              return (
-                <article className="studio-offer-card" key={example.title}>
-                  {Icon && (
-                    <div className="studio-offer-card__icon" aria-hidden="true">
-                      <Icon size={48} weight="duotone" />
-                    </div>
-                  )}
-                  <h3>{example.title}</h3>
-                  <p>{example.body}</p>
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="studio-projects-section" id="engagements">
-        <div className="studio-container">
-          <SectionHeading
-            eyebrow="Engagements"
-            title="Three ways to start."
-            body="Start narrow with one workflow. Expand only after the pilot proves reliability on real inputs."
-          />
-          <div className="studio-offer-grid">
-            {engagementOffers.map((offer) => (
-              <article className="studio-offer-card" key={offer.id}>
-                {offer.image && (
-                  <div className="studio-offer-card__media">
-                    <img src={offer.image} alt={offer.imageAlt || offer.name} loading="lazy" />
-                  </div>
-                )}
-                <p className="studio-offer-card__meta">{offer.duration}</p>
-                <h3>{offer.name}</h3>
-                <p>{offer.summary}</p>
-                <ul>
-                  {offer.outcomes.map((outcome) => (
-                    <li key={outcome}>{outcome}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-          <div className="studio-actions">
-            <Link className="studio-button studio-button--primary" to="/contact">
-              Contact
-            </Link>
-            <Link className="studio-link" to="/services">
-              View services
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <SplitSection
-        eyebrow={services[0].eyebrow}
-        title={services[0].title}
-        body={`${services[0].description} ${services[0].problem}`}
-        image={studioContent.systems.image}
-        alt="Code and engineering system used to build AI software"
-        mediaLeft
+    <main className="site-page">
+      <PageHero
+        eyebrow={positioning.eyebrow}
+        title={
+          <>
+            AI that works inside the systems <span className="site-gradient-text">you already run.</span>
+          </>
+        }
+        body={positioning.body}
+        aside={<HeroPortrait />}
       >
-        <div className="studio-actions">
-          <Link className="studio-link" to="/services">
-            Explore AI Systems Engineering
+        <div className="site-actions">
+          <BookCallButton />
+          <Link className="site-button site-button--secondary" to="/work">
+            See the work
           </Link>
+          <CalendlyLink />
         </div>
-      </SplitSection>
+        <ul className="site-hero-points">
+          {heroPoints.map((point) => (
+            <li key={point}>
+              <CheckCircle size={18} weight="fill" aria-hidden="true" />
+              {point}
+            </li>
+          ))}
+        </ul>
+      </PageHero>
 
-      <section className="studio-projects-section">
-        <div className="studio-container">
-          <SectionHeading
-            eyebrow="Selected work"
-            title="Things I have engineered."
-            body="Selected products spanning agent engineering, full-stack architecture, and practical workflow systems."
+      <section className="site-section ai-demo-strip" aria-labelledby="ai-demo-heading">
+        <div className="site-container">
+          <SectionHeader
+            id="ai-demo-heading"
+            eyebrow="AI at work"
+            title="See what an integration does."
+            body="A request comes in, the AI works through clear steps using your existing systems, and a person stays in control of the outcome."
           />
-          {isLoading ? (
-            <p className="studio-empty">Loading selected work...</p>
-          ) : isError ? (
-            <p className="studio-empty">Selected work is temporarily unavailable.</p>
-          ) : (
-            <ProjectCollection
-              projects={featuredWork}
-              emptyMessage="Selected engineering work is temporarily unavailable."
+          <Reveal delay={0.1}>
+            <AiDemo />
+          </Reveal>
+        </div>
+      </section>
+
+      <Section
+        eyebrow="Services"
+        title="Built for businesses first. Mentorship for developers."
+        body="One engineer, three ways to work together."
+      >
+        <div className="site-services">
+          <ServiceCard service={leadService} featured />
+          {mentorshipServices.map((service, index) => (
+            <ServiceCard key={service.id} service={service} delay={0.08 * (index + 1)} />
+          ))}
+        </div>
+      </Section>
+
+      <Section
+        tone="raised"
+        eyebrow="Case studies"
+        title="Real systems, built and shipped."
+        body="An AI agent, an AI-powered personal operating system and a live MERN e-commerce store."
+      >
+        <div className="site-grid site-grid--3">
+          {caseStudies.map((study, index) => (
+            <CaseStudyTeaser key={study.id} study={study} delay={index * 0.08} />
+          ))}
+        </div>
+        <div className="site-actions">
+          <SiteLink to="/work">See all the work</SiteLink>
+        </div>
+      </Section>
+
+      <Section eyebrow="How it works" title="Three steps from first call to real progress.">
+        <Steps steps={howItWorks} />
+      </Section>
+
+      <Section tone="raised">
+        <div className="site-split">
+          <Reveal className="site-split__media">
+            <img src={profileImageSecondary} alt="Kofi Arhin" width="880" height="1100" loading="lazy" decoding="async" />
+          </Reveal>
+          <div>
+            <SectionHeader
+              eyebrow="About Kofi"
+              title="Software engineering discipline, applied to AI."
+              body="I'm a full-stack engineer who builds AI systems, agentic workflows and AI-native products. Models still need architecture, context, tools, permissions, verification and good interfaces around them. That surrounding engineering is what I do."
             />
-          )}
-          <div className="studio-actions">
-            <Link className="studio-link" to="/work">
-              View all engineering work
-            </Link>
+            <SiteLink to="/about">More about me</SiteLink>
           </div>
         </div>
-      </section>
+      </Section>
 
-      <section className="studio-projects-section">
-        <div className="studio-container">
-          <SectionHeading
-            eyebrow="Engineering systems"
-            title="The systems behind how I build."
-            body="Reusable workflows, agent infrastructure, context systems, and delivery controls that make AI-assisted engineering repeatable and reviewable."
-          />
-          <div className="studio-actions">
-            <Link className="studio-link" to="/engineering-systems">
-              Explore Engineering Systems
-            </Link>
-          </div>
-        </div>
-      </section>
+      <Section eyebrow="FAQ" title="Questions people ask first.">
+        <Faq items={homeFaq} />
+      </Section>
 
-      <SplitSection {...studioContent.viewpoint} alt="Engineering workstation visual" />
       <FinalCta />
     </main>
   );

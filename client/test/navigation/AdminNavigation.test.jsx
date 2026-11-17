@@ -149,10 +149,11 @@ describe('admin navigation preservation', () => {
   it('mirrors admin-aware links in the mobile side nav', () => {
     const { unmount } = renderWithProviders(<SideNav />, { isOpen: true });
 
-    expect(screen.getByRole('link', { name: 'Services' })).toHaveAttribute('href', '/services');
+    expect(screen.getByRole('link', { name: 'AI Integration' })).toHaveAttribute('href', '/ai-integration');
+    expect(screen.getByRole('link', { name: 'Mentorship' })).toHaveAttribute('href', '/mentorship');
     expect(screen.getByRole('link', { name: 'Work' })).toHaveAttribute('href', '/work');
-    expect(screen.getByRole('link', { name: 'Systems' })).toHaveAttribute('href', '/engineering-systems');
-    expect(screen.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', '/contact');
+    expect(screen.getByRole('link', { name: 'Book a call' })).toHaveAttribute('href', '/book-a-call');
+    expect(screen.getByRole('link', { name: 'Blog' })).toHaveAttribute('href', '/blog');
     expect(screen.queryByRole('link', { name: /dashboard/i })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /logout/i })).not.toBeInTheDocument();
 

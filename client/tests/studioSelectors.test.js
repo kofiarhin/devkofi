@@ -1,21 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { publicActionItem, publicNavItems } from "../src/constants/navigation";
+import { primaryNavItems, publicActionItem } from "../src/constants/navigation";
 import {
   selectEngineeringSystems,
   selectFeaturedWork,
   selectWorkProjects,
 } from "../src/lib/projectSelectors";
 
-describe("AI engineering studio navigation", () => {
-  it("keeps the public portfolio focused on work and engineering systems", () => {
-    expect(publicNavItems.map((item) => item.to)).toEqual([
-      "/services",
-      "/work",
-      "/engineering-systems",
-      "/blog",
-      "/about",
+describe("public site navigation", () => {
+  it("lists the approved pages in order with Book a call as the primary action", () => {
+    expect(primaryNavItems.map((item) => [item.label, item.to])).toEqual([
+      ["Home", "/"],
+      ["AI Integration", "/ai-integration"],
+      ["Mentorship", "/mentorship"],
+      ["Work", "/work"],
+      ["About", "/about"],
+      ["Book a call", "/book-a-call"],
+      ["Blog", "/blog"],
     ]);
-    expect(publicActionItem).toEqual({ label: "Contact", to: "/contact" });
+    expect(publicActionItem).toMatchObject({ label: "Book a call", to: "/book-a-call", cta: true });
+    expect(primaryNavItems.some((item) => item.to === "/contact")).toBe(false);
   });
 });
 

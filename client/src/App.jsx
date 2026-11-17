@@ -13,10 +13,9 @@ import SideNav from "./components/SideNav/SideNav";
 import { PageMeta } from "./components/Studio/Studio";
 import Footer from "./Pages/Footer/Footer";
 import Home from "./Pages/Home/Home";
-import Services from "./Pages/Services/Services";
+import AiIntegration from "./Pages/AiIntegration/AiIntegration";
+import Mentorship from "./Pages/Mentorship/Mentorship";
 import Work from "./Pages/Work/Work";
-import EngineeringSystems from "./Pages/EngineeringSystems/EngineeringSystems";
-import AiWorkflowAudit from "./Pages/AiWorkflowAudit/AiWorkflowAudit";
 import About from "./Pages/About/About";
 import Contact from "./Pages/Contact/Contact";
 import BookCall from "./Pages/BookCall/BookCall";
@@ -29,6 +28,7 @@ import AdminLogin from "./Pages/Login/AdminLogin";
 import AdminDashboard from "./Pages/AdminDashboard/AdminDashboard";
 import AdminMessageDetails from "./Pages/AdminMessageDetails/AdminMessageDetails";
 import useAdminSession from "./hooks/queries/useAdminSession";
+import { legacyRedirects } from "./constants/seo";
 
 export const AppRoutes = () => {
   useAdminSession();
@@ -39,19 +39,18 @@ export const AppRoutes = () => {
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/services" element={<Services />} />
+          <Route path="/ai-integration" element={<AiIntegration />} />
+          <Route path="/mentorship" element={<Mentorship />} />
           <Route path="/work" element={<Work />} />
-          <Route path="/engineering-systems" element={<EngineeringSystems />} />
-          <Route path="/ai-workflow-audit" element={<AiWorkflowAudit />} />
-          <Route path="/products" element={<Navigate to="/work" replace />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/book-a-call" element={<BookCall />} />
           <Route path="/newsletter/verify" element={<NewsletterVerify />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogArticle />} />
-          <Route path="/projects" element={<Navigate to="/work" replace />} />
-          <Route path="/templates" element={<Navigate to="/engineering-systems" replace />} />
+          {Object.entries(legacyRedirects).map(([from, to]) => (
+            <Route key={from} path={from} element={<Navigate to={to} replace />} />
+          ))}
           <Route path="*" element={<NotFound />} />
         </Route>
 
