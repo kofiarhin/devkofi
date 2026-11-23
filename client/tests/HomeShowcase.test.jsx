@@ -29,6 +29,15 @@ describe("Home", () => {
     expect(screen.getByRole("link", { name: "See the work" })).toHaveAttribute("href", "/work");
   });
 
+  it("renders the hero portrait with the homepage size modifier and stable image attributes", () => {
+    renderPage(Home);
+    const portrait = screen.getByAltText("Kofi Arhin, AI engineer and founder of DevKofi");
+    expect(portrait).toHaveAttribute("width", "880");
+    expect(portrait).toHaveAttribute("height", "1100");
+    expect(portrait.getAttribute("fetchpriority")).toBe("high");
+    expect(portrait.closest("figure")).toHaveClass("site-portrait", "site-portrait--home");
+  });
+
   it("follows the approved section order", () => {
     renderPage(Home);
     const headings = screen.getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent);
