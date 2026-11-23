@@ -21,7 +21,7 @@ import {
 const heroPoints = ["AI integration for businesses", "1-on-1 AI engineering mentorship", "1-on-1 MERN stack mentorship"];
 
 const HeroPortrait = () => (
-  <figure className="site-portrait">
+  <figure className="site-portrait site-portrait--home">
     <img src={profileImage} alt="Kofi Arhin, AI engineer and founder of DevKofi" width="880" height="1100" fetchPriority="high" />
     <figcaption className="site-portrait__badge">
       <span aria-hidden="true" />
