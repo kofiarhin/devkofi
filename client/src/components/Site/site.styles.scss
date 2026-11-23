@@ -234,7 +234,13 @@
 }
 
 .site-portrait--home {
-  width: clamp(240px, 72vw, 340px);
+  // Below 960px, break out of .site-container's gutters to span the viewport edge to edge.
+  // Gutter-based rather than 100vw, which includes the scrollbar and causes horizontal scroll.
+  @media (max-width: 959px) {
+    width: calc(100% + 2 * var(--page-gutter));
+    max-width: none;
+    margin-inline: calc(-1 * var(--page-gutter));
+  }
 
   @media (min-width: 960px) {
     width: auto;

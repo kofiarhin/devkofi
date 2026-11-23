@@ -1,3 +1,6 @@
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
@@ -21,6 +24,23 @@ const renderPage = (Page) => {
 
 const sectionByHeading = (name) => screen.getByRole("heading", { level: 2, name }).closest("section");
 
+const siteStyles = fs.readFileSync(
+  path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../src/components/Site/site.styles.scss"),
+  "utf-8",
+);
+
+// Returns the brace-delimited body that follows `selector` in `source`.
+const blockAfter = (source, selector) => {
+  const start = source.indexOf(`${selector} {`);
+  if (start === -1) return "";
+  let depth = 0;
+  for (let i = source.indexOf("{", start); i < source.length; i += 1) {
+    if (source[i] === "{") depth += 1;
+    if (source[i] === "}" && (depth -= 1) === 0) return source.slice(source.indexOf("{", start) + 1, i);
+  }
+  return "";
+};
+
 describe("Home", () => {
   it("leads with the positioning and the free intro call", () => {
     renderPage(Home);
@@ -36,6 +56,22 @@ describe("Home", () => {
     expect(portrait).toHaveAttribute("height", "1100");
     expect(portrait.getAttribute("fetchpriority")).toBe("high");
     expect(portrait.closest("figure")).toHaveClass("site-portrait", "site-portrait--home");
+  });
+
+  it("styles the homepage portrait full-bleed below 960px without 100vw and keeps desktop sizing", () => {
+    const home = blockAfter(siteStyles, ".site-portrait--home");
+    expect(home).not.toBe("");
+    expect(home).not.toContain("clamp(240px, 72vw, 340px)");
+
+    const mobile = blockAfter(home, "@media (max-width: 959px)");
+    expect(mobile).toMatch(/width:\s*calc\(100% \+ 2 \* var\(--page-gutter\)\)/);
+    expect(mobile).toMatch(/margin-inline:\s*calc\(-1 \* var\(--page-gutter\)\)/);
+    expect(mobile).toMatch(/max-width:\s*none/);
+    expect(mobile).not.toContain("100vw");
+
+    expect(blockAfter(home, "@media (min-width: 960px)")).toMatch(/max-width:\s*360px/);
+    expect(blockAfter(home, "@media (min-width: 960px) and (max-height: 760px)")).toMatch(/max-width:\s*300px/);
+    expect(blockAfter(home, "img")).toMatch(/height:\s*auto/);
   });
 
   it("follows the approved section order", () => {
