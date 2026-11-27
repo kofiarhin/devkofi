@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
 
 :root {
   --color-brand-primary: #4caf50;
@@ -30,12 +30,15 @@
   --radius-xl: 28px;
 
   --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.24);
+  --shadow-cinematic: 0 40px 120px -20px rgba(0, 0, 0, 0.6);
   --content-max: 1180px;
   --content-wide: 1400px;
   --page-gutter: clamp(1.1rem, 3vw, 2.75rem);
   --motion-fast: 160ms;
   --motion-medium: 320ms;
+  --motion-slow: 600ms;
   --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Compatibility aliases used by legacy surfaces. */
   --primary-color: var(--color-brand-primary);

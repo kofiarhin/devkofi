@@ -1,7 +1,7 @@
 import { GithubLogo, LinkedinLogo, XLogo, YoutubeLogo } from "@phosphor-icons/react";
 import { profileImage, profileImageSecondary } from "../../constants/constants";
 import { aboutCopy, engineeringProcess } from "../../constants/siteOffer";
-import { BookCallButton, FinalCta, PageHero, Reveal, Section, SectionHeader, SiteLink } from "../../components/Site/Site";
+import { BookCallButton, FinalCta, PageHero, Parallax, Reveal, Section, SectionHeader, SiteLink } from "../../components/Site/Site";
 
 const socialLinks = [
   { label: "GitHub", href: "https://github.com/kofiarhin", icon: GithubLogo },
@@ -12,6 +12,7 @@ const socialLinks = [
 
 const AboutPortrait = () => (
   <figure className="site-portrait">
+    <div className="site-portrait__backdrop" aria-hidden="true" />
     <img src={profileImage} alt="Kofi Arhin, founder of DevKofi" width="880" height="1100" />
     <figcaption className="site-portrait__badge">
       <span aria-hidden="true" />
@@ -40,9 +41,9 @@ const About = () => (
 
     <Section>
       <div className="site-split">
-        <Reveal className="site-split__media">
+        <Parallax offset={30} className="site-split__media">
           <img src={profileImageSecondary} alt="Kofi Arhin at work" width="880" height="1100" loading="lazy" decoding="async" />
-        </Reveal>
+        </Parallax>
         <div>
           <SectionHeader eyebrow="The shift" title="From full-stack delivery to AI systems engineering." />
           <Reveal>
