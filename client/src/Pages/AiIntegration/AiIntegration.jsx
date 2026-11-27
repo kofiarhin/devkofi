@@ -17,7 +17,6 @@ import {
 
 const kindIcons = [Database, Robot, FlowArrow, Plugs, Brain, ShieldCheck];
 
-// Hibachi and Brain are the AI-integration evidence; EscoWear shows the MERN foundation they plug into.
 const relevantStudies = caseStudies.filter((study) => ["hibachi", "brain"].includes(study.id));
 
 const AiIntegration = () => (

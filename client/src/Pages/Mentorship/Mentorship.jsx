@@ -18,6 +18,7 @@ const trackIcons = { "ai-engineering": Brain, mern: Stack };
 
 const MentorshipPortrait = () => (
   <figure className="site-portrait">
+    <div className="site-portrait__backdrop" aria-hidden="true" />
     <img src={profileImageSecondary} alt="Kofi Arhin, mentor" width="880" height="1100" />
     <figcaption className="site-portrait__badge">
       <span aria-hidden="true" />

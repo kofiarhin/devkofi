@@ -1,18 +1,36 @@
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight, CheckCircle, Plus } from "@phosphor-icons/react";
 import { BOOK_CALL_LABEL, BOOK_CALL_PATH, CALENDLY_INTRO_URL } from "../../constants/booking";
 import { getProjectImageProps } from "../../lib/projectMedia";
 import "./site.styles.scss";
 
+// ----------------------------------------------------------------
+// Reveal animations
+// ----------------------------------------------------------------
 const revealVariants = {
   hidden: { opacity: 0, y: 28 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
 };
 
-// Fades content up once it scrolls into view; renders static content when reduced motion is preferred.
-export const Reveal = ({ as = "div", delay = 0, className, children, ...rest }) => {
+const blurInVariants = {
+  hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
+  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const scaleInVariants = {
+  hidden: { opacity: 0, scale: 0.92 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const variantMap = {
+  default: revealVariants,
+  "blur-in": blurInVariants,
+  "scale-in": scaleInVariants,
+};
+
+export const Reveal = ({ as = "div", delay = 0, variant = "default", className, children, ...rest }) => {
   const prefersReducedMotion = useReducedMotion();
   if (prefersReducedMotion) {
     const Tag = as;
@@ -22,7 +40,7 @@ export const Reveal = ({ as = "div", delay = 0, className, children, ...rest }) 
   return (
     <MotionTag
       className={className}
-      variants={revealVariants}
+      variants={variantMap[variant] || revealVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "0px 0px -10% 0px" }}
@@ -34,6 +52,27 @@ export const Reveal = ({ as = "div", delay = 0, className, children, ...rest }) 
   );
 };
 
+// Parallax wrapper — shifts content vertically as user scrolls
+export const Parallax = ({ children, offset = 40, className }) => {
+  const ref = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [offset, -offset]);
+
+  if (prefersReducedMotion) {
+    return <div ref={ref} className={className}>{children}</div>;
+  }
+
+  return (
+    <div ref={ref} className={className}>
+      <motion.div style={{ y }}>{children}</motion.div>
+    </div>
+  );
+};
+
+// ----------------------------------------------------------------
+// Buttons and links
+// ----------------------------------------------------------------
 export const BookCallButton = ({ label = BOOK_CALL_LABEL, variant = "primary", className = "" }) => (
   <Link className={`site-button site-button--${variant} ${className}`.trim()} to={BOOK_CALL_PATH}>
     {label}
@@ -58,21 +97,43 @@ export const SiteLink = ({ to, children }) => (
   </Link>
 );
 
+// ----------------------------------------------------------------
+// Cinematic Hero
+// ----------------------------------------------------------------
 export const PageHero = ({ eyebrow, title, body, children, aside }) => (
   <section className={`site-hero ${aside ? "site-hero--split" : ""}`.trim()}>
     <div className="site-hero__glow" aria-hidden="true" />
     <div className="site-container site-hero__grid">
-      <Reveal className="site-hero__copy">
+      <Reveal className="site-hero__copy" variant="blur-in">
         {eyebrow && <p className="site-eyebrow">{eyebrow}</p>}
         <h1 className="site-hero__title">{title}</h1>
         {body && <p className="site-hero__body">{body}</p>}
         {children}
       </Reveal>
-      {aside && <Reveal className="site-hero__aside" delay={0.15}>{aside}</Reveal>}
+      {aside && <Reveal className="site-hero__aside" delay={0.15} variant="scale-in">{aside}</Reveal>}
     </div>
   </section>
 );
 
+// ----------------------------------------------------------------
+// Floating technical panels (decorative hero accents)
+// ----------------------------------------------------------------
+export const FloatingPanels = () => (
+  <div className="site-float-panels" aria-hidden="true">
+    <div className="site-float-panel site-float-panel--top-right">
+      <span className="site-float-panel__label">agent.tools</span>
+      {"tools: [\n  readFile,\n  writeFile,\n  runTests\n]"}
+    </div>
+    <div className="site-float-panel site-float-panel--bottom-left">
+      <span className="site-float-panel__label">verify</span>
+      {"✓ 163 tests passed\n✓ lint clean\n✓ build success"}
+    </div>
+  </div>
+);
+
+// ----------------------------------------------------------------
+// Sections
+// ----------------------------------------------------------------
 export const SectionHeader = ({ eyebrow, title, body, id }) => (
   <Reveal className="site-section-header">
     {eyebrow && <p className="site-eyebrow">{eyebrow}</p>}
@@ -97,6 +158,9 @@ export const Section = ({ id, eyebrow, title, body, tone, children, className = 
   );
 };
 
+// ----------------------------------------------------------------
+// Lists and checklists
+// ----------------------------------------------------------------
 export const Checklist = ({ items }) => (
   <ul className="site-checklist">
     {items.map((item) => (
@@ -120,6 +184,9 @@ export const Steps = ({ steps }) => (
   </ol>
 );
 
+// ----------------------------------------------------------------
+// FAQ accordion
+// ----------------------------------------------------------------
 export const Faq = ({ items }) => {
   const baseId = useId();
   const [openIndex, setOpenIndex] = useState(0);
@@ -153,6 +220,9 @@ export const Faq = ({ items }) => {
   );
 };
 
+// ----------------------------------------------------------------
+// Case studies (legacy, used on Work page)
+// ----------------------------------------------------------------
 const CaseStudyMedia = ({ study, eager = false }) => (
   <div className="site-case__media">
     {study.image ? (
@@ -226,6 +296,45 @@ export const CaseStudyFull = ({ study, reverse = false }) => (
   </Reveal>
 );
 
+// ----------------------------------------------------------------
+// Cinematic overlapping project showcase
+// ----------------------------------------------------------------
+export const ShowcaseCard = ({ study, delay = 0 }) => (
+  <Reveal as="article" delay={delay} variant="scale-in">
+    <div className="site-showcase__card">
+      <div className="site-showcase__media">
+        {study.image ? (
+          <img
+            src={study.image}
+            alt={study.imageAlt || `${study.name} preview`}
+            width="1600"
+            height="900"
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <div className="site-showcase__placeholder">
+            <span>{study.name}</span>
+          </div>
+        )}
+      </div>
+      <div className="site-showcase__info">
+        <div>
+          <p className="site-showcase__tag">{study.tag}</p>
+          <h3 className="site-showcase__name">{study.name}</h3>
+        </div>
+        <Link to={`/work#${study.id}`} className="site-showcase__link">
+          Read the case study
+          <ArrowRight size={18} weight="bold" aria-hidden="true" />
+        </Link>
+      </div>
+    </div>
+  </Reveal>
+);
+
+// ----------------------------------------------------------------
+// Project cards (for Work page grids)
+// ----------------------------------------------------------------
 const ProjectImage = ({ src, alt }) => {
   const [status, setStatus] = useState("responsive");
   if (!src || status === "failed") {
@@ -281,13 +390,16 @@ export const ProjectCard = ({ project, delay = 0 }) => {
   );
 };
 
+// ----------------------------------------------------------------
+// Final CTA
+// ----------------------------------------------------------------
 export const FinalCta = ({
   title = "Let's talk about what you want to build.",
   body = "Start with a free intro call. We'll look at your system or your goals and agree a sensible first step.",
 }) => (
   <section className="site-final-cta" aria-label="Book a free intro call">
     <div className="site-container">
-      <Reveal className="site-final-cta__panel">
+      <Reveal className="site-final-cta__panel" variant="scale-in">
         <div className="site-final-cta__glow" aria-hidden="true" />
         <p className="site-eyebrow">Free intro call</p>
         <h2>{title}</h2>

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__linear__get_issue",
+      "mcp__claude_ai_Google_Drive__download_file_content",
+      "Bash(npx vitest:*)"
+    ]
+  }
+}

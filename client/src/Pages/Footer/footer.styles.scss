@@ -1,4 +1,4 @@
-$primary: #a3e635;
+$primary: #94ff2b;
 $bg-dark: #09090b;
 $bg-strong: #050507;
 $surface: rgba(24, 24, 27, 0.72);
@@ -210,11 +210,18 @@ $text-muted: #8b929f;
     flex: 0 0 auto;
   }
 
-  &:hover,
+  &:hover {
+    border-color: $border-strong;
+    background: rgba(163, 230, 53, 0.06);
+    color: $primary;
+  }
+
   &:focus-visible {
     border-color: $border-strong;
     background: rgba(163, 230, 53, 0.06);
     color: $primary;
+    outline: 2px solid $primary;
+    outline-offset: 2px;
     outline: none;
   }
 
